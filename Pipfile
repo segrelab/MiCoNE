@@ -1,0 +1,35 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+"jinja2" = "*"
+dask = "*"
+cloudpickle = "*"
+biom-format = "*"
+"ete3" = "*"
+"h5py" = "*"
+statsmodels = "*"
+networkx = "*"
+toml = "*"
+
+[dev-packages]
+bumpversion = "*"
+wheel = "*"
+watchdog = "*"
+"flake8" = "*"
+tox = "*"
+coverage = "*"
+sphinx = "*"
+pytest = "*"
+pytest-runner = "*"
+ipython = "*"
+pylint = "*"
+jupyter = "*"
+mypy = "*"
+
+[requires]
+python_version = "3.6"
