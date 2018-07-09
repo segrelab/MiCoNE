@@ -87,20 +87,27 @@ class ObsmetaType(BaseType):
                     "Invalid observation metadata. "
                     f"Unknown attribute {col} present"
                 )
+        # Check if keys are in order
+        # i.e. if genus is present everything above that level is present
         for key in self._keys:
             if key not in value.columns:
-                raise ValidationError(
-                    "Invalid observation metadata. "
-                    f"Required attribute {key} not present"
-                )
+                ind = self._keys.index(key)
+                if len(value.columns) != ind:
+                    raise ValidationError(
+                        "Invalid observation metadata. "
+                        f"Required attribute {key} not present"
+                    )
+                else:
+                    break
 
     def validate_obsmeta_data(self, value):
         data_items = chain(*value.values.tolist())
         pattern = re.compile(r'^[a-zA-Z0-9-.]+$')
         for item in data_items:
+            cond0 = not '' == item
             cond1 = not item[0].isupper()
             cond2 = not bool(pattern.match(item))
-            if cond1 or cond2:
+            if (cond1 or cond2) and cond0:
                 raise ValidationError(
                     "Invalid observation metadata. "
                     f"Taxonomy names are not standard: {item} is not allowed"
