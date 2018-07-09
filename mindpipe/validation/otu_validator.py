@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Union
 import pandas as pd
 from biom import load_table, Table
 
-from .otu_schema import ValidBiom
+from .otu_schema import BiomType
 
 
 class OtuValidator:
@@ -29,6 +29,8 @@ class OtuValidator:
         ----------
         configuration : Dict[str, Any]
             Dictionary showing the current configuration of the instance
+        validator : BiomType
+            The schmatics validator instance
 
         .. note:: We assume that the extension dictates the filetype
     """
@@ -45,6 +47,7 @@ class OtuValidator:
             raise TypeError(f"{dtype} is not supported. Try one of {self._otu_exts.keys()}")
         if ext:
             self._otu_exts[self._dtype].append(ext)
+        self.validator = BiomType()
 
     @property
     def configuration(self) -> Dict[str, Union[str, List[str]]]:
@@ -77,8 +80,7 @@ class OtuValidator:
         exts = self._otu_exts[self._dtype]
         return bool(fpath.suffix in exts)
 
-    @staticmethod
-    def _load_from_biom(otu_file: pathlib.Path) -> Table:
+    def _load_from_biom(self, otu_file: pathlib.Path) -> Table:
         """
             Read biom table from file
 
@@ -93,7 +95,7 @@ class OtuValidator:
                 A `biom.Table` instance containing the OTU, meta, tax data
         """
         otudata = load_table(otu_file)
-        ValidBiom.validate(otudata)
+        self.validator.validate(otudata)
         return otudata
 
     @staticmethod
@@ -156,7 +158,7 @@ class OtuValidator:
         taxdata = self._extract_data(tax_file, self._tax_exts)
         otudata.add_metadata(metadata.to_dict(orient='index'), axis='sample')
         otudata.add_metadata(taxdata.to_dict(orient='index'), axis='observation')
-        ValidBiom.validate(otudata)
+        self.validator.validate(otudata)
         return otudata
 
     def load_validate(
