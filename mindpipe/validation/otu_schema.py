@@ -1,10 +1,5 @@
 """
     Module that defines the schema for a valid OTU table
-
-    .. todo::
-        1. Define BiomType class - make this a BaseType
-        2. Validate OTU counts
-        3. Validate whether metadata and taxon data have the correct structure
 """
 
 from itertools import chain
