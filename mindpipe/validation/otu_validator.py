@@ -33,11 +33,11 @@ class OtuValidator:
         .. note:: We assume that the extension dictates the filetype
     """
     _otu_exts = {
-        'tsv': ['tsv', 'txt', 'counts'],
-        'biom': ['biom', 'hdf5'],
+        'tsv': ['.tsv', '.txt', '.counts'],
+        'biom': ['.biom', '.hdf5'],
     }
-    _meta_exts = ['csv', 'tsv']
-    _tax_exts = ['csv', 'tsv']
+    _meta_exts = ['.csv', '.tsv']
+    _tax_exts = ['.csv', '.tsv']
 
     def __init__(self, dtype: str, ext: Optional[str] = None) -> None:
         self._dtype = dtype
