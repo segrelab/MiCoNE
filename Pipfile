@@ -15,6 +15,7 @@ biom-format = "*"
 statsmodels = "*"
 networkx = "*"
 toml = "*"
+schematics = "*"
 
 [dev-packages]
 bumpversion = "*"
@@ -30,6 +31,7 @@ ipython = "*"
 pylint = "*"
 jupyter = "*"
 mypy = "*"
+numpydoc = "*"
 
 [requires]
 python_version = "3.6"
