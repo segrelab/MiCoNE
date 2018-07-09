@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-"""Tests for `mindpipe` package."""
+"""
+    Tests for `mindpipe` package
+"""
 
 import pytest
 
