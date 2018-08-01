@@ -29,7 +29,9 @@ class TestOtuValidator:
             if 'obs_metadata' in str(bad_biom):
                 with pytest.raises(ValidationError):
                     biom_validator.load_validate(bad_biom)
-            # TODO: Condition for the 'bad.biom'
+            if 'incorrect_metadata' in str(bad_biom):
+                with pytest.raises(KeyError):
+                    biom_validator.load_validate(bad_biom)
 
     def test_init_tsv_good(self, biom_data):
         assert False
