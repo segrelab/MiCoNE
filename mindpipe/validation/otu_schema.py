@@ -69,7 +69,7 @@ class SamplemetaType(BaseType):
 
 class ObsmetaType(BaseType):
     """ DataType that describes the expected structure and format for the observation metadata """
-    _keys = [
+    _req_keys = [
         'kingdom',
         'phylum',
         'class',
@@ -78,19 +78,20 @@ class ObsmetaType(BaseType):
         'genus',
         'species'
     ]
+    _extra_key = 'Confidence'
 
     def validate_obsmeta_headers(self, value):
         for col in value.columns:
-            if col not in self._keys:
+            if col not in self._req_keys and col != self._extra_key:
                 raise ValidationError(
                     "Invalid observation metadata. "
                     f"Unknown attribute {col} present"
                 )
         # Check if keys are in order
         # i.e. if genus is present everything above that level is present
-        for key in self._keys:
+        for key in self._req_keys:
             if key not in value.columns:
-                ind = self._keys.index(key)
+                ind = self._req_keys.index(key)
                 if len(value.columns) != ind:
                     raise ValidationError(
                         "Invalid observation metadata. "
@@ -100,7 +101,20 @@ class ObsmetaType(BaseType):
                     break
 
     def validate_obsmeta_data(self, value):
-        data_items = chain(*value.values.tolist())
+        if self._extra_key in value.columns:
+            confidence = value[self._extra_key]
+            cond0 = confidence.dtype == float
+            cond1 = 0 <= confidence.min() <= 1
+            cond2 = 0 <= confidence.max() <= 1
+            if not cond0 and not cond1 and not cond2:
+                raise ValidationError(
+                    "Invalid observation metadata. "
+                    f"{self._extra_key} column must be of type float"
+                )
+            df = value.drop(self._extra_key, axis=1)
+        else:
+            df = value
+        data_items = chain(*df.values.tolist())
         pattern = re.compile(r'^[a-zA-Z0-9-.]+$')
         for item in data_items:
             cond0 = not '' == item
