@@ -55,12 +55,16 @@ class DataType(BaseType):
                 raise ValidationError("Invalid data. Abundances are not normalized")
 
 
-# TODO: Implement validation for this BaseType
 class SamplemetaType(BaseType):
     """ DataType that describes the expected structure and format for the sample metadata """
 
-    def validate_samplemeta_headers(self, value):
-        pass
+    def validate_samplemeta_columns(self, value):
+        if len(value.columns) < 1:
+            raise ValidationError("Invalid columns in sample metdata")
+
+    def validate_samplemeta_index(self, value):
+        if len(value.index) != len(set(value.index)):
+            raise ValidationError("Invalid index in sample metadata. All indices must be unqiue")
 
 
 class ObsmetaType(BaseType):
