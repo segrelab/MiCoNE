@@ -8,7 +8,7 @@ from schematics.exceptions import ValidationError
 from mindpipe.validation import OtuValidator
 
 
-@pytest.mark.usefixtures("biom_data")
+@pytest.mark.usefixtures("biom_data", "tsv_data")
 class TestOtuValidator:
     """ Tests for the OtuValidator class """
 
@@ -33,8 +33,10 @@ class TestOtuValidator:
                 with pytest.raises(KeyError):
                     biom_validator.load_validate(bad_biom)
 
-    def test_init_tsv_good(self, biom_data):
-        assert False
+    def test_init_tsv_good(self, tsv_data):
+        tsv_validator = OtuValidator(dtype="tsv")
+        for otu, sample, tax in tsv_data["good"]:
+            assert tsv_validator.load_validate(otu, sample, tax)
 
     def test_init_tsv_bad(self, biom_data):
         assert False
