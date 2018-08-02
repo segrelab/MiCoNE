@@ -32,6 +32,9 @@ pylint = "*"
 jupyter = "*"
 mypy = "*"
 numpydoc = "*"
+tox-travis = "*"
+pytest-cov = "*"
+codecov = "*"
 
 [requires]
 python_version = "3.6"
