@@ -2,7 +2,7 @@ Microbial Interaction Database Pipeline
 =======================================
 
 [![Pypi](https://img.shields.io/pypi/v/mindpipe.svg?style=for-the-badge)](https://pypi.python.org/pypi/mindpipe)
-[![Build Status](https://travis-ci.com/dileep-kishore/mindpipe.svg?token=qCMKydrUTvcJ87J6czex&branch=master&style=for-the-badge)](https://travis-ci.com/dileep-kishore/mindpipe)
+[![Build Status](https://img.shields.io/travis/com/dileep-kishore/mindpipe.svg?style=for-the-badge&token=qCMKydrUTvcJ87J6czex&branch=master)](https://travis-ci.com/dileep-kishore/mindpipe)
 [![Documentation Status](https://readthedocs.org/projects/mindpipe/badge/?version=latest&style=for-the-badge)](https://mindpipe.readthedocs.io/en/latest/?badge=latest)
 [![Updates](https://pyup.io/repos/github/dileep-kishore/mindpipe/shield.svg?style=for-the-badge)](https://pyup.io/repos/github/dileep-kishore/mindpipe/)
 
