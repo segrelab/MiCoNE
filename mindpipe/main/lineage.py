@@ -4,6 +4,7 @@
 
 
 from collections import namedtuple
+from typing import Tuple
 
 
 BaseLineage = namedtuple(
@@ -58,3 +59,21 @@ class Lineage(BaseLineage):
             if s_lin != o_lin:
                 return Lineage(*s_lin[:i])
         return Lineage(*self._fields)
+
+    @property
+    def name(self) -> Tuple[str, str]:
+        """
+            Get the lowest populated level and name of the taxon
+
+            Returns
+            -------
+            Tuple[str, str]
+                Tuple containing (level, name)
+        """
+        fields = self._fields
+        for field in reversed(fields):
+            ind = fields.index(field)
+            name = self[ind]
+            if name != '':
+                return field, name
+        return 'Phylum', ''
