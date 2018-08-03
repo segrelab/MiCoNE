@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5def7c6e5ca1ada9fa8cbb16679ba5f4cb2075943373ddd3469dab0ae7147f25"
+            "sha256": "5b9309765449e5f2a928d30ee134a036d66bddcafac44df05d2850f016323b5f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -761,11 +761,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:8214ab8446104a1d0c17fbd218ec6aac743236c6ffbe23abc038e40213c60b88",
-                "sha256:e2b2c6e1560b8f9dc8dd600b0923183fbd68ba3d9bdecde04467be6dd296a384"
+                "sha256:86a8dbf407e437351cef4dba46736e9c5a6e3c3ac71b2e942209748e76ff2086",
+                "sha256:e74466e97ac14582a8188ff4c53e6cc3810315f342f6096899332ae864c1d432"
             ],
             "index": "pypi",
-            "version": "==3.7.0"
+            "version": "==3.7.1"
         },
         "pytest-cov": {
             "hashes": [
@@ -926,21 +926,6 @@
             ],
             "version": "==5.1"
         },
-        "tox": {
-            "hashes": [
-                "sha256:4df108a1fcc93a7ee4ac97e1a3a1fc3d41ddd22445d518976604e2ef05025280",
-                "sha256:9f0cbcc36e08c2c4ae90d02d3d1f9a62231f974bcbc1df85e8045946d8261059"
-            ],
-            "index": "pypi",
-            "version": "==3.1.2"
-        },
-        "tox-travis": {
-            "hashes": [
-                "sha256:7399968fc8a3dfdaa00b6c649b6fb049691aea0d217a28b03024fb350ae196d1"
-            ],
-            "index": "pypi",
-            "version": "==0.10"
-        },
         "traitlets": {
             "hashes": [
                 "sha256:9c4bd2d267b7153df9152698efb1050a5d84982d3384a37b2c1f7723ba3e7835",
@@ -990,13 +975,6 @@
                 "sha256:b5725a0bd4ba422ab0e66e89e030c806576753ea3ee08554382c14e685d117b5"
             ],
             "version": "==1.23"
-        },
-        "virtualenv": {
-            "hashes": [
-                "sha256:2ce32cd126117ce2c539f0134eb89de91a8413a29baac49cbab3eb50e2026669",
-                "sha256:ca07b4c0b54e14a91af9f34d0919790b016923d157afda5efdde55c96718f752"
-            ],
-            "version": "==16.0.0"
         },
         "watchdog": {
             "hashes": [
