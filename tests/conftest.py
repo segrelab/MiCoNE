@@ -33,3 +33,24 @@ def tsv_data():
             tax = data_fol / "tax_metadata.tsv"
             data[kind].append((otu, sample, tax))
     return data
+
+@pytest.fixture(scope="module")
+def lineage_data():
+    """ Fixture that creates example data for lineage class """
+    base = {
+        "Kingdom": "Bacteria",
+        "Phylum": "P1",
+        "Class": "C1",
+        "Order": "O1",
+        "Family": "F1",
+        "Genus": "G1",
+        "Species": "S1",
+    }
+    good = {**base}
+    bad = {**base}
+    bad["Class"] = ""
+    data = {
+        "good": good,
+        "bad": bad,
+    }
+    return data
