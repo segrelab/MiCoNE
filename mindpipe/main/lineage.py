@@ -39,7 +39,7 @@ class Lineage(BaseLineage):
     ) -> "Lineage":
         tax_order = [Kingdom, Phylum, Class, Order, Family, Genus, Species]
         empty = [i for i, tax in enumerate(tax_order) if tax == '']
-        if len(tax_order) - empty[0] != len(empty):
+        if empty and (len(tax_order) - empty[0] != len(empty)):
             raise ValueError("Lower levels should not be filled if higher levels are empty")
         else:
             return super().__new__(cls, Kingdom, Phylum, Class, Order, Family, Genus, Species)
