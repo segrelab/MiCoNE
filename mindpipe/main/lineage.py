@@ -77,3 +77,40 @@ class Lineage(BaseLineage):
             if name != '':
                 return field, name
         return 'Phylum', ''
+
+    @classmethod
+    def from_str(cls, lineage_str: str, style: str = "gg") -> "Lineage":
+        """
+            Create `Lineage` instance from a lineage string
+
+            Parameters
+            ----------
+            lineage_str : str
+                Lineage in the form of a string
+            style : {'gg', 'silva'}, optional
+                The style of the lineage string
+                Default is 'gg'
+
+            Returns
+            -------
+            Lineage
+                Instance of the `Lineage` class
+        """
+        if style == "gg":
+            if lineage_str.startswith('k'):
+                tax_list = lineage_str.split(';', 1)[-1].split(';')
+            elif lineage_str.startswith('p'):
+                tax_list = lineage_str.split(';')
+            else:
+                raise ValueError("Incompatible lineage string")
+        elif style == "silva":
+            if lineage_str.startswith('D_0'):
+                tax_list = lineage_str.split(';', 1)[-1].split(';D_7')[0].split(';')
+            elif lineage_str.startswith('D_1'):
+                tax_list = lineage_str.split(';D_7')[0].split(';')
+            else:
+                raise ValueError("Incompatible lineage string")
+        else:
+            raise ValueError("Style has to be either 'gg' or 'silva'")
+        taxa = [l.strip().rsplit('__', 1)[-1] for l in tax_list]
+        return cls(*taxa)
