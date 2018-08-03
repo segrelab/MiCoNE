@@ -41,3 +41,20 @@ class Lineage(BaseLineage):
         else:
             return super().__new__(cls, Phylum, Class, Order, Family, Genus, Species)
 
+    def __sub__(self, other: "Lineage") -> "Lineage":
+        """
+            Returns the lineage that is in common between two lineages
+
+            Parameters
+            ----------
+            other : "Lineage"
+
+            Returns
+            -------
+            Lineage
+                Common lineage
+        """
+        for i, (s_lin, o_lin) in enumerate(zip(self, other)):
+            if s_lin != o_lin:
+                return Lineage(*s_lin[:i])
+        return Lineage(*self._fields)
