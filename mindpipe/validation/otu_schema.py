@@ -70,13 +70,13 @@ class SamplemetaType(BaseType):
 class ObsmetaType(BaseType):
     """ DataType that describes the expected structure and format for the observation metadata """
     _req_keys = [
-        'kingdom',
-        'phylum',
-        'class',
-        'order',
-        'family',
-        'genus',
-        'species'
+        'Kingdom',
+        'Phylum',
+        'Class',
+        'Order',
+        'Family',
+        'Genus',
+        'Species'
     ]
     _extra_key = 'Confidence'
 
