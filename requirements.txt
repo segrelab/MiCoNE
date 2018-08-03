@@ -1,5 +1,6 @@
 -i https://pypi.org/simple
-biom-format==2.1.6
+numpy==1.15.0
+pandas==0.23.3
 click==6.7
 cloudpickle==0.5.3
 dask==0.18.2
@@ -10,8 +11,6 @@ h5py==2.8.0
 jinja2==2.10
 markupsafe==1.0
 networkx==2.1
-numpy==1.15.0
-pandas==0.23.3
 patsy==0.5.0
 python-dateutil==2.7.3
 pytz==2018.5
@@ -20,3 +19,4 @@ scipy==1.1.0
 six==1.11.0
 statsmodels==0.9.0
 toml==0.9.4
+biom-format==2.1.6
