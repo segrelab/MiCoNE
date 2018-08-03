@@ -114,3 +114,16 @@ class Lineage(BaseLineage):
             raise ValueError("Style has to be either 'gg' or 'silva'")
         taxa = [l.strip().rsplit('__', 1)[-1] for l in tax_list]
         return cls(*taxa)
+
+    @property
+    def string(self) -> str:
+        """
+            Get the lineage in the form of a string
+
+            Returns
+            -------
+            str
+                The lineage string in 'gg' format
+        """
+        prefix = [f.lower()[0] for f in self._fields]
+        return ';'.join(f"{p}__{v}" for p, v in zip(prefix, self))
