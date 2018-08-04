@@ -1,5 +1,5 @@
 """
-    Module containings tests for the lineage class
+    Module containing tests for the lineage class
 """
 
 import pytest
