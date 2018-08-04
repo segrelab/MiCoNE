@@ -59,7 +59,7 @@ class Lineage(BaseLineage):
         """
         for i, (s_lin, o_lin) in enumerate(zip(self, other)):
             if s_lin != o_lin:
-                return Lineage(*s_lin[:i])
+                return Lineage(*self[:i])
         return Lineage(*self._fields)
 
     @property
