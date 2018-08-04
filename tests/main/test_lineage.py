@@ -6,11 +6,6 @@ import pytest
 
 from mindpipe.main import Lineage
 
-# TODO:
-# test_sub
-# test_name
-# test_from_str
-# test_string
 
 @pytest.mark.usefixtures("lineage_data")
 class TestLineage:
