@@ -37,3 +37,9 @@ class TestLineage:
         assert lineage1 - lineage2 == lineage2 - lineage1
         common = {k: v for k, v in lineage_data["good"].items() if k in ["Kingdom", "Phylum", "Class"]}
         assert lineage1 - lineage2 == Lineage(**common)
+
+    def test_name(self, lineage_data):
+        lineage1 = Lineage(**lineage_data["good"])
+        assert lineage1.name == ('Species', lineage_data["good"]["Species"])
+        lineage2 = Lineage(**{**lineage_data["good"], **{"Genus": '', "Species": ''}})
+        assert lineage2.name == ('Family', lineage_data["good"]["Family"])
