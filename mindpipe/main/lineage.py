@@ -117,8 +117,7 @@ class Lineage(BaseLineage):
         taxa = [l.strip().rsplit('__', 1)[-1] for l in tax_list]
         return cls(*taxa)
 
-    @property
-    def string(self) -> str:
+    def __str__(self) -> str:
         """
             Get the lineage in the form of a string
 
