@@ -100,16 +100,16 @@ class Lineage(BaseLineage):
         """
         if style == "gg":
             if lineage_str.startswith('k'):
-                tax_list = lineage_str.split(';', 1)[-1].split(';')
-            elif lineage_str.startswith('p'):
                 tax_list = lineage_str.split(';')
+            elif lineage_str.startswith('p'):
+                tax_list = ['Bacteria'] + lineage_str.split(';')
             else:
                 raise ValueError("Incompatible lineage string")
         elif style == "silva":
             if lineage_str.startswith('D_0'):
-                tax_list = lineage_str.split(';', 1)[-1].split(';D_7')[0].split(';')
-            elif lineage_str.startswith('D_1'):
                 tax_list = lineage_str.split(';D_7')[0].split(';')
+            elif lineage_str.startswith('D_1'):
+                tax_list = ['Bacteria'] + lineage_str.split(';D_7')[0].split(';')
             else:
                 raise ValueError("Incompatible lineage string")
         else:
