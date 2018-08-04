@@ -27,3 +27,13 @@ class TestLineage:
         assert good_lineage.Species == lineage_data["good"]["Species"]
         with pytest.raises(ValueError):
             Lineage(**lineage_data["bad"])
+
+    def test_sub(self, lineage_data):
+        lineage1 = Lineage(**lineage_data["good"])
+        lineage2 = Lineage(**{**lineage_data["good"], **{"Order": "O2"}})
+        print(lineage1)
+        print(lineage2)
+        print(lineage1 - lineage2)
+        assert lineage1 - lineage2 == lineage2 - lineage1
+        common = {k: v for k, v in lineage_data["good"].items() if k in ["Kingdom", "Phylum", "Class"]}
+        assert lineage1 - lineage2 == Lineage(**common)
