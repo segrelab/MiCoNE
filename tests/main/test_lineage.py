@@ -43,3 +43,15 @@ class TestLineage:
         assert lineage1.name == ('Species', lineage_data["good"]["Species"])
         lineage2 = Lineage(**{**lineage_data["good"], **{"Genus": '', "Species": ''}})
         assert lineage2.name == ('Family', lineage_data["good"]["Family"])
+
+    def test_str(self, lineage_data):
+        lineage1 = Lineage(**lineage_data["good"])
+        assert str(lineage1) == "k__Bacteria;p__P1;c__C1;o__O1;f__F1;g__G1;s__S1"
+        lineage2 = Lineage(**{**lineage_data["good"], **{"Genus": '', "Species": ''}})
+        assert str(lineage2) == "k__Bacteria;p__P1;c__C1;o__O1;f__F1;g__;s__"
+
+    def test_from_str(self, lineage_data):
+        lineage1 = Lineage(**lineage_data["good"])
+        lineage2 = Lineage.from_str(str(lineage1))
+        assert lineage1 == lineage2
+        assert str(lineage1) == str(lineage2)
