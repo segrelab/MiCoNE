@@ -2,7 +2,6 @@
     Module that defines the schema for a valid OTU table
 """
 
-from itertools import chain
 import re
 
 from biom import Table
@@ -114,17 +113,22 @@ class ObsmetaType(BaseType):
             df = value.drop(self._extra_key, axis=1)
         else:
             df = value
-        data_items = chain(*df.values.tolist())
-        pattern = re.compile(r'^[a-zA-Z0-9-.]+$')
-        for item in data_items:
-            cond0 = not '' == item
-            cond1 = not item[0].isupper()
-            cond2 = not bool(pattern.match(item))
-            if (cond1 or cond2) and cond0:
-                raise ValidationError(
-                    "Invalid observation metadata. "
-                    f"Taxonomy names are not standard: {item} is not allowed"
-                )
+        for level, data in df.items():
+            filt_data = data[data != '']
+            if level == "Species":
+                query = filt_data[~filt_data.str.contains(r'^[a-z][a-zA-Z0-9-._]+$')].any()
+                if query:
+                    raise ValidationError(
+                        "Invalid observation metadata. "
+                        f"Taxonomy names are not standard: {query} is not allowed in {level}"
+                    )
+            else:
+                query = filt_data[~filt_data.str.contains(r'^[A-Z][a-zA-Z0-9-._]+$')].any()
+                if query:
+                    raise ValidationError(
+                        "Invalid observation metadata. "
+                        f"Taxonomy names are not standard: {query} is not allowed in {level}"
+                    )
 
 
 class BiomType(BaseType):
