@@ -56,3 +56,15 @@ def lineage_data():
         "bad": bad,
     }
     return data
+
+
+@pytest.fixture(scope="module")
+def tax_conversion_data():
+    """ Fixture that loads data for testing the tax convertors """
+    tsv_fol = TEST_DATADIR / "otus/tsv"
+    data = {
+        "qiime2": tsv_fol / "bad/fmt/tax_metadata.tsv",
+        "qiime1": "",
+        "defaul": "",
+    }
+    return data
