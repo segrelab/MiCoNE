@@ -42,7 +42,24 @@ class Lineage(BaseLineage):
         if empty and (len(tax_order) - empty[0] != len(empty)):
             raise ValueError("Lower levels should not be filled if higher levels are empty")
         else:
-            return super().__new__(cls, Kingdom, Phylum, Class, Order, Family, Genus, Species)
+            norm_taxa = [cls._normalize_tax(i) for i in tax_order]
+            return super().__new__(cls, *norm_taxa)
+
+    @staticmethod
+    def _normalize_tax(tax: str) -> str:
+        """
+            Normalize taxonomy name by removing unwanted characters
+
+            Parameters
+            ----------
+            tax : str
+
+            Returns
+            -------
+            str
+                Normalized taxonomy name
+        """
+        return tax.strip().strip('[]')
 
     def __sub__(self, other: "Lineage") -> "Lineage":
         """
