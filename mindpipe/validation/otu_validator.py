@@ -122,7 +122,7 @@ class OtuValidator:
             elif ext == 'csv':
                 data = pd.read_csv(data_file, sep=',', index_col=0, na_filter=False)
             else:
-                data = pd.read_csv(data_file, sep=None, engine="python", index_col=0)
+                data = pd.read_csv(data_file, sep=None, engine="python", index_col=0, na_filter=False)
         else:
             raise TypeError(
                 "The input metadata file type is not supported. "
