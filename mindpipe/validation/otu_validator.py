@@ -118,9 +118,9 @@ class OtuValidator:
         ext = data_file.suffix
         if ext in valid_exts:
             if ext == 'tsv':
-                data = pd.read_table(data_file, sep='\t', index_col=0)
+                data = pd.read_table(data_file, sep='\t', index_col=0, na_filter=False)
             elif ext == 'csv':
-                data = pd.read_csv(data_file, sep=',', index_col=0)
+                data = pd.read_csv(data_file, sep=',', index_col=0, na_filter=False)
             else:
                 data = pd.read_csv(data_file, sep=None, engine="python", index_col=0)
         else:
