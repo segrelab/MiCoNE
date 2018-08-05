@@ -21,6 +21,7 @@ def biom_data():
     }
     return data
 
+
 @pytest.fixture(scope="module")
 def tsv_data():
     """ Fixture that loads the tsv data """
@@ -33,6 +34,7 @@ def tsv_data():
             tax = data_fol / "tax_metadata.tsv"
             data[kind].append((otu, sample, tax))
     return data
+
 
 @pytest.fixture(scope="module")
 def lineage_data():
