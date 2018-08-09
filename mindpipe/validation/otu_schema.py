@@ -106,10 +106,15 @@ class ObsmetaType(BaseType):
     def validate_obsmeta_data(self, value):
         if self._extra_key in value.columns:
             confidence = value[self._extra_key]
-            cond0 = confidence.dtype == float
-            cond1 = 0 <= confidence.min() <= 1
-            cond2 = 0 <= confidence.max() <= 1
-            if not cond0 and not cond1 and not cond2:
+            if confidence.dtype == float:
+                cond1 = 0 <= confidence.min() <= 1
+                cond2 = 0 <= confidence.max() <= 1
+                if not cond1 and not cond2:
+                    raise ValidationError(
+                        "Invalid observation metadata. "
+                        f"{self._extra_key} must have a value between 0 and 1"
+                    )
+            else:
                 raise ValidationError(
                     "Invalid observation metadata. "
                     f"{self._extra_key} column must be of type float"
