@@ -5,9 +5,10 @@
 import pathlib
 from typing import Optional
 
+from biom import Table
 import pandas as pd
 
-from ..validation import OtuValidator
+from ..validation import OtuValidator, BiomType, SamplemetaType, ObsmetaType
 
 
 class Otu:
@@ -16,19 +17,12 @@ class Otu:
 
         Parameters
         ----------
-        otu_file : str
-            The path to the `OTU` counts file
-        meta_file : str, optional
-            The path to the sample metadata file
-        tax_file : str, optional
-            The path to the taxonomy file
-        dtype : {'biom', 'tsv'}
-            The type of OTU file that is input
-        ext : str, optional
-            The extension of the file if other than supported extensions
-            Supported extensions:
-            - 'tsv' dtype: 'tsv', 'txt', 'counts'
-            - 'biom' dtype: 'biom', 'hdf5'
+        otu_data : Table
+            `biom.Table` object containing OTU data
+        sample_metadata : pd.DataFrame, optional
+            `pd.DataFrame` containing metadata for the samples
+        obs_metadata : pd.DataFrame,  optional
+            `pd.DataFrame` containing metadata for the observations (OTUs)
 
         Attributes
         ----------
@@ -42,6 +36,21 @@ class Otu:
 
     def __init__(
             self,
+            otu_data: Table,
+            sample_metadata: Optional[pd.DataFrame] = None,
+            obs_metadata: Optional[pd.DataFrame] = None
+    ) -> None:
+        biom_type = BiomType()
+        biom_type.validate(otu_data)
+        self.otu_data = otu_data.copy()
+        if sample_metadata:
+            samplemeta_type = SamplemetaType()
+            samplemeta_type.validate(sample_metadata)
+            self.otu_data.add_metadata(sample_metadata.to_dict(orient="index"), axis="sample")
+        if obs_metadata:
+            obsmeta_type = ObsmetaType()
+            obsmeta_type.validate(obs_metadata)
+            self.otu_data.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
             otu_file: str,
             meta_file: Optional[str] = None,
             tax_file: Optional[str] = None,
