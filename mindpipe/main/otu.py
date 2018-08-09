@@ -51,20 +51,49 @@ class Otu:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
             self.otu_data.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
+
+    @classmethod
+    def load_data(
+            cls,
             otu_file: str,
             meta_file: Optional[str] = None,
             tax_file: Optional[str] = None,
             dtype: str = "biom",
             ext: Optional[str] = None,
-    ) -> None:
+    ) -> "Otu":
+        """
+            Load data from files into the `Otu` class instance
+
+            Parameters
+            ----------
+            otu_file : str
+                The path to the `OTU` counts file
+            meta_file : str, optional
+                The path to the sample metadata file
+            tax_file : str, optional
+                The path to the taxonomy file
+            dtype : {'biom', 'tsv'}
+                The type of OTU file that is input
+            ext : str, optional
+                The extension of the file if other than supported extensions
+                Supported extensions:
+                - 'tsv' dtype: 'tsv', 'txt', 'counts'
+                - 'biom' dtype: 'biom', 'hdf5'
+
+            Returns
+            -------
+            Otu
+                An instance of the `Otu` class
+        """
         otu_validator = OtuValidator(dtype=dtype, ext=ext)
         otu_path = pathlib.Path(otu_file)
         if otu_path.exists():
             meta_path = pathlib.Path(meta_file) if meta_file else meta_file
             tax_path = pathlib.Path(tax_file) if tax_file else tax_file
-            self.otu_data = otu_validator.load_validate(otu_path, meta_path, tax_path)
+            otu_data = otu_validator.load_validate(otu_path, meta_path, tax_path)
         else:
             raise FileNotFoundError("Missing input files")
+        return cls(otu_data)
 
     @property
     def sample_metadata(self) -> pd.DataFrame:
