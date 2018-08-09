@@ -2,8 +2,6 @@
     Module that defines the schema for a valid OTU table
 """
 
-import re
-
 from biom import Table
 import numpy as np
 from schematics.types import BaseType
