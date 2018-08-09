@@ -63,7 +63,7 @@ def tax_conversion_data():
     """ Fixture that loads data for testing the tax convertors """
     tsv_fol = TEST_DATADIR / "otus/tsv"
     data = {
-        "qiime2": tsv_fol / "bad/fmt/tax_metadata.tsv",
+        "qiime2": tsv_fol / "bad/bad_tax/tax_metadata.tsv",
         "qiime1": "",
         "defaul": "",
     }
