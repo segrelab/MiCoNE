@@ -38,8 +38,12 @@ class TestOtuValidator:
         for otu, sample, tax in tsv_data["good"]:
             assert tsv_validator.load_validate(otu, sample, tax)
 
-    def test_init_tsv_bad(self, biom_data):
-        assert False
-
-    def test_validation(self, biom_data):
-        assert False
+    def test_init_tsv_bad(self, tsv_data):
+        tsv_validator = OtuValidator(dtype="tsv")
+        for otu, sample, tax in tsv_data["bad"]:
+            if 'bad_otu' in str(otu):
+                with pytest.raises(TypeError):
+                    tsv_validator.load_validate(otu, sample, tax)
+            if 'bad_tax' in str(tax):
+                with pytest.raises(ValidationError):
+                    tsv_validator.load_validate(otu, sample, tax)
