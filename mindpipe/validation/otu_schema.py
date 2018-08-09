@@ -65,6 +65,10 @@ class SamplemetaType(BaseType):
         if len(value.index) != len(set(value.index)):
             raise ValidationError("Invalid index in sample metadata. All indices must be unqiue")
 
+    def validate_structure(self, value):
+        if value.index.str.startswith('#').any():
+            raise ValidationError("Invalid sample metadata structure. Possibly incorrect header")
+
 
 class ObsmetaType(BaseType):
     """ DataType that describes the expected structure and format for the observation metadata """
