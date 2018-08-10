@@ -32,7 +32,14 @@ class OtuValidator:
         validator : BiomType
             The schmatics validator instance
 
-        .. note:: We assume that the extension dictates the filetype
+        Raises
+        ------
+        ValidationError
+            If any of the files do not conform to the schema outlines in `otu_schema`
+
+        Notes
+        -----
+        We assume that the extension dictates the filetype
     """
     _otu_exts = {
         'tsv': ['.tsv', '.txt', '.counts'],
