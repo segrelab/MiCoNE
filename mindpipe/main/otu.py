@@ -124,7 +124,7 @@ class Otu:
         """
         return self.otu_data.metadata_to_dataframe('observation')
 
-    def normalize(self, axis: str = 'sample') -> "Otu":
+    def normalize(self, axis: str = 'sample', method: str = 'norm') -> "Otu":
         """
             Normalize the OTU table along the provided axis
 
@@ -133,11 +133,20 @@ class Otu:
             axis : {'sample', 'observation'}, optional
                 Axis along which to normalize the OTU table
                 Default is 'sample'
+            method: {'norm', 'rarefy', 'css'}
+                Normalization method to use
 
             Returns
             -------
             Otu
                 Otu instance which is normalized along the given axis
         """
-        norm_otu = self.otu_data.norm(axis=axis, inplace=False)
+        if method == 'norm':
+            norm_otu = self.otu_data.norm(axis=axis, inplace=False)
+        elif method == 'rarefy':
+            raise NotImplementedError("This method is not implemented yet")
+        elif method == 'css':
+            raise NotImplementedError("This method is not implemented yet")
+        else:
+            raise ValueError("Invalid method. Supported methods are {'norm', 'rarefy', 'css'}")
         return Otu(norm_otu)
