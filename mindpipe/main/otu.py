@@ -44,17 +44,20 @@ class Otu:
             sample_metadata: Optional[pd.DataFrame] = None,
             obs_metadata: Optional[pd.DataFrame] = None
     ) -> None:
-        biom_type = BiomType()
-        biom_type.validate(otu_data)
-        self.otu_data = otu_data.copy()
+        if not isinstance(otu_data, Table):
+            raise TypeError("Otu data must be of type `biom.Table`")
+        otu_data_copy = otu_data.copy()
         if sample_metadata:
             samplemeta_type = SamplemetaType()
             samplemeta_type.validate(sample_metadata)
-            self.otu_data.add_metadata(sample_metadata.to_dict(orient="index"), axis="sample")
+            otu_data_copy.add_metadata(sample_metadata.to_dict(orient="index"), axis="sample")
         if obs_metadata:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
-            self.otu_data.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
+            otu_data_copy.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
+        biom_type = BiomType()
+        biom_type.validate(otu_data_copy)
+        self.otu_data = otu_data_copy
 
     @classmethod
     def load_data(
