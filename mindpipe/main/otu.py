@@ -150,3 +150,22 @@ class Otu:
         else:
             raise ValueError("Invalid method. Supported methods are {'norm', 'rarefy', 'css'}")
         return Otu(norm_otu)
+
+    def rm_sparse_samples(self, count_thres: int = 500) -> "Otu":
+        """
+            Remove samples with read counts less than `count_thres`
+
+            Parameters
+            ----------
+            count_thres : int, optional
+                Counts threshold below which samples are rejected
+                Default value is 500
+
+            Returns
+            -------
+            Otu
+                Otu instance with low count samples removed
+        """
+        filt_fun = lambda val, *_: round(val.sum()) >= count_thres
+        new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)
+        return Otu(new_otu)
