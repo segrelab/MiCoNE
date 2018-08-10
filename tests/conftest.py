@@ -12,7 +12,7 @@ TEST_DATADIR = BASEDIR / "tests/data"
 
 
 @pytest.fixture(scope="module")
-def biom_data():
+def biom_files():
     """ Fixture that loads biom data """
     biom_fol = TEST_DATADIR / "otus/biom"
     data = {
@@ -23,7 +23,7 @@ def biom_data():
 
 
 @pytest.fixture(scope="module")
-def tsv_data():
+def tsv_files():
     """ Fixture that loads the tsv data """
     tsv_fol = TEST_DATADIR / "otus/tsv"
     data = {"good": [], "bad": []}

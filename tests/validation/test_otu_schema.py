@@ -9,18 +9,18 @@ from schematics.exceptions import ValidationError
 from mindpipe.validation import BiomType
 
 
-@pytest.mark.usefixtures("biom_data")
+@pytest.mark.usefixtures("biom_files")
 class TestBiomType:
     """ Tests for the BiomType class """
 
-    def test_init_biom_good(self, biom_data):
+    def test_init_biom_good(self, biom_files):
         biom_type = BiomType()
-        for good_biom in biom_data["good"]:
+        for good_biom in biom_files["good"]:
             assert biom_type.validate(load_table(good_biom))
 
-    def test_init_biom_bad(self, biom_data):
+    def test_init_biom_bad(self, biom_files):
         biom_type = BiomType()
-        for bad_biom in biom_data["bad"]:
+        for bad_biom in biom_files["bad"]:
             if 'empty' in str(bad_biom):
                 with pytest.raises(ValueError):
                     assert biom_type.validate(load_table(bad_biom))
