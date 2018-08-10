@@ -5,6 +5,7 @@
 import pathlib
 
 import pytest
+from biom import load_table
 
 
 BASEDIR = pathlib.Path.cwd()
@@ -68,3 +69,8 @@ def tax_conversion_data():
         "defaul": "",
     }
     return data
+
+@pytest.fixture(scope="module")
+def biom_data(biom_files):
+    """ Fixture that creates biom data """
+    return [load_table(biom) for biom in biom_files["good"]]
