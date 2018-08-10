@@ -123,3 +123,21 @@ class Otu:
             pd.DataFrame
         """
         return self.otu_data.metadata_to_dataframe('observation')
+
+    def normalize(self, axis: str = 'sample') -> "Otu":
+        """
+            Normalize the OTU table along the provided axis
+
+            Parameters
+            ----------
+            axis : {'sample', 'observation'}, optional
+                Axis along which to normalize the OTU table
+                Default is 'sample'
+
+            Returns
+            -------
+            Otu
+                Otu instance which is normalized along the given axis
+        """
+        norm_otu = self.otu_data.norm(axis=axis, inplace=False)
+        return Otu(norm_otu)
