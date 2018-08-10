@@ -32,6 +32,10 @@ class Otu:
             Metadata for the samples
         obs_metadata :  pd.DataFrame
             Lineage data for the observations (OTUs)
+
+        Notes
+        -----
+        All methods that manipulate the Otu object return new objects
     """
 
     def __init__(
