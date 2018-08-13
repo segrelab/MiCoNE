@@ -165,6 +165,10 @@ class Otu:
             -------
             Otu
                 Otu instance with low count samples removed
+
+            Note
+            ----
+            This method will not work if the Otu instance is normalized
         """
         filt_fun = lambda val, *_: round(val.sum()) >= count_thres
         new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)
