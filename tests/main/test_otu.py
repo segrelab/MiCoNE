@@ -2,12 +2,13 @@
     Module containing tests for the Otu class
 """
 
+import numpy as np
 import pytest
 
 from mindpipe.main import Otu
 
 
-@pytest.mark.usefixtures("biom_data", "biom_files", "tsv_files")
+@pytest.mark.usefixtures("biom_data", "biom_files", "tsv_files", "stool_biom")
 class TestOtu:
     """ Tests for the Otu class """
 
