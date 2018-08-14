@@ -146,10 +146,17 @@ class Lineage(BaseLineage):
         prefix = [f.lower()[0] for f in self._fields]
         return ';'.join(f"{p}__{v}" for p, v in zip(prefix, self))
 
-    @property
-    def to_dict(self) -> Dict[str, str]:
+    def to_dict(self, level: str) -> Dict[str, str]:
         """
             Get the lineage in the form of a dictionary
+
+            Parameters
+            ----------
+            level : str
+                The lowest Lineage field to be used to populate the dictionary
         """
-        fields = self._fields
+        if level not in self._fields:
+            raise ValueError("{level} not a valid field for Lineage")
+        ind = self._fields.index(level)
+        fields = self._fields[:ind + 1]
         return {field: tax for field, tax in zip(fields, self)}

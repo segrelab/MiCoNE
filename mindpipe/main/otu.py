@@ -6,6 +6,7 @@ import pathlib
 from typing import Optional
 
 from biom import Table
+import numpy as np
 import pandas as pd
 
 from ..validation import OtuValidator, BiomType, SamplemetaType, ObsmetaType
@@ -56,9 +57,13 @@ class Otu:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
             otu_data_copy.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
-        self._biom_type = BiomType()
-        self._biom_type.validate(otu_data_copy)
+        biom_type = BiomType()
+        biom_type.validate(otu_data_copy)
         self.otu_data = otu_data_copy
+
+    def __repr__(self) -> str:
+        n_obs, n_samples = self.otu_data.shape
+        return f"<Otu {n_obs}obs x {n_samples}samples>"
 
     @classmethod
     def load_data(
@@ -165,6 +170,24 @@ class Otu:
             raise ValueError("Invalid method. Supported methods are {'norm', 'rarefy', 'css'}")
         return Otu(norm_otu)
 
+    def is_norm(self, axis: str = 'sample') -> bool:
+        """
+            Returns true if the Otu instance has been normalized
+        """
+        df = self.otu_data.to_dataframe()
+        if axis == 'sample':
+            if np.isclose(df.sum(axis=0), 1.0).all():
+                return True
+            else:
+                return False
+        elif axis == 'observation':
+            if np.isclose(df.sum(axis=1), 1.0).all():
+                return True
+            else:
+                return False
+        else:
+            raise ValueError("Axis must of either {'sample' or 'observation'}")
+
     def rm_sparse_samples(self, count_thres: int = 500) -> "Otu":
         """
             Remove samples with read counts less than `count_thres`
@@ -180,10 +203,13 @@ class Otu:
             Otu
                 Otu instance with low count samples removed
 
-            Note
-            ----
-            This method will not work if the Otu instance is normalized
+            Raises
+            ------
+            ValueError
+                If Otu instance is normalized
         """
+        if self.is_norm():
+            raise ValueError("Otu instance is normalized and hence will not work with this method")
         filt_fun = lambda val, *_: round(val.sum()) >= count_thres
         new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)
         return Otu(new_otu)
@@ -216,5 +242,11 @@ class Otu:
         tax_level = self.tax_level
         new_row.add_metadata({'otu_merged': Lineage("Unclassified").to_dict(tax_level)}, axis='observation')
         final_otu = new_otu.concat([new_row], axis="observation")
-        self._biom_type.validate(final_otu)
         return Otu(final_otu)
+
+
+    ## TODO: Methods
+    # split_on_label
+    # group_on_label
+    # save (write to file)
+    # try to write some magic methods
