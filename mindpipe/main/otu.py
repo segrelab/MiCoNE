@@ -130,6 +130,19 @@ class Otu:
         """
         return self.otu_data.metadata_to_dataframe('observation')
 
+    @property
+    def tax_level(self) -> str:
+        """
+            Returns the taxonomy level of the Otu instance
+
+            Returns
+            -------
+            str
+                The lowest taxonomy defined in the Otu instance
+        """
+        n_tax_levels = len(self.obs_metadata.columns)
+        return Lineage._fields[n_tax_levels - 1]
+
     def normalize(self, axis: str = 'sample', method: str = 'norm') -> "Otu":
         """
             Normalize the OTU table along the provided axis
