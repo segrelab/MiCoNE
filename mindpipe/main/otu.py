@@ -239,6 +239,7 @@ class Otu:
         ind_below_thres = set(self.otu_data.ids("observation")) - set(ind_above_thres)
         otu_sparse_obs = self.otu_data.filter(ind_below_thres, axis="observation", inplace=False)
         new_row = Table(otu_sparse_obs.sum(axis="sample"), ['otu_merged'], self.otu_data.ids(axis="sample"))
-        new_row.add_metadata({'otu_merged': Lineage("Unclassified").to_dict})
+        tax_level = self.tax_level
+        new_row.add_metadata({'otu_merged': Lineage("Unclassified").to_dict(tax_level)}, axis='observation')
         final_otu = new_otu.concat([new_row], axis="observation")
         return Otu(final_otu)
