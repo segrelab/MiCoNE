@@ -160,3 +160,23 @@ class Lineage(BaseLineage):
         ind = self._fields.index(level)
         fields = self._fields[:ind + 1]
         return {field: tax for field, tax in zip(fields, self)}
+
+    def get_superset(self, level: str) -> "Lineage":
+        """
+            Return a superset of the current lineage for the requested level
+
+            Parameters
+            ----------
+            level : str
+                The lowest Lineage field to be used to calculate the superset
+
+            Returns
+            -------
+            Lineage
+                Lineage instance that is a superset of current instance
+        """
+        if level not in self._fields:
+            raise ValueError("{level} not a valid field for Lineage")
+        ind = self._fields.index(level)
+        tax = self[:ind + 1]
+        return Lineage(*tax)
