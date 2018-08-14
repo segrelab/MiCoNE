@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Union
 import pandas as pd
 from biom import load_table, Table
 
-from .otu_schema import BiomType
+from .otu_schema import BiomType, SamplemetaType, ObsmetaType
 
 
 class OtuValidator:
@@ -162,7 +162,13 @@ class OtuValidator:
         """
         otudata = load_table(otu_file)
         metadata = self._extract_data(meta_file, self._meta_exts)
+        metadata.index = metadata.index.astype(str)
+        samplemeta_type = SamplemetaType()
+        samplemeta_type.validate(metadata)
         taxdata = self._extract_data(tax_file, self._tax_exts)
+        taxdata.index = taxdata.index.astype(str)
+        obsmeta_type = ObsmetaType()
+        obsmeta_type.validate(taxdata)
         otudata.add_metadata(metadata.to_dict(orient='index'), axis='sample')
         otudata.add_metadata(taxdata.to_dict(orient='index'), axis='observation')
         self.validator.validate(otudata)
