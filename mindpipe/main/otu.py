@@ -143,6 +143,41 @@ class Otu:
         n_tax_levels = len(self.obs_metadata.columns)
         return Lineage._fields[n_tax_levels - 1]
 
+    def filter(
+            self,
+            ids: Iterable[str] = [],
+            func: Optional[Callable[[np.ndarray, str, dict], bool]] = None,
+            axis: str = "observation"
+    ) -> "Otu":
+        """
+            Filter Otu instance based on ids or func
+
+            Parameters
+            ----------
+            ids : Iterable[str], optional
+                An iterable of ids to keep.
+                If ids are not supplied then func must be supplied
+            func : Callable[[np.ndarray, str, dict], bool], optional
+                A function that takes in (values, id_, md) and returns a bool
+                If func is not supplied then ids must be supplied
+                If both ids and func are supplied then ids are used
+            axis : {'sample', 'observation'}, optional
+                The axis along which to filter the Otu instance
+                Default value is 'observation'
+
+            Returns
+            -------
+            Otu
+                Filtered Otu instance
+        """
+        if ids:
+            otu_filtered = self.otu_data.filter(ids, inplace=False, axis=axis)
+        elif func:
+            otu_filtered = self.otu_data.filter(func, inplace=False, axis=axis)
+        else:
+            raise TypeError("Either ids or func must be supplied")
+        return Otu(otu_filtered)
+
     def normalize(self, axis: str = 'sample', method: str = 'norm') -> "Otu":
         """
             Normalize the OTU table along the provided axis
