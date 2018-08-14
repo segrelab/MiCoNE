@@ -1,5 +1,4 @@
 #SampleID	sequencing-run	sample-type	treatment-group	subject-id	week	GSRS	GSRSdiff	administration-route	age	gender	weight	height	BMI	Description
-#q2:types	categorical	categorical	categorical	categorical	numeric	numeric	numeric	categorical	numeric	categorical	numeric	numeric	numeric	categorical
 595e93ed.e4b3.42b5.91b1.1ad4f31e7134	run-1	stool	treatment	B101	0	2.9	0	Oral	12.5	m	63	55	14.8	595e93ed.e4b3.42b5.91b1.1ad4f31e7134
 bd64992d.87cc.464f.9e1b.9c0156ed65d8	run-1	stool	treatment	B101	3	1.8	-1.1	Oral	12.5	m	63	55	14.8	bd64992d.87cc.464f.9e1b.9c0156ed65d8
 e7a2370c.f80c.4703.b2ee.10c65967e05f	run-1	stool	treatment	B101	10	1.3	-1.6	Oral	12.5	m	63	55	14.8	e7a2370c.f80c.4703.b2ee.10c65967e05f
