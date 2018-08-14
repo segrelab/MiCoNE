@@ -57,8 +57,8 @@ class Otu:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
             otu_data_copy.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
-        self._biom_type = BiomType()
-        self._biom_type.validate(otu_data_copy)
+        biom_type = BiomType()
+        biom_type.validate(otu_data_copy)
         self.otu_data = otu_data_copy
 
     def __repr__(self) -> str:
@@ -228,5 +228,4 @@ class Otu:
         new_row = Table(otu_sparse_obs.sum(axis="sample"), ['otu_merged'], self.otu_data.ids(axis="sample"))
         new_row.add_metadata({'otu_merged': Lineage("Unclassified").to_dict})
         final_otu = new_otu.concat([new_row], axis="observation")
-        self._biom_type.validate(final_otu)
         return Otu(final_otu)
