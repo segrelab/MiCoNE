@@ -85,3 +85,18 @@ class TestOtu:
         assert otu_filtered.otu_data.shape[1] == otu_inst.otu_data.shape[1]
         assert otu_filtered.otu_data.shape[0] < otu_inst.otu_data.shape[0]
         assert set(ind) == set(otu_filtered.otu_data.ids("observation"))
+
+    def test_write(self, stool_biom, tmpdir):
+        otu_inst = Otu(stool_biom)
+        fol = tmpdir.mkdir("results")
+        otu_inst.write("biom_test", str(fol))
+        otu_load1 = Otu.load_data(fol.join("biom_test.biom"))
+        assert otu_inst.otu_data.shape == otu_load1.otu_data.shape
+        otu_inst.write("tsv_test", str(fol), "tsv")
+        otu_load2 = Otu.load_data(
+            fol.join("tsv_test_otu.tsv"),
+            fol.join("tsv_test_sample_metadata.tsv"),
+            fol.join("tsv_test_obs_metadata.csv"),
+            dtype="tsv"
+        )
+        assert otu_inst.otu_data.shape == otu_load2.otu_data.shape
