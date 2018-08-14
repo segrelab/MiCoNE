@@ -74,3 +74,14 @@ class TestOtu:
         assert set(partition_dict) == set(md.Phylum)
         assert len(set(v.otu_data.shape[1] for v in partition_dict.values())) == 1
         assert sum(v.otu_data.shape[0] for v in partition_dict.values()) == otu_inst.otu_data.shape[0]
+
+    def test_filter(self, stool_biom):
+        otu_inst = Otu(stool_biom)
+        query = "Firmicutes"
+        func = lambda values, id_, md: Lineage(**md).Phylum == query
+        md = otu_inst.obs_metadata
+        ind = md.index[md.Phylum == query]
+        otu_filtered = otu_inst.filter(func=func)
+        assert otu_filtered.otu_data.shape[1] == otu_inst.otu_data.shape[1]
+        assert otu_filtered.otu_data.shape[0] < otu_inst.otu_data.shape[0]
+        assert set(ind) == set(otu_filtered.otu_data.ids("observation"))
