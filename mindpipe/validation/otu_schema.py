@@ -65,6 +65,8 @@ class SamplemetaType(BaseType):
             raise ValidationError("Invalid index in sample metadata. All indices must be unqiue")
 
     def validate_structure(self, value):
+        if any(not isinstance(v, str) for v in value.index):
+            raise ValidationError("Invalid index. All indices must be strings")
         if value.index.str.startswith('#').any():
             raise ValidationError("Invalid sample metadata structure. Possibly incorrect header")
 
@@ -81,6 +83,10 @@ class ObsmetaType(BaseType):
         'Species'
     ]
     _extra_key = 'Confidence'
+
+    def validate_index(self, value):
+        if any(not isinstance(v, str) for v in value.index):
+            raise ValidationError("Invalid index. All indices must be strings")
 
     def validate_obsmeta_headers(self, value):
         for col in value.columns:
