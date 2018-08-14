@@ -61,6 +61,10 @@ class Otu:
         self._biom_type.validate(otu_data_copy)
         self.otu_data = otu_data_copy
 
+    def __repr__(self) -> str:
+        n_obs, n_samples = self.otu_data.shape
+        return f"<Otu {n_obs}obs x {n_samples}samples>"
+
     @classmethod
     def load_data(
             cls,
