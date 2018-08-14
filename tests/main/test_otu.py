@@ -53,3 +53,6 @@ class TestOtu:
         assert otu_inst.otu_data.shape[0] == rm_samples_otu.otu_data.shape[0]
         assert otu_inst.otu_data.shape[1] > rm_samples_otu.otu_data.shape[1]
         assert otu_inst.otu_data.shape[1] - rm_samples_otu.otu_data.shape[1] == 1
+        norm_otu = otu_inst.normalize()
+        with pytest.raises(ValueError):
+            norm_otu.rm_sparse_samples()
