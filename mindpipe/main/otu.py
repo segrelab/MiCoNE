@@ -9,6 +9,7 @@ from biom import Table
 import pandas as pd
 
 from ..validation import OtuValidator, BiomType, SamplemetaType, ObsmetaType
+from .lineage import Lineage
 
 
 class Otu:
@@ -55,8 +56,8 @@ class Otu:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
             otu_data_copy.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
-        biom_type = BiomType()
-        biom_type.validate(otu_data_copy)
+        self._biom_type = BiomType()
+        self._biom_type.validate(otu_data_copy)
         self.otu_data = otu_data_copy
 
     @classmethod
@@ -173,3 +174,33 @@ class Otu:
         filt_fun = lambda val, *_: round(val.sum()) >= count_thres
         new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)
         return Otu(new_otu)
+
+    def rm_sparse_obs(self, prevalence_thres: float = 0.05, abundance_thres: float = 0.01) -> "Otu":
+        """
+            Remove observations with prevalence < `prevalence_thres` and abundance < `abundance_thres`
+
+            Parameters
+            ----------
+            prevalence_thres : float
+                Minimum fraction of samples the observation must be present in in order to be accepted
+            abundance_thres : float
+                Minimum observation count fraction in a sample needed in order to be accepted
+
+            Returns
+            -------
+            Otu
+                Otu instance with bad observations removed
+        """
+        filt_fun = lambda val, *_: (val.astype(int).astype(bool).mean()) >= prevalence_thres
+        otu_dense_obs = self.otu_data.filter(filt_fun, axis="observation", inplace=False)
+        otu_df = otu_dense_obs.to_dataframe()
+        otu_rel_abund = (otu_df / otu_df.sum(axis=0)).to_dense()
+        ind_above_thres = otu_rel_abund.index[(otu_rel_abund > abundance_thres).any(axis=1)]
+        new_otu = self.otu_data.filter(ind_above_thres, axis="observation", inplace=False)
+        ind_below_thres = set(self.otu_data.ids("observation")) - set(ind_above_thres)
+        otu_sparse_obs = self.otu_data.filter(ind_below_thres, axis="observation", inplace=False)
+        new_row = Table(otu_sparse_obs.sum(axis="sample"), ['otu_merged'], self.otu_data.ids(axis="sample"))
+        new_row.add_metadata({'otu_merged': Lineage("Unclassified").to_dict})
+        final_otu = new_otu.concat([new_row], axis="observation")
+        self._biom_type.validate(final_otu)
+        return Otu(final_otu)
