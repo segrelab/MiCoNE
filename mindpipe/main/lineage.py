@@ -4,7 +4,7 @@
 
 
 from collections import namedtuple
-from typing import Tuple
+from typing import Dict, Tuple
 
 
 BaseLineage = namedtuple(
@@ -145,3 +145,11 @@ class Lineage(BaseLineage):
         """
         prefix = [f.lower()[0] for f in self._fields]
         return ';'.join(f"{p}__{v}" for p, v in zip(prefix, self))
+
+    @property
+    def to_dict(self) -> Dict[str, str]:
+        """
+            Get the lineage in the form of a dictionary
+        """
+        fields = self._fields
+        return {field: tax for field, tax in zip(fields, self)}
