@@ -74,10 +74,3 @@ def tax_conversion_data():
 def biom_data(biom_files):
     """ Fixture that creates biom data """
     return [load_table(biom) for biom in biom_files["good"]]
-
-
-@pytest.fixture(scope="module")
-def stool_biom(biom_files):
-    """ Fixture that loads the stool biom data """
-    biom_file = TEST_DATADIR / "otus/biom/good/stool.biom"
-    return load_table(biom_file)

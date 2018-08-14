@@ -6,7 +6,6 @@ import pathlib
 from typing import Optional
 
 from biom import Table
-import numpy as np
 import pandas as pd
 
 from ..validation import OtuValidator, BiomType, SamplemetaType, ObsmetaType
@@ -57,13 +56,9 @@ class Otu:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
             otu_data_copy.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
-        biom_type = BiomType()
-        biom_type.validate(otu_data_copy)
+        self._biom_type = BiomType()
+        self._biom_type.validate(otu_data_copy)
         self.otu_data = otu_data_copy
-
-    def __repr__(self) -> str:
-        n_obs, n_samples = self.otu_data.shape
-        return f"<Otu {n_obs}obs x {n_samples}samples>"
 
     @classmethod
     def load_data(
@@ -130,6 +125,19 @@ class Otu:
         """
         return self.otu_data.metadata_to_dataframe('observation')
 
+    @property
+    def tax_level(self) -> str:
+        """
+            Returns the taxonomy level of the Otu instance
+
+            Returns
+            -------
+            str
+                The lowest taxonomy defined in the Otu instance
+        """
+        n_tax_levels = len(self.obs_metadata.columns)
+        return Lineage._fields[n_tax_levels - 1]
+
     def normalize(self, axis: str = 'sample', method: str = 'norm') -> "Otu":
         """
             Normalize the OTU table along the provided axis
@@ -157,24 +165,6 @@ class Otu:
             raise ValueError("Invalid method. Supported methods are {'norm', 'rarefy', 'css'}")
         return Otu(norm_otu)
 
-    def is_norm(self, axis: str = 'sample') -> bool:
-        """
-            Returns true if the Otu instance has been normalized
-        """
-        df = self.otu_data.to_dataframe()
-        if axis == 'sample':
-            if np.isclose(df.sum(axis=0), 1.0).all():
-                return True
-            else:
-                return False
-        elif axis == 'observation':
-            if np.isclose(df.sum(axis=1), 1.0).all():
-                return True
-            else:
-                return False
-        else:
-            raise ValueError("Axis must of either {'sample' or 'observation'}")
-
     def rm_sparse_samples(self, count_thres: int = 500) -> "Otu":
         """
             Remove samples with read counts less than `count_thres`
@@ -190,13 +180,10 @@ class Otu:
             Otu
                 Otu instance with low count samples removed
 
-            Raises
-            ------
-            ValueError
-                If Otu instance is normalized
+            Note
+            ----
+            This method will not work if the Otu instance is normalized
         """
-        if self.is_norm():
-            raise ValueError("Otu instance is normalized and hence will not work with this method")
         filt_fun = lambda val, *_: round(val.sum()) >= count_thres
         new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)
         return Otu(new_otu)
@@ -228,4 +215,5 @@ class Otu:
         new_row = Table(otu_sparse_obs.sum(axis="sample"), ['otu_merged'], self.otu_data.ids(axis="sample"))
         new_row.add_metadata({'otu_merged': Lineage("Unclassified").to_dict})
         final_otu = new_otu.concat([new_row], axis="observation")
+        self._biom_type.validate(final_otu)
         return Otu(final_otu)
