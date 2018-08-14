@@ -3,7 +3,7 @@
 """
 
 import pathlib
-from typing import Optional
+from typing import Callable, Hashable, Iterable, Optional, Tuple
 
 from biom import Table
 import numpy as np
@@ -243,3 +243,28 @@ class Otu:
         )
         final_otu = new_otu.concat([new_row], axis="observation")
         return Otu(final_otu)
+
+    def partition(self, axis: str, func: Callable[[str, dict], Hashable]) -> Iterable[Tuple[str, "Otu"]]:
+        """
+            Partition the Otu instance based on the func and axis
+
+            Parameters
+            ----------
+            axis : str
+                The axis on which to partition
+            func : Callable[[str, dict], Hashable]
+                The function that takes in (id, metadata) and returns a hashable
+
+            Returns
+            -------
+            Iterable[Tuple[str, Otu]]
+                An iterable of tuples - ('label', Otu)
+
+            Notes
+            -----
+            1. To group by lineage "level" use:
+                func = lambda id_, md: Lineage(**md).get_superset(level)
+        """
+        partitions = self.otu_data.partition(func)
+        for label, table in partitions:
+            yield label, Otu(table)
