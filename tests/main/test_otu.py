@@ -61,7 +61,6 @@ class TestOtu:
     def test_rm_sparse_obs(self, stool_biom):
         otu_inst = Otu(stool_biom)
         rm_obs_otu = otu_inst.rm_sparse_obs(prevalence_thres=0.4)
-        print(rm_obs_otu.otu_data.data("otu_merged", axis="observation"))
         assert otu_inst.otu_data.shape[1] == rm_obs_otu.otu_data.shape[1]
         assert otu_inst.otu_data.shape[0] >= rm_obs_otu.otu_data.shape[0]
         assert otu_inst.otu_data.shape[0] - rm_obs_otu.otu_data.shape[0] == 10
