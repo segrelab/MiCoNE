@@ -35,8 +35,10 @@ class TestOtu:
         sample_norm = otu_inst.normalize()
         assert (otu_inst.otu_data.to_dataframe().sum(axis=0) > 1).all()
         assert np.isclose(sample_norm.otu_data.to_dataframe().sum(axis=0), 1.0).all()
+        assert sample_norm.is_norm(axis='sample')
         obs_norm = otu_inst.normalize(axis='observation')
         assert (otu_inst.otu_data.to_dataframe().sum(axis=1) > 1).all()
+        assert obs_norm.is_norm(axis='observation')
         assert np.isclose(obs_norm.otu_data.to_dataframe().sum(axis=1), 1.0).all()
         with pytest.raises(ValueError):
             otu_inst.normalize(method='random_method')
