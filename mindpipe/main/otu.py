@@ -309,6 +309,22 @@ class Otu:
         for label, table in partitions:
             yield label, Otu(table)
 
+    def collapse(self, axis: str, func: Callable[[str, dict], Hashable]) -> "Otu":
+        """
+            Collapse Otu instance based on 'func' and 'axis'
+
+            Parameters
+            ----------
+            axis : str
+            func : Callable[[str, dict], Hashable]
+
+            Returns
+            -------
+            Otu
+                Collapsed Otu instance
+        """
+        pass
+
     def write(self, base_name: str, fol_path: str = '', file_type: str = "biom") -> None:
         """
             Write Otu instance object to required file_type
@@ -329,7 +345,7 @@ class Otu:
             folder.mkdir()
         if file_type == "biom":
             fname = base_name + ".biom"
-            fpath = folder / fname
+            fpath = str(folder / fname)
             with biom_open(fpath, 'w') as fid:
                 self.otu_data.to_hdf5(fid, "Constructed using mindpipe")
         elif file_type == "tsv":
@@ -340,16 +356,10 @@ class Otu:
                 data = self.otu_data.to_tsv().split('\n', 1)[-1]
                 fid.write(data)
             sample_metadata_name = base_name + "_sample_metadata.tsv"
-            sample_metadata_path = folder/ sample_metadata_name
+            sample_metadata_path = folder / sample_metadata_name
             self.sample_metadata.to_csv(sample_metadata_path, sep='\t', index=True)
             obs_metadata_name = base_name + "_obs_metadata.csv"
             obs_metadata_path = folder / obs_metadata_name
             self.obs_metadata.to_csv(obs_metadata_path, index=True)
         else:
             raise ValueError("Supported file types are 'tsv' and 'biom'")
-
-    ## TODO: Methods
-    # split_on_label (use partition function)
-    # group_on_label
-    # save (write to file)
-    # try to write some magic methods
