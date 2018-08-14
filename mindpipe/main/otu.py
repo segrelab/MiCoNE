@@ -195,7 +195,7 @@ class Otu:
             ValueError
                 If Otu instance is normalized
         """
-        if np.isclose(self.otu_data.to_dataframe().sum(axis=1), 1.0).all():
+        if self.is_norm():
             raise ValueError("Otu instance is normalized and hence will not work with this method")
         filt_fun = lambda val, *_: round(val.sum()) >= count_thres
         new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)

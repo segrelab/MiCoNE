@@ -46,3 +46,10 @@ class TestOtu:
             otu_inst.normalize(method='css')
         with pytest.raises(NotImplementedError):
             otu_inst.normalize(method='rarefy')
+
+    def test_rm_sparse_samples(self, stool_biom):
+        otu_inst = Otu(stool_biom)
+        rm_samples_otu = otu_inst.rm_sparse_samples()
+        assert otu_inst.otu_data.shape[0] == rm_samples_otu.otu_data.shape[0]
+        assert otu_inst.otu_data.shape[1] > rm_samples_otu.otu_data.shape[1]
+        assert otu_inst.otu_data.shape[1] - rm_samples_otu.otu_data.shape[1] == 1
