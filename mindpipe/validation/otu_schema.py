@@ -43,12 +43,13 @@ class DataType(BaseType):
             raise ValidationError("Invalid data. Abundances must be float64")
 
     def validate_data_range(self, value):
-        if value.min('whole') < 0:
+        df = value.to_dataframe()
+        if df.values.min() < 0:
             raise ValidationError("Invalid data. Abundances cannot be negative")
         if self.norm:
-            if value.max('whole') > 1 or value.min('whole') < 0:
+            if df.values.max() > 1 or df.values.min() < 0:
                 raise ValidationError("Invalid data. Abundances are not normalized")
-            if any(not np.isclose(v, 1.0) for v in value.sum('sample')):
+            if any(not np.isclose(v, 1.0) for v in df.values.sum(axis=0)):
                 raise ValidationError("Invalid data. Abundances are not normalized")
 
 
