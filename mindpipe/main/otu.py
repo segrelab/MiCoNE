@@ -265,6 +265,10 @@ class Otu:
             1. To group by lineage "level" use:
                 func = lambda id_, md: Lineage(**md).get_superset(level)
         """
+        if axis == "observation" and self.is_norm(axis="sample"):
+            raise ValueError("Cannot partition sample normalized Otu instance on observation")
+        if axis == "sample" and self.is_norm(axis="observation"):
+            raise ValueError("Cannot partition observation normalized Otu instance on sample")
         partitions = self.otu_data.partition(func, axis=axis)
         for label, table in partitions:
             yield label, Otu(table)
