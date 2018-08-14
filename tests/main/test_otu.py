@@ -5,7 +5,7 @@
 import numpy as np
 import pytest
 
-from mindpipe.main import Otu
+from mindpipe.main import Otu, Lineage
 
 
 @pytest.mark.usefixtures("biom_data", "biom_files", "tsv_files", "stool_biom")
@@ -64,3 +64,13 @@ class TestOtu:
         assert otu_inst.otu_data.shape[1] == rm_obs_otu.otu_data.shape[1]
         assert otu_inst.otu_data.shape[0] >= rm_obs_otu.otu_data.shape[0]
         assert otu_inst.otu_data.shape[0] - rm_obs_otu.otu_data.shape[0] == 10
+
+    def test_partition(self, stool_biom):
+        otu_inst = Otu(stool_biom)
+        func = lambda id_, md: Lineage(**md).get_superset('Phylum')
+        md = otu_inst.obs_metadata
+        gen = otu_inst.partition(axis="observation", func=func)
+        partition_dict = {k.name[1]: v for k, v in gen}
+        assert set(partition_dict) == set(md.Phylum)
+        assert len(set(v.otu_data.shape[1] for v in partition_dict.values())) == 1
+        assert sum(v.otu_data.shape[0] for v in partition_dict.values()) == otu_inst.otu_data.shape[0]
