@@ -157,6 +157,24 @@ class Otu:
             raise ValueError("Invalid method. Supported methods are {'norm', 'rarefy', 'css'}")
         return Otu(norm_otu)
 
+    def is_norm(self, axis: str = 'sample') -> bool:
+        """
+            Returns true if the Otu instance has been normalized
+        """
+        df = self.otu_data.to_dataframe()
+        if axis == 'sample':
+            if np.isclose(df.sum(axis=0), 1.0).all():
+                return True
+            else:
+                return False
+        elif axis == 'observation':
+            if np.isclose(df.sum(axis=1), 1.0).all():
+                return True
+            else:
+                return False
+        else:
+            raise ValueError("Axis must of either {'sample' or 'observation'}")
+
     def rm_sparse_samples(self, count_thres: int = 500) -> "Otu":
         """
             Remove samples with read counts less than `count_thres`
