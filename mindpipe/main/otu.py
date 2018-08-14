@@ -6,6 +6,7 @@ import pathlib
 from typing import Optional
 
 from biom import Table
+import numpy as np
 import pandas as pd
 
 from ..validation import OtuValidator, BiomType, SamplemetaType, ObsmetaType
@@ -167,10 +168,13 @@ class Otu:
             Otu
                 Otu instance with low count samples removed
 
-            Note
-            ----
-            This method will not work if the Otu instance is normalized
+            Raises
+            ------
+            ValueError
+                If Otu instance is normalized
         """
+        if np.isclose(self.otu_data.to_dataframe().sum(axis=1), 1.0).all():
+            raise ValueError("Otu instance is normalized and hence will not work with this method")
         filt_fun = lambda val, *_: round(val.sum()) >= count_thres
         new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)
         return Otu(new_otu)
