@@ -6,6 +6,7 @@ import pathlib
 from typing import Callable, Hashable, Iterable, Optional, Tuple
 
 from biom import Table
+from biom.util import biom_open
 import numpy as np
 import pandas as pd
 
@@ -308,6 +309,44 @@ class Otu:
         for label, table in partitions:
             yield label, Otu(table)
 
+    def write(self, base_name: str, fol_path: str = '', file_type: str = "biom") -> None:
+        """
+            Write Otu instance object to required file_type
+
+            Parameters
+            ----------
+            base_name : str
+                The base name without extension to be used for the files
+            fol_path : str, optional
+                The folder where the files are to be written
+                Default is current directory
+            file_type : {'tsv', 'biom'}, optional
+                The type of file data is to be written to
+                Default is 'biom'
+        """
+        folder = pathlib.Path(fol_path)
+        if not folder.exists():
+            folder.mkdir()
+        if file_type == "biom":
+            fname = base_name + ".biom"
+            fpath = folder / fname
+            with biom_open(fpath, 'w') as fid:
+                self.otu_data.to_hdf5(fid, "Constructed using mindpipe")
+        elif file_type == "tsv":
+            otu_name = base_name + "_otu.tsv"
+            otu_path = folder / otu_name
+            with open(otu_path, 'w') as fid:
+                # NOTE: delete header comment from output
+                data = self.otu_data.to_tsv().split('\n', 1)[-1]
+                fid.write(data)
+            sample_metadata_name = base_name + "_sample_metadata.tsv"
+            sample_metadata_path = folder/ sample_metadata_name
+            self.sample_metadata.to_csv(sample_metadata_path, sep='\t', index=True)
+            obs_metadata_name = base_name + "_obs_metadata.csv"
+            obs_metadata_path = folder / obs_metadata_name
+            self.obs_metadata.to_csv(obs_metadata_path, index=True)
+        else:
+            raise ValueError("Supported file types are 'tsv' and 'biom'")
 
     ## TODO: Methods
     # split_on_label (use partition function)
