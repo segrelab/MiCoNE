@@ -268,3 +268,10 @@ class Otu:
         partitions = self.otu_data.partition(func, axis=axis)
         for label, table in partitions:
             yield label, Otu(table)
+
+
+    ## TODO: Methods
+    # split_on_label (use partition function)
+    # group_on_label
+    # save (write to file)
+    # try to write some magic methods
