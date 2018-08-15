@@ -227,7 +227,7 @@ class InteractionmatrixType(BaseType):
                 raise ValidationError("Interaction matrix is not symmetric")
 
     def validate_data(self, value):
-        if not value.dtype == float and not value.dtype == int:
+        if not value.values.dtype == float and not value.values.dtype == int:
             raise ValidationError("Invalid data. Interactions must be int or float")
 
 
