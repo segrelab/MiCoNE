@@ -240,3 +240,11 @@ class CorrelationmatrixType(InteractionmatrixType):
     def validate_data_range(self, value):
         if value.values.max() > 1 or value.values.min() < -1:
             raise ValidationError("Correlation matrix must be bound by -1 and 1")
+
+
+class PvaluematrixType(InteractionmatrixType):
+    """ DataType that describes the expected structure of a pvalue matrix """
+
+    def validate_data_range(self, value):
+        if value.values.max() > 1 or value.values.min() < 0:
+            raise ValidationError("Pvalue matrix must be bound by 0 and 1")
