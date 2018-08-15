@@ -4,6 +4,7 @@
 
 from biom import Table
 import numpy as np
+import pandas as pd
 from schematics.types import BaseType
 from schematics.exceptions import ValidationError
 
@@ -191,3 +192,40 @@ class BiomType(BaseType):
         obsmeta_type = ObsmetaType()
         obs_metadata = value.metadata_to_dataframe('observation')
         obsmeta_type.validate(obs_metadata)
+
+class InteractionmatrixType(BaseType):
+    """
+        DataType that describes the expected structure of an interaction matrix
+
+        Parameters
+        ----------
+        symm : bool, optional
+            True if interaction matrix is expected to be symmetric
+            Default value is False
+    """
+
+    def __init__(self, symm=False, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.symm = symm
+
+    def validate_isdataframe(self, value):
+        """ Check whether the object is a pandas DataFrame """
+        if not isinstance(value, pd.DataFrame):
+            raise ValidationError("Interaction matrix must be a `pd.DataFrame` instance")
+
+    def validate_headers(self, value):
+        """ Check whether the rows and columns are the same """
+        if len(value.index) != len(value.columns):
+            raise ValidationError("Interaction matrix must have same number of rows and columns")
+        if any(value.index != value.columns):
+            raise ValidationError("Row and column header of an interaction matrix should match")
+
+    def validate_symmetry(self, value):
+        """ Check whether the the interaction matrix is symmetric """
+        if self.symm:
+            if not np.allclose(value, value.T):
+                raise ValidationError("Interaction matrix is not symmetric")
+
+    def validate_data(self, value):
+        if not value.dtype == float and not value.dtype == int:
+            raise ValidationError("Invalid data. Interactions must be int or float")
