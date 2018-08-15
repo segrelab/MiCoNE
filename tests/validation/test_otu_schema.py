@@ -3,13 +3,14 @@
 """
 
 from biom import load_table
+import pandas as pd
 import pytest
 from schematics.exceptions import ValidationError
 
-from mindpipe.validation import BiomType
+from mindpipe.validation import BiomType, CorrelationmatrixType, PvaluematrixType
 
 
-@pytest.mark.usefixtures("biom_files")
+@pytest.mark.usefixtures("biom_files", "correlation_files")
 class TestBiomType:
     """ Tests for the BiomType class """
 
@@ -27,3 +28,23 @@ class TestBiomType:
             if 'obs_metadata' in str(bad_biom):
                 with pytest.raises(ValidationError):
                     assert biom_type.validate(load_table(bad_biom))
+
+    def test_correlations_good(self, correlation_files):
+        corr_type = CorrelationmatrixType()
+        pval_type = PvaluematrixType(symm=True)
+        for corr, pval in correlation_files["good"]:
+            corr_data = pd.read_table(corr, index_col=0)
+            pval_data = pd.read_table(pval, index_col=0)
+            corr_type.validate(corr_data)
+            pval_type.validate(pval_data)
+
+    def test_correlations_bad(self, correlation_files):
+        corr_type = CorrelationmatrixType()
+        pval_type = PvaluematrixType(symm=True)
+        for corr, pval in correlation_files["bad"]:
+            corr_data = pd.read_table(corr, index_col=0)
+            pval_data = pd.read_table(pval, index_col=0)
+            with pytest.raises(ValidationError):
+                corr_type.validate(corr_data)
+            with pytest.raises(ValidationError):
+                pval_type.validate(pval_data)
