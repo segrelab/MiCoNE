@@ -2,8 +2,9 @@
     Module that defines the `Otu` objects and methods to manipulate it
 """
 
+import json
 import pathlib
-from typing import Callable, Hashable, Iterable, Optional, Tuple
+from typing import Callable, Dict, Hashable, Iterable, List, Optional, Tuple
 
 from biom import Table
 from biom.util import biom_open
@@ -313,21 +314,43 @@ class Otu:
         for label, table in partitions:
             yield label, Otu(table)
 
-    def collapse(self, axis: str, func: Callable[[str, dict], Hashable]) -> "Otu":
+    def collapse_taxa(self, level: str) -> Tuple["Otu", Dict[str, List[str]]]:
         """
-            Collapse Otu instance based on 'func' and 'axis'
+            Collapse Otu instance based on taxa
 
             Parameters
             ----------
-            axis : str
-            func : Callable[[str, dict], Hashable]
+            level : str
+                The tax level of the collapsed table
+                This will also be used as the prefix for the unique ids
 
             Returns
             -------
-            Otu
+            Tuple[Otu, dict]
                 Collapsed Otu instance
         """
-        pass
+        if level not in Lineage._fields:
+            raise ValueError(f"level must be one of {Lineage._fields}")
+        func = lambda id_, md: str(Lineage(**md).get_superset(level))
+        otu_collapse = self.otu_data.collapse(func, axis="observation", norm=False)
+        obs_dict = json.loads(otu_collapse.metadata_to_dataframe("observation").to_json(orient="split"))
+        curr_ids = otu_collapse.ids(axis="observation")
+        unq_id_map = {k: f"{level}_{i}" for i, k in enumerate(curr_ids)}
+        obs_ids = [unq_id_map[i] for i in obs_dict["index"]]  # get ordered unique ids
+        children_data = [[i for i in l if i is not None] for l in obs_dict["data"]]
+        children_dict = dict(zip(obs_ids, children_data))
+        sample_ids = otu_collapse.ids(axis="sample")
+        obs_raw_data = [Lineage.from_str(id_).to_dict(level) for id_ in curr_ids]
+        observation_metadata = pd.DataFrame(obs_raw_data, index=obs_ids).to_dict(orient="records")
+        sample_metadata = otu_collapse.metadata_to_dataframe(axis="sample").to_dict(orient="records")
+        new_table = Table(
+            otu_collapse.matrix_data,
+            obs_ids,
+            sample_ids,
+            observation_metadata=observation_metadata,
+            sample_metadata=sample_metadata,
+        )
+        return Otu(new_table), children_dict
 
     def write(self, base_name: str, fol_path: str = '', file_type: str = "biom") -> None:
         """
