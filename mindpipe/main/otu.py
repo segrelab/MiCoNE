@@ -40,6 +40,8 @@ class Otu:
             Metadata for the samples
         obs_metadata :  pd.DataFrame
             Lineage data for the observations (OTUs)
+        tax_level : str
+            The taxonomy level of the current Otu instance
 
         Notes
         -----
