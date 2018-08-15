@@ -223,6 +223,8 @@ class InteractionmatrixType(BaseType):
     def validate_symmetry(self, value):
         """ Check whether the the interaction matrix is symmetric """
         if self.symm:
+            if value.shape[0] != value.shape[1]:
+                raise ValidationError("Interaction matrix is not symmetric")
             if not np.allclose(value, value.T):
                 raise ValidationError("Interaction matrix is not symmetric")
 
