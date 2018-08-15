@@ -81,3 +81,15 @@ def stool_biom(biom_files):
     """ Fixture that loads the stool biom data """
     biom_file = TEST_DATADIR / "otus/biom/good/stool.biom"
     return load_table(biom_file)
+
+@pytest.fixture(scope="module")
+def correlation_files():
+    """ Fixture that loads the correlation data """
+    corr_fol = TEST_DATADIR / "correlations"
+    data = {"good": [], "bad": []}
+    for kind in ("good", "bad"):
+        for data_fol in (corr_fol / kind).iterdir():
+            corr = data_fol / "correlations.tsv"
+            pval = data_fol / "pvalues.tsv"
+            data[kind].append((corr, pval))
+    return data
