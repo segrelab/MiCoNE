@@ -229,3 +229,14 @@ class InteractionmatrixType(BaseType):
     def validate_data(self, value):
         if not value.dtype == float and not value.dtype == int:
             raise ValidationError("Invalid data. Interactions must be int or float")
+
+
+class CorrelationmatrixType(InteractionmatrixType):
+    """ DataType that describes the expected structure of a correlation matrix """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(symm=True, *args, **kwargs)
+
+    def validate_data_range(self, value):
+        if value.values.max() > 1 or value.values.min() < -1:
+            raise ValidationError("Correlation matrix must be bound by -1 and 1")
