@@ -86,6 +86,16 @@ class TestOtu:
         assert otu_filtered.otu_data.shape[0] < otu_inst.otu_data.shape[0]
         assert set(ind) == set(otu_filtered.otu_data.ids("observation"))
 
+    def test_collapse_taxa(self, stool_biom):
+        otu_inst = Otu(stool_biom)
+        otu_collapse, children_map = otu_inst.collapse_taxa("Family")
+        family_members = set(otu_inst.obs_metadata.Family)
+        assert len(family_members) == otu_collapse.otu_data.shape[0]
+        assert otu_inst.otu_data.shape[1] == otu_collapse.otu_data.shape[1]
+        assert family_members == set(otu_collapse.obs_metadata.Family)
+        group_dict = otu_inst.obs_metadata.groupby("Family").groups
+        assert sorted(list(i) for i in group_dict.values()) == sorted(list(i) for i in children_map.values())
+
     def test_write(self, stool_biom, tmpdir):
         otu_inst = Otu(stool_biom)
         fol = tmpdir.mkdir("results")
