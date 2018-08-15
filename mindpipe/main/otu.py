@@ -14,6 +14,10 @@ from ..validation import OtuValidator, BiomType, SamplemetaType, ObsmetaType
 from .lineage import Lineage
 
 
+Filterfun = Callable[[np.ndarray, str, dict], bool]
+Hashfun = Callable[[str, dict], Hashable]
+
+
 class Otu:
     """
         An object that represents the OTU counts table
@@ -147,7 +151,7 @@ class Otu:
     def filter(
             self,
             ids: Iterable[str] = [],
-            func: Optional[Callable[[np.ndarray, str, dict], bool]] = None,
+            func: Optional[Filterfun] = None,
             axis: str = "observation"
     ) -> "Otu":
         """
@@ -280,7 +284,7 @@ class Otu:
         final_otu = new_otu.concat([new_row], axis="observation")
         return Otu(final_otu)
 
-    def partition(self, axis: str, func: Callable[[str, dict], Hashable]) -> Iterable[Tuple[str, "Otu"]]:
+    def partition(self, axis: str, func: Hashfun) -> Iterable[Tuple[str, "Otu"]]:
         """
             Partition the Otu instance based on the func and axis
 
