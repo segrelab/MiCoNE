@@ -193,6 +193,7 @@ class BiomType(BaseType):
         obs_metadata = value.metadata_to_dataframe('observation')
         obsmeta_type.validate(obs_metadata)
 
+
 class InteractionmatrixType(BaseType):
     """
         DataType that describes the expected structure of an interaction matrix
