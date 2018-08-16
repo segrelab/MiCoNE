@@ -2,12 +2,14 @@
     Module containing tests for the BiomType class
 """
 
+import json
+
 from biom import load_table
 import pandas as pd
 import pytest
 from schematics.exceptions import ValidationError
 
-from mindpipe.validation import BiomType, CorrelationmatrixType, PvaluematrixType
+from mindpipe.validation import BiomType, CorrelationmatrixType, PvaluematrixType, MetadataType
 
 
 @pytest.mark.usefixtures("biom_files", "correlation_files")
@@ -32,19 +34,28 @@ class TestBiomType:
     def test_correlations_good(self, correlation_files):
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
-        for corr, pval in correlation_files["good"]:
+        meta_type = MetadataType()
+        for corr, pval, meta in correlation_files["good"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
+            with open(meta, 'r') as fid:
+                meta_data = json.load(fid)
             corr_type.validate(corr_data)
             pval_type.validate(pval_data)
+            meta_type.validate(meta_data)
 
     def test_correlations_bad(self, correlation_files):
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
-        for corr, pval in correlation_files["bad"]:
+        meta_type = MetadataType()
+        for corr, pval, meta in correlation_files["bad"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
+            with open(meta, 'r') as fid:
+                meta_data = json.load(fid)
             with pytest.raises(ValidationError):
                 corr_type.validate(corr_data)
             with pytest.raises(ValidationError):
                 pval_type.validate(pval_data)
+            with pytest.raises(ValidationError):
+                meta_type.validate(meta_data)
