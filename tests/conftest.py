@@ -91,5 +91,6 @@ def correlation_files():
         for data_fol in (corr_fol / kind).iterdir():
             corr = data_fol / "correlations.tsv"
             pval = data_fol / "pvalues.tsv"
-            data[kind].append((corr, pval))
+            meta = data_fol / "metadata.json"
+            data[kind].append((corr, pval, meta))
     return data
