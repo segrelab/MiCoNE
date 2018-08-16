@@ -1,0 +1,8 @@
+{
+  "host": "Human",
+  "disease_state": "Healthy",
+  "location": "Stool",
+  "method": "16S rRNA deblur",
+  "pubmed_id": "",
+  "description": "Controls from a Fecal Microbiome Transplant experiment"
+}
