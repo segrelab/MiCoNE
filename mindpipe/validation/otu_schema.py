@@ -251,3 +251,13 @@ class PvaluematrixType(InteractionmatrixType):
     def validate_data_range(self, value):
         if value.values.max() > 1 or value.values.min() < 0:
             raise ValidationError("Pvalue matrix must be bound by 0 and 1")
+
+
+class MetadataType(BaseType):
+    """ DataType that describes the expected structure of the network metadata dict """
+
+    def validate_keys(self, value):
+        keys = ("host", "condition", "location", "method", "pubmed_id", "description")
+        for key in keys:
+            if key not in value:
+                raise ValidationError(f"Network metadata does not have the required {key}")
