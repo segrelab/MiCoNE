@@ -134,6 +134,35 @@ class Lineage(BaseLineage):
         taxa = [l.strip().rsplit('__', 1)[-1] for l in tax_list]
         return cls(*taxa)
 
+    def to_str(self, style: str, level: str) -> str:
+        """
+            Return the string Lineage of the instance in requested 'style'
+
+            Parameters
+            ----------
+            style : {'gg', 'silva'}
+                The style of the lineage string
+            level : str
+                The lowest Lineage field that is to be populated
+
+            Returns
+            -------
+            str
+        """
+        if level not in self._fields:
+            raise ValueError(f"{level} not a valid field for Lineage")
+        else:
+            ind = self._fields.index(level)
+            fields = self._fields[:ind + 1]
+            data = self[:ind + 1]
+        if style == "gg":
+            prefix = [f.lower()[0] for f in fields]
+        elif style == "silva":
+            prefix = [f"D_{i}" for i in range(len(fields))]
+        else:
+            raise ValueError("Style needs to be either 'gg' or 'silva'")
+        return ';'.join(f"{p}__{v}" for p, v in zip(prefix, data))
+
     def __str__(self) -> str:
         """
             Get the lineage in the form of a string
