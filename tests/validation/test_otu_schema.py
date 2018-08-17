@@ -9,7 +9,13 @@ import pandas as pd
 import pytest
 from schematics.exceptions import ValidationError
 
-from mindpipe.validation import BiomType, CorrelationmatrixType, PvaluematrixType, MetadataType
+from mindpipe.validation import (
+    BiomType,
+    CorrelationmatrixType,
+    PvaluematrixType,
+    MetadataType,
+    ChildrenmapType
+)
 
 
 @pytest.mark.usefixtures("biom_files", "correlation_files")
@@ -35,27 +41,36 @@ class TestBiomType:
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
         meta_type = MetadataType()
-        for corr, pval, meta in correlation_files["good"]:
+        children_type = ChildrenmapType()
+        for corr, pval, meta, child in correlation_files["good"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             with open(meta, 'r') as fid:
                 meta_data = json.load(fid)
+            with open(child, 'r') as  fid:
+                child_data = json.load(fid)
             corr_type.validate(corr_data)
             pval_type.validate(pval_data)
             meta_type.validate(meta_data)
+            children_type.validate(child_data)
 
     def test_correlations_bad(self, correlation_files):
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
         meta_type = MetadataType()
-        for corr, pval, meta in correlation_files["bad"]:
+        children_type = ChildrenmapType()
+        for corr, pval, meta, child in correlation_files["bad"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             with open(meta, 'r') as fid:
                 meta_data = json.load(fid)
+            with open(child, 'r') as  fid:
+                child_data = json.load(fid)
             with pytest.raises(ValidationError):
                 corr_type.validate(corr_data)
             with pytest.raises(ValidationError):
                 pval_type.validate(pval_data)
             with pytest.raises(ValidationError):
                 meta_type.validate(meta_data)
+            with pytest.raises(ValidationError):
+                children_type.validate(child_data)
