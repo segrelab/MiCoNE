@@ -47,3 +47,17 @@ class TestLineage:
         lineage2 = Lineage.from_str(str(lineage1))
         assert lineage1 == lineage2
         assert str(lineage1) == str(lineage2)
+
+    def test_to_str(self, lineage_data):
+        lineage1 = Lineage(**lineage_data["good"])
+        assert lineage1.to_str(style="gg", level="Family") == "k__Bacteria;p__P1;c__C1;o__O1;f__F1"
+        assert lineage1.to_str(style="silva", level="Order") == "D_0__Bacteria;D_1__P1;D_2__C1;D_3__O1"
+
+    def test_to_dict(self, lineage_data):
+        lineage1 = Lineage(**lineage_data["good"])
+        assert lineage1.to_dict("Class") == {"Kingdom": "Bacteria", "Phylum": "P1", "Class": "C1"}
+
+    def test_get_superset(self, lineage_data):
+        lineage1 = Lineage(**lineage_data["good"])
+        lineage2 = Lineage(**{**lineage_data["good"], **{"Genus": '', "Species": ''}})
+        assert lineage1.get_superset("Family") == lineage2
