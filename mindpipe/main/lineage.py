@@ -156,7 +156,7 @@ class Lineage(BaseLineage):
                 The lowest Lineage field to be used to populate the dictionary
         """
         if level not in self._fields:
-            raise ValueError("{level} not a valid field for Lineage")
+            raise ValueError(f"{level} not a valid field for Lineage")
         ind = self._fields.index(level)
         fields = self._fields[:ind + 1]
         return {field: tax for field, tax in zip(fields, self)}
@@ -176,7 +176,7 @@ class Lineage(BaseLineage):
                 Lineage instance that is a superset of current instance
         """
         if level not in self._fields:
-            raise ValueError("{level} not a valid field for Lineage")
+            raise ValueError(f"{level} not a valid field for Lineage")
         ind = self._fields.index(level)
         tax = self[:ind + 1]
         return Lineage(*tax)
