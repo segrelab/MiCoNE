@@ -92,5 +92,6 @@ def correlation_files():
             corr = data_fol / "correlations.tsv"
             pval = data_fol / "pvalues.tsv"
             meta = data_fol / "metadata.json"
-            data[kind].append((corr, pval, meta))
+            child = data_fol / "children_map.json"
+            data[kind].append((corr, pval, meta, child))
     return data
