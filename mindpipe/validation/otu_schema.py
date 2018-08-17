@@ -261,3 +261,20 @@ class MetadataType(BaseType):
         for key in keys:
             if key not in value:
                 raise ValidationError(f"Network metadata does not have the required {key}")
+
+
+class ChildrenmapType(BaseType):
+    """ DataType that describes the expected structure of the children map dictionary """
+
+    def validate_keys(self, value):
+        for k in value.keys():
+            if not isinstance(k, str):
+                raise ValidationError("Children map must have string keys")
+
+    def validate_values(self, value):
+        for v in value.values():
+            if not isinstance(v, list):
+                raise ValidationError("Children map must have lists of strings as values")
+            for elem in v:
+                if not isinstance(elem, str):
+                    raise ValidationError("Children map must have lists of strings as values")
