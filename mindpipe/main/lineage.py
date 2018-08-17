@@ -172,8 +172,7 @@ class Lineage(BaseLineage):
             str
                 The lineage string in 'gg' format
         """
-        prefix = [f.lower()[0] for f in self._fields]
-        return ';'.join(f"{p}__{v}" for p, v in zip(prefix, self))
+        return self.to_str(style="gg", level="Species")
 
     def to_dict(self, level: str) -> Dict[str, str]:
         """
