@@ -264,6 +264,8 @@ class MetadataType(BaseType):
             "experimental_metadata",
             "pubmed_id",
             "description",
+            "date",
+            "authors",
         }
         for key in keys:
             if key not in value:
