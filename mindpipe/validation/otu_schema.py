@@ -289,3 +289,10 @@ class NodesType(Model):
     taxlevel = StringType(regex=r"(Kingdom|Phylum|Class|Order|Family|Genus|Species)")
     abundance = FloatType()
     children = ListType(StringType)
+
+
+class LinksType(Model):
+    pvalue = FloatType()
+    weight = FloatType()
+    source = StringType(min_length=2)
+    target = StringType(min_length=2)
