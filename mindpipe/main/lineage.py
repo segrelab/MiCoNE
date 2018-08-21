@@ -5,12 +5,17 @@
 
 from collections import namedtuple
 from typing import Dict, Tuple
+from warnings import warn
+
+from ete3 import NCBITaxa
 
 
 BaseLineage = namedtuple(
     "Lineage",
     "Kingdom Phylum Class Order Family Genus Species"
 )
+
+NCBI = NCBITaxa()
 
 
 class Lineage(BaseLineage):
@@ -208,3 +213,20 @@ class Lineage(BaseLineage):
         ind = self._fields.index(level)
         tax = self[:ind + 1]
         return Lineage(*tax)
+
+    @property
+    def taxid(self) -> int:
+        """
+            Get the NCBI taxonomy id of the Lineage
+
+            Returns
+            -------
+            int
+                The NCBI taxonomy id
+        """
+        taxid_dict = NCBI.get_name_translator(self)
+        taxid_list = taxid_dict[self.name[1]]
+        if len(taxid_list) > 1:
+            warn(f"{self.name} has multiple taxids. Picking the first one")
+        taxid = taxid_list[0]
+        return taxid
