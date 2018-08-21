@@ -3,7 +3,11 @@
   "disease_state": "Healthy",
   "condition": "FMT controls",
   "location": "Stool",
-  "method": "16S rRNA denovo",
+  "experimental_metadata": {
+    "data-type": "16S rRNA",
+    "region": "V4",
+    "platform": "illumina"
+  },
   "pubmed_id": "",
   "description": "Controls from a Fecal Microbiome Transplant experiment"
 }
