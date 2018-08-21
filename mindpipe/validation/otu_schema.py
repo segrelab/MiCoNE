@@ -299,6 +299,6 @@ class LinksType(Model):
     target = StringType(min_length=2)
 
 
-class NetworkmetdataType(MetadataType):
+class NetworkmetadataType(MetadataType):
     computation_metadata = DictType(StringType)
     directionality = StringType(regex=r"(undirected|directed)")
