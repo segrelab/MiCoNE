@@ -5,8 +5,9 @@
 from biom import Table
 import numpy as np
 import pandas as pd
-from schematics.types import BaseType
 from schematics.exceptions import ValidationError
+from schematics.models import Model
+from schematics.types import BaseType, StringType, FloatType, IntType, DateType, ListType, DictType
 
 
 class HeaderType(BaseType):
@@ -296,3 +297,8 @@ class LinksType(Model):
     weight = FloatType()
     source = StringType(min_length=2)
     target = StringType(min_length=2)
+
+
+class NetworkmetdataType(MetadataType):
+    computation_metadata = DictType(StringType)
+    directionality = StringType(regex=r"(undirected|directed)")
