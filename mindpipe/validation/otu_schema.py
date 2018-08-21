@@ -257,7 +257,14 @@ class MetadataType(BaseType):
     """ DataType that describes the expected structure of the network metadata dict """
 
     def validate_keys(self, value):
-        keys = ("host", "condition", "location", "method", "pubmed_id", "description")
+        keys = {
+            "host",
+            "condition",
+            "location",
+            "experimental_metadata",
+            "pubmed_id",
+            "description",
+        }
         for key in keys:
             if key not in value:
                 raise ValidationError(f"Network metadata does not have the required {key}")
