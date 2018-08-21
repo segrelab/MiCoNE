@@ -253,24 +253,16 @@ class PvaluematrixType(InteractionmatrixType):
             raise ValidationError("Pvalue matrix must be bound by 0 and 1")
 
 
-class MetadataType(BaseType):
+class MetadataType(Model):
     """ DataType that describes the expected structure of the network metadata dict """
-
-    def validate_keys(self, value):
-        keys = {
-            "host",
-            "condition",
-            "location",
-            "experimental_metadata",
-            "pubmed_id",
-            "description",
-            "date",
-            "authors",
-        }
-        for key in keys:
-            if key not in value:
-                raise ValidationError(f"Network metadata does not have the required {key}")
-
+    host = StringType()
+    condition = StringType()
+    location = StringType()
+    experimental_metadata = DictType(StringType)
+    pubmed_id = StringType()
+    description = StringType()
+    date = DateType()
+    authors = ListType(StringType)
 
 class ChildrenmapType(BaseType):
     """ DataType that describes the expected structure of the children map dictionary """
