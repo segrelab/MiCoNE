@@ -279,3 +279,13 @@ class ChildrenmapType(BaseType):
             for elem in v:
                 if not isinstance(elem, str):
                     raise ValidationError("Children map must have lists of strings as values")
+
+
+class NodesType(Model):
+    id = StringType(min_length=2)
+    lineage = ListType(StringType)
+    name = StringType()
+    taxid = IntType()
+    taxlevel = StringType(regex=r"(Kingdom|Phylum|Class|Order|Family|Genus|Species)")
+    abundance = FloatType()
+    children = ListType(StringType)
