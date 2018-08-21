@@ -61,3 +61,9 @@ class TestLineage:
         lineage1 = Lineage(**lineage_data["good"])
         lineage2 = Lineage(**{**lineage_data["good"], **{"Genus": '', "Species": ''}})
         assert lineage1.get_superset("Family") == lineage2
+
+    def test_taxid(self, lineage_data):
+        lineage1 = Lineage.from_str(
+            "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae"
+        )
+        assert lineage1.taxid == 541000
