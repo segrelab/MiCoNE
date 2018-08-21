@@ -7,5 +7,8 @@ from .otu_schema import (
     PvaluematrixType,
     MetadataType,
     ChildrenmapType,
+    NodesType,
+    LinksType,
+    NetworkmetadataType,
 )
 from .otu_validator import OtuValidator
