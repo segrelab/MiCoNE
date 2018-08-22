@@ -279,11 +279,11 @@ class Network:
                     "pvalue": pvalue,
                 }
             )
-        nodes_model = NodesModel(nodes)
+        nodes_model = NodesModel({"nodes": nodes}, strict=False)
         nodes_model.validate()
-        links_model = LinksModel(links)
+        links_model = LinksModel({"links": links}, strict=False)
         links_model.validate()
-        networkmetadata_model = NetworkmetadataModel(metadata)
+        networkmetadata_model = NetworkmetadataModel(metadata, strict=False)
         networkmetadata_model.validate()
         return nodes, links, metadata
 
