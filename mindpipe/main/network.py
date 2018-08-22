@@ -60,7 +60,7 @@ class Network:
             Use `Network.pcorr_methods` to get the list of supported methods
         directed : bool, optional
             True if network is directed
-            Default value is True
+            Default value is False
 
         Attributes
         ----------
@@ -92,7 +92,7 @@ class Network:
             interaction_threshold: float = 0.3,
             pvalue_threshold: float = 0.05,
             pvalue_correction: Optional[str] = "fdr_bh",
-            directed: bool = True,
+            directed: bool = False,
     ) -> None:
         obsmeta_validator = ObsmetaType()
         obsmeta_validator.validate(obs_metadata)
