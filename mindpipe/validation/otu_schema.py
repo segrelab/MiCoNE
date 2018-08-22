@@ -295,7 +295,7 @@ class ChildrenmapType(BaseType):
 class NodeModel(Model):
     """ Model that describes the structure of one node in the network """
     id = StringType(min_length=2, required=True)
-    lineage = ListType(StringType, required=True)
+    lineage = StringType(required=True)
     name = StringType(required=True)
     taxid = IntType(required=True)
     taxlevel = StringType(regex=r"(Kingdom|Phylum|Class|Order|Family|Genus|Species)", required=True)
