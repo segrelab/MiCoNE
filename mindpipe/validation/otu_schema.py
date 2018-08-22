@@ -323,5 +323,6 @@ class LinksModel(Model):
 
 class NetworkmetadataModel(MetadataModel):
     """ Model that describes the expected structure of the network metadata """
-    computation_metadata = DictType(StringType, required=True)
+    computational_metadata = DictType(StringType, required=True)
     directionality = StringType(regex=r"(undirected|directed)", required=True)
+    interaction_type = StringType()
