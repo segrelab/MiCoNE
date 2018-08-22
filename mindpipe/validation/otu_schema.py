@@ -274,6 +274,7 @@ class MetadataModel(Model):
     date = DateType(required=True)
     authors = ListType(StringType, required=True)
 
+
 class ChildrenmapType(BaseType):
     """ DataType that describes the expected structure of the children map dictionary """
 
@@ -291,23 +292,36 @@ class ChildrenmapType(BaseType):
                     raise ValidationError("Children map must have lists of strings as values")
 
 
-class NodesModel(Model):
-    id = StringType(min_length=2)
-    lineage = ListType(StringType)
-    name = StringType()
-    taxid = IntType()
-    taxlevel = StringType(regex=r"(Kingdom|Phylum|Class|Order|Family|Genus|Species)")
+class NodeModel(Model):
+    """ Model that describes the structure of one node in the network """
+    id = StringType(min_length=2, required=True)
+    lineage = ListType(StringType, required=True)
+    name = StringType(required=True)
+    taxid = IntType(required=True)
+    taxlevel = StringType(regex=r"(Kingdom|Phylum|Class|Order|Family|Genus|Species)", required=True)
     abundance = FloatType()
-    children = ListType(StringType)
+    children = ListType(StringType, required=True)
+
+
+class NodesModel(Model):
+    """ Model that describes the structure of the nodes in the network """
+    nodes = ListType(ModelType(NodeModel), required=True)
+
+
+class LinkModel(Model):
+    """ Model that describes the structure of one link in the network """
+    pvalue = FloatType()
+    weight = FloatType(required=True)
+    source = StringType(min_length=2, required=True)
+    target = StringType(min_length=2, required=True)
 
 
 class LinksModel(Model):
-    pvalue = FloatType()
-    weight = FloatType()
-    source = StringType(min_length=2)
-    target = StringType(min_length=2)
+    """ Model that describes the structure of one link in the network """
+    links = ListType(ModelType(LinkModel), required=True)
 
 
 class NetworkmetadataModel(MetadataModel):
-    computation_metadata = DictType(StringType)
-    directionality = StringType(regex=r"(undirected|directed)")
+    """ Model that describes the expected structure of the network metadata """
+    computation_metadata = DictType(StringType, required=True)
+    directionality = StringType(regex=r"(undirected|directed)", required=True)
