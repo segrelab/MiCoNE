@@ -7,7 +7,7 @@ import json
 from biom import load_table
 import pandas as pd
 import pytest
-from schematics.exceptions import ValidationError
+from schematics.exceptions import DataError, ValidationError
 
 from mindpipe.validation import (
     BiomType,
@@ -47,7 +47,7 @@ class TestBiomType:
             pval_data = pd.read_table(pval, index_col=0)
             with open(meta, 'r') as fid:
                 meta_data = json.load(fid)
-            with open(child, 'r') as  fid:
+            with open(child, 'r') as fid:
                 child_data = json.load(fid)
             corr_type.validate(corr_data)
             pval_type.validate(pval_data)
@@ -57,20 +57,20 @@ class TestBiomType:
     def test_correlations_bad(self, correlation_files):
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
-        meta_type = MetadataType()
         children_type = ChildrenmapType()
         for corr, pval, meta, child in correlation_files["bad"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             with open(meta, 'r') as fid:
                 meta_data = json.load(fid)
-            with open(child, 'r') as  fid:
+            with open(child, 'r') as fid:
                 child_data = json.load(fid)
             with pytest.raises(ValidationError):
                 corr_type.validate(corr_data)
             with pytest.raises(ValidationError):
                 pval_type.validate(pval_data)
-            with pytest.raises(ValidationError):
-                meta_type.validate(meta_data)
+            meta_type = MetadataType(meta_data, strict=False)
+            with pytest.raises(DataError):
+                meta_type.validate()
             with pytest.raises(ValidationError):
                 children_type.validate(child_data)
