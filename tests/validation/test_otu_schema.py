@@ -13,7 +13,7 @@ from mindpipe.validation import (
     BiomType,
     CorrelationmatrixType,
     PvaluematrixType,
-    MetadataType,
+    MetadataModel,
     ChildrenmapType
 )
 
@@ -37,6 +37,7 @@ class TestBiomType:
                 with pytest.raises(ValidationError):
                     assert biom_type.validate(load_table(bad_biom))
 
+
 @pytest.mark.usefixtures("correlation_files")
 class TestInteractionType:
     """ Tests for correlations, pvalues and their associated metadata """
@@ -44,7 +45,7 @@ class TestInteractionType:
     def test_correlations_good(self, correlation_files):
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
-        meta_type = MetadataType()
+        meta_type = MetadataModel()
         children_type = ChildrenmapType()
         for corr, pval, meta, child in correlation_files["good"]:
             corr_data = pd.read_table(corr, index_col=0)
@@ -73,7 +74,7 @@ class TestInteractionType:
                 corr_type.validate(corr_data)
             with pytest.raises(ValidationError):
                 pval_type.validate(pval_data)
-            meta_type = MetadataType(meta_data, strict=False)
+            meta_type = MetadataModel(meta_data, strict=False)
             with pytest.raises(DataError):
                 meta_type.validate()
             with pytest.raises(ValidationError):

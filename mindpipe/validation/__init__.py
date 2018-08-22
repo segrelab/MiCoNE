@@ -5,10 +5,10 @@ from .otu_schema import (
     InteractionmatrixType,
     CorrelationmatrixType,
     PvaluematrixType,
-    MetadataType,
+    MetadataModel,
     ChildrenmapType,
-    NodesType,
-    LinksType,
-    NetworkmetadataType,
+    NodesModel,
+    LinksModel,
+    NetworkmetadataModel,
 )
 from .otu_validator import OtuValidator

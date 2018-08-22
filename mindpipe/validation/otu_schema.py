@@ -254,7 +254,7 @@ class PvaluematrixType(InteractionmatrixType):
             raise ValidationError("Pvalue matrix must be bound by 0 and 1")
 
 
-class MetadataType(Model):
+class MetadataModel(Model):
     """ DataType that describes the expected structure of the network metadata dict """
     host = StringType(required=True)
     condition = StringType(required=True)
@@ -282,7 +282,7 @@ class ChildrenmapType(BaseType):
                     raise ValidationError("Children map must have lists of strings as values")
 
 
-class NodesType(Model):
+class NodesModel(Model):
     id = StringType(min_length=2)
     lineage = ListType(StringType)
     name = StringType()
@@ -292,13 +292,13 @@ class NodesType(Model):
     children = ListType(StringType)
 
 
-class LinksType(Model):
+class LinksModel(Model):
     pvalue = FloatType()
     weight = FloatType()
     source = StringType(min_length=2)
     target = StringType(min_length=2)
 
 
-class NetworkmetadataType(MetadataType):
+class NetworkmetadataModel(MetadataModel):
     computation_metadata = DictType(StringType)
     directionality = StringType(regex=r"(undirected|directed)")
