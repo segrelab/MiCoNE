@@ -256,14 +256,14 @@ class PvaluematrixType(InteractionmatrixType):
 
 class MetadataType(Model):
     """ DataType that describes the expected structure of the network metadata dict """
-    host = StringType()
-    condition = StringType()
-    location = StringType()
-    experimental_metadata = DictType(StringType)
-    pubmed_id = StringType()
-    description = StringType()
-    date = DateType()
-    authors = ListType(StringType)
+    host = StringType(required=True)
+    condition = StringType(required=True)
+    location = StringType(required=True)
+    experimental_metadata = DictType(StringType, required=True)
+    pubmed_id = StringType(required=True)
+    description = StringType(required=True)
+    date = DateType(required=True)
+    authors = ListType(StringType, required=True)
 
 class ChildrenmapType(BaseType):
     """ DataType that describes the expected structure of the children map dictionary """
