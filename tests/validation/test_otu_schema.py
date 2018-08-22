@@ -18,7 +18,7 @@ from mindpipe.validation import (
 )
 
 
-@pytest.mark.usefixtures("biom_files", "correlation_files")
+@pytest.mark.usefixtures("biom_files")
 class TestBiomType:
     """ Tests for the BiomType class """
 
@@ -36,6 +36,10 @@ class TestBiomType:
             if 'obs_metadata' in str(bad_biom):
                 with pytest.raises(ValidationError):
                     assert biom_type.validate(load_table(bad_biom))
+
+@pytest.mark.usefixtures("correlation_files")
+class TestInteractionType:
+    """ Tests for correlations, pvalues and their associated metadata """
 
     def test_correlations_good(self, correlation_files):
         corr_type = CorrelationmatrixType()
