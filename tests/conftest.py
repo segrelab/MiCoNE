@@ -99,6 +99,22 @@ def correlation_files():
             obsmeta = data_fol / "obs_metadata.csv"
             data[kind].append((corr, pval, meta, child, obsmeta))
     return data
+
+
+@pytest.fixture(scope="module")
+def correlation_data(correlation_files):
+    """ Fixture that creates the inputs for the network class """
+    data = {"good": [], "bad": []}
+    for kind in ("good", "bad"):
+        for corr, pval, meta, child, obsmeta in correlation_files[kind]:
+            corr_data = pd.read_table(corr, index_col=0)
+            pval_data = pd.read_table(pval, index_col=0)
+            obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
+            with open(meta, 'r') as fid:
+                meta_data = json.load(fid)
+            with open(child, 'r') as fid:
+                child_data = json.load(fid)
+            data[kind].append((corr_data, pval_data, meta_data, child_data, obsmeta_data))
     return data
 
 
