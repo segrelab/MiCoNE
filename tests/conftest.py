@@ -5,8 +5,9 @@
 import json
 import pathlib
 
-import pytest
 from biom import load_table
+import pandas as pd
+import pytest
 
 
 BASEDIR = pathlib.Path.cwd()
@@ -119,12 +120,22 @@ def correlation_data(correlation_files):
 
 
 @pytest.fixture(scope="module")
-def raw_network_data():
-    """ Fixture that loads the network file directly as json """
+def network_files():
+    """ Fixture that loads the network files """
     net_fol = TEST_DATADIR / "networks"
+    data = {
+        "good": net_fol.glob("good/*.json"),
+        "bad": net_fol.glob("bad/*json")
+    }
+    return data
+
+
+@pytest.fixture(scope="module")
+def raw_network_data(network_files):
+    """ Fixture that loads the network file directly as json """
     data = {"good": [], "bad": []}
     for kind in {"good", "bad"}:
-        for file in net_fol.glob(f"{kind}/*.json"):
+        for file in network_files[kind]:
             with open(file, 'r') as fid:
                 data[kind].append(json.load(fid))
     return data
