@@ -121,7 +121,6 @@ class TestNetworkType:
     def test_networkmetadata(self, raw_network_data):
         for good_data in raw_network_data["good"]:
             good_metadata = {k: v for k, v in good_data.items() if k not in {"links", "nodes"}}
-            print(good_metadata)
             good_metadata_model = NetworkmetadataModel(good_metadata, strict=False)
             good_metadata_model.validate()
         for bad_data in raw_network_data["bad"]:
