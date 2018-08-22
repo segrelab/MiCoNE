@@ -2,6 +2,7 @@
     Common configuration for all the tests
 """
 
+import json
 import pathlib
 
 import pytest
@@ -70,6 +71,7 @@ def tax_conversion_data():
     }
     return data
 
+
 @pytest.fixture(scope="module")
 def biom_data(biom_files):
     """ Fixture that creates biom data """
@@ -81,6 +83,7 @@ def stool_biom(biom_files):
     """ Fixture that loads the stool biom data """
     biom_file = TEST_DATADIR / "otus/biom/good/stool.biom"
     return load_table(biom_file)
+
 
 @pytest.fixture(scope="module")
 def correlation_files():
@@ -94,4 +97,16 @@ def correlation_files():
             meta = data_fol / "metadata.json"
             child = data_fol / "children_map.json"
             data[kind].append((corr, pval, meta, child))
+    return data
+
+
+@pytest.fixture(scope="module")
+def raw_network_data():
+    """ Fixture that loads the network file directly as json """
+    net_fol = TEST_DATADIR / "networks"
+    data = {"good": [], "bad": []}
+    for kind in {"good", "bad"}:
+        for file in net_fol.glob(f"{kind}/*.json"):
+            with open(file, 'r') as fid:
+                data[kind].append(json.load(fid))
     return data
