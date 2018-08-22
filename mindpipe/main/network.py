@@ -244,7 +244,7 @@ class Network:
             "directionality": directionality,
         }
         nodes: List[Dict[str, Any]] = []
-        abundance_flag = "Abundance" in obs_metadata.columns()
+        abundance_flag = "Abundance" in obs_metadata.columns
         for node in interactions.index:
             if abundance_flag:
                 lineage = Lineage(**obs_metadata.drop("Abundance").loc[node].to_dict())
