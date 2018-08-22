@@ -225,7 +225,13 @@ class Lineage(BaseLineage):
                 The NCBI taxonomy id
         """
         taxid_dict = NCBI.get_name_translator(self)
-        taxid_list = taxid_dict[self.name[1]]
+        try:
+            taxid_list = taxid_dict[self.name[1]]
+        except KeyError:
+            warn(f"Lowest level in {self} could not be queried. Using higher level")
+            low_ind = self.index(self.name[1])
+            # NOTE: If this fails again the program will crash
+            taxid_list = taxid_dict[self[low_ind - 1]]
         if len(taxid_list) > 1:
             warn(f"{self.name} has multiple taxids. Picking the first one")
         taxid = taxid_list[0]
