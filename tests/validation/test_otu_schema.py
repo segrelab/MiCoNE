@@ -11,6 +11,7 @@ from schematics.exceptions import DataError, ValidationError
 
 from mindpipe.validation import (
     BiomType,
+    ObsmetaType,
     CorrelationmatrixType,
     PvaluematrixType,
     MetadataModel,
@@ -48,27 +49,32 @@ class TestInteractionType:
     def test_correlations_good(self, correlation_files):
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
+        obsmeta_type = ObsmetaType()
         meta_type = MetadataModel()
         children_type = ChildrenmapType()
-        for corr, pval, meta, child in correlation_files["good"]:
+        for corr, pval, meta, child, obsmeta in correlation_files["good"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
+            obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
             with open(meta, 'r') as fid:
                 meta_data = json.load(fid)
             with open(child, 'r') as fid:
                 child_data = json.load(fid)
             corr_type.validate(corr_data)
             pval_type.validate(pval_data)
+            obsmeta_type.validate(obsmeta_data)
             meta_type.validate(meta_data)
             children_type.validate(child_data)
 
     def test_correlations_bad(self, correlation_files):
         corr_type = CorrelationmatrixType()
         pval_type = PvaluematrixType(symm=True)
+        obsmeta_type = ObsmetaType()
         children_type = ChildrenmapType()
-        for corr, pval, meta, child in correlation_files["bad"]:
+        for corr, pval, meta, child, obsmeta in correlation_files["bad"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
+            obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
             with open(meta, 'r') as fid:
                 meta_data = json.load(fid)
             with open(child, 'r') as fid:
@@ -82,6 +88,8 @@ class TestInteractionType:
                 meta_type.validate()
             with pytest.raises(ValidationError):
                 children_type.validate(child_data)
+            with pytest.raises(ValidationError):
+                obsmeta_type.validate(obsmeta_data)
 
 
 @pytest.mark.usefixtures("raw_network_data")
