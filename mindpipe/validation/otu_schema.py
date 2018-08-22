@@ -264,7 +264,7 @@ class PvaluematrixType(InteractionmatrixType):
 
 
 class MetadataModel(Model):
-    """ DataType that describes the expected structure of the network metadata dict """
+    """ Model that describes the expected structure of the network metadata input """
     host = StringType(required=True)
     condition = StringType(required=True)
     location = StringType(required=True)
