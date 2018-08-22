@@ -7,7 +7,16 @@ import numpy as np
 import pandas as pd
 from schematics.exceptions import ValidationError
 from schematics.models import Model
-from schematics.types import BaseType, StringType, FloatType, IntType, DateType, ListType, DictType
+from schematics.types import (
+    BaseType,
+    StringType,
+    FloatType,
+    IntType,
+    DateType,
+    ListType,
+    DictType,
+    ModelType
+)
 
 
 class HeaderType(BaseType):
