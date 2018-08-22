@@ -14,7 +14,10 @@ from mindpipe.validation import (
     CorrelationmatrixType,
     PvaluematrixType,
     MetadataModel,
-    ChildrenmapType
+    ChildrenmapType,
+    NodesModel,
+    LinksModel,
+    NetworkmetadataModel,
 )
 
 
@@ -79,3 +82,42 @@ class TestInteractionType:
                 meta_type.validate()
             with pytest.raises(ValidationError):
                 children_type.validate(child_data)
+
+
+@pytest.mark.usefixtures("raw_network_data")
+class TestNetworkType:
+    """ Tests for nodes, links and network metadata models """
+
+    def test_nodes(self, raw_network_data):
+        for good_data in raw_network_data["good"]:
+            good_nodes = good_data["nodes"]
+            good_nodes_model = NodesModel({"nodes": good_nodes}, strict=False)
+            good_nodes_model.validate()
+        for bad_data in raw_network_data["bad"]:
+            bad_nodes = bad_data["nodes"]
+            with pytest.raises(DataError):
+                bad_nodes_model = NodesModel({"nodes": bad_nodes}, strict=False)
+                bad_nodes_model.validate()
+
+    def test_links(self, raw_network_data):
+        for good_data in raw_network_data["good"]:
+            good_links = good_data["links"]
+            good_links_model = LinksModel({"links": good_links}, strict=False)
+            good_links_model.validate()
+        for bad_data in raw_network_data["bad"]:
+            bad_links = bad_data["links"]
+            with pytest.raises(DataError):
+                bad_links_model = LinksModel({"links": bad_links}, strict=False)
+                bad_links_model.validate()
+
+    def test_networkmetadata(self, raw_network_data):
+        for good_data in raw_network_data["good"]:
+            good_metadata = {k: v for k, v in good_data.items() if k not in {"links", "nodes"}}
+            print(good_metadata)
+            good_metadata_model = NetworkmetadataModel(good_metadata, strict=False)
+            good_metadata_model.validate()
+        for bad_data in raw_network_data["bad"]:
+            bad_metadata = {k: v for k, v in bad_data.items() if k not in {"links", "nodes"}}
+            with pytest.raises(DataError):
+                bad_metadata_model = NetworkmetadataModel(bad_metadata, strict=False)
+                bad_metadata_model.validate()
