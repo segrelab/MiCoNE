@@ -105,7 +105,7 @@ class Network:
         else:
             interaction_validator = InteractionmatrixType(symm=directed)
         interaction_validator.validate(interactions)
-        if pvalues:
+        if pvalues is not None:
             self._verify_integrity(interactions, pvalues)
             pvalue_validator = PvaluematrixType(symm=directed)
             pvalue_validator.validate(pvalues)
@@ -270,7 +270,7 @@ class Network:
         links: List[Dict[str, Any]] = []
         for source, target in product(interactions.index, interactions.columns):
             weight = interactions.loc[source, target]
-            pvalue = pvalues.loc[source, target] if pvalues else None
+            pvalue = pvalues.loc[source, target] if pvalues is not None else None
             links.append(
                 {
                     "source": source,
