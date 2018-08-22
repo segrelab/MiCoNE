@@ -9,5 +9,7 @@
     "platform": "illumina"
   },
   "pubmed_id": "",
-  "description": "Controls from a Fecal Microbiome Transplant experiment"
+  "description": "Controls from a Fecal Microbiome Transplant experiment",
+  "date": "2018-08-22",
+  "authors": ["Dileep Kishore"]
 }
