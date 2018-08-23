@@ -13,7 +13,7 @@ install:
 script:
     - pytest -sv --cov=mindpipe
     - flake8 mindpipe
-    - travis-sphinx build
+    - travis-sphinx build --source=docs
 
 after_success:
     - travis-sphinx deploy
