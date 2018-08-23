@@ -5,6 +5,23 @@ Changelog
 Unreleased
 ----------
 
+0.2.4 (2018-08-23)
+------------------
+
+Added
++++++
+- ``travis-sphinx`` to automatically deploy 'sphinx' docs to ``gh-pages``
+- Custom ``JsonEncoder`` class to encode json network data
+
+Changed
++++++++
+- sphix theme to ``sphinx_rtd_theme``
+
+Fixed
++++++
+- ``Network._create_network`` now removes complementary links in undirected networks
+
+
 0.2.3 (2018-08-23)
 ------------------
 
