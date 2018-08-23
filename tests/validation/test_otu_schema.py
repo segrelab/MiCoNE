@@ -52,7 +52,7 @@ class TestInteractionType:
         obsmeta_type = ObsmetaType()
         meta_type = MetadataModel()
         children_type = ChildrenmapType()
-        for corr, pval, meta, child, obsmeta in correlation_files["good"]:
+        for corr, pval, meta, child, obsmeta, cmeta in correlation_files["good"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
@@ -71,7 +71,7 @@ class TestInteractionType:
         pval_type = PvaluematrixType(symm=True)
         obsmeta_type = ObsmetaType()
         children_type = ChildrenmapType()
-        for corr, pval, meta, child, obsmeta in correlation_files["bad"]:
+        for corr, pval, meta, child, obsmeta, cmeta in correlation_files["bad"]:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
