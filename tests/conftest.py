@@ -98,7 +98,8 @@ def correlation_files():
             meta = data_fol / "metadata.json"
             child = data_fol / "children_map.json"
             obsmeta = data_fol / "obs_metadata.csv"
-            data[kind].append((corr, pval, meta, child, obsmeta))
+            cmeta = data_fol / "cmetadata.json"
+            data[kind].append((corr, pval, meta, child, obsmeta, cmeta))
     return data
 
 
