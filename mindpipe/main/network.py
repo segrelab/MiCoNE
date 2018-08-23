@@ -3,6 +3,7 @@
 """
 
 from itertools import product
+import json
 from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
@@ -322,3 +323,90 @@ class Network:
             filter_fun = interaction_filter
         links_thres = list(filter(filter_fun, links))
         return links_thres
+
+    @classmethod
+    def load_data(
+            cls,
+            interaction_file: str,
+            meta_file: str,
+            cmeta_file: str,
+            obsmeta_file: str,
+            pvalue_file: Optional[str] = None,
+            children_file: Optional[str] = None,
+            interaction_type: str = "correlation",
+            interaction_threshold: float = 0.3,
+            pvalue_threshold: float = 0.05,
+            pvalue_correction: Optional[str] = "fdr_bh",
+            directed: bool = False,
+    ) -> "Network":
+        """
+            Create a `Network` object from files (interaction tables and other metadata)
+
+            Parameters
+            ----------
+            interaction_file : str
+                The `tsv` file containing the matrix of interactions
+            meta_file : str
+                The `json` file containing the metadata for the whole network (general and experiment)
+            cmeta_file : str
+                The `json` file containings the computational metadata for the whole network
+            obsmeta_file : str
+                The `csv` file containing taxonomy information for the nodes of the network
+            pvalue_file : str, optional
+                The `tsv` file containing the matrix of pvalues
+                Default is None
+            children_file : str, optional
+                The `json` file containing the mapping between observations and their children
+            interaction_type : str, optional
+                The type of interaction encoded by the edges of the network
+                Default value is correlation
+            interaction_threshold : float, optional
+                The value to which the interactions (absolute value) are to be thresholded
+                To disable thresholding based on interaction value then pass in 0.0
+                Default value is 0.3
+            pvalue_threshold : float, optional
+                This is the `alpha` value for pvalue cutoff
+                Default value is 0.05
+            pvalue_correction : str, optional
+                The method to use for multiple hypothesis correction
+                Default value is 'fdr_bh'
+                Set to None to turn off multiple hypothesis correction
+                Use `Network.pcorr_methods` to get the list of supported methods
+            directed : bool
+                True if network is directed
+                Default value is False
+
+            Returns
+            -------
+            Network
+                The instance of the `Network` class
+        """
+        interactions = pd.read_table(interaction_file, index_col=0)
+        with open(meta_file, 'r') as fid:
+            metadata = json.load(fid)
+        with open(cmeta_file, 'r') as fid:
+            cmetadata = json.load(fid)
+        obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
+        if pvalue_file is not None:
+            pvalues = pd.read_table(pvalue_file, index_col=0)
+        else:
+            pvalues = None
+        if children_file is not None:
+            with open(children_file, 'r') as fid:
+                children_map = json.load(fid)
+        else:
+            children_map = None
+        network = cls(
+            interactions,
+            metadata,
+            cmetadata,
+            obs_metadata,
+            pvalues,
+            children_map,
+            interaction_type,
+            interaction_threshold,
+            pvalue_threshold,
+            pvalue_correction,
+            directed,
+        )
+        return network
