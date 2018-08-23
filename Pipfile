@@ -33,6 +33,7 @@ mypy = "*"
 numpydoc = "*"
 pytest-cov = "*"
 codecov = "*"
+travis-sphinx = "*"
 
 [requires]
 python_version = "3.6"
