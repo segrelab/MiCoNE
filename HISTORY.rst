@@ -1,8 +1,75 @@
-=======
-History
-=======
+=========
+Changelog
+=========
+
+Unreleased
+----------
+
+0.2.3 (2018-08-23)
+------------------
+
+Added
++++++
+- ``Network.load_data`` to create networks from files
+- 'computational_metadata' to test data
+
+Changed
++++++++
+- Add 'computational_metadata' to 'correlation_data' fixtures and tests
+
+
+0.2.2 (2018-08-22)
+------------------
+
+Added
++++++
+- ``Lineage.taxid`` property and tests
+- ``NodesModel``, ``LinksModel`` and ``NetworkmetadataModel``
+- ``Network`` class to read, write and manipulate networks and tests
+- 'network_files' and 'correlation_data' fixtures for tests
+
+Changed
++++++++
+- Keys for ``MetadataType`` class
+- Incorporate new keys in 'metadata.json' in test data
+- Changed ``MetadataType`` from 'BaseType' to 'Model'
+- Renamed ``MetadataType`` -> ``MetadataModel``
+
+
+0.2.1 (2018-08-17)
+------------------
+
+Added
++++++
+- ``ChildrenmapType`` class and tests
+
+Changed
++++++++
+- Network metadata files for tests
+
+
+0.2.0 (2018-08-17)
+------------------
+
+Added
++++++
+- ``Lineage`` class
+- ``Otu`` class
+- ``OtuValidator`` class
+- ``OtuSchema`` class
+- ``taxmetadata_converter`` functions to convert to and from ``qiime1`` and ``qiime2`` taxonomy formats
+
 
 0.1.0 (2018-06-30)
 ------------------
 
-* First release on PyPI.
+Added
++++++
+- First release and initial commits
+
+
+.. _[0.2.3]: https://github.com/dileep-kishore/mindpipe/compare/v0.2.2...v0.2.3
+.. _[0.2.2]: https://github.com/dileep-kishore/mindpipe/compare/v0.2.1...v0.2.2
+.. _[0.2.1]: https://github.com/dileep-kishore/mindpipe/compare/v0.2.0...v0.2.1
+.. _[0.2.0]: https://github.com/dileep-kishore/mindpipe/compare/v0.1.0...v0.2.0
+
