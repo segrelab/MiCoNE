@@ -1,0 +1,6 @@
+{
+  "denoising": "deblur",
+  "taxonomy_db": "greengenes",
+  "network_inference": "SparCC",
+  "pvalue_correction": "fdr_bh"
+}
