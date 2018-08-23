@@ -4,7 +4,7 @@
 
 from itertools import product
 import json
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
@@ -268,8 +268,13 @@ class Network:
                     "children": children,
                 }
             )
+        link_set: Set[Set[str]] = set()
         links: List[Dict[str, Any]] = []
         for source, target in product(interactions.index, interactions.columns):
+            if source == target:
+                continue
+            if not directed and frozenset([source, target]) in link_set:
+                continue
             weight = interactions.loc[source, target]
             pvalue = pvalues.loc[source, target] if pvalues is not None else None
             links.append(
@@ -280,6 +285,8 @@ class Network:
                     "pvalue": pvalue,
                 }
             )
+            if not directed:
+                link_set.add(frozenset([source, target]))
         nodes_model = NodesModel({"nodes": nodes}, strict=False)
         nodes_model.validate()
         links_model = LinksModel({"links": links}, strict=False)
