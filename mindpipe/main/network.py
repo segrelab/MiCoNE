@@ -430,6 +430,19 @@ class Network:
         )
         return network
 
+    @property
+    def graph(self) -> nx.Graph:
+        """ Networkx representation of the network """
+        if self.metadata["directionality"] == "directed":
+            graph = nx.DiGraph(**self.metadata)
+        else:
+            graph = nx.Graph(**self.metadata)
+        for node in self.nodes:
+            graph.add_node(node["id"], **node)
+        for link in self.links:
+            graph.add_edge(link["source"], link["target"], **link)
+        return graph
+
     def json(self, threshold: bool = True) -> str:
         """ Network as a JSON string """
         nodes = {"nodes": self.nodes}
