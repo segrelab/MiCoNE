@@ -4,8 +4,10 @@
 
 import json
 
-import pytest
+import networkx as nx
 import pandas as pd
+import pytest
+
 from mindpipe.main import Network
 
 
@@ -48,5 +50,22 @@ class TestNetwork:
             assert len(network.links_thres) <= len(network.links)
             assert all(key in network.metadata for key in meta_data)
 
+    def test_graph(self, correlation_data):
+        for corr_data, pval_data, meta_data, child_data, obsmeta_data, cmeta_data in correlation_data["good"]:
+            network = Network(
+                corr_data,
+                meta_data,
+                cmeta_data,
+                obsmeta_data,
+                pval_data,
+                child_data,
+            )
+            graph = network.graph
+            assert isinstance(graph, nx.Graph)
+            if network.metadata["directionality"] == "directed":
+                assert isinstance(graph, nx.DiGraph)
+            assert len(network.nodes) == graph.number_of_nodes()
+            assert len(network.links) == graph.number_of_edges()
+            assert all(key in graph.graph for key in meta_data)
     def test_load_from_network(self, network_files):
         assert True
