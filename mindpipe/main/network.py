@@ -6,6 +6,7 @@ from itertools import product
 import json
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+import networkx as nx
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
 
