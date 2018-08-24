@@ -4,7 +4,7 @@
 
 from itertools import product
 import json
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, FrozenSet, Tuple
 
 import networkx as nx
 import pandas as pd
@@ -281,7 +281,7 @@ class Network:
                     "children": children,
                 }
             )
-        link_set: Set[Set[str]] = set()
+        link_set: Set[FrozenSet[str]] = set()
         links: List[Dict[str, Any]] = []
         for source, target in product(interactions.index, interactions.columns):
             if source == target:
