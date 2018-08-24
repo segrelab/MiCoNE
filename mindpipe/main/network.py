@@ -7,6 +7,7 @@ import json
 from typing import Any, Dict, List, Optional, Set, FrozenSet, Tuple
 
 import networkx as nx
+import numpy as np
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
 
@@ -480,3 +481,81 @@ class Network:
         """
         with open(fpath, 'w') as fid:
             fid.write(self.json(threshold=threshold))
+
+    @classmethod
+    def load_json(cls, fpath: str) -> "Network":
+        """
+            Create a `Network` object from a network `JSON` file
+
+            Parameters
+            ----------
+            fpath : str
+                The path to the network `JSON` file
+
+            Returns
+            -------
+            Network
+                The instance of the `Network` class
+        """
+        with open(fpath, 'r') as fid:
+            raw_data = json.load(fid)
+        # Validation
+        nodes_model = NodesModel({"nodes": raw_data["nodes"]}, strict=False)
+        nodes_model.validate()
+        links_model = LinksModel({"links": raw_data["links"]}, strict=False)
+        links_model.validate()
+        non_meta_keys = ["nodes", "links"]
+        metadata = {k: v for k, v in raw_data.items() if k not in non_meta_keys}
+        networkmetadata_model = NetworkmetadataModel(metadata, strict=False)
+        networkmetadata_model.validate()
+        # Variable assignment
+        cmetadata = raw_data["computational_metadata"]
+        interaction_type = raw_data["interaction_type"]
+        interaction_threshold = cmetadata["interaction_threshold"]
+        pvalue_threshold = cmetadata["pvalue_threshold"]
+        pvalue_correction = cmetadata["pvalue_correction"]
+        directed = True if raw_data["directionality"] == "directed" else False
+        index: List[str] = []
+        lineages: List[dict] = []
+        children_map: Dict[str, List[str]] = {}
+        abundance_flag = True if raw_data["nodes"][0]["abundance"] is not None else False
+        for node in raw_data["nodes"]:
+            index.append(node["id"])
+            lineage = Lineage.from_str(node["lineage"]).to_dict("Species")
+            children_map[node["id"]] = node["children"]
+            if abundance_flag:
+                abundance = node.get("abundance", 0.0)
+                lineages.append({**lineage, **dict(abundance=abundance)})
+            else:
+                lineages.append(lineage)
+        obs_metadata = pd.DataFrame(lineages, index=index)
+        mat_shape = (len(index), len(index))
+        interactions = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
+        pvalue_flag = True if raw_data["links"][0]["pvalue"] is not None else False
+        if pvalue_flag:
+            pvalues = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
+        else:
+            pvalues = None
+        for link in raw_data["links"]:
+            source, target = link["source"], link["target"]
+            interactions.loc[source, target] = link["weight"]
+            if not directed:
+                interactions.loc[target, source] = link["weight"]
+            if pvalue_flag:
+                pvalues.loc[source, target] = link["pvalue"]
+                if not directed:
+                    pvalues.loc[target, source] = link["pvalue"]
+        network = cls(
+            interactions,
+            metadata,
+            cmetadata,
+            obs_metadata,
+            pvalues,
+            children_map,
+            interaction_type,
+            interaction_threshold,
+            pvalue_threshold,
+            pvalue_correction,
+            directed,
+        )
+        return network
