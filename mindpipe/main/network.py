@@ -21,6 +21,7 @@ from ..validation import (
     LinksModel,
     NetworkmetadataModel,
 )
+from ..utils import JsonEncoder
 
 
 class Network:
@@ -428,3 +429,24 @@ class Network:
             directed,
         )
         return network
+
+    @property
+    def json(self) -> str:
+        """ Network as a JSON string """
+        nodes = {"nodes": self.nodes}
+        links = {"links": self.links}
+        metadata = self.metadata
+        network = {**metadata, **nodes, **links}
+        return json.dumps(network, indent=2, sort_keys=True, cls=JsonEncoder)
+
+    def write(self, fpath: str) -> None:
+        """
+            Write network to file as JSON
+
+            Parameters
+            ----------
+            fpath : str
+                The path to the `JSON` file
+        """
+        with open(fpath, 'w') as fid:
+            fid.write(self.json)
