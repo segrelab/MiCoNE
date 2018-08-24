@@ -430,16 +430,18 @@ class Network:
         )
         return network
 
-    @property
-    def json(self) -> str:
+    def json(self, threshold: bool = True) -> str:
         """ Network as a JSON string """
         nodes = {"nodes": self.nodes}
-        links = {"links": self.links}
+        if threshold:
+            links = {"links": self.links_thres}
+        else:
+            links = {"links": self.links}
         metadata = self.metadata
         network = {**metadata, **nodes, **links}
         return json.dumps(network, indent=2, sort_keys=True, cls=JsonEncoder)
 
-    def write(self, fpath: str) -> None:
+    def write(self, fpath: str, threshold: bool = True) -> None:
         """
             Write network to file as JSON
 
@@ -447,6 +449,8 @@ class Network:
             ----------
             fpath : str
                 The path to the `JSON` file
+            threshold : bool, optional
+                True if threshold needs to applied to links before writing to file
         """
         with open(fpath, 'w') as fid:
-            fid.write(self.json)
+            fid.write(self.json(threshold=threshold))
