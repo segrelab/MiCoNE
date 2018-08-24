@@ -67,5 +67,22 @@ class TestNetwork:
             assert len(network.nodes) == graph.number_of_nodes()
             assert len(network.links) == graph.number_of_edges()
             assert all(key in graph.graph for key in meta_data)
+
+    def test_json(self, correlation_data):
+        for corr_data, pval_data, meta_data, child_data, obsmeta_data, cmeta_data in correlation_data["good"]:
+            network = Network(
+                corr_data,
+                meta_data,
+                cmeta_data,
+                obsmeta_data,
+                pval_data,
+                child_data,
+            )
+            net_loaded = json.loads(network.json(threshold=False))
+            net_loaded["nodes"] == network.nodes
+            net_loaded["links"] == network.links
+            net_loaded_thres = json.loads(network.json(threshold=True))
+            net_loaded_thres["nodes"] == network.nodes
+            net_loaded_thres["links"] == network.links_thres
     def test_load_from_network(self, network_files):
         assert True
