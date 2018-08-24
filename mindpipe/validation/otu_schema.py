@@ -15,7 +15,8 @@ from schematics.types import (
     DateType,
     ListType,
     DictType,
-    ModelType
+    ModelType,
+    UnionType,
 )
 
 
@@ -323,6 +324,6 @@ class LinksModel(Model):
 
 class NetworkmetadataModel(MetadataModel):
     """ Model that describes the expected structure of the network metadata """
-    computational_metadata = DictType(StringType, required=True)
+    computational_metadata = DictType(UnionType(types=(StringType, FloatType)), required=True)
     directionality = StringType(regex=r"(undirected|directed)", required=True)
     interaction_type = StringType()
