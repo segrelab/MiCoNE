@@ -118,6 +118,12 @@ class Network:
                 corrected_pvalues = pvalues
         else:
             corrected_pvalues = None
+        extra_compdata = {
+            "interaction_threshold": interaction_threshold,
+            "pvalue_threshold": pvalue_threshold,
+            "pvalue_correction": pvalue_correction,
+        }
+        cmetadata = {**cmetadata, **extra_compdata}
         self.nodes, self.links, self.metadata = self._create_network(
             interactions,
             corrected_pvalues,
@@ -406,6 +412,12 @@ class Network:
             metadata = json.load(fid)
         with open(cmeta_file, 'r') as fid:
             cmetadata = json.load(fid)
+        extra_compdata = {
+            "interaction_threshold": interaction_threshold,
+            "pvalue_threshold": pvalue_threshold,
+            "pvalue_correction": pvalue_correction,
+        }
+        cmetadata = {**cmetadata, **extra_compdata}
         obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
         if pvalue_file is not None:
             pvalues = pd.read_table(pvalue_file, index_col=0)
