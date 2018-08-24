@@ -133,6 +133,17 @@ class Network:
             pvalue_flag=pvalues is not None,
         )
 
+    def __repr__(self) -> str:
+        n_nodes = len(self.nodes)
+        n_links = len(self.links)
+        directionality = self.metadata['directionality']
+        interaction_type = self.metadata['interaction_type']
+        string = (
+            f"<Network nodes={n_nodes} links={n_links} "
+            f"type={interaction_type} directionality={directionality}>"
+        )
+        return string
+
     @staticmethod
     def _verify_integrity(interactions: pd.DataFrame, pvalues: pd.DataFrame) -> None:
         """
