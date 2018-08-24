@@ -84,5 +84,20 @@ class TestNetwork:
             net_loaded_thres = json.loads(network.json(threshold=True))
             net_loaded_thres["nodes"] == network.nodes
             net_loaded_thres["links"] == network.links_thres
-    def test_load_from_network(self, network_files):
-        assert True
+
+    def test_write_load_network(self, correlation_data, tmpdir):
+        for corr_data, pval_data, meta_data, child_data, obsmeta_data, cmeta_data in correlation_data["good"]:
+            network = Network(
+                corr_data,
+                meta_data,
+                cmeta_data,
+                obsmeta_data,
+                pval_data,
+                child_data,
+            )
+            network_file = tmpdir.mkdir("networks").join("network.json")
+            network.write(network_file, threshold=True)
+            network_loaded = Network.load_json(network_file)
+            assert network.metadata == network_loaded.metadata
+            assert network.nodes == network_loaded.nodes
+            assert network.links_thres == network_loaded.links_thres
