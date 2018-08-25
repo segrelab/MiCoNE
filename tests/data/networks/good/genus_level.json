@@ -7,7 +7,11 @@
     "project_name": "Fecal Microbiome Transplant"
   },
   "computational_metadata": {
-    "denoising": "deblur"
+    "denoising": "deblur",
+    "interaction_type": "correlation",
+    "interaction_threshold": 0.3,
+    "pvalue_threshold": 0.05,
+    "pvalue_correction": "fdr_bh"
   },
   "pubmed_id": "0243",
   "description": "FMT data processed using deblur",
