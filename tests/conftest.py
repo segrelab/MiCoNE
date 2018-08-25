@@ -123,7 +123,7 @@ def correlation_data(correlation_files):
 
 
 @pytest.fixture(scope="module")
-def network_files():
+def network_json_files():
     """ Fixture that loads the network files """
     net_fol = TEST_DATADIR / "networks"
     data = {
@@ -134,11 +134,11 @@ def network_files():
 
 
 @pytest.fixture(scope="module")
-def raw_network_data(network_files):
+def raw_network_data(network_json_files):
     """ Fixture that loads the network file directly as json """
     data = {"good": [], "bad": []}
     for kind in {"good", "bad"}:
-        for file in network_files[kind]:
+        for file in network_json_files[kind]:
             with open(file, 'r') as fid:
                 data[kind].append(json.load(fid))
     return data

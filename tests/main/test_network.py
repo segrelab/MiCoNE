@@ -11,7 +11,7 @@ import pytest
 from mindpipe.main import Network
 
 
-@pytest.mark.usefixtures("correlation_data", "correlation_files", "network_files")
+@pytest.mark.usefixtures("correlation_data", "correlation_files")
 class TestNetwork:
     """ Tests for the Network class """
 
