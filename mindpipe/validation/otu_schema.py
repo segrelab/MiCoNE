@@ -327,3 +327,19 @@ class NetworkmetadataModel(MetadataModel):
     computational_metadata = DictType(UnionType(types=(StringType, FloatType)), required=True)
     directionality = StringType(regex=r"(undirected|directed)", required=True)
     interaction_type = StringType()
+
+
+class ElistType(BaseType):
+    """ DataType that describes the expected structure of an edge list """
+
+    def validate_headers_index(self, value):
+        if "source" not in value.columns:
+            raise ValidationError("source column must be present in the edge list")
+        if "target" not in value.columns:
+            raise ValidationError("target column must be present in the edge list")
+        if "weight" not in value.columns:
+            raise ValidationError("weight column must be present in the edge list")
+        if len(value["source"]) == len(set(value["source"])):
+            raise ValidationError("Duplicate entries in source column not allowed")
+        if len(value["target"]) == len(set(value["target"])):
+            raise ValidationError("Duplicate entries in target column not allowed")

@@ -10,5 +10,6 @@ from .otu_schema import (
     NodesModel,
     LinksModel,
     NetworkmetadataModel,
+    ElistType,
 )
 from .otu_validator import OtuValidator
