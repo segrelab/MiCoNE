@@ -36,7 +36,8 @@ class Network:
             The `DataFrame` containing the matrix of interactions
         metadata : dict
             The metadata for the whole network (general and experiment)
-            Must contain 'host', 'disease_state', 'location', 'method', 'pubmed_id'
+            Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
+            'description', 'date', 'authors
         cmetadata : dict
             The computational metadata for the whole network
             Must contain information as to how the network was generated
