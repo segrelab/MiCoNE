@@ -519,13 +519,12 @@ class Network:
         index: List[str] = []
         lineages: List[dict] = []
         children_map: Dict[str, List[str]] = {}
-        abundance_flag = True if raw_data["nodes"][0]["abundance"] is not None else False
         for node in raw_data["nodes"]:
             index.append(node["id"])
             lineage = Lineage.from_str(node["lineage"]).to_dict("Species")
             children_map[node["id"]] = node["children"]
-            if abundance_flag:
-                abundance = node.get("abundance", 0.0)
+            abundance = node.get("abundance")
+            if abundance is not None:
                 lineages.append({**lineage, **dict(abundance=abundance)})
             else:
                 lineages.append(lineage)
