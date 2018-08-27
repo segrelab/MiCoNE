@@ -1,0 +1,1331 @@
+{
+  "authors": [
+    "Dileep Kishore"
+  ],
+  "computational_metadata": {
+    "denoising": "deblur",
+    "interaction_threshold": 0.3,
+    "network_inference": "SparCC",
+    "pvalue_correction": "fdr_bh",
+    "pvalue_threshold": 0.05,
+    "taxonomy_db": "greengenes"
+  },
+  "condition": "FMT controls",
+  "date": "2018-08-22",
+  "description": "Controls from a Fecal Microbiome Transplant experiment",
+  "directionality": "undirected",
+  "disease_state": "Healthy",
+  "experimental_metadata": {
+    "data-type": "16S rRNA",
+    "platform": "illumina",
+    "region": "V4"
+  },
+  "host": "Homo Sapiens",
+  "interaction_type": "correlation",
+  "links": [
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus26",
+      "weight": 0.4463504077449853
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus30",
+      "weight": 0.4695120520681298
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus32",
+      "weight": 0.3160675969797761
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus22",
+      "weight": 0.3620941676836792
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus19",
+      "weight": 0.410774273721671
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus35",
+      "weight": 0.3026054790489653
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus20",
+      "weight": 0.5385447793303622
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus27",
+      "weight": 0.3995627754364039
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus29",
+      "target": "genus23",
+      "weight": -0.3031558502422682
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus3",
+      "target": "genus6",
+      "weight": 0.5059223303856123
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus3",
+      "target": "genus4",
+      "weight": 0.4682500373256701
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus3",
+      "target": "genus32",
+      "weight": 0.3058577563543983
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus3",
+      "target": "genus27",
+      "weight": -0.3599805366106022
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus3",
+      "target": "genus0",
+      "weight": -0.4025059797888183
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus3",
+      "target": "genus9",
+      "weight": -0.334045879629367
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus34",
+      "weight": 0.478956378528811
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus8",
+      "weight": 0.4234435367941165
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus22",
+      "weight": 0.31758238939849043
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus31",
+      "weight": 0.330766404475382
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus10",
+      "weight": 0.34355507009694675
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus17",
+      "weight": -0.3115403067348137
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus33",
+      "weight": -0.6111308606172308
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus5",
+      "target": "genus36",
+      "weight": -0.30649486711617063
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus6",
+      "target": "genus34",
+      "weight": 0.4188223642518789
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus6",
+      "target": "genus4",
+      "weight": 0.3673393243978248
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus6",
+      "target": "genus8",
+      "weight": 0.3292344602185473
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus6",
+      "target": "genus46",
+      "weight": 0.3277364878827904
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus6",
+      "target": "genus41",
+      "weight": -0.3374824779988995
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus6",
+      "target": "genus39",
+      "weight": -0.3319362105546784
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus26",
+      "target": "genus30",
+      "weight": 0.4607599703787159
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus26",
+      "target": "genus22",
+      "weight": 0.519505596043114
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus26",
+      "target": "genus19",
+      "weight": 0.5977822232911706
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus26",
+      "target": "genus35",
+      "weight": 0.4214746930005308
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus26",
+      "target": "genus20",
+      "weight": 0.5185967055960365
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus26",
+      "target": "genus27",
+      "weight": 0.3791891115255443
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus26",
+      "target": "genus11",
+      "weight": -0.3622817268754633
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus8",
+      "weight": 0.5624998242172703
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus22",
+      "weight": 0.3292246252360006
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus27",
+      "weight": 0.3125023829294892
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus38",
+      "weight": 0.33477590757899395
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus46",
+      "weight": 0.3200791649229507
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus33",
+      "weight": -0.4572555531872046
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus39",
+      "weight": -0.4130703182898866
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus12",
+      "weight": -0.3406817245375661
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus36",
+      "weight": -0.4848381881208744
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus34",
+      "target": "genus42",
+      "weight": -0.3832540227231853
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus4",
+      "target": "genus31",
+      "weight": 0.4305942226216625
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus4",
+      "target": "genus45",
+      "weight": -0.3483544739034281
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus8",
+      "target": "genus38",
+      "weight": 0.5758754780861404
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus8",
+      "target": "genus46",
+      "weight": 0.4823891616344821
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus8",
+      "target": "genus28",
+      "weight": 0.32669948914902125
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus8",
+      "target": "genus2",
+      "weight": 0.3445248748674286
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus8",
+      "target": "genus33",
+      "weight": -0.6042043394921103
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus8",
+      "target": "genus42",
+      "weight": -0.3194009970837425
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus30",
+      "target": "genus22",
+      "weight": 0.4165040106574462
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus30",
+      "target": "genus19",
+      "weight": 0.42811483332420586
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus30",
+      "target": "genus35",
+      "weight": 0.4570704347286792
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus30",
+      "target": "genus20",
+      "weight": 0.4696041419035577
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus30",
+      "target": "genus41",
+      "weight": -0.3381635723427405
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus30",
+      "target": "genus18",
+      "weight": -0.30681964433223063
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus32",
+      "target": "genus22",
+      "weight": 0.30534343732354274
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus32",
+      "target": "genus1",
+      "weight": 0.3257466013026653
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus32",
+      "target": "genus20",
+      "weight": 0.3485332446014772
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus32",
+      "target": "genus9",
+      "weight": -0.5013736368752598
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus32",
+      "target": "genus7",
+      "weight": -0.4229571890023151
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus32",
+      "target": "genus33",
+      "weight": 0.37442019480730615
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus16",
+      "target": "genus0",
+      "weight": 0.3454990200794716
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus16",
+      "target": "genus18",
+      "weight": 0.31290949937299983
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus22",
+      "target": "genus19",
+      "weight": 0.3817871333568917
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus22",
+      "target": "genus20",
+      "weight": 0.3672351135215829
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus22",
+      "target": "genus41",
+      "weight": -0.4565852313962795
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus31",
+      "target": "genus10",
+      "weight": 0.3471617728496628
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus31",
+      "target": "genus45",
+      "weight": -0.36383912300542176
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus19",
+      "target": "genus17",
+      "weight": -0.42883379448283016
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus19",
+      "target": "genus35",
+      "weight": 0.4454443899862041
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus19",
+      "target": "genus20",
+      "weight": 0.5219770353163989
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus19",
+      "target": "genus27",
+      "weight": 0.3557949052832555
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus19",
+      "target": "genus11",
+      "weight": -0.35609644644530275
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus1",
+      "target": "genus17",
+      "weight": 0.4179643108410125
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus1",
+      "target": "genus9",
+      "weight": -0.30674362187029514
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus17",
+      "target": "genus0",
+      "weight": 0.4257880114681379
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus17",
+      "target": "genus15",
+      "weight": 0.3348584414831455
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus17",
+      "target": "genus18",
+      "weight": 0.30681480100191577
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus17",
+      "target": "genus45",
+      "weight": 0.3704425918735576
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus20",
+      "weight": 0.5840965523905352
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus0",
+      "weight": -0.4416221745572933
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus46",
+      "weight": -0.4847023778991261
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus28",
+      "weight": -0.344117148943516
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus2",
+      "weight": -0.4645540271214141
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus39",
+      "weight": 0.3244998395326082
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus40",
+      "weight": 0.34274335660633964
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus12",
+      "weight": 0.3171427076229049
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus14",
+      "weight": 0.302759146927324
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus36",
+      "weight": 0.3926438257926104
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus35",
+      "target": "genus42",
+      "weight": 0.3826273014764133
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus20",
+      "target": "genus27",
+      "weight": 0.31206588388111195
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus20",
+      "target": "genus11",
+      "weight": -0.3279853329952592
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus27",
+      "target": "genus41",
+      "weight": -0.3075509464416413
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus27",
+      "target": "genus42",
+      "weight": -0.3516271083867257
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus38",
+      "target": "genus46",
+      "weight": 0.3870990278110215
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus38",
+      "target": "genus28",
+      "weight": 0.3457126367783869
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus38",
+      "target": "genus33",
+      "weight": -0.4199691963694199
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus0",
+      "target": "genus40",
+      "weight": -0.3904520161875751
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus0",
+      "target": "genus36",
+      "weight": -0.4749353831826303
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus0",
+      "target": "genus42",
+      "weight": -0.4140558177836364
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus37",
+      "target": "genus2",
+      "weight": -0.3405950324753757
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus25",
+      "target": "genus44",
+      "weight": 0.301049113945772
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus46",
+      "target": "genus28",
+      "weight": 0.4946164674110339
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus46",
+      "target": "genus43",
+      "weight": -0.3400228314146541
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus46",
+      "target": "genus33",
+      "weight": -0.30684743188487723
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus41",
+      "target": "genus9",
+      "weight": 0.33266082502073746
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus41",
+      "target": "genus39",
+      "weight": 0.3694249157651429
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus28",
+      "target": "genus43",
+      "weight": -0.31628210707718746
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus28",
+      "target": "genus33",
+      "weight": -0.359654515900323
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus9",
+      "target": "genus2",
+      "weight": 0.3105891787007637
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus9",
+      "target": "genus7",
+      "weight": 0.5557220484531451
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus9",
+      "target": "genus33",
+      "weight": -0.3083503683543747
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus2",
+      "target": "genus7",
+      "weight": 0.32645815065975586
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus15",
+      "target": "genus33",
+      "weight": 0.3108904416622384
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus33",
+      "target": "genus39",
+      "weight": 0.3131301389625433
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus39",
+      "target": "genus40",
+      "weight": 0.463499636418036
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus39",
+      "target": "genus12",
+      "weight": 0.4688068701817985
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus39",
+      "target": "genus36",
+      "weight": 0.35675906577817273
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus39",
+      "target": "genus42",
+      "weight": 0.4062613028498618
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus40",
+      "target": "genus12",
+      "weight": 0.3597015444871408
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus40",
+      "target": "genus36",
+      "weight": 0.34292921141109883
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus40",
+      "target": "genus42",
+      "weight": 0.4880383653418274
+    },
+    {
+      "pvalue": 0.0,
+      "source": "genus36",
+      "target": "genus42",
+      "weight": 0.3074495132652586
+    }
+  ],
+  "location": "Stool",
+  "nodes": [
+    {
+      "abundance": null,
+      "children": [
+        "species43"
+      ],
+      "id": "genus29",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Faecalibacterium;s__",
+      "name": "Faecalibacterium",
+      "taxid": 216851,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species4",
+        "species10",
+        "species8",
+        "species9",
+        "species6",
+        "species5",
+        "species7"
+      ],
+      "id": "genus3",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Bacteroidaceae;g__Bacteroides;s__",
+      "name": "Bacteroides",
+      "taxid": 816,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species13",
+        "species14"
+      ],
+      "id": "genus5",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__",
+      "name": "Prevotella",
+      "taxid": 838,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species15"
+      ],
+      "id": "genus6",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Rikenellaceae;g__;s__",
+      "name": "Rikenellaceae",
+      "taxid": 171550,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species37",
+        "species38"
+      ],
+      "id": "genus26",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Roseburia;s__",
+      "name": "Roseburia",
+      "taxid": 841,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species49"
+      ],
+      "id": "genus34",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Veillonellaceae;g__Phascolarctobacterium;s__",
+      "name": "Phascolarctobacterium",
+      "taxid": 33024,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species11",
+        "species12"
+      ],
+      "id": "genus4",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Porphyromonadaceae;g__Parabacteroides;s__",
+      "name": "Parabacteroides",
+      "taxid": 375288,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species17"
+      ],
+      "id": "genus8",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Barnesiellaceae;g__;s__",
+      "name": "Barnesiellaceae",
+      "taxid": 2005519,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species44"
+      ],
+      "id": "genus30",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Gemmiger;s__",
+      "name": "Gemmiger",
+      "taxid": 204475,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species46",
+        "species47"
+      ],
+      "id": "genus32",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Ruminococcus;s__",
+      "name": "Ruminococcus",
+      "taxid": 1263,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species25"
+      ],
+      "id": "genus16",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__;g__;s__",
+      "name": "Clostridiales",
+      "taxid": 186802,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species32",
+        "species33"
+      ],
+      "id": "genus22",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Coprococcus;s__",
+      "name": "Coprococcus",
+      "taxid": 33042,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species45"
+      ],
+      "id": "genus31",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Oscillospira;s__",
+      "name": "Oscillospira",
+      "taxid": 119852,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species28"
+      ],
+      "id": "genus19",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__;s__",
+      "name": "Lachnospiraceae",
+      "taxid": 186803,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species2",
+        "species1"
+      ],
+      "id": "genus1",
+      "lineage": "k__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Bifidobacteriales;f__Bifidobacteriaceae;g__Bifidobacterium;s__",
+      "name": "Bifidobacterium",
+      "taxid": 1678,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species19"
+      ],
+      "id": "genus10",
+      "lineage": "k__Bacteria;p__Firmicutes;c__;o__;f__;g__;s__",
+      "name": "Firmicutes",
+      "taxid": 1239,
+      "taxlevel": "Phylum"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species26"
+      ],
+      "id": "genus17",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Clostridiaceae;g__;s__",
+      "name": "Clostridiaceae",
+      "taxid": 31979,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species50"
+      ],
+      "id": "genus35",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Erysipelotrichi;o__Erysipelotrichales;f__Erysipelotrichaceae;g__;s__",
+      "name": "Erysipelotrichaceae",
+      "taxid": 128827,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species29",
+        "species30"
+      ],
+      "id": "genus20",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Blautia;s__",
+      "name": "Blautia",
+      "taxid": 572511,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species39",
+        "species41",
+        "species40"
+      ],
+      "id": "genus27",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Ruminococcus;s__",
+      "name": "Ruminococcus",
+      "taxid": 1263,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species53"
+      ],
+      "id": "genus38",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Deltaproteobacteria;o__Desulfovibrionales;f__Desulfovibrionaceae;g__Bilophila;s__",
+      "name": "Bilophila",
+      "taxid": 35832,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species0"
+      ],
+      "id": "genus0",
+      "lineage": "k__Bacteria;p__;c__;o__;f__;g__;s__",
+      "name": "Bacteria",
+      "taxid": 2,
+      "taxlevel": "Kingdom"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species52"
+      ],
+      "id": "genus37",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Burkholderiales;f__Alcaligenaceae;g__Sutterella;s__",
+      "name": "Sutterella",
+      "taxid": 40544,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species36"
+      ],
+      "id": "genus25",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Lachnospira;s__",
+      "name": "Lachnospira",
+      "taxid": 28050,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species61"
+      ],
+      "id": "genus46",
+      "lineage": "k__Bacteria;p__Verrucomicrobia;c__Verrucomicrobiae;o__Verrucomicrobiales;f__Verrucomicrobiaceae;g__Akkermansia;s__",
+      "name": "Akkermansia",
+      "taxid": 239934,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species35"
+      ],
+      "id": "genus24",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Lachnobacterium;s__",
+      "name": "Lachnobacterium",
+      "taxid": 140625,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species56"
+      ],
+      "id": "genus41",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacteriales;f__Enterobacteriaceae;g__Escherichia;s__",
+      "name": "Escherichia",
+      "taxid": 561,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species42"
+      ],
+      "id": "genus28",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__;s__",
+      "name": "Ruminococcaceae",
+      "taxid": 541000,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species18"
+      ],
+      "id": "genus9",
+      "lineage": "k__Bacteria;p__Euryarchaeota;c__Methanobacteria;o__Methanobacteriales;f__Methanobacteriaceae;g__Methanobrevibacter;s__",
+      "name": "Methanobrevibacter",
+      "taxid": 2172,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species22"
+      ],
+      "id": "genus13",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Bacilli;o__Lactobacillales;f__Lactobacillaceae;g__Lactobacillus;s__",
+      "name": "Lactobacillus",
+      "taxid": 1578,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species3"
+      ],
+      "id": "genus2",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__;o__;f__;g__;s__",
+      "name": "Bacteroidetes",
+      "taxid": 976,
+      "taxlevel": "Phylum"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species24"
+      ],
+      "id": "genus15",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Bacilli;o__Turicibacterales;f__Turicibacteraceae;g__Turicibacter;s__",
+      "name": "Turicibacter",
+      "taxid": 191303,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species16"
+      ],
+      "id": "genus7",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Rikenellaceae;g__Alistipes;s__",
+      "name": "Alistipes",
+      "taxid": 239759,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species58"
+      ],
+      "id": "genus43",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pasteurellales;f__Pasteurellaceae;g__Haemophilus;s__",
+      "name": "Haemophilus",
+      "taxid": 724,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species20"
+      ],
+      "id": "genus11",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Bacilli;o__Bacillales;f__;g__;s__",
+      "name": "Bacillales",
+      "taxid": 1385,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species27"
+      ],
+      "id": "genus18",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Clostridiaceae;g__SMB53;s__",
+      "name": "SMB53",
+      "taxid": 31979,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species60"
+      ],
+      "id": "genus45",
+      "lineage": "k__Bacteria;p__Tenericutes;c__Mollicutes;o__RF39;f__;g__;s__",
+      "name": "RF39",
+      "taxid": 31969,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species48"
+      ],
+      "id": "genus33",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Veillonellaceae;g__Dialister;s__",
+      "name": "Dialister",
+      "taxid": 39948,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species54"
+      ],
+      "id": "genus39",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacteriales;f__Enterobacteriaceae;g__;s__",
+      "name": "Enterobacteriaceae",
+      "taxid": 543,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species55"
+      ],
+      "id": "genus40",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacteriales;f__Enterobacteriaceae;g__Citrobacter;s__",
+      "name": "Citrobacter",
+      "taxid": 544,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species21"
+      ],
+      "id": "genus12",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Bacilli;o__Bacillales;f__Staphylococcaceae;g__Staphylococcus;s__",
+      "name": "Staphylococcus",
+      "taxid": 1279,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species23"
+      ],
+      "id": "genus14",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Bacilli;o__Lactobacillales;f__Streptococcaceae;g__Streptococcus;s__",
+      "name": "Streptococcus",
+      "taxid": 1301,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species51"
+      ],
+      "id": "genus36",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__RF32;f__;g__;s__",
+      "name": "RF32",
+      "taxid": 28211,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species34"
+      ],
+      "id": "genus23",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Dorea;s__",
+      "name": "Dorea",
+      "taxid": 189330,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species31"
+      ],
+      "id": "genus21",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Clostridium;s__",
+      "name": "Clostridium",
+      "taxid": 1485,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species59"
+      ],
+      "id": "genus44",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__",
+      "name": "Pseudomonas",
+      "taxid": 286,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "species57"
+      ],
+      "id": "genus42",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacteriales;f__Enterobacteriaceae;g__Providencia;s__",
+      "name": "Providencia",
+      "taxid": 586,
+      "taxlevel": "Genus"
+    }
+  ],
+  "pubmed_id": "0123"
+}

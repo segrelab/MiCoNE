@@ -1,0 +1,15 @@
+{
+  "host": "Homo Sapiens",
+  "condition": "FMT controls",
+  "disease_state": "Healthy",
+  "location": "Stool",
+  "experimental_metadata": {
+    "data-type": "16S rRNA",
+    "region": "V4",
+    "platform": "illumina"
+  },
+  "pubmed_id": "0123",
+  "description": "Controls from a Fecal Microbiome Transplant experiment",
+  "date": "2018-08-22",
+  "authors": ["Dileep Kishore"]
+}

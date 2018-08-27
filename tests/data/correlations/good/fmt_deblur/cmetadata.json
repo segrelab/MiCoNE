@@ -1,0 +1,8 @@
+{
+  "denoising": "deblur",
+  "taxonomy_db": "greengenes",
+  "network_inference": "SparCC",
+  "interaction_threshold": 0.3,
+  "pvalue_threshold": 0.05,
+  "pvalue_correction": "fdr_bh"
+}
