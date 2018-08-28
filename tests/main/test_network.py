@@ -11,7 +11,7 @@ import pytest
 from mindpipe.main import Network
 
 
-@pytest.mark.usefixtures("correlation_data", "correlation_files")
+@pytest.mark.usefixtures("correlation_data", "correlation_files", "network_elist_files")
 class TestNetwork:
     """ Tests for the Network class """
 
@@ -101,3 +101,26 @@ class TestNetwork:
             assert network.metadata == network_loaded.metadata
             assert network.nodes == network_loaded.nodes
             assert network.links_thres == network_loaded.links_thres
+
+    def test_load_elist(self, network_elist_files):
+        for network_file, elist_file, meta_file, cmeta_file, obsmeta_file, children_file in network_elist_files["good"]:
+            network_elist = Network.load_elist(
+                elist_file,
+                meta_file,
+                cmeta_file,
+                obsmeta_file,
+                children_file,
+            )
+            network_json = Network.load_json(network_file)
+            assert network_elist.metadata == network_json.metadata
+            nodes1 = sorted(network_elist.nodes, key=lambda x: x["id"])
+            nodes2 = sorted(network_json.nodes, key=lambda x: x["id"])
+            assert nodes1 == nodes2
+            directionality = network_json.metadata["directionality"]
+            if directionality == "directed":
+                fun = lambda x: (x["source"], x["target"])
+            else:
+                fun = lambda x: frozenset([x["source"], x["target"]])
+            links1 = {fun(x): (x["pvalue"], x["weight"]) for x in network_elist.links_thres}
+            links2 = {fun(x): (x["pvalue"], x["weight"]) for x in network_json.links_thres}
+            assert links1 == links2
