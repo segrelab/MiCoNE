@@ -5,6 +5,35 @@ Changelog
 Unreleased
 ----------
 
+
+0.3.0 (2018-08-28)
+------------------
+
+Added
++++++
+- ``Network.__repr__`` - object representation for the ``Network`` class
+- ``Network.json`` method to convert network to a ``JSON`` string
+- ``Network.write`` method to write network to a json file
+- ``Network.graph`` property to return the ``nx.Graph`` representation of the network
+- ``Network.load_json`` classmethod to load network from json file
+- ``ElistType`` - Schema for edgelist
+- ``NETWORK_CONVERTERS`` to convert networks to and from various formats
+- ``Network.load_elist`` classmethod to load network from edge list file
+
+Changed
++++++++
+- Type of "computational_metadata" to ``DictType(UnionType((StringType, FloatType)))``
+- "computational_metadata" now includes 'interaction_threshold', 'pvalue_threshold' and 'pvalue_correction'
+- "abundance" is now not a required field for a node
+- Refactor network models into 'network_schema' module
+
+Fixed
++++++
+- Type annotation for link_set in ``Network._create_network``
+- Test data is now from the same source (all FMT datasets are from deblur)
+- Prevent re-correction of pvalues when loading from json or elist file
+
+
 0.2.4 (2018-08-23)
 ------------------
 
