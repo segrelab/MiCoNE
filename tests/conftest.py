@@ -142,3 +142,20 @@ def raw_network_data(network_json_files):
             with open(file, 'r') as fid:
                 data[kind].append(json.load(fid))
     return data
+
+
+@pytest.fixture(scope="module")
+def network_elist_files():
+    """ Fixture that loads the network elist files """
+    net_fol = TEST_DATADIR / "networks"
+    data = {"good": [], "bad": []}
+    for kind in ("good", "bad"):
+        network = net_fol / kind / "network.json"
+        elist_fol = net_fol / kind / "elist"
+        elist = elist_fol / "elist.csv"
+        meta = elist_fol / "metadata.json"
+        cmeta = elist_fol / "cmetadata.json"
+        obsmeta = elist_fol / "obs_metadata.csv"
+        children = elist_fol / "children_map.json"
+        data[kind].append((network, elist, meta, cmeta, obsmeta, children))
+    return data
