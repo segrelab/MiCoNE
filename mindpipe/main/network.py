@@ -22,6 +22,7 @@ from ..validation import (
     NodesModel,
     LinksModel,
     NetworkmetadataModel,
+    ElistType,
 )
 from ..utils import JsonEncoder
 
@@ -545,6 +546,114 @@ class Network:
                 pvalues.loc[source, target] = link["pvalue"]
                 if not directed:
                     pvalues.loc[target, source] = link["pvalue"]
+        network = cls(
+            interactions,
+            metadata,
+            cmetadata,
+            obs_metadata,
+            pvalues,
+            children_map,
+            interaction_type,
+            interaction_threshold,
+            pvalue_threshold,
+            pvalue_correction,
+            directed,
+        )
+        return network
+
+    @classmethod
+    def load_elist(
+            cls,
+            elist_file: str,
+            meta_file: str,
+            cmeta_file: str,
+            obsmeta_file: str,
+            children_file: Optional[str] = None,
+            interaction_type: str = "correlation",
+            interaction_threshold: float = 0.3,
+            pvalue_threshold: float = 0.05,
+            pvalue_correction: Optional[str] = "fdr_bh",
+            directed: bool = False,
+    ) -> "Network":
+        """
+            Create `Network` instance from an edge list and associated metadata
+
+            Parameters
+            ----------
+            elist_file : str
+                The csv file containing the list of edges and their associated metadata
+            meta_file : dict
+                The file containing metadata for the whole network (general and experiment)
+                Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
+                'description', 'date', 'authors'
+            cmeta_file : dict
+                The computational metadata for the whole network
+                Must contain information as to how the network was generated
+            obsmeta_file : str
+                The csv file contanining taxonomy information for the nodes of the network
+                If this contains an 'Abundance' column then it is incorporated into the network
+            children_file : str, optional
+                The json file that describes the mapping between {obs_id => [children]}
+            interaction_type : str, optional
+                The type of interaction encoded by the edges of the network
+                Default value is correlation
+            interaction_threshold : float, optional
+                The value to which the interactions (absolute value) are to be thresholded
+                To disable thresholding based on interaction value then pass in 0.0
+                Default value is 0.3
+            pvalue_threshold : float, optional
+                This is the `alpha` value for pvalue cutoff
+                Default value is 0.05
+            pvalue_correction : str, optional
+                The method to use for multiple hypothesis correction
+                Default value is 'fdr_bh'
+                Set to None to turn off multiple hypothesis correction
+            directed : bool, optional
+                True if network is directed
+                Default value is False
+
+            Returns
+            -------
+            Network
+                The instance of the `Network` class
+        """
+        elist = pd.read_csv(elist_file, na_filter=False)
+        elist_type = ElistType()
+        elist_type.validate(elist)
+        index = list(set([*elist["source"], *elist["target"]]))
+        mat_shape = len(index), len(index)
+        interactions = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
+        pvalue_flag = True if "pvalue" in elist.columns else False
+        if pvalue_flag:
+            pvalues = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
+        else:
+            pvalues = None
+        for entry in elist.to_dict('records'):
+            source, target, weight = entry["source"], entry["target"], entry["weight"]
+            interactions.loc[source, target] = weight
+            if not directed:
+                interactions.loc[target, source] = weight
+            if pvalue_flag:
+                pvalues.loc[source, target] = entry["pvalue"]
+                if not directed:
+                    pvalues.loc[target, source] = entry["pvalue"]
+        with open(meta_file, 'r') as fid:
+            metadata = json.load(fid)
+        with open(cmeta_file, 'r') as fid:
+            cmetadata = json.load(fid)
+        extra_compdata = {
+            "interaction_threshold": interaction_threshold,
+            "pvalue_threshold": pvalue_threshold,
+            "pvalue_correction": pvalue_correction,
+        }
+        cmetadata = {**cmetadata, **extra_compdata}
+        obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
+        if children_file is not None:
+            with open(children_file, 'r') as fid:
+                children_map = json.load(fid)
+        else:
+            children_map = None
+        pvalue_correction = None  # To prevent re-correction of pvalues
         network = cls(
             interactions,
             metadata,
