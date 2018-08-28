@@ -95,7 +95,7 @@ class TestNetwork:
                 pval_data,
                 child_data,
             )
-            network_file = tmpdir.mkdir("networks").join("network.json")
+            network_file = tmpdir.mkdir("test_write_load_network").join("network.json")
             network.write(network_file, threshold=True)
             network_loaded = Network.load_json(network_file)
             assert network.metadata == network_loaded.metadata
