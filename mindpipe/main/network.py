@@ -120,12 +120,12 @@ class Network:
                 corrected_pvalues = pvalues
         else:
             corrected_pvalues = None
-        extra_compdata = {
-            "interaction_threshold": interaction_threshold,
-            "pvalue_threshold": pvalue_threshold,
-            "pvalue_correction": pvalue_correction,
-        }
-        cmetadata = {**cmetadata, **extra_compdata}
+        if "interaction_threshold" not in cmetadata:
+            cmetadata["interaction_threshold"] = interaction_threshold
+        if "pvalue_threshold" not in cmetadata:
+            cmetadata["pvalue_threshold"] = pvalue_threshold
+        if "pvalue_correction" not in cmetadata:
+            cmetadata["pvalue_correction"] = pvalue_correction
         self.nodes, self.links, self.metadata = self._create_network(
             interactions,
             corrected_pvalues,
@@ -514,7 +514,7 @@ class Network:
         interaction_type = raw_data["interaction_type"]
         interaction_threshold = cmetadata["interaction_threshold"]
         pvalue_threshold = cmetadata["pvalue_threshold"]
-        pvalue_correction = cmetadata["pvalue_correction"]
+        pvalue_correction = None
         directed = True if raw_data["directionality"] == "directed" else False
         index: List[str] = []
         lineages: List[dict] = []
