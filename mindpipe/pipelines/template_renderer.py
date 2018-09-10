@@ -116,4 +116,20 @@ class ScriptTemplate(Template):
         return super().render(data)
 
 
-# init ConfigTemplate(JinjaTemplate)
+class ConfigTemplate(Template):
+    """
+        Class for templating nextflow configuration files
+
+        Parameters
+        ----------
+        config_file : pathlib.Path
+            The path to the configuration file
+
+        Attributes
+        ----------
+        template_vars : Set[str]
+            The set of undeclared variables in the template
+    """
+
+    def __init__(self, config_file: pathlib.Path) -> None:
+        super().__init__(config_file)
