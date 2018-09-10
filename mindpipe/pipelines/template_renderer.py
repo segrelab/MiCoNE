@@ -58,6 +58,62 @@ class Template:
         """
         return self._vars
 
-# render_template
-# init ScriptTemplate(JinjaTemplate)
+
+class ScriptTemplate(Template):
+    """
+        The class for templating nextflow pipeline scripts
+
+        Parameters
+        ----------
+        script_file : pathlib.Path
+            The path to the nextflow script template
+        process_dir : pathlib.Path
+            The path to the directory containing process scripts for the script_file
+
+        Attributes
+        ----------
+        template_vars : Set[str]
+            The set of undeclared variables in the template
+        process_scripts : Dict[str, str]
+            The process scripts of the nextflow pipeline
+    """
+
+    def __init__(self, script_file: pathlib.Path, process_dir: pathlib.Path) -> None:
+        super().__init__(script_file)
+        self._process_dir = process_dir
+
+    @property
+    def process_scripts(self) -> Dict[str, str]:
+        """
+            The process scripts of the nextflow pipeline
+        """
+        wrapper = '"""\n'
+        scripts: Dict[str, str] = {}
+        for file in self._process_dir.iterdir():
+            if file.stem in self.template_vars:
+                with open(file, 'r') as fid:
+                    line_list = fid.readlines()
+                    data = ''.join(map(lambda x: (" " * 4) + x, line_list))
+                    scripts[file.stem] = wrapper + data + wrapper
+        return scripts
+
+    def render(self, template_data: dict) -> str:
+        """
+            Render the nextflow script template
+
+            Parameters
+            ----------
+            template_data : dict
+                Dictionary of data used to fill in the template
+                This data in addition to the process scripts that are handled automatically
+
+            Returns
+            -------
+            str
+                The rendered template
+        """
+        data = {**self.process_scripts, **template_data}
+        return super().render(data)
+
+
 # init ConfigTemplate(JinjaTemplate)
