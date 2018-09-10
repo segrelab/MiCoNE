@@ -3,6 +3,7 @@
 """
 
 import pathlib
+from typing import Dict, Set
 
 from jinja2 import Environment, FileSystemLoader, meta
 
@@ -18,7 +19,7 @@ class Template:
 
         Attributes
         ----------
-        template_vars : set
+        template_vars : Set[str]
             The set of undeclared variables in the template
     """
 
@@ -51,7 +52,7 @@ class Template:
         return self._template.render(template_data)
 
     @property
-    def template_vars(self) -> set:
+    def template_vars(self) -> Set[str]:
         """
             The variables in the template
         """
