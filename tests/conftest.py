@@ -12,6 +12,7 @@ import pytest
 
 BASEDIR = pathlib.Path.cwd()
 TEST_DATADIR = BASEDIR / "tests/data"
+PIPELINE_DIR = BASEDIR / "mindpipe/pipelines/src"
 
 
 @pytest.fixture(scope="module")
@@ -165,8 +166,8 @@ def network_elist_files():
 def config_template_files():
     """ Fixture for the config template files """
     template_file = {
-        "input": TEST_DATADIR / "templates/sparcc.j2",
-        "output": TEST_DATADIR / "templates/sparcc.config"
+        "input": TEST_DATADIR / "templates/config/sparcc.j2",
+        "output": TEST_DATADIR / "templates/config/sparcc.config"
     }
     data = {
         "compute_correlations": {
@@ -184,3 +185,14 @@ def config_template_files():
         }
     }
     return template_file, data
+
+
+@pytest.fixture(scope="module")
+def script_template_files():
+    """ Fixture for the script template files """
+    template_file = {
+        "input": TEST_DATADIR / "templates/script/sparcc.j2",
+        "output": TEST_DATADIR / "templates/script/sparcc.nf"
+    }
+    process_folder = TEST_DATADIR / "templates/script/templates"
+    return template_file, process_folder
