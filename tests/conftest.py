@@ -159,3 +159,28 @@ def network_elist_files():
         children = elist_fol / "children_map.json"
         data[kind].append((network, elist, meta, cmeta, obsmeta, children))
     return data
+
+
+@pytest.fixture(scope="module")
+def config_template_files():
+    """ Fixture for the config template files """
+    template_file = {
+        "input": TEST_DATADIR / "templates/sparcc.j2",
+        "output": TEST_DATADIR / "templates/sparcc.config"
+    }
+    data = {
+        "compute_correlations": {
+            "niters": 10,
+        },
+        "resampling": {
+            "nboots": 100,
+        },
+        "output_dir": "results",
+        "input": {
+            "otu_table": "/testing/data/otudata.tsv",
+            "lineage_table": "/testing/data/lineagedata.csv",
+            "sample_metadata": "/testing/data/sample_metadata.csv",
+            "children_object": "/testing/data/children.json",
+        }
+    }
+    return template_file, data
