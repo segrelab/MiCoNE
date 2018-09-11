@@ -88,13 +88,14 @@ class ScriptTemplate(Template):
             The process scripts of the nextflow pipeline
         """
         wrapper = '"""\n'
+        indent = ' ' * 4
         scripts: Dict[str, str] = {}
         for file in self._process_dir.iterdir():
             if file.stem in self.template_vars:
                 with open(file, 'r') as fid:
                     line_list = fid.readlines()
-                    data = ''.join(map(lambda x: (" " * 4) + x, line_list))
-                    scripts[file.stem] = wrapper + data + wrapper
+                    data = ''.join(map(lambda x: indent + x, line_list))
+                    scripts[file.stem] = wrapper + data + indent + wrapper
         return scripts
 
     def render(self, template_data: dict) -> str:
