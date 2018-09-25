@@ -1,0 +1,17 @@
+################################################################################
+# internal pipelines
+################################################################################
+
+[split_otu_table]
+
+[normalize_otu_table]
+
+[group_by_taxa]
+
+[make_json_network]
+
+[helpers.clean]
+
+[helpers.process_verifier]
+
+[helpers.drop_lineage_fromotu]

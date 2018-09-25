@@ -1,0 +1,55 @@
+################################################################################
+# external pipelines
+################################################################################
+
+# QUESTION: Is it necessary to supply env, env_activate and env_deactivate parameters?
+[qiime1.demultiplexing_454]
+  env = ""  # where do we start - src? external? qiime1?
+  env_activate = "source activate"
+  env_deactivate = "source deactivate"
+  script_template = ""  # again where do we start the path?
+  process_templates = ""  # is this necessary?
+  output_location = "qiime1/demultiplexing_454/"
+  [[qiime1.demultiplexing_454.input]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+  [[qiime1.demultiplexing_454.input]]
+    datatype = "quality"
+    format = ["qual"]
+  [[qiime1.demultiplexing_454.input]]
+    datatype = "mapping"
+    format = ["tsv", "txt"]
+  [[qiime1.demultiplexing_454.process]]
+    process = "demultiplexing_fasta"
+    qual_score_window = 50
+  [[qiime1.demultiplexing_454.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "seqs/*.fna"
+
+[qiime1.demultiplexing.illumina]
+
+[qiime1.denovo_picking]
+
+[qiime1.closedref_picking]
+
+[qiime1.openref_picking]
+
+[qiime2.sequence_importer]
+
+[qiime2.demultiplexing]
+
+[qiime2.dada2]
+
+[qiime2.deblur]
+
+[qiime2.taxonomy]
+
+[qiime2.export]
+
+[format_converters.sequence_16s]
+
+[format_converters.otu_table]
+
+[format_converters.sff2fasta]
+

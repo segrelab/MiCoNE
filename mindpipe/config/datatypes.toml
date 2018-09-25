@@ -1,0 +1,62 @@
+################################################################################
+# datatypes
+################################################################################
+
+[barcode]
+  desc = "Barcodes to map sequence reads to samples"
+  format = ["fastq", "fastq.gz", "fasta"]
+[children_map]
+  desc = "File describing taxonomy mapping from parent taxonomy to child"
+  format = ["json"]
+[correlation_table]
+  desc = "OTU correlation table"
+  format = ["tsv", "csv"]
+[dir]
+  desc = "Folder containing input data"
+  format = [""]
+[metadata]
+  desc = "The general metadata for the whole experiment"
+  format = ["json"]
+[network]
+  desc = "Interaction network"
+  format = ["json"]
+[observation_metadata]
+  desc = "Metadata for each observation (taxonomy)"
+  format = ["tsv", "csv"]
+[otu_table]
+  desc = "OTU abundance table"
+  format = ["biom", "tsv", "json"]
+[phylogenetic_tree]
+  desc = "The phylogenetic taxonomic tree"
+  format = ["tree"]
+[pvalue_table]
+  desc = "OTU pvalue table"
+  format = ["tsv", "csv"]
+[qiime1_parameters]
+  desc = "File that contains the parameters for Qiime modules"
+  format = ["txt"]
+[qiime2_artifact]
+  desc = "A qiime2 artifact"
+  format = ["qza"]
+[qiime2_mapping]
+  desc = "File that maps sample metadata to barcodes"
+  format = ["tsv", "txt"]
+[quality]
+  desc = "File that encodes quality of sequences in the fasta file"
+  format = ["qual"]
+[sample_barcode_mapping]
+  desc = "File that maps sample metadata to barcodes"
+  format = ["tsv", "txt"]
+[sample_metadata]
+  desc = "Metadata for each sample"
+  format = ["csv"]
+[sequence_16s]
+  desc = "16S rDNA sequences"
+  format = ["fastq", "fastq.gz", "fasta"]
+[sequence_16s_reference]
+  desc = "Reference sequences for taxonomic classification"
+  format =  ["fasta"]
+[sequence_taxonomy_mapping]
+  desc = "File that maps sequence id to taxonomy"
+  format = ["tsv", "txt"]
+
