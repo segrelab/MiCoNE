@@ -28,7 +28,7 @@
   format = ["biom", "tsv"]
 [phylogenetic_tree]
   desc = "The phylogenetic taxonomic tree"
-  format = ["tree"]
+  format = ["tree", "tre"]
 [pvalue_table]
   desc = "OTU pvalue table"
   format = ["tsv", "csv"]
