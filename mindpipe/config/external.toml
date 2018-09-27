@@ -44,7 +44,31 @@
     format = ["fasta"]
     location  = "seqs/*.fna"
 
-[qiime1.denovo_picking]
+[qiime1.clustering.denovo]
+  env = "src/external/qiime1/env"
+  root = "src/external/qiime1/clustering/denovo"
+  output_location = "qiime1/clustering"
+  [[qiime1.clustering.denovo.input]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+  [[qiime1.clustering.denovo.input]]
+    datatype = "qiime1_parameters"
+    format = ["txt"]
+  [[qiime1.clustering.denovo.process]]
+    process = "pick_de_novo_otus"
+    ncpus = 4
+  [[qiime1.clustering.denovo.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otu_table.biom"
+  [[qiime1.clustering.denovo.output]]
+    datatype = "phylogenetic_tree"
+    format = ["tre"]
+    location = "rep_set.tre"
+  [[qiime1.clustering.denovo.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "rep_seqs.{fasta,fna}"
 
 [qiime1.closedref_picking]
 
