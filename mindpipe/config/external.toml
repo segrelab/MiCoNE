@@ -100,7 +100,37 @@
     format = ["tre"]
     location = "rep_set.tre"
 
-[qiime1.openref_picking]
+[qiime1.clustering.openref]
+  env = "src/external/qiime1/env"
+  root = "src/external/qiime1/clustering/openref"
+  output_location = "qiime1/clustering"
+  [[qiime1.clustering.openref.input]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+  [[qiime1.clustering.openref.input]]
+    datatype = "sequence_16s_reference"
+    format = ["fasta"]
+    location = "src/external/qiime1/env/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
+  [[qiime1.clustering.openref.input]]
+    datatype = "qiime1_parameters"  # NOTE: This must contain the "sequence_taxonomy_mapping"
+    format = ["txt"]
+  [[qiime1.clustering.openref.process]]
+    process = "pick_open_reference_otus"
+    ncpus = 1
+    picking_method = "sortmerna_sumaclust"
+    percent_subsample = 0.001
+  [[qiime1.clustering.openref.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otu_table.biom"
+  [[qiime1.clustering.openref.output]]
+    datatype = "phylogenetic_tree"
+    format = ["tre"]
+    location = "rep_set.tre"
+  [[qiime1.clustering.openref.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "rep_set.{fasta,fna}"
 
 [qiime2.sequence_importer]
 
