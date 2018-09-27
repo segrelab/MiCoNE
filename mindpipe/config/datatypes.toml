@@ -38,6 +38,18 @@
 [qiime2_artifact]
   desc = "A qiime2 artifact"
   format = ["qza"]
+[qiime2_observation_metadata]
+  desc = "File that contains the qiime2 observation metadata"
+  format = ["qza"]
+[qiime2_otu_table]
+  desc = "File that contains the qiime2 OTU abundance table"
+  format = ["qza"]
+[qiime2_phylogenetic_tree]
+  desc = "File that contains the qiime2 phylogenetic taxonomic tree"
+  format = ["qza"]
+[qiime2_sequence_16s]
+  desc = "File that contains the qiime2 sequence artifact"
+  format = ["qza"]
 [qiime2_mapping]
   desc = "File that maps sample metadata to barcodes"
   format = ["tsv", "txt"]
@@ -59,4 +71,3 @@
 [sequence_taxonomy_mapping]
   desc = "File that maps sequence id to taxonomy"
   format = ["tsv", "txt"]
-
