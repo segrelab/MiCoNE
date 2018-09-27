@@ -24,6 +24,25 @@
     location = "seqs/*.fna"
 
 [qiime1.demultiplexing.illumina]
+  env = "src/external/qiime1/env"
+  root = "src/external/qiime1/demultiplexing/illumina"
+  output_location = "qiime1/demultiplexing"
+  [[qiime1.demultiplexing.illumina.input]]
+    datatype = "sequence_16s"
+    format = ["fastq", "fasta"]
+  [[qiime1.demultiplexing.illumina.input]]
+    datatype = "barcode"
+    format = ["fastq"]
+  [[qiime1.demultiplexing.illumina.input]]
+    datatype = "qiime2_mapping"
+    format = ["tsv", "txt"]
+  [[qiime1.demultiplexing.illumina.process]]
+    process =  "demultiplexing_fastq"
+    phred_quality_threshold = 3
+  [[qiime1.demultiplexing.illumina.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location  = "seqs/*.fna"
 
 [qiime1.denovo_picking]
 
