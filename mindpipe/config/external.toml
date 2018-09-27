@@ -2,27 +2,23 @@
 # external pipelines
 ################################################################################
 
-# QUESTION: Is it necessary to supply env, env_activate and env_deactivate parameters?
-[qiime1.demultiplexing_454]
-  env = ""  # where do we start - src? external? qiime1?
-  env_activate = "source activate"
-  env_deactivate = "source deactivate"
-  script_template = ""  # again where do we start the path?
-  process_templates = ""  # is this necessary?
-  output_location = "qiime1/demultiplexing_454/"
-  [[qiime1.demultiplexing_454.input]]
+[qiime1.demultiplexing.454]
+  env = "src/external/qiime1/env"
+  root = "src/external/qiime1/demultiplexing/454"
+  output_location = "qiime1/demultiplexing"
+  [[qiime1.demultiplexing.454.input]]
     datatype = "sequence_16s"
-    format = ["fasta"]
-  [[qiime1.demultiplexing_454.input]]
+    format = ["fastq", "fasta"]  # QUESTION: shouldn't this be sff?
+  [[qiime1.demultiplexing.454.input]]
     datatype = "quality"
     format = ["qual"]
-  [[qiime1.demultiplexing_454.input]]
+  [[qiime1.demultiplexing.454.input]]
     datatype = "mapping"
     format = ["tsv", "txt"]
-  [[qiime1.demultiplexing_454.process]]
+  [[qiime1.demultiplexing.454.process]]
     process = "demultiplexing_fasta"
     qual_score_window = 50
-  [[qiime1.demultiplexing_454.output]]
+  [[qiime1.demultiplexing.454.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
     location = "seqs/*.fna"
