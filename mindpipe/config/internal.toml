@@ -3,6 +3,14 @@
 ################################################################################
 
 [split_otu_table]
+  root = "src/internal/split_otu_table"
+  output_location = "split_otu_table"
+  [[split_otu_table.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[split_otu_table.output]]
+    datatype = "otu_table"
+    format = ["biom"]
 
 [normalize_otu_table]
 
