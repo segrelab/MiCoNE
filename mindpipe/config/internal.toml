@@ -70,9 +70,27 @@
     format = ["json"]
     location = "make_jsonnet/**/*_net.json"
 
-
-[helpers.clean]
-
-[helpers.process_verifier]
-
-[helpers.drop_lineage_fromotu]
+[drop_lineage_fromotu]
+  root = "src/internal/drop_lineage_fromotu"
+  output_location = "drop_lineage_fromotu"
+  [[drop_lineage_fromotu.input]]
+    datatype = "otu_table"
+    format = ["tsv"]
+  [[drop_lineage_fromotu.process]]
+    process = "drop_lineage"
+  [[drop_lineage_fromotu.process]]
+    process = "make_lineage"
+  [[drop_lineage_fromotu.process]]
+    processs = "make_sample_metadata"
+  [[drop_lineage_fromotu.output]]
+    datatype = "otu_table"
+    format = ["tsv"]
+    location = "drop_lineage_fromotu/*_otu.tsv"
+  [[drop_lineage_fromotu.output]]
+    datatype = "observation_metadata"
+    format = ["csv"]
+    location = "drop_lineage_fromotu/*_taxondata.csv"
+  [[drop_lineage_fromotu.output]]
+    datatype = "sample_metadata"
+    format = ["csv"]
+    location = "drop_lineage_fromotu/*_sample_metadata.csv"
