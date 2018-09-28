@@ -13,6 +13,14 @@
     format = ["biom"]
 
 [normalize_otu_table]
+  root = "src/internal/normalize_otu_table"
+  output_location = "normalize_otu_table"
+  [[normalize_otu_table.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[normalize_otu_table.output]]
+    datatype = "otu_table"
+    format = ["biom"]
 
 [group_by_taxa]
 
