@@ -43,6 +43,33 @@
     location = "group_by_taxa/**/*_children.json"
 
 [make_json_network]
+  root = "src/internal/make_json_network"
+  output_location = "make_json_network"
+  [[make_json_network.input]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+  [[make_json_network.input]]
+    datatype = "pvalue_table"
+    format = ["tsv"]
+  [[make_json_network.input]]
+    datatype = "observation_metadata"
+    format = ["csv"]
+  [[make_json_network.input]]
+    datatype = "children_map"
+    format = ["json"]
+  [[make_json_network.input]]
+    datatype = "computational_metadata"
+    format = ["json"]
+  [[make_json_network.input]]
+    datatype = "metadata"
+    format = ["json"]
+  [[make_json_network.process]]
+    process = "make_jsonnet"
+  [[make_json_network.output]]
+    datatype = "network"
+    format = ["json"]
+    location = "make_jsonnet/**/*_net.json"
+
 
 [helpers.clean]
 
