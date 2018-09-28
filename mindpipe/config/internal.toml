@@ -23,6 +23,24 @@
     format = ["biom"]
 
 [group_by_taxa]
+  root = "src/internal/group_by_taxa"
+  output_location = "group_by_taxa"
+  [[group_by_taxa.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[group_by_taxa.process]]
+    process = "group_by_taxa"
+    rm_sparse_otu = "True"
+    rm_sparse_samples = "True"
+    tax_levels = "['phylum', 'class', 'order', 'family', 'genus', 'species']"
+  [[group_by_taxa.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "group_by_taxa/**/*.biom"
+  [[group_by_taxa.output]]
+    datatype = "children_object"
+    format = ["json"]
+    location = "group_by_taxa/**/*_children.json"
 
 [make_json_network]
 
