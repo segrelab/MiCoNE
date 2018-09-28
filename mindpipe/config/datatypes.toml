@@ -34,7 +34,7 @@
   format = ["tree", "tre"]
 [pvalue_table]
   desc = "OTU pvalue table"
-  format = ["tsv", "csv"]
+  format = ["tsv"]
 [qiime1_parameters]
   desc = "File that contains the parameters for Qiime modules"
   format = ["txt"]
