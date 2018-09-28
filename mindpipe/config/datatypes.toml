@@ -8,6 +8,9 @@
 [children_map]
   desc = "File describing taxonomy mapping from parent taxonomy to child"
   format = ["json"]
+[computational_metadata]
+  desc = "The computational metadata includes information about data generation and data processing"
+  format = ["json"]
 [correlation_table]
   desc = "OTU correlation table"
   format = ["tsv", "csv"]
