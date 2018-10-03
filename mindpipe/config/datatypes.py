@@ -8,7 +8,7 @@ from typing import Any, Dict, Set, Tuple
 
 class DataType(collections.Hashable):
     """
-        The class the stores a datatype of the pipeline constructor
+        The class that stores a datatype of the pipeline constructor
 
         Parameters
         ----------
