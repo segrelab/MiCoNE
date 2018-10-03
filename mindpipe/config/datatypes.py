@@ -3,7 +3,7 @@
 """
 
 import collections
-from typing import Any, Dict, Set, Tuple
+from typing import Dict, List, Set, Tuple, Union
 
 
 class DataType(collections.Hashable):
@@ -25,7 +25,7 @@ class DataType(collections.Hashable):
             DataType allowed formats
     """
 
-    def __init__(self, data: Tuple[str, Dict[str, Any]]) -> None:
+    def __init__(self, data: Tuple[str, Dict[str, Union[str, List[str]]]]) -> None:
         if len(data) != 2:
             raise ValueError(f"Invalid DataType {data}")
         key, value = data
@@ -55,7 +55,7 @@ class DataTypes(collections.Set):
             A dictionary containing information about the pipeline datatypes
     """
 
-    def __init__(self, data: Dict[str, Dict[str, Any]]) -> None:
+    def __init__(self, data: Dict[str, Dict[str, Union[str, List[str]]]]) -> None:
         self.dtypes: Set[DataType] = set()
         for key, value in data.items():
             data_type = DataType((key, value))
