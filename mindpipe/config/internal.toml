@@ -29,7 +29,7 @@
   [[group_by_taxa.input]]
     datatype = "otu_table"
     format = ["biom"]
-  [[group_by_taxa.process]]
+  [[group_by_taxa.parameters]]
     process = "group_by_taxa"
     rm_sparse_otu = "True"
     rm_sparse_samples = "True"
@@ -64,7 +64,7 @@
   [[make_json_network.input]]
     datatype = "metadata"
     format = ["json"]
-  [[make_json_network.process]]
+  [[make_json_network.parameters]]
     process = "make_jsonnet"
   [[make_json_network.output]]
     datatype = "network"
@@ -77,11 +77,11 @@
   [[drop_lineage_fromotu.input]]
     datatype = "otu_table"
     format = ["tsv"]
-  [[drop_lineage_fromotu.process]]
+  [[drop_lineage_fromotu.parameters]]
     process = "drop_lineage"
-  [[drop_lineage_fromotu.process]]
+  [[drop_lineage_fromotu.parameters]]
     process = "make_lineage"
-  [[drop_lineage_fromotu.process]]
+  [[drop_lineage_fromotu.parameters]]
     processs = "make_sample_metadata"
   [[drop_lineage_fromotu.output]]
     datatype = "otu_table"
