@@ -1,5 +1,6 @@
 ################################################################################
 # external pipelines
+# NOTE: For consistency we need all entries to be tri-level
 ################################################################################
 
 [qiime1.demultiplexing.454]
