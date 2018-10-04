@@ -13,7 +13,7 @@ Output = collections.namedtuple("Output", ['datatype', 'format', 'location'])
 IOType = Union[Input, Output]
 
 
-class Process(collections.Hashable):
+class ProcessParams(collections.Hashable):
     """
         The class for parsing and storing the parameters of a process
 
@@ -81,7 +81,7 @@ class Process(collections.Hashable):
     def __repr__(self) -> str:
         inputs = {i.datatype for i in self.input}
         outputs = {o.datatype for o in self.output}
-        return f"<Process name={self.name} input={inputs} output={outputs}>"
+        return f"<ProcessParams name={self.name} input={inputs} output={outputs}>"
 
     def __str__(self) -> str:
         return self.name
@@ -121,7 +121,7 @@ class Process(collections.Hashable):
         return inputs
 
 
-class ProcessSet(collections.Set):
+class ProcessParamsSet(collections.Set):
     """
         The set of all supported pipeline processes
 
@@ -132,12 +132,12 @@ class ProcessSet(collections.Set):
     """
 
     def __init__(self, data: Dict[str, Any]) -> None:
-        self.processes: Set[Process] = set()
+        self.processes: Set[ProcessParams] = set()
         for key, value in data.items():
-            process = Process((key, value))
-            if process in self.processes:
+            process_params = ProcessParams((key, value))
+            if process_params in self.processes:
                 raise ValueError("Duplicate process definitions detected in settings. Aborting")
-            self.processes.add(process)
+            self.processes.add(process_params)
 
     def __iter__(self) -> Iterator:
         return iter(self.processes)
@@ -148,18 +148,18 @@ class ProcessSet(collections.Set):
     def __contains__(self, value: str) -> bool:
         return value in [process.name for process in self.processes]
 
-    def __getitem__(self, key: str) -> Process:
+    def __getitem__(self, key: str) -> ProcessParams:
         for process in self.processes:
             if process.name == key:
                 return process
-        raise KeyError(f"{key} is not in ProcessSet")
+        raise KeyError(f"{key} is not in ProcessParamsSet")
 
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
-        return f"<ProcessSet n={len(self)} processes={processes}>"
+        return f"<ProcessParamsSet n={len(self)} processes={processes}>"
 
 
-class InternalProcessSet(ProcessSet):
+class InternalProcessParamsSet(ProcessParamsSet):
     """
         The set of all supported internal pipeline processes
 
@@ -174,10 +174,10 @@ class InternalProcessSet(ProcessSet):
 
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
-        return f"<InternalProcessSet n={len(self)} processes={processes}>"
+        return f"<InternalProcessParamsSet n={len(self)} processes={processes}>"
 
 
-class ExternalProcessSet(ProcessSet):
+class ExternalProcessParamsSet(ProcessParamsSet):
     """
         The set of all supported external pipeline processes
 
@@ -198,4 +198,4 @@ class ExternalProcessSet(ProcessSet):
 
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
-        return f"<ExternalProcessSet n={len(self)} processes={processes}>"
+        return f"<ExternalProcessParamsSet n={len(self)} processes={processes}>"
