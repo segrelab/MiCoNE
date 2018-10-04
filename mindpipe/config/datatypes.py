@@ -79,4 +79,5 @@ class DataTypes(collections.Set):
         raise KeyError(f"{key} is not in DataTypes")
 
     def __repr__(self) -> str:
-        return f"<DataTypes n={len(self)} dtypes={self.dtypes}>"
+        dtypes = [dtype.name for dtype in self.dtypes]
+        return f"<DataTypes n={len(self)} dtypes={dtypes}>"
