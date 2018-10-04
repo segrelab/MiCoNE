@@ -3,7 +3,7 @@
 """
 
 import collections
-from typing import Dict, List, Set, Tuple, Union
+from typing import Dict, Iterable, List, Set, Tuple, Union
 
 
 class DataType(collections.Hashable):
@@ -63,10 +63,10 @@ class DataTypes(collections.Set):
                 raise ValueError("Duplicate DataTypes detected in settings. Aborting")
             self.dtypes.add(data_type)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable:
         return iter(self.dtypes)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.dtypes)
 
     def __contains__(self, value: str) -> bool:
