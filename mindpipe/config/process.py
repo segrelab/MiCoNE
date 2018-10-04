@@ -157,3 +157,45 @@ class ProcessSet(collections.Set):
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
         return f"<ProcessSet n={len(self)} processes={processes}>"
+
+
+class InternalProcessSet(ProcessSet):
+    """
+        The set of all supported internal pipeline processes
+
+        Parameters
+        ----------
+        data : Dict[str, Any]
+            A dictionary containing information about the internal pipeline processes
+    """
+
+    def __init__(self, data: Dict[str, Any]) -> None:
+        super().__init__(data)
+
+    def __repr__(self) -> str:
+        processes = [process.name for process in self.processes]
+        return f"<InternalProcessSet n={len(self)} processes={processes}>"
+
+
+class ExternalProcessSet(ProcessSet):
+    """
+        The set of all supported external pipeline processes
+
+        Parameters
+        ----------
+        data : Dict[str, Any]
+            A dictionary containing information about the external pipeline processes
+    """
+
+    def __init__(self, data: Dict[str, Any]) -> None:
+        data_processed = {}
+        for level_1 in data:
+            for level_2 in level_1:
+                for level_3 in level_2:
+                    name = f"{level_1}.{level_2}.{level_3}"
+                    data_processed[name] = data[level_1][level_2][level_3]
+        super().__init__(data_processed)
+
+    def __repr__(self) -> str:
+        processes = [process.name for process in self.processes]
+        return f"<ExternalProcessSet n={len(self)} processes={processes}>"
