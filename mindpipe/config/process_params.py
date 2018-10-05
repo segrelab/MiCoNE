@@ -7,7 +7,7 @@ import pathlib
 from typing import Any, Dict, Iterator, List, Set, Tuple, Union
 
 
-PIPELINE_DIR = pathlib.Path.cwd().parent / "pipelines"
+PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
 Input = collections.namedtuple("Input", ['datatype', 'format'])
 Output = collections.namedtuple("Output", ['datatype', 'format', 'location'])
 IOType = Union[Input, Output]
@@ -63,13 +63,13 @@ class ProcessParams(collections.Hashable):
             )
         if "env" in value:
             self.env = PIPELINE_DIR / value["env"]
+            if not self.env.exists() or not self.env.is_dir():
+                raise FileNotFoundError(
+                    f"The directory for the environment: {self.env} doesn't exist. "
+                    "Please reinstall the package"
+                )
         else:
             self.env = None
-        if not self.env.exists() or not self.env.is_dir():
-            raise FileNotFoundError(
-                f"The directory for the environment: {self.env} doesn't exist. "
-                "Please reinstall the package"
-            )
         self.output_location = pathlib.Path(value["output_location"])
         self.input = self._process_io(value["input"], "input")
         self.output = self._process_io(value["output"], "output")
