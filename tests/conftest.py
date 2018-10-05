@@ -12,6 +12,7 @@ import pytest
 
 BASEDIR = pathlib.Path.cwd()
 TEST_DATADIR = BASEDIR / "tests/data"
+SETTINGS_DIR = BASEDIR / "mindpipe/config"
 PIPELINE_DIR = BASEDIR / "mindpipe/pipelines/src"
 
 
@@ -196,3 +197,14 @@ def script_template_files():
     }
     process_folder = TEST_DATADIR / "templates/script/templates"
     return template_file, process_folder
+
+
+@pytest.fixture(scope="module")
+def pipeline_settings():
+    """ Fixture to load pipeline settings files """
+    settings = {
+        "datatypes": SETTINGS_DIR / "datatypes.toml",
+        "internal": SETTINGS_DIR / "internal.toml",
+        "external": SETTINGS_DIR / "external.toml",
+    }
+    return settings
