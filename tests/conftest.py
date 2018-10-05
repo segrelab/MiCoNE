@@ -8,6 +8,7 @@ import pathlib
 from biom import load_table
 import pandas as pd
 import pytest
+import toml
 
 
 BASEDIR = pathlib.Path.cwd()
@@ -202,9 +203,18 @@ def script_template_files():
 @pytest.fixture(scope="module")
 def pipeline_settings():
     """ Fixture to load pipeline settings files """
+    datatypes_file = SETTINGS_DIR / "datatypes.toml"
+    internal_file = SETTINGS_DIR / "internal.toml"
+    external_file = SETTINGS_DIR / "external.toml"
+    with open(datatypes_file) as fid:
+        datatypes = toml.load(fid)
+    with open(internal_file) as fid:
+        internal = toml.load(fid)
+    with open(external_file) as fid:
+        external = toml.load(fid)
     settings = {
-        "datatypes": SETTINGS_DIR / "datatypes.toml",
-        "internal": SETTINGS_DIR / "internal.toml",
-        "external": SETTINGS_DIR / "external.toml",
+        "datatypes": datatypes,
+        "internal": internal,
+        "external": external,
     }
     return settings
