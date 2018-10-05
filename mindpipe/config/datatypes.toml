@@ -11,8 +11,8 @@
 [computational_metadata]
   desc = "The computational metadata includes information about data generation and data processing"
   format = ["json"]
-[interaction_table]
-  desc = "Microbe interaction table"
+[correlation_table]  # vs. interaction matrix?
+  desc = "OTU correlation table"
   format = ["tsv"]
 [dir]
   desc = "Folder containing input data"
