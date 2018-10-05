@@ -133,21 +133,21 @@
     format = ["fasta"]
     location = "rep_set.{fasta,fna}"
 
-[qiime2.sequence_importer]
+# [qiime2.clustering.sequence_importer]
 
-[qiime2.demultiplexing]
+# [qiime2.clustering.demultiplexing]
 
-[qiime2.dada2]
+# [qiime2.denoising.dada2]
 
-[qiime2.deblur]
+# [qiime2.denoising.deblur]
 
-[qiime2.taxonomy]
+# [qiime2.taxonomy]
 
-[qiime2.export]
+# [qiime2.export]
 
-[format_converters.sequence_16s]
+# [format_converters.sequence_16s]
 
-[format_converters.otu_table]
+# [format_converters.otu_table]
 
-[format_converters.sff2fasta]
+# [format_converters.sff2fasta]
 
