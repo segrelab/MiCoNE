@@ -204,8 +204,8 @@ class ExternalProcessParamsSet(ProcessParamsSet):
     def __init__(self, data: Dict[str, Any]) -> None:
         data_processed = {}
         for level_1 in data:
-            for level_2 in level_1:
-                for level_3 in level_2:
+            for level_2 in data[level_1]:
+                for level_3 in data[level_1][level_2]:
                     name = f"{level_1}.{level_2}.{level_3}"
                     data_processed[name] = data[level_1][level_2][level_3]
         super().__init__(data_processed)
