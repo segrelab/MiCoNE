@@ -9,9 +9,12 @@
   [[split_otu_table.input]]
     datatype = "otu_table"
     format = ["biom"]
+  [[split_otu_table.parameters]]
+    process = ""
   [[split_otu_table.output]]
     datatype = "otu_table"
     format = ["biom"]
+    location = "split_otu_table/*.biom"
 
 [normalize_otu_table]
   root = "src/internal/normalize_otu_table"
@@ -19,9 +22,12 @@
   [[normalize_otu_table.input]]
     datatype = "otu_table"
     format = ["biom"]
+  [[normalize_otu_table.parameters]]
+    process = ""
   [[normalize_otu_table.output]]
     datatype = "otu_table"
     format = ["biom"]
+    location = "normalize_otu_table/*.biom"
 
 [group_by_taxa]
   root = "src/internal/group_by_taxa"
