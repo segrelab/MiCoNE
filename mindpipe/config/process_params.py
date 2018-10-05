@@ -4,22 +4,28 @@
 
 import collections
 import pathlib
-from typing import Any, Dict, Iterator, List, Set, Tuple, Union
+from typing import Any, Dict, Iterator, List, NamedTuple, Optional, Set, Tuple, Union
 
 
 PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
-BaseInput = collections.namedtuple("Input", ['datatype', 'format'])
-BaseOutput = collections.namedtuple("Output", ['datatype', 'format', 'location'])
 
 
-class Input(BaseInput):
+class Input(NamedTuple):
     """ The namedtuple class for storing input """
+    datatype: str
+    format: List[str]
+    location: Optional[str] = None
+
     def __hash__(self) -> int:
         return hash(self.datatype)
 
 
-class Output(BaseOutput):
+class Output(NamedTuple):
     """ The namedtuple class for storing output """
+    datatype: str
+    format: List[str]
+    location: str
+
     def __hash__(self) -> int:
         return hash(self.datatype)
 
@@ -125,7 +131,8 @@ class ProcessParams(collections.Hashable):
             raise TypeError("Category can only be either 'Input' or 'Output'")
         io_tuples: Set[IOType] = set()
         for item in data:
-            for field in IO._fields:
+            req_fields = set(IO._fields) - set(IO._field_defaults.keys())
+            for field in req_fields:
                 if field not in item:
                     raise ValueError(f"Invalid input: {data}. Missing {field}")
             for field in item:
