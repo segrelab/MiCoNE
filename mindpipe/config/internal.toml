@@ -88,7 +88,7 @@
   [[drop_lineage_fromotu.parameters]]
     process = "make_lineage"
   [[drop_lineage_fromotu.parameters]]
-    processs = "make_sample_metadata"
+    process = "make_sample_metadata"
   [[drop_lineage_fromotu.output]]
     datatype = "otu_table"
     format = ["tsv"]
