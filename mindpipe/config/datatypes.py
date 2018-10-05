@@ -32,8 +32,14 @@ class DataType(collections.Hashable):
         if "desc" not in value or "format" not in value:
             raise ValueError(f"Invalid DataType {data}")
         self.name = key
-        self.desc = value["desc"]
-        self.format = set(value["format"])
+        if isinstance(value["desc"], str):
+            self.desc = value["desc"]
+        else:
+            raise TypeError(f"Invalid DataType {data}. Description has to be a string.")
+        if isinstance(value["format"], list):
+            self.format = set(value["format"])
+        else:
+            raise TypeError(f"Invalid DataType {data}. Format has to be a list of strings.")
 
     def __hash__(self) -> int:
         return hash(self.name)
