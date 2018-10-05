@@ -93,7 +93,9 @@ class ProcessParams(collections.Hashable):
         self.output_location = pathlib.Path(value["output_location"])
         self.input = self._process_io(value["input"], "input")
         self.output = self._process_io(value["output"], "output")
-        self.parameters = value["parameters"]
+        if not isinstance(value["parameters"], list):
+            raise TypeError("Parameters must be a List.")
+        self.parameters = set(value["parameters"])
 
     def __hash__(self) -> int:
         return hash(self.name)
@@ -130,6 +132,8 @@ class ProcessParams(collections.Hashable):
         else:
             raise TypeError("Category can only be either 'Input' or 'Output'")
         io_tuples: Set[IOType] = set()
+        if not isinstance(data, list):
+            raise TypeError(f"{category} must be a List")
         for item in data:
             req_fields = set(IO._fields) - set(IO._field_defaults.keys())
             for field in req_fields:
