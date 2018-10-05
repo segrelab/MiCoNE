@@ -44,6 +44,15 @@ class DataType(collections.Hashable):
     def __hash__(self) -> int:
         return hash(self.name)
 
+    def __eq__(self, other) -> bool:
+        if self.name != other.name:
+            return False
+        if self.desc != other.desc:
+            return False
+        if self.format != other.format:
+            return False
+        return True
+
     def __repr__(self) -> str:
         return f"<DataType name={self.name} desc={self.desc} format={self.format}>"
 
