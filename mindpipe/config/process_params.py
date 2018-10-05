@@ -8,8 +8,22 @@ from typing import Any, Dict, Iterator, List, Set, Tuple, Union
 
 
 PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
-Input = collections.namedtuple("Input", ['datatype', 'format'])
-Output = collections.namedtuple("Output", ['datatype', 'format', 'location'])
+BaseInput = collections.namedtuple("Input", ['datatype', 'format'])
+BaseOutput = collections.namedtuple("Output", ['datatype', 'format', 'location'])
+
+
+class Input(BaseInput):
+    """ The namedtuple class for storing input """
+    def __hash__(self) -> int:
+        return hash(self.datatype)
+
+
+class Output(BaseOutput):
+    """ The namedtuple class for storing output """
+    def __hash__(self) -> int:
+        return hash(self.datatype)
+
+
 IOType = Union[Input, Output]
 
 
@@ -109,7 +123,7 @@ class ProcessParams(collections.Hashable):
             IO = Output
         else:
             raise TypeError("Category can only be either 'Input' or 'Output'")
-        inputs: Set[IOType] = set()
+        io_tuples: Set[IOType] = set()
         for item in data:
             for field in IO._fields:
                 if field not in item:
@@ -117,8 +131,8 @@ class ProcessParams(collections.Hashable):
             for field in item:
                 if field not in IO._fields:
                     raise ValueError(f"Invalid input: {data}. Extra {field}")
-            inputs.add(IO(**item))
-        return inputs
+            io_tuples.add(IO(**item))
+        return io_tuples
 
 
 class ProcessParamsSet(collections.Set):
