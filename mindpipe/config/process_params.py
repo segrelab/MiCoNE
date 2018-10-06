@@ -13,7 +13,7 @@ PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
 class Input(NamedTuple):
     """ The namedtuple class for storing input """
     datatype: str
-    format: List[str]
+    format: List[str]  # noqa: E701
     location: Optional[str] = None
 
     def __hash__(self) -> int:
@@ -23,7 +23,7 @@ class Input(NamedTuple):
 class Output(NamedTuple):
     """ The namedtuple class for storing output """
     datatype: str
-    format: List[str]
+    format: List[str]  # noqa: E701
     location: str
 
     def __hash__(self) -> int:
