@@ -106,6 +106,8 @@ class ProcessParams(collections.Hashable):
             raise TypeError("Parameters must be a List.")
         self.parameters: Set[Parameters] = set()
         for curr_param in value["parameters"]:
+            if "process" not in curr_param:
+                raise ValueError("Parameters is missing 'process' field")
             params = {k: v for k, v in curr_param.items() if k != "process"}
             self.parameters.add(Parameters(process=curr_param["process"], params=params))
 
