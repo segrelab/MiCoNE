@@ -4,7 +4,5 @@
 
 # TODO
 # BaseProcess
-# NFProcess(BaseProcess)
+# ExternalProcess(BaseProcess)
 # InternalProcess(BaseProcess)
-# FormatterProcess(BaseProcess)
-# HelperProcess(BaseProcess)

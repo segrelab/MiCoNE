@@ -224,6 +224,7 @@ class Lineage(BaseLineage):
             int
                 The NCBI taxonomy id
         """
+        # FIXME: I think get name translator expects a string like "Escherichia coli" not separated
         taxid_dict = NCBI.get_name_translator(self)
         try:
             taxid_list = taxid_dict[self.name[1]]
