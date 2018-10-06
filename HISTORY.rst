@@ -6,6 +6,34 @@ Unreleased
 ----------
 
 
+0.4.0 (2018-10-06)
+------------------
+
+Pipeline settings parser and template render have been implemented.
+
+Added
++++++
+- ``Config`` - A class to store all the pipeline configuration
+- ``InternalProcessParamsSet`` and ``ExternalProcessParamsSet`` for loading internal and external process params
+- ``ProcessParams`` - A class to process and store parameters of pipeline processes
+- ``DataTypes`` - A class to process and store datatypes
+- ``external.toml`` to store the list of external pipeline processes
+- ``internal.toml`` to store the list of internal pipeline processes
+- ``datatypes.toml`` to store the list of pipeline supported datatypes
+- ``ScriptTemplate`` - A class for templating nextflow scripts
+- ``ConfigTemplate`` - A class for templating nextflow config files
+
+Changed
++++++++
+- Simplified the internal and external settings files to contain minimum information
+- ``correlation_table`` datatype renamed to ``interaction_table``
+- Modularize the default settings into separate files - datatypes.toml, internal.toml and external.toml
+
+Fixed
++++++
+- Filter ``DeprecationWarning`` and ``PendingDeprecationWarning`` in pytest configuration
+
+
 0.3.0 (2018-08-28)
 ------------------
 
