@@ -150,10 +150,10 @@ class ProcessParams(collections.Hashable):
             req_fields = set(IO._fields) - set(IO._field_defaults.keys())
             for field in req_fields:
                 if field not in item:
-                    raise ValueError(f"Invalid input: {data}. Missing {field}")
+                    raise ValueError(f"Invalid {category}: {data}. Missing {field}")
             for field in item:
                 if field not in IO._fields:
-                    raise ValueError(f"Invalid input: {data}. Extra {field}")
+                    raise ValueError(f"Invalid {category}: {data}. Extra {field}")
             io_tuples.add(IO(**item))
         return io_tuples
 
