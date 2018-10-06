@@ -11,9 +11,10 @@ from .datatypes import DataTypes
 from .process_params import InternalProcessParamsSet, ExternalProcessParamsSet
 
 
-DATATYPES_FILE = pathlib.Path.cwd() / "datatypes.toml"
-EXTERNAL_FILE = pathlib.Path.cwd() / "external.toml"
-INTERNAL_FILE = pathlib.Path.cwd() / "internal.toml"
+CONFIG_FOLDER = pathlib.Path(__file__).parent
+DATATYPES_FILE =  CONFIG_FOLDER / "datatypes.toml"
+EXTERNAL_FILE = CONFIG_FOLDER / "external.toml"
+INTERNAL_FILE = CONFIG_FOLDER / "internal.toml"
 ParamType = Union[InternalProcessParamsSet, ExternalProcessParamsSet]
 
 
