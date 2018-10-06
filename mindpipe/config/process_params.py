@@ -30,6 +30,15 @@ class Output(NamedTuple):
         return hash(self.datatype)
 
 
+class Parameters(NamedTuple):
+    """ The namedtuple class for storing proces parameters """
+    process: str
+    params: dict
+
+    def __hash__(self) -> int:
+        return hash(self.process)
+
+
 IOType = Union[Input, Output]
 
 
@@ -95,7 +104,10 @@ class ProcessParams(collections.Hashable):
         self.output = self._process_io(value["output"], "output")
         if not isinstance(value["parameters"], list):
             raise TypeError("Parameters must be a List.")
-        self.parameters = set(value["parameters"])
+        self.parameters: Set[Parameters] = set()
+        for curr_param in value["parameters"]:
+            params = {k: v for k, v in curr_param.items() if k != "process"}
+            self.parameters.add(Parameters(process=curr_param["process"], params=params))
 
     def __hash__(self) -> int:
         return hash(self.name)
