@@ -14,7 +14,7 @@
     datatype = "quality"
     format = ["qual"]
   [[qiime1.demultiplexing.454.input]]
-    datatype = "mapping"
+    datatype = "sample_barcode_mapping"
     format = ["tsv", "txt"]
   [[qiime1.demultiplexing.454.parameters]]
     process = "demultiplexing_fasta"
