@@ -6,6 +6,27 @@ Unreleased
 ----------
 
 
+0.4.2 (2018-10-08)
+------------------
+
+Added
++++++
+-  ``dict`` property to ``Params``class
+- ``verify_io`` method to ``Params``class
+- ``update_location`` method to ``Params`` class
+- ``get`` method to ``Params`` class
+- ``Params`` class to config namespace
+
+Changed
++++++++
+- ``ScriptTemplate.render`` now uses a default value of '{}' for ``template_data`` parameter
+- Rename ``template_renderer.py`` to ``template.py``
+
+Fixed
++++++
+- ``Input.location`` and ``Output.location`` are now of type ``pathlib.Path``
+
+
 0.4.1 (2018-10-08)
 ------------------
 
