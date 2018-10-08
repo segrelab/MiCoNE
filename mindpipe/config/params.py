@@ -42,7 +42,7 @@ class Parameters(NamedTuple):
 IOType = Union[Input, Output]
 
 
-class ProcessParams(collections.Hashable):
+class Params(collections.Hashable):
     """
         The class for parsing and storing the parameters of a process
 
@@ -117,7 +117,7 @@ class ProcessParams(collections.Hashable):
     def __repr__(self) -> str:
         inputs = {i.datatype for i in self.input}
         outputs = {o.datatype for o in self.output}
-        return f"<ProcessParams name={self.name} input={inputs} output={outputs}>"
+        return f"<Params name={self.name} input={inputs} output={outputs}>"
 
     def __str__(self) -> str:
         return self.name
@@ -160,7 +160,7 @@ class ProcessParams(collections.Hashable):
         return io_tuples
 
 
-class ProcessParamsSet(collections.Set):
+class ParamsSet(collections.Set):
     """
         The set of all supported pipeline processes
 
@@ -171,9 +171,9 @@ class ProcessParamsSet(collections.Set):
     """
 
     def __init__(self, data: Dict[str, Any]) -> None:
-        self.processes: Set[ProcessParams] = set()
+        self.processes: Set[Params] = set()
         for key, value in data.items():
-            process_params = ProcessParams((key, value))
+            process_params = Params((key, value))
             if process_params in self.processes:
                 raise ValueError("Duplicate process definitions detected in settings. Aborting")
             self.processes.add(process_params)
@@ -187,18 +187,18 @@ class ProcessParamsSet(collections.Set):
     def __contains__(self, value: str) -> bool:
         return value in [process.name for process in self.processes]
 
-    def __getitem__(self, key: str) -> ProcessParams:
+    def __getitem__(self, key: str) -> Params:
         for process in self.processes:
             if process.name == key:
                 return process
-        raise KeyError(f"{key} is not in ProcessParamsSet")
+        raise KeyError(f"{key} is not in ParamsSet")
 
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
-        return f"<ProcessParamsSet n={len(self)} processes={processes}>"
+        return f"<ParamsSet n={len(self)} processes={processes}>"
 
 
-class InternalProcessParamsSet(ProcessParamsSet):
+class InternalParamsSet(ParamsSet):
     """
         The set of all supported internal pipeline processes
 
@@ -213,10 +213,10 @@ class InternalProcessParamsSet(ProcessParamsSet):
 
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
-        return f"<InternalProcessParamsSet n={len(self)} processes={processes}>"
+        return f"<InternalParamsSet n={len(self)} processes={processes}>"
 
 
-class ExternalProcessParamsSet(ProcessParamsSet):
+class ExternalParamsSet(ParamsSet):
     """
         The set of all supported external pipeline processes
 
@@ -237,4 +237,4 @@ class ExternalProcessParamsSet(ProcessParamsSet):
 
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
-        return f"<ExternalProcessParamsSet n={len(self)} processes={processes}>"
+        return f"<ExternalParamsSet n={len(self)} processes={processes}>"
