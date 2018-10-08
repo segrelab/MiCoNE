@@ -1,3 +1,3 @@
 from .datatypes import DataTypes
-from .process_params import InternalProcessParamsSet, ExternalProcessParamsSet
+from .params import InternalParamsSet, ExternalParamsSet
 from .config import Config
