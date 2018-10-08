@@ -1,1 +1,1 @@
-from .template_renderer import ConfigTemplate, ScriptTemplate
+from .template import ConfigTemplate, ScriptTemplate
