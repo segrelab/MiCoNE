@@ -219,6 +219,21 @@ class Params(collections.Hashable):
         io_list.remove(element)
         io_list.add(new_element)
 
+    def verify_io(self) -> None:
+        """
+            Verify whether the Input and Output elements have been assigned and are valid
+        """
+        if not self.output_location.is_absolute():
+            raise ValueError("The output location must be absolute")
+        for elem in self.input:
+            if elem.location is None:
+                raise ValueError(f"Input: {elem} has not been assigned a location yet")
+            if not elem.location.exists():
+                raise FileNotFoundError(f"Unable to location input file at {elem.location}")
+        for elem in self.output:
+            if not elem.location.is_absolute():
+                raise ValueError("All the output objects do not have absolute paths")
+
 
 
 class ParamsSet(collections.Set):
