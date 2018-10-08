@@ -234,6 +234,24 @@ class Params(collections.Hashable):
             if not elem.location.is_absolute():
                 raise ValueError("All the output objects do not have absolute paths")
 
+    @property
+    def dict(self) -> Dict[str, Any]:
+        """
+            Return data as a dictionary
+
+            Returns
+            -------
+            Dict[str, Any]
+                The data stored return as a dictionary
+        """
+        self.verify_io()
+        data: Dict[str, Any] = dict()
+        data["input"] = {elem.datatype: str(elem.location) for elem in self.input}
+        data["output"] = {elem.datatype: str(elem.location) for elem in self.output}
+        data["output_dir"] = self.output_location
+        for process_params in self.parameters:
+            data[process_params.process] = process_params.params
+        return data
 
 
 class ParamsSet(collections.Set):
