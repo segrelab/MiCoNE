@@ -122,6 +122,33 @@ class Params(collections.Hashable):
     def __str__(self) -> str:
         return self.name
 
+    def get(self, name: str, category: str) -> IOType:
+        """
+            Get Input or Output element using its name
+
+            Parameters
+            ----------
+            name : str
+                The name of the IO element to be retrieved
+            category: {'input', 'output'}
+                Specifies whether the data is input or output information
+
+            Returns
+            -------
+            IOType
+                The Input or Output element
+        """
+        if category == "input":
+            io = self.input
+        elif category == "output":
+            io = self.output
+        else:
+            raise TypeError("Category can only be either 'Input' or 'Output'")
+        for element in io:
+            if element.datatype == name:
+                return element
+        raise KeyError(f"{name} not found in {category}")
+
     @staticmethod
     def _process_io(data: List[Dict[str, Union[str, List[str]]]], category: str) -> Set[IOType]:
         """
