@@ -6,6 +6,22 @@ Unreleased
 ----------
 
 
+0.4.1 (2018-10-08)
+------------------
+
+Changed
++++++++
+- Renamed ``ExternalProcessParamsSet`` class to ``ExternalParamsSet`` class
+- Renamed ``InternalProcessParamsSet`` class to ``InternalParamsSet`` class
+- Renamed ``ProcessParamsSet`` class to ``ParamsSet`` class
+- Renamed ``ProcessParams`` class to ``Params`` class
+- Updated dependencies - ``biom-format``, ``dask``, ``toml``
+
+Fixed
++++++
+- Flake8 errors
+
+
 0.4.0 (2018-10-06)
 ------------------
 
