@@ -186,6 +186,26 @@ class Params(collections.Hashable):
             io_tuples.add(IO(**item))
         return io_tuples
 
+    def update_location(self, name: str, location: str) -> None:
+        """
+            Update the location of an input
+
+            Parameters
+            ----------
+            name : str
+                The name of the Input element whose location is to be updated
+            location : str
+                The location of the Input element
+        """
+        element = self.get(name, category="input")
+        new_element = Input(
+            datatype=element.datatype,
+            format=element.format,
+            location=location
+        )
+        self.input.remove(element)
+        self.input.add(new_element)
+
 
 class ParamsSet(collections.Set):
     """
