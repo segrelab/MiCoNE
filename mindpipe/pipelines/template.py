@@ -98,15 +98,16 @@ class ScriptTemplate(Template):
                     scripts[file.stem] = wrapper + data + indent + wrapper
         return scripts
 
-    def render(self, template_data: dict) -> str:
+    def render(self, template_data: dict = dict()) -> str:
         """
             Render the nextflow script template
 
             Parameters
             ----------
-            template_data : dict
+            template_data : dict, optional
                 Dictionary of data used to fill in the template
                 This data in addition to the process scripts that are handled automatically
+                Default is an empty dictionary
 
             Returns
             -------
