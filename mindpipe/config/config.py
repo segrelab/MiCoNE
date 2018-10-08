@@ -8,14 +8,14 @@ from typing import Union
 import toml
 
 from .datatypes import DataTypes
-from .process_params import InternalProcessParamsSet, ExternalProcessParamsSet
+from .params import InternalParamsSet, ExternalParamsSet
 
 
 CONFIG_FOLDER = pathlib.Path(__file__).parent
 DATATYPES_FILE = CONFIG_FOLDER / "datatypes.toml"
 EXTERNAL_FILE = CONFIG_FOLDER / "external.toml"
 INTERNAL_FILE = CONFIG_FOLDER / "internal.toml"
-ParamType = Union[InternalProcessParamsSet, ExternalProcessParamsSet]
+ParamType = Union[InternalParamsSet, ExternalParamsSet]
 
 
 class Config:
@@ -49,10 +49,10 @@ class Config:
             datatypes = DataTypes(toml.load(fid))
         self.datatypes = datatypes
         with open(external_file, 'r') as fid:
-            external_params = ExternalProcessParamsSet(toml.load(fid))
+            external_params = ExternalParamsSet(toml.load(fid))
         self._check_io_integrity(external_params)
         with open(internal_file, 'r') as fid:
-            internal_params = InternalProcessParamsSet(toml.load(fid))
+            internal_params = InternalParamsSet(toml.load(fid))
         self._check_io_integrity(internal_params)
         self.process_params = {
             "internal": internal_params,
