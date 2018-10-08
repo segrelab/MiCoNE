@@ -1,22 +1,22 @@
 """
-    Module containing tests for the ProcessParams class
+    Module containing tests for the Params class
 """
 
 import pytest
 
-from mindpipe.config import InternalProcessParamsSet, ExternalProcessParamsSet
-from mindpipe.config.process_params import ProcessParams
+from mindpipe.config import InternalParamsSet, ExternalParamsSet
+from mindpipe.config.params import Params
 
 
 @pytest.mark.usefixtures("pipeline_settings")
-class TestProcessParamsSet:
-    """ Tests for ProcessParamsSet class """
+class TestParamsSet:
+    """ Tests for ParamsSet class """
 
     def test_init(self, pipeline_settings):
         internal_raw = pipeline_settings["internal"]
         external_raw = pipeline_settings["external"]
-        assert InternalProcessParamsSet(internal_raw)
-        assert ExternalProcessParamsSet(external_raw)
+        assert InternalParamsSet(internal_raw)
+        assert ExternalParamsSet(external_raw)
         wrong_format = {
             'root': 'src/internal/split_otu_table',
             'output_location': 'split_otu_table',
@@ -24,28 +24,28 @@ class TestProcessParamsSet:
             'output': [{'datatype': 'otu_table', 'format': ['biom'], 'location': '*.biom'}],
             'parameters': [{'process': 'something', 'data': 123}],
         }
-        assert ProcessParams(("wrong_format", wrong_format))
+        assert Params(("wrong_format", wrong_format))
         with pytest.raises(TypeError):
-            ProcessParams(("wrong_format", {**wrong_format, "input": "string"}))
+            Params(("wrong_format", {**wrong_format, "input": "string"}))
         with pytest.raises(TypeError):
-            ProcessParams(("wrong_format", {**wrong_format, "output": "string"}))
+            Params(("wrong_format", {**wrong_format, "output": "string"}))
         with pytest.raises(TypeError):
-            ProcessParams(("wrong_format", {**wrong_format, "parameters": "string"}))
+            Params(("wrong_format", {**wrong_format, "parameters": "string"}))
         with pytest.raises(ValueError):
-            ProcessParams(("wrong_format", {**wrong_format, "input": [{'datatype': 'sequence_16s'}]}))
+            Params(("wrong_format", {**wrong_format, "input": [{'datatype': 'sequence_16s'}]}))
         with pytest.raises(ValueError):
-            ProcessParams(("wrong_format", {**wrong_format, "output": [{'datatype': 'sequence_16s'}]}))
+            Params(("wrong_format", {**wrong_format, "output": [{'datatype': 'sequence_16s'}]}))
         with pytest.raises(ValueError):
-            ProcessParams(("wrong_format", {**wrong_format, "parameters": [{'data': 'temp'}]}))
+            Params(("wrong_format", {**wrong_format, "parameters": [{'data': 'temp'}]}))
 
     def test_iter_len(self, pipeline_settings):
         internal_raw = pipeline_settings["internal"]
-        internal = InternalProcessParamsSet(internal_raw)
+        internal = InternalParamsSet(internal_raw)
         assert len(internal_raw) == len(internal)
         for process in internal:
-            assert isinstance(process, ProcessParams)
+            assert isinstance(process, Params)
         external_raw = pipeline_settings["external"]
-        external = ExternalProcessParamsSet(external_raw)
+        external = ExternalParamsSet(external_raw)
         count = 0
         for l1 in external_raw:
             for l2 in external_raw[l1]:
@@ -53,13 +53,13 @@ class TestProcessParamsSet:
                     count += 1
         assert count == len(external)
         for process in external:
-            assert isinstance(process, ProcessParams)
+            assert isinstance(process, Params)
 
     def test_contains_getitem(self, pipeline_settings):
         internal_raw = pipeline_settings["internal"]
         external_raw = pipeline_settings["external"]
-        internal = InternalProcessParamsSet(internal_raw)
-        external = ExternalProcessParamsSet(external_raw)
+        internal = InternalParamsSet(internal_raw)
+        external = ExternalParamsSet(external_raw)
         test_internal_key = list(internal_raw.keys())[0]
         for l1 in external_raw:
             for l2 in external_raw[l1]:
