@@ -186,25 +186,36 @@ class Params(collections.Hashable):
             io_tuples.add(IO(**item))
         return io_tuples
 
-    def update_location(self, name: str, location: str) -> None:
+    def update_location(self, name: str, location: str, category: str) -> None:
         """
-            Update the location of an input
+            Update the location of an Input or Output element
 
             Parameters
             ----------
             name : str
-                The name of the Input element whose location is to be updated
+                The name of the IO element whose location is to be updated
             location : str
-                The location of the Input element
+                The location of the IO element
+            category: {'input', 'output'}
+                Specifies whether the data is input or output information
         """
-        element = self.get(name, category="input")
-        new_element = Input(
+        element = self.get(name, category=category)
+        if category == "input":
+            IO = Input
+            io_list = self.input
+        elif category == "output":
+            IO = Output
+            io_list = self.output
+        else:
+            raise TypeError("Category can only be either 'Input' or 'Output'")
+        new_element = IO(
             datatype=element.datatype,
             format=element.format,
             location=location
         )
-        self.input.remove(element)
-        self.input.add(new_element)
+        io_list.remove(element)
+        io_list.add(new_element)
+
 
 
 class ParamsSet(collections.Set):
