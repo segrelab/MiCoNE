@@ -14,7 +14,7 @@ class Input(NamedTuple):
     """ The namedtuple class for storing input """
     datatype: str
     format: List[str]  # noqa: E701
-    location: Optional[str] = None
+    location: Optional[pathlib.Path] = None
 
     def __hash__(self) -> int:
         return hash(self.datatype)
@@ -24,7 +24,7 @@ class Output(NamedTuple):
     """ The namedtuple class for storing output """
     datatype: str
     format: List[str]  # noqa: E701
-    location: str
+    location: pathlib.Path
 
     def __hash__(self) -> int:
         return hash(self.datatype)
@@ -183,7 +183,10 @@ class Params(collections.Hashable):
             for field in item:
                 if field not in IO._fields:
                     raise ValueError(f"Invalid {category}: {data}. Extra {field}")
-            io_tuples.add(IO(**item))
+            item_subset = {k: item[k] for k in req_fields}
+            loc = item_subset.get("location")
+            item_subset["location"] = pathlib.Path(loc) if loc else None
+            io_tuples.add(IO(**item_subset))
         return io_tuples
 
     def update_location(self, name: str, location: str, category: str) -> None:
