@@ -231,6 +231,8 @@ class Params(collections.Hashable):
             if not elem.location.exists():
                 raise FileNotFoundError(f"Unable to location input file at {elem.location}")
         for elem in self.output:
+            if elem.location is None:
+                raise ValueError(f"Output: {elem} has not been assigned a location yet")
             if not elem.location.is_absolute():
                 raise ValueError("All the output objects do not have absolute paths")
 
