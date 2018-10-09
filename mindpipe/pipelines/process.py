@@ -154,3 +154,34 @@ class InternalProcess(Process):
 
     def __init__(self, params: Params) -> None:
         super().__init__(params)
+
+
+class ExternalProcess(Process):
+    """
+        Class for executing an external pipeline process
+
+        Parameters
+        ----------
+        params : Params
+            The parameters for a particular external process
+
+        Attributes
+        ----------
+        name : str
+            The name of the external process
+        script : ScriptTemplate
+            The process script template
+        config : ConfigTemplate
+            The process configuration template
+        cmd : str
+            The command that will be executing for running the process
+        env : pathlib.Path
+            The location of the virtual environment
+    """
+
+    def __init__(self, params: Params) -> None:
+        super().__init__(params)
+
+    def run(self):
+        # Source environment before running
+        pass
