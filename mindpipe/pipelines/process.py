@@ -155,6 +155,9 @@ class InternalProcess(Process):
     def __init__(self, params: Params) -> None:
         super().__init__(params)
 
+    def __repr__(self) -> str:
+        return f"<InternalProcess name={self.name} cmd={self.cmd}>"
+
 
 class ExternalProcess(Process):
     """
@@ -181,6 +184,9 @@ class ExternalProcess(Process):
 
     def __init__(self, params: Params) -> None:
         super().__init__(params)
+
+    def __repr__(self) -> str:
+        return f"<ExternalProcess name={self.name} cmd={self.cmd}>"
 
     def run(self):
         # Source environment before running
