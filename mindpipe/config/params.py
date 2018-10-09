@@ -260,6 +260,36 @@ class Params(collections.Hashable):
             data[process_params.process] = process_params.params
         return data
 
+    def merge(self, user_settings: Dict[str, Any]) -> None:
+        """
+            Merge user_settings into the current Params instance
+
+            Parameters
+            ----------
+            user_settings: Dict[str, Any]
+                User defined settings for the current process
+        """
+        for curr_input in user_settings["input"]:
+            io_item = self.get(curr_input["datatype"], category="input")
+            for f in curr_input["format"]:
+                if f not in io_item.format:
+                    raise ValueError(f"{f} not a supported format for {io_item}")
+            updated_input = Input(
+                datatype=io_item.datatype,
+                format=curr_input["format"],
+                location=curr_input["location"]
+            )
+            self.input.remove(io_item)
+            self.input.add(updated_input)
+        for curr_params in user_settings["parameters"]:
+            param_item: Parameters = self.get(curr_params["process"], category="parameters")
+            updated_param = Parameters(
+                process=param_item.process,
+                params={**param_item.params, **curr_params}
+            )
+            self.parameters.remove(param_item)
+            self.parameters.add(updated_param)
+
 
 class ParamsSet(collections.Set):
     """
