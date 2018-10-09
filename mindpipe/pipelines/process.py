@@ -129,3 +129,28 @@ class Process(collections.Hashable):
             shutil.rmtree(work_dir)
         else:
             raise ValueError("Unsupported scope. Please choose from {'all', 'work_dir'}")
+
+
+class InternalProcess(Process):
+    """
+        Class for executing an internal pipeline process
+
+        Parameters
+        ----------
+        params : Params
+            The parameters for a particular internal process
+
+        Attributes
+        ----------
+        name : str
+            The name of the internal process
+        script : ScriptTemplate
+            The process script template
+        config : ConfigTemplate
+            The process configuration template
+        cmd : str
+            The command that will be executing for running the process
+    """
+
+    def __init__(self, params: Params) -> None:
+        super().__init__(params)
