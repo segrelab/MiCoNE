@@ -122,32 +122,37 @@ class Params(collections.Hashable):
     def __str__(self) -> str:
         return self.name
 
-    def get(self, name: str, category: str) -> IOType:
+    def get(self, name: str, category: str) -> Union[Input, Output, Parameters]:
         """
-            Get Input or Output element using its name
+            Get Input, Output or Parameter element using its name
 
             Parameters
             ----------
             name : str
-                The name of the IO element to be retrieved
+                The name of the IO element or parameter to be retrieved
             category: {'input', 'output'}
-                Specifies whether the data is input or output information
+                Specifies whether the data is input, output or parameter information
 
             Returns
             -------
-            IOType
-                The Input or Output element
+            Union[Input, Output, Parameters]
+                The Input, Output or Parameter element
         """
         if category == "input":
-            io = self.input
+            query_set = self.input
+            attr = "datatype"
         elif category == "output":
-            io = self.output
+            query_set = self.output
+            attr = "datatype"
+        elif category == "parameters":
+            query_set = self.parameters
+            attr = "process"
         else:
-            raise TypeError("Category can only be either 'Input' or 'Output'")
-        for element in io:
-            if element.datatype == name:
+            raise TypeError("Category can only be one of {'input', 'output', 'parameters'}")
+        for element in query_set:
+            if getattr(element, attr) == name:
                 return element
-        raise KeyError(f"{name} not found in {category}")
+        raise KeyError(f"{name} not found in {category} of {self.name}")
 
     @staticmethod
     def _process_io(data: List[Dict[str, Union[str, List[str]]]], category: str) -> Set[IOType]:
