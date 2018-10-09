@@ -48,6 +48,12 @@ class Process(collections.Hashable):
     def __hash__(self) -> int:
         return hash(self.name)
 
+    def __repr__(self) -> str:
+        return f"<Process name={self.name} cmd={self.cmd}>"
+
+    def __str__(self) -> str:
+        return self.name
+
     def build(self, output_dir: Optional[str] = None) -> None:
         """
             Builds the pipeline script and the config file at the output_dir
@@ -123,6 +129,3 @@ class Process(collections.Hashable):
             shutil.rmtree(work_dir)
         else:
             raise ValueError("Unsupported scope. Please choose from {'all', 'work_dir'}")
-
-# ExternalProcess(Process)
-# InternalProcess(Process)
