@@ -270,7 +270,7 @@ class Params(collections.Hashable):
                 User defined settings for the current process
         """
         for curr_input in user_settings["input"]:
-            io_item = self.get(curr_input["datatype"], category="input")
+            io_item: Input = self.get(curr_input["datatype"], category="input")
             for f in curr_input["format"]:
                 if f not in io_item.format:
                     raise ValueError(f"{f} not a supported format for {io_item}")
