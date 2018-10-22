@@ -290,6 +290,20 @@ class Params(collections.Hashable):
             self.parameters.remove(param_item)
             self.parameters.add(updated_param)
 
+    def attach_to(self, previous: "Params") -> None:
+        """
+            Update inputs of current `Param` instance using outputs of previous
+
+            Parameters
+            ----------
+            previous : Params
+                The `Param` instance to attach current instance to
+        """
+        for input_ in self.input:
+            output_ = previous.get(input_.datatype, category="output")
+            self.update_location(input_.datatype, output_.location, category="input")
+        return None
+
 
 class ParamsSet(collections.Set):
     """
