@@ -711,6 +711,19 @@
             "index": "pypi",
             "version": "==4.2"
         },
+        "python-jsonrpc-server": {
+            "hashes": [
+                "sha256:533434fa982eb42c36ddb0b6758cef8e6eaf46d014f76b70a401b8790a3e6d57"
+            ],
+            "version": "==0.0.2"
+        },
+        "python-language-server": {
+            "hashes": [
+                "sha256:fa9162acb1402b807132d7288b7f521db2bd666d63505d8a4d9464d4b8488c52"
+            ],
+            "index": "pypi",
+            "version": "==0.21.2"
+        },
         "pytz": {
             "hashes": [
                 "sha256:a061aa0a9e06881eb8b3b2b43f05b9439d6583c206d0a6c340ff72a7b6669053",

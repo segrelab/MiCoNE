@@ -35,6 +35,7 @@ pytest-cov = "*"
 codecov = "*"
 travis-sphinx = "*"
 sphinx-rtd-theme = "*"
+python-language-server = "*"
 
 [requires]
 python_version = "3.6"
