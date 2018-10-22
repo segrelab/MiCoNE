@@ -17,6 +17,8 @@ networkx = "*"
 toml = "*"
 schematics = "*"
 "jinja2schema" = "*"
+click = "*"
+delegator-py = "*"
 
 [dev-packages]
 bumpversion = "*"
