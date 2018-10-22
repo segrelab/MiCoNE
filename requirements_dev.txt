@@ -2,22 +2,23 @@
 alabaster==0.7.12
 argh==0.26.2
 astroid==2.0.4
-atomicwrites==1.2.1; python_version != '3.1.*'
+atomicwrites==1.2.1
 attrs==18.2.0
 babel==2.6.0
 backcall==0.1.0
 bumpversion==0.5.3
-certifi==2018.8.24
+certifi==2018.10.15
 chardet==3.0.4
-click==7.0; python_version != '3.2.*'
+click==7.0
 codecov==2.0.15
 coverage==4.5.1
 decorator==4.3.0
 docutils==0.14
 flake8==3.5.0
+future==0.16.0
 ghp-import==0.5.5
 idna==2.7
-imagesize==1.1.0; python_version != '3.2.*'
+imagesize==1.1.0
 ipython-genutils==0.2.0
 ipython==7.0.1
 isort==4.3.4
@@ -28,28 +29,30 @@ markupsafe==1.0
 mccabe==0.6.1
 more-itertools==4.3.0
 mypy-extensions==0.4.1
-mypy==0.630
+mypy==0.641
 numpydoc==0.8.0
-packaging==18.0; python_version != '3.2.*'
+packaging==18.0
 parso==0.3.1
 pathtools==0.1.2
-pexpect==4.6.0; sys_platform != 'win32'
+pexpect==4.6.0
 pickleshare==0.7.5
-pluggy==0.7.1; python_version != '3.3.*'
-prompt-toolkit==2.0.5
+pluggy==0.8.0
+prompt-toolkit==2.0.6
 ptyprocess==0.6.0
-py==1.6.0; python_version != '3.1.*'
+py==1.7.0
 pycodestyle==2.3.1
 pyflakes==1.6.0
 pygments==2.2.0
 pylint==2.1.1
-pyparsing==2.2.2; python_version >= '2.6'
+pyparsing==2.2.2
 pytest-cov==2.6.0
 pytest-runner==4.2
-pytest==3.8.2
+pytest==3.9.1
+python-jsonrpc-server==0.0.2
+python-language-server==0.21.2
 pytz==2018.5
 pyyaml==3.13
-requests==2.19.1
+requests==2.20.0
 simplegeneric==0.8.1
 six==1.11.0
 snowballstemmer==1.2.1
@@ -58,9 +61,9 @@ sphinx==1.8.1
 sphinxcontrib-websupport==1.1.0
 traitlets==4.3.2
 travis-sphinx==2.2.1
-typed-ast==1.1.0; python_version < '3.7' and implementation_name == 'cpython'
-urllib3==1.23
+typed-ast==1.1.0
+urllib3==1.24
 watchdog==0.9.0
 wcwidth==0.1.7
-wheel==0.32.1
+wheel==0.32.2
 wrapt==1.10.11
