@@ -9,6 +9,8 @@ import shutil
 from typing import Optional
 from warnings import warn
 
+import delegator
+
 from .template import ConfigTemplate, ScriptTemplate
 from ..config import Params
 
@@ -95,18 +97,20 @@ class Process(collections.Hashable):
             warn("The process has not been built yet. Please run `build` before `run`")
         return f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
 
-    def run(self) -> str:
+    def run(self) -> delegator.Command:
         """
             Starts the execution of the process and returns the job id (cluster) or pid (local)
 
             Returns
             -------
-            str
-                The job-id (cluster) or pid (local)
+            delegator.Command
+                The delegator command object
+                It has `cmd`, `out`, `pid` and other facilities
         """
         if self.cmd is None:
             raise ValueError("You must run the `build` method on the instance before execution")
-        # TODO: Use delegator
+        run_inst = delegator.run(self.cmd, block=False)
+        return run_inst
 
     def clean(self, scope: str) -> None:
         """
