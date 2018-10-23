@@ -71,8 +71,8 @@ class Process(collections.Hashable):
         """
         if output_dir:
             self._output_location = pathlib.Path(output_dir)
-        if not self._output_location.exists():
-            raise FileNotFoundError(f"{self._output_location} must exist before process can be built")
+        if not self._output_location.is_absolute() or not self._output_location.exists():
+            raise FileNotFoundError(f"{self._output_location} must be an absolute path and must exist")
         script = self.script.render()
         script_file = self._output_location / f"{self.name}.nf"
         # TODO: Add logging here
@@ -126,6 +126,8 @@ class Process(collections.Hashable):
                 The scope to be cleaned
         """
         warn("You are about to delete files and folders which is in irreversible process")
+        if not self._output_location.is_absolute() or not self._output_location.exists():
+            raise FileNotFoundError(f"{self._output_location} does not exist or is not an absolute path")
         script_path = self._output_location / f"{self.name}.nf"
         config_path = self._output_location / f"{self.name}.config"
         work_dir = self._output_location / "work"
