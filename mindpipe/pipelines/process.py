@@ -28,6 +28,8 @@ class Process(collections.Hashable):
         ----------
         name : str
             The name of the process
+        params : Params
+            The core parameters object for the process
         script : ScriptTemplate
             The process script template
         config : ConfigTemplate
@@ -38,14 +40,14 @@ class Process(collections.Hashable):
     _nf_path: pathlib.Path = pathlib.Path(os.environ["NF_PATH"])
 
     def __init__(self, params: Params) -> None:
-        self._params = params
-        self.name = self._params.name
-        script_file = self._params.root / "process.nf"
-        process_dir = self._params.root / "process"
-        config_file = self._params.root / "process.config"
+        self.params = params
+        self.name = self.params.name
+        script_file = self.params.root / "process.nf"
+        process_dir = self.params.root / "process"
+        config_file = self.params.root / "process.config"
         self.script = ScriptTemplate(script_file, process_dir)
         self.config = ConfigTemplate(config_file)
-        self._output_location = self._params.output_location
+        self._output_location = self.params.output_location
 
     def __hash__(self) -> int:
         return hash(self.name)
@@ -74,7 +76,7 @@ class Process(collections.Hashable):
         # TODO: Add logging here
         with open(script_file, 'w') as fid:
             fid.write(script)
-        config = self.config.render(self._params.dict)
+        config = self.config.render(self.params.dict)
         config_file = self._output_location / f"{self.name}.config"
         with open(config_file, 'w') as fid:
             fid.write(config)
@@ -188,7 +190,7 @@ class ExternalProcess(Process):
 
     def __init__(self, params: Params) -> None:
         super().__init__(params)
-        self.env = self._params.env
+        self.env = self.params.env
 
     def __repr__(self) -> str:
         return f"<ExternalProcess name={self.name} cmd={self.cmd}>"
