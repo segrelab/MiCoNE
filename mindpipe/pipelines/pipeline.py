@@ -31,7 +31,7 @@ class Pipeline(collections.Sequence):
     """
     _req_keys = {
         "title",
-        "order"
+        "order",
         "output_location",
     }
 
