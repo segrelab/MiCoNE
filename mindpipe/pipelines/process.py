@@ -61,11 +61,13 @@ class Process(collections.Hashable):
     def build(self, output_dir: Optional[str] = None) -> None:
         """
             Builds the pipeline script and the config file at the output_dir
-            Also updates the `cmd` attribute of the instance
+            Updates the output_location for all the results
 
             Parameters
             ----------
             output_dir : str, optional
+                The directory where the scripts and config files are to be built
+                This directory will be also be used to store the results of the process
         """
         if output_dir:
             self._output_location = pathlib.Path(output_dir)
