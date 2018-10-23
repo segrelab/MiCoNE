@@ -136,6 +136,17 @@ class Process(collections.Hashable):
         else:
             raise ValueError("Unsupported scope. Please choose from {'all', 'work_dir'}")
 
+    def attach_to(self, previous: "Process") -> None:
+        """
+            Update inputs of current `Process` instance using outputs of previous
+
+            Parameters
+            ----------
+            previous : Process
+                The `Process` instance to attach the current instance to
+        """
+        self.params.attach_to(previous.params)
+
 
 class InternalProcess(Process):
     """
