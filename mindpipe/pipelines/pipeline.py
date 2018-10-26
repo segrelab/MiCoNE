@@ -101,9 +101,10 @@ class Pipeline(collections.Sequence):
         raise KeyError(f"{key} is not a process of this pipeline")
 
     def __repr__(self) -> str:
+        processes = [process.name for process in self]
         return (
             f"<Pipeline title={self.title} output_location={self.output_location} "
-            f"processes={[p.name for p in self]}>"
+            f"processes={processes}>"
         )
 
     def __str__(self) -> str:
