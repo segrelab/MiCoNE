@@ -14,8 +14,8 @@ codecov==2.0.15
 coverage==4.5.1
 decorator==4.3.0
 docutils==0.14
-flake8==3.5.0
-future==0.16.0
+flake8==3.6.0
+future==0.17.0
 ghp-import==0.5.5
 idna==2.7
 imagesize==1.1.0
@@ -34,23 +34,23 @@ numpydoc==0.8.0
 packaging==18.0
 parso==0.3.1
 pathtools==0.1.2
-pexpect==4.6.0
+pexpect==4.6.0 ; sys_platform != 'win32'
 pickleshare==0.7.5
 pluggy==0.8.0
 prompt-toolkit==2.0.6
 ptyprocess==0.6.0
 py==1.7.0
-pycodestyle==2.3.1
-pyflakes==1.6.0
+pycodestyle==2.4.0
+pyflakes==2.0.0
 pygments==2.2.0
 pylint==2.1.1
 pyparsing==2.2.2
 pytest-cov==2.6.0
 pytest-runner==4.2
-pytest==3.9.1
+pytest==3.9.2
 python-jsonrpc-server==0.0.2
 python-language-server==0.21.2
-pytz==2018.5
+pytz==2018.6
 pyyaml==3.13
 requests==2.20.0
 simplegeneric==0.8.1
@@ -61,7 +61,7 @@ sphinx==1.8.1
 sphinxcontrib-websupport==1.1.0
 traitlets==4.3.2
 travis-sphinx==2.2.1
-typed-ast==1.1.0
+typed-ast==1.1.0 ; python_version < '3.7' and implementation_name == 'cpython'
 urllib3==1.24
 watchdog==0.9.0
 wcwidth==0.1.7
