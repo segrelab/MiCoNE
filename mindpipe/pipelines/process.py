@@ -23,6 +23,17 @@ class Process(collections.Hashable):
         ----------
         params : Params
             The parameters for a particular process
+        profile : {'local', 'sge'}
+            The execution environment
+        script_name : str, optional
+            The name of the process script template
+            Default is 'process.nf'
+        config_name : str, optional
+            The name of the process configuration template
+            Default is 'process.config'
+        process_dir_name : str, optional
+            The name of the process directory where the templates are stored
+            Default is 'processes'
 
         Attributes
         ----------
@@ -39,12 +50,20 @@ class Process(collections.Hashable):
     """
     _nf_path: pathlib.Path = pathlib.Path(os.environ["NF_PATH"])
 
-    def __init__(self, params: Params) -> None:
+    def __init__(
+            self,
+            params: Params,
+            profile: str,
+            script_name: str = "process.nf",
+            config_name: str = "process.config",
+            process_dir_name: str = "processes",
+    ) -> None:
         self.params = params
         self.name = self.params.name
-        script_file = self.params.root / "process.nf"
-        process_dir = self.params.root / "process"
-        config_file = self.params.root / "process.config"
+        self.profile = profile
+        script_file = self.params.root / script_name
+        process_dir = self.params.root / process_dir_name
+        config_file = self.params.root / config_name
         self.script = ScriptTemplate(script_file, process_dir)
         self.config = ConfigTemplate(config_file)
         self._output_location = self.params.output_location
