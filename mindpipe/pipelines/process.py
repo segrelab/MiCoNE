@@ -206,12 +206,25 @@ class InternalProcess(Process):
         Parameters
         ----------
         params : Params
-            The parameters for a particular internal process
+            The parameters for the internal process
+        profile : {'local', 'sge'}
+            The execution environment
+        script_name : str, optional
+            The name of the process script template
+            Default is 'process.nf'
+        config_name : str, optional
+            The name of the process configuration template
+            Default is 'process.config'
+        process_dir_name : str, optional
+            The name of the process directory where the templates are stored
+            Default is 'processes'
 
         Attributes
         ----------
         name : str
-            The name of the internal process
+            The name of the process
+        params : Params
+            The core parameters object for the process
         script : ScriptTemplate
             The process script template
         config : ConfigTemplate
@@ -220,8 +233,15 @@ class InternalProcess(Process):
             The command that will be executing for running the process
     """
 
-    def __init__(self, params: Params) -> None:
-        super().__init__(params)
+    def __init__(
+            self,
+            params: Params,
+            profile: str,
+            script_name: str = "process.nf",
+            config_name: str = "process.config",
+            process_dir_name: str = "processes",
+    ) -> None:
+        super().__init__(params, profile, script_name, config_name, process_dir_name)
 
     def __repr__(self) -> str:
         return f"<InternalProcess name={self.name} cmd={self.cmd}>"
