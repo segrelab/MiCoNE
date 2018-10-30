@@ -2,7 +2,7 @@
 alabaster==0.7.12
 argh==0.26.2
 astroid==2.0.4
-atomicwrites==1.2.1 ; python_version != '3.0.*' and python_version != '3.3.*' and python_version != '3.2.*' and python_version != '3.1.*' and python_version >= '2.7'
+atomicwrites==1.2.1
 attrs==18.2.0
 babel==2.6.0
 backcall==0.1.0
@@ -15,13 +15,13 @@ coverage==4.5.1
 decorator==4.3.0
 docutils==0.14
 flake8==3.6.0
-future==0.17.0 ; python_version != '3.2.*' and python_version != '3.0.*' and python_version != '3.1.*' and python_version >= '2.6'
+future==0.17.0
 ghp-import==0.5.5
 idna==2.7
-imagesize==1.1.0 ; python_version != '3.3.*' and python_version != '3.1.*' and python_version != '3.0.*' and python_version != '3.2.*' and python_version >= '2.7'
+imagesize==1.1.0
 ipython-genutils==0.2.0
-ipython==7.0.1
-isort==4.3.4 ; python_version >= '2.7' and python_version != '3.0.*' and python_version != '3.1.*' and python_version != '3.3.*' and python_version != '3.2.*'
+ipython==7.1.1
+isort==4.3.4
 jedi==0.13.1
 jinja2==2.10
 lazy-object-proxy==1.3.1
@@ -36,33 +36,32 @@ parso==0.3.1
 pathtools==0.1.2
 pexpect==4.6.0 ; sys_platform != 'win32'
 pickleshare==0.7.5
-pluggy==0.8.0 ; python_version != '3.2.*' and python_version != '3.0.*' and python_version != '3.3.*' and python_version != '3.1.*' and python_version >= '2.7'
+pluggy==0.8.0
 prompt-toolkit==2.0.6
 ptyprocess==0.6.0
-py==1.7.0 ; python_version != '3.2.*' and python_version != '3.0.*' and python_version != '3.3.*' and python_version != '3.1.*' and python_version >= '2.7'
+py==1.7.0
 pycodestyle==2.4.0
-pyflakes==2.0.0 ; python_version != '3.2.*' and python_version != '3.0.*' and python_version != '3.3.*' and python_version != '3.1.*' and python_version >= '2.7'
+pyflakes==2.0.0
 pygments==2.2.0
 pylint==2.1.1
-pyparsing==2.2.2 ; python_version != '3.0.*' and python_version != '3.2.*' and python_version != '3.1.*' and python_version >= '2.6'
+pyparsing==2.2.2
 pytest-cov==2.6.0
 pytest-runner==4.2
-pytest==3.9.2
-python-jsonrpc-server==0.0.2 ; python_version != '3.2.*' and python_version != '3.0.*' and python_version != '3.1.*' and python_version >= '2.6'
+pytest==3.9.3
+python-jsonrpc-server==0.0.2
 python-language-server==0.21.2
-pytz==2018.6
+pytz==2018.7
 pyyaml==3.13
 requests==2.20.0
-simplegeneric==0.8.1
 six==1.11.0
 snowballstemmer==1.2.1
 sphinx-rtd-theme==0.4.2
 sphinx==1.8.1
-sphinxcontrib-websupport==1.1.0 ; python_version >= '2.7' and python_version != '3.0.*' and python_version != '3.1.*' and python_version != '3.3.*' and python_version != '3.2.*'
+sphinxcontrib-websupport==1.1.0
 traitlets==4.3.2
 travis-sphinx==2.2.1
 typed-ast==1.1.0 ; python_version < '3.7' and implementation_name == 'cpython'
-urllib3==1.23 ; python_version < '4' and python_version != '3.0.*' and python_version >= '2.6' and python_version != '3.1.*' and python_version != '3.3.*' and python_version != '3.2.*'
+urllib3==1.24
 watchdog==0.9.0
 wcwidth==0.1.7
 wheel==0.32.2
