@@ -103,3 +103,6 @@ ENV/
 
 # tags
 tags
+
+# vscode
+.vscode
