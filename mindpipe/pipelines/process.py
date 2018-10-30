@@ -254,12 +254,25 @@ class ExternalProcess(Process):
         Parameters
         ----------
         params : Params
-            The parameters for a particular external process
+            The parameters for the external process
+        profile : {'local', 'sge'}
+            The execution environment
+        script_name : str, optional
+            The name of the process script template
+            Default is 'process.nf'
+        config_name : str, optional
+            The name of the process configuration template
+            Default is 'process.config'
+        process_dir_name : str, optional
+            The name of the process directory where the templates are stored
+            Default is 'processes'
 
         Attributes
         ----------
         name : str
-            The name of the external process
+            The name of the process
+        params : Params
+            The core parameters object for the process
         script : ScriptTemplate
             The process script template
         config : ConfigTemplate
@@ -270,13 +283,16 @@ class ExternalProcess(Process):
             The location of the virtual environment
     """
 
-    def __init__(self, params: Params) -> None:
-        super().__init__(params)
+    def __init__(
+            self,
+            params: Params,
+            profile: str,
+            script_name: str = "process.nf",
+            config_name: str = "process.config",
+            process_dir_name: str = "processes",
+    ) -> None:
+        super().__init__(params, profile, script_name, config_name, process_dir_name)
         self.env = self.params.env
 
     def __repr__(self) -> str:
         return f"<ExternalProcess name={self.name} cmd={self.cmd}>"
-
-    def run(self):
-        # Source environment before running
-        pass
