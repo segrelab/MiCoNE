@@ -47,7 +47,10 @@ class Process(collections.Hashable):
             The process configuration template
         cmd : str
             The command that will be executing for running the process
+        env : Optional[pathlib.Path]
+            The location of the virtual environment
     """
+    env: Optional[pathlib.Path] = None
     _nf_path: pathlib.Path = pathlib.Path(os.environ["NF_PATH"])
 
     def __init__(
