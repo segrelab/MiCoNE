@@ -17,7 +17,7 @@ from ..config import Params
 
 class Process(collections.Hashable):
     """
-        Class for executing pipeline processes
+        Class for executing a pipeline process
 
         Parameters
         ----------
