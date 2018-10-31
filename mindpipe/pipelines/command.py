@@ -2,6 +2,7 @@
     Module that handles the execution of subprocesses and parsing of their outputs
 """
 
+import pathlib
 import sys
 from typing import List, Optional
 
@@ -41,7 +42,7 @@ class Command:
             self,
             cmd: str,
             profile: str,
-            env: Optional[str] = None,
+            env: Optional[pathlib.Path] = None,
             timeout: int = 1000
     ) -> None:
         # TODO: Set up profiles config
