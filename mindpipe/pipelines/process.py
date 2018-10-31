@@ -40,6 +40,8 @@ class Process(collections.Hashable):
             The name of the process
         params : Params
             The core parameters object for the process
+        profile : str
+            The execution environment for the process
         script : ScriptTemplate
             The process script template
         config : ConfigTemplate
@@ -229,6 +231,8 @@ class InternalProcess(Process):
             The name of the process
         params : Params
             The core parameters object for the process
+        profile : str
+            The execution environment for the process
         script : ScriptTemplate
             The process script template
         config : ConfigTemplate
@@ -277,6 +281,8 @@ class ExternalProcess(Process):
             The name of the process
         params : Params
             The core parameters object for the process
+        profile : str
+            The execution environment for the process
         script : ScriptTemplate
             The process script template
         config : ConfigTemplate
