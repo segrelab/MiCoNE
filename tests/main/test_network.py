@@ -118,9 +118,9 @@ class TestNetwork:
             assert nodes1 == nodes2
             directionality = network_json.metadata["directionality"]
             if directionality == "directed":
-                fun = lambda x: (x["source"], x["target"])
+                def fun(x: dict): return x["source"], x["target"]
             else:
-                fun = lambda x: frozenset([x["source"], x["target"]])
+                def fun(x: dict): return frozenset([x["source"], x["target"]])
             links1 = {fun(x): (x["pvalue"], x["weight"]) for x in network_elist.links_thres}
             links2 = {fun(x): (x["pvalue"], x["weight"]) for x in network_json.links_thres}
             assert links1 == links2
