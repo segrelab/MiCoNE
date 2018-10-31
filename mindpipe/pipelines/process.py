@@ -129,20 +129,20 @@ class Process(collections.Hashable):
         cmd = f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
         return Command(cmd, self.profile, self.env)
 
-    def run(self) -> delegator.Command:
+    def run(self) -> Command:
         """
-            Starts the execution of the process and returns the job id (cluster) or pid (local)
+            Starts the execution of the process and returns the Command instance
+            This could produce unexpected results if run before `build`
 
             Returns
             -------
-            delegator.Command
-                The delegator command object
+            Command
+                The command object
                 It has `cmd`, `out`, `pid` and other facilities
         """
-        if self.cmd is None:
-            raise ValueError("You must run the `build` method on the instance before execution")
-        run_inst = delegator.run(self.cmd, block=False)
-        return run_inst
+        # TODO: This step also needs to fill in the profiles and resources templates
+        self.cmd.run()
+        return self.cmd
 
     def clean(self, scope: str) -> None:
         """
