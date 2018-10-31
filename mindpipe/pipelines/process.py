@@ -9,8 +9,7 @@ import shutil
 from typing import Optional
 from warnings import warn
 
-import delegator
-
+from .command import Command
 from .template import ConfigTemplate, ScriptTemplate
 from ..config import Params
 
@@ -106,22 +105,27 @@ class Process(collections.Hashable):
             fid.write(config)
 
     @property
-    def cmd(self) -> Optional[str]:
+    def cmd(self) -> Command:
         """
-            The command that will be executed for running the process
+            The `Command` instance that will be used for executing the proces
 
             Returns
             -------
-            Optional[str]
-                The command to be executed
-                Returns None if build has not been run
+            Command
+                The `Command` instance for the process
+
+            Raises
+            ------
+            Warning
+                If `build` has not been run yet
         """
         script_path = self._output_location / f"{self.name}.nf"
         config_path = self._output_location / f"{self.name}.config"
         work_dir = self._output_location / "work"
         if not script_path.exists() or not config_path.exists() or not work_dir.exists():
             warn("The process has not been built yet. Please run `build` before `run`")
-        return f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
+        cmd = f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
+        return Command(cmd, self.profile, self.env)
 
     def run(self) -> delegator.Command:
         """
