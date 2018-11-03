@@ -20,6 +20,15 @@ class Pipeline(collections.Sequence):
         user_settings_file : str
             The user created settings file that describes the pipeline
 
+        Other Parameters
+        ----------------
+        title : str, optional
+            The title of the pipeline
+        order : List[str], optional
+            The order of the processes in the pipeline
+        output_location : str, optional
+            The base output location to store all pipeline results
+
         Attributes
         ----------
         title : str
@@ -35,14 +44,18 @@ class Pipeline(collections.Sequence):
         "output_location",
     }
 
-    def __init__(self, user_settings_file: str) -> None:
+    def __init__(self, user_settings_file: str, **kwargs) -> None:
         self.config = Config()
-        user_settings = self._parse_settings(user_settings_file)
-        self.title = user_settings["title"]
-        self.output_location = user_settings["output_location"]
+        user_settings = self._parse_settings(user_settings_file, **kwargs)
+        title = kwargs.get("title")
+        order = kwargs.get("order")
+        output_location = kwargs.get("output_location")
+        self._order = order if order else user_settings["order"]
+        self.title = title if title else user_settings["title"]
+        self.output_location = output_location if output_location else user_settings["output_location"]
         self.processes = self._create_processes(user_settings)
 
-    def _parse_settings(self, settings_file: str) -> dict:
+    def _parse_settings(self, settings_file: str, **kwargs) -> dict:
         """
             Parses the user created settings file
 
@@ -59,13 +72,13 @@ class Pipeline(collections.Sequence):
         with open(settings_file, 'r') as fid:
             settings = toml.load(fid)
         for key in self._req_keys:
-            if key not in settings:
-                raise ValueError(f"Required key {key} not in user_settings")
+            if key not in settings or key not in kwargs:
+                raise ValueError(f"Required key {key} not in user_settings or parameters")
         return settings
 
     def _create_processes(self, settings):
         process_list: List[Union[InternalProcess, ExternalProcess]] = []
-        process_namelist = settings["order"]
+        process_namelist = self._order
         for process_name in process_namelist:
             if '.' in process_name:
                 temp = settings
