@@ -79,11 +79,11 @@ class TestNetwork:
                 child_data,
             )
             net_loaded = json.loads(network.json(threshold=False))
-            net_loaded["nodes"] == network.nodes
-            net_loaded["links"] == network.links
+            assert net_loaded["nodes"] == network.nodes
+            assert net_loaded["links"] == network.links
             net_loaded_thres = json.loads(network.json(threshold=True))
-            net_loaded_thres["nodes"] == network.nodes
-            net_loaded_thres["links"] == network.links_thres
+            assert net_loaded_thres["nodes"] == network.nodes
+            assert net_loaded_thres["links"] == network.links_thres
 
     def test_write_load_network(self, correlation_data, tmpdir):
         for corr_data, pval_data, meta_data, child_data, obsmeta_data, cmeta_data in correlation_data["good"]:
