@@ -100,6 +100,8 @@ class Command:
             stderr = self._stderr
         else:
             stdout, stderr = self.process.communicate(timeout=self._timeout)
+            stdout = stdout.decode("utf-8")
+            stderr = stderr.decode("utf-8")
         with open(log_file, 'w') as fid:
             fid.write('-' * 40 + " [STDOUT] " + '-' * 40)
             fid.write('\n')
@@ -126,11 +128,11 @@ class Command:
         else:
             try:
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
-                self._stdout = stdout
-                self._stderr = stderr
+                self._stdout = stdout.decode("utf-8")
+                self._stderr = stderr.decode("utf-8")
             except AttributeError:
                 raise NotImplementedError("Please run the command before requesting output!")
-        return stdout
+        return self._stdout
 
     @property
     def error(self) -> str:
@@ -147,11 +149,11 @@ class Command:
         else:
             try:
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
-                self._stdout = stdout
-                self._stderr = stderr
+                self._stdout = stdout.decode("utf-8")
+                self._stderr = stderr.decode("utf-8")
             except AttributeError:
                 raise NotImplementedError("Please run the command before requesting errors!")
-        return stderr
+        return self._stderr
 
 # QUESTION: What should write the profiles and resources `config` files? A new template module?
 # Fixes #44
