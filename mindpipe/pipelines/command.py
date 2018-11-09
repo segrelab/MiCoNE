@@ -50,7 +50,7 @@ class Command:
         if profile == "local":
             pass
         elif profile == "sge":
-            pass
+            command.append("qsub")
         else:
             raise ValueError("Unsupported profile! Choose either 'local' or 'sge'")
         # TODO: Might want to integrate conda with nextflow instead of this
