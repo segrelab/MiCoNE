@@ -2,7 +2,6 @@
     Module that handles the execution of subprocesses and parsing of their outputs
 """
 
-import pathlib
 import sys
 from typing import List, Optional
 
@@ -19,9 +18,6 @@ class Command:
             The command to be executed
         profile : {'local', 'sge'}
             The execution environment
-        env : str, optional
-            The environment to be loaded before execution
-            Default is None
         timeout : int, optional
             The time limit for the command
             If a process exceeds this time then it will be terminated
@@ -31,7 +27,7 @@ class Command:
         ----------
         cmd : str
             The command that will be executed.
-            This includes the environment loading and profile specifics
+            This includes the profile and resource specifics
         output : str
             The 'stdout' of the process
     """
@@ -42,7 +38,6 @@ class Command:
             self,
             cmd: str,
             profile: str,
-            env: Optional[pathlib.Path] = None,
             timeout: int = 1000
     ) -> None:
         # TODO: Set up profiles config
@@ -54,15 +49,13 @@ class Command:
         else:
             raise ValueError("Unsupported profile! Choose either 'local' or 'sge'")
         # TODO: Might want to integrate conda with nextflow instead of this
-        if env:
-            command.append(f"source activate {env}")
         command.append(cmd)
         self.cmd = " && ".join(command)
         self._timeout = timeout
 
     def run(self, cwd: Optional[str] = None) -> subprocess.Popen:
         """
-            Executes the command with the correct environment and resources
+            Executes the command with the correct profile and resources
 
             Parameters
             ----------
