@@ -9,8 +9,6 @@ import pytest
 from mindpipe.pipelines import Command
 
 
-# TODO: How can you test 'sge'? Just checking the commands?
-@pytest.mark.usefixtures("example_pipeline")
 class TestCommand:
     """ Tests for the `Command` class """
 
@@ -58,4 +56,4 @@ class TestCommand:
         profile = "sge"
         timeout = 1000
         command = Command(cmd, profile, timeout)
-        assert command.cmd.startswith("qsub")
+        assert command.cmd.startswith("qsub ")
