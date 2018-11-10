@@ -6,6 +6,7 @@ Microbial Interaction Database Pipeline
 [![Documentation Status](https://readthedocs.org/projects/mindpipe/badge/?version=latest)](https://mindpipe.readthedocs.io/en/latest/?badge=latest)
 [![Updates](https://pyup.io/repos/github/dileep-kishore/mindpipe/shield.svg?token=15e74ba4-b27a-4709-99cf-96bcf698e33b)](https://pyup.io/repos/github/dileep-kishore/mindpipe/)
 [![Pypi](https://img.shields.io/pypi/v/mindpipe.svg)](https://pypi.python.org/pypi/mindpipe)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 The pipeline that powers the Microbial Interaction Network Database
 
