@@ -2,16 +2,16 @@
 biom-format==2.1.7
 click==7.0
 cloudpickle==0.6.1
-dask==0.20.0
+dask==0.20.1
 decorator==4.3.0
 ete3==3.1.1
 future==0.17.1; python_version != '3.1.*'
 h5py==2.8.0
 jinja2==2.10
 jinja2schema==0.1.4
-markupsafe==1.0
+markupsafe==1.1.0; python_version != '3.2.*'
 networkx==2.2
-numpy==1.15.3
+numpy==1.15.4
 pandas==0.23.4
 patsy==0.5.1
 python-dateutil==2.7.5
