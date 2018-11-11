@@ -18,6 +18,7 @@ toml = "*"
 schematics = "*"
 "jinja2schema" = "*"
 click = "*"
+pre-commit = "*"
 
 [dev-packages]
 bumpversion = "*"
