@@ -17,19 +17,11 @@ class TestDataTypes:
         assert DataTypes(raw_data)
         wrong_data = {
             "barcode": "code",
-            "artifact": {
-                "desc": "artifact description",
-                "format": ["artifact format"]
-            }
+            "artifact": {"desc": "artifact description", "format": ["artifact format"]},
         }
         with pytest.raises(ValueError):
             DataTypes(wrong_data)
-        wrong_types = {
-            "barcode": {
-                "desc": 123,
-                "format": "format1"
-            },
-        }
+        wrong_types = {"barcode": {"desc": 123, "format": "format1"}}
         with pytest.raises(TypeError):
             DataTypes(wrong_types)
 

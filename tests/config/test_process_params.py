@@ -18,11 +18,13 @@ class TestParamsSet:
         assert InternalParamsSet(internal_raw)
         assert ExternalParamsSet(external_raw)
         wrong_format = {
-            'root': 'src/internal/split_otu_table',
-            'output_location': 'split_otu_table',
-            'input': [{'datatype': 'sequence_16s', 'format': ['fasta']}],
-            'output': [{'datatype': 'otu_table', 'format': ['biom'], 'location': '*.biom'}],
-            'parameters': [{'process': 'something', 'data': 123}],
+            "root": "src/internal/split_otu_table",
+            "output_location": "split_otu_table",
+            "input": [{"datatype": "sequence_16s", "format": ["fasta"]}],
+            "output": [
+                {"datatype": "otu_table", "format": ["biom"], "location": "*.biom"}
+            ],
+            "parameters": [{"process": "something", "data": 123}],
         }
         assert Params(("wrong_format", wrong_format))
         with pytest.raises(TypeError):
@@ -32,11 +34,21 @@ class TestParamsSet:
         with pytest.raises(TypeError):
             Params(("wrong_format", {**wrong_format, "parameters": "string"}))
         with pytest.raises(ValueError):
-            Params(("wrong_format", {**wrong_format, "input": [{'datatype': 'sequence_16s'}]}))
+            Params(
+                (
+                    "wrong_format",
+                    {**wrong_format, "input": [{"datatype": "sequence_16s"}]},
+                )
+            )
         with pytest.raises(ValueError):
-            Params(("wrong_format", {**wrong_format, "output": [{'datatype': 'sequence_16s'}]}))
+            Params(
+                (
+                    "wrong_format",
+                    {**wrong_format, "output": [{"datatype": "sequence_16s"}]},
+                )
+            )
         with pytest.raises(ValueError):
-            Params(("wrong_format", {**wrong_format, "parameters": [{'data': 'temp'}]}))
+            Params(("wrong_format", {**wrong_format, "parameters": [{"data": "temp"}]}))
 
     def test_iter_len(self, pipeline_settings):
         internal_raw = pipeline_settings["internal"]

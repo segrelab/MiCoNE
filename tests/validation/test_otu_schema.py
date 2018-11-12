@@ -34,10 +34,10 @@ class TestBiomType:
     def test_init_biom_bad(self, biom_files):
         biom_type = BiomType()
         for bad_biom in biom_files["bad"]:
-            if 'empty' in str(bad_biom):
+            if "empty" in str(bad_biom):
                 with pytest.raises(ValueError):
                     assert biom_type.validate(load_table(bad_biom))
-            if 'obs_metadata' in str(bad_biom):
+            if "obs_metadata" in str(bad_biom):
                 with pytest.raises(ValidationError):
                     assert biom_type.validate(load_table(bad_biom))
 
@@ -56,9 +56,9 @@ class TestInteractionType:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
-            with open(meta, 'r') as fid:
+            with open(meta, "r") as fid:
                 meta_data = json.load(fid)
-            with open(child, 'r') as fid:
+            with open(child, "r") as fid:
                 child_data = json.load(fid)
             corr_type.validate(corr_data)
             pval_type.validate(pval_data)
@@ -75,9 +75,9 @@ class TestInteractionType:
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
-            with open(meta, 'r') as fid:
+            with open(meta, "r") as fid:
                 meta_data = json.load(fid)
-            with open(child, 'r') as fid:
+            with open(child, "r") as fid:
                 child_data = json.load(fid)
             with pytest.raises(ValidationError):
                 corr_type.validate(corr_data)
@@ -120,11 +120,15 @@ class TestNetworkType:
 
     def test_networkmetadata(self, raw_network_data):
         for good_data in raw_network_data["good"]:
-            good_metadata = {k: v for k, v in good_data.items() if k not in {"links", "nodes"}}
+            good_metadata = {
+                k: v for k, v in good_data.items() if k not in {"links", "nodes"}
+            }
             good_metadata_model = NetworkmetadataModel(good_metadata, strict=False)
             good_metadata_model.validate()
         for bad_data in raw_network_data["bad"]:
-            bad_metadata = {k: v for k, v in bad_data.items() if k not in {"links", "nodes"}}
+            bad_metadata = {
+                k: v for k, v in bad_data.items() if k not in {"links", "nodes"}
+            }
             with pytest.raises(DataError):
                 bad_metadata_model = NetworkmetadataModel(bad_metadata, strict=False)
                 bad_metadata_model.validate()

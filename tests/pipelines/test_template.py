@@ -13,7 +13,7 @@ class TestTemplate:
 
     def test_config_template(self, config_template_files):
         template_file = config_template_files[0]["input"]
-        with open(config_template_files[0]["output"], 'r') as fid:
+        with open(config_template_files[0]["output"], "r") as fid:
             config_str = fid.read()
         config_template = ConfigTemplate(template_file)
         data = config_template_files[1]
@@ -22,7 +22,7 @@ class TestTemplate:
 
     def test_script_template(self, script_template_files):
         template_file, process_folder = script_template_files
-        with open(template_file["output"], 'r') as fid:
+        with open(template_file["output"], "r") as fid:
             script_str = fid.read()
         script_template = ScriptTemplate(template_file["input"], process_folder)
         data = {}

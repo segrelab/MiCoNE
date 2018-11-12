@@ -20,13 +20,13 @@ class TestConfig:
         datatypes_raw = pipeline_settings["datatypes"]
         missing_datatype = dict(datatypes_raw)
         del missing_datatype["otu_table"]
-        with open(file, 'w') as fid:
+        with open(file, "w") as fid:
             toml.dump(missing_datatype, fid)
         with pytest.raises(ValueError):
             assert Config(datatypes_file=file)
         wrong_formats = dict(datatypes_raw)
         wrong_formats["otu_table"]["format"] = [".out"]
-        with open(file, 'w') as fid:
+        with open(file, "w") as fid:
             toml.dump(wrong_formats, fid)
         with pytest.raises(ValueError):
             assert Config(datatypes_file=file)

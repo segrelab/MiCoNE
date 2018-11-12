@@ -36,17 +36,17 @@ class TestOtu:
         sample_norm = otu_inst.normalize()
         assert (otu_inst.otu_data.to_dataframe().sum(axis=0) > 1).all()
         assert np.isclose(sample_norm.otu_data.to_dataframe().sum(axis=0), 1.0).all()
-        assert sample_norm.is_norm(axis='sample')
-        obs_norm = otu_inst.normalize(axis='observation')
+        assert sample_norm.is_norm(axis="sample")
+        obs_norm = otu_inst.normalize(axis="observation")
         assert (otu_inst.otu_data.to_dataframe().sum(axis=1) > 1).all()
-        assert obs_norm.is_norm(axis='observation')
+        assert obs_norm.is_norm(axis="observation")
         assert np.isclose(obs_norm.otu_data.to_dataframe().sum(axis=1), 1.0).all()
         with pytest.raises(ValueError):
-            otu_inst.normalize(method='random_method')
+            otu_inst.normalize(method="random_method")
         with pytest.raises(NotImplementedError):
-            otu_inst.normalize(method='css')
+            otu_inst.normalize(method="css")
         with pytest.raises(NotImplementedError):
-            otu_inst.normalize(method='rarefy')
+            otu_inst.normalize(method="rarefy")
 
     def test_rm_sparse_samples(self, stool_biom):
         otu_inst = Otu(stool_biom)
@@ -67,13 +67,16 @@ class TestOtu:
 
     def test_partition(self, stool_biom):
         otu_inst = Otu(stool_biom)
-        func = lambda id_, md: Lineage(**md).get_superset('Phylum')
+        func = lambda id_, md: Lineage(**md).get_superset("Phylum")
         md = otu_inst.obs_metadata
         gen = otu_inst.partition(axis="observation", func=func)
         partition_dict = {k.name[1]: v for k, v in gen}
         assert set(partition_dict) == set(md.Phylum)
         assert len(set(v.otu_data.shape[1] for v in partition_dict.values())) == 1
-        assert sum(v.otu_data.shape[0] for v in partition_dict.values()) == otu_inst.otu_data.shape[0]
+        assert (
+            sum(v.otu_data.shape[0] for v in partition_dict.values())
+            == otu_inst.otu_data.shape[0]
+        )
 
     def test_filter(self, stool_biom):
         otu_inst = Otu(stool_biom)
@@ -94,7 +97,9 @@ class TestOtu:
         assert otu_inst.otu_data.shape[1] == otu_collapse.otu_data.shape[1]
         assert family_members == set(otu_collapse.obs_metadata.Family)
         group_dict = otu_inst.obs_metadata.groupby("Family").groups
-        assert sorted(list(i) for i in group_dict.values()) == sorted(list(i) for i in children_map.values())
+        assert sorted(list(i) for i in group_dict.values()) == sorted(
+            list(i) for i in children_map.values()
+        )
 
     def test_write(self, stool_biom, tmpdir):
         otu_inst = Otu(stool_biom)
@@ -107,6 +112,6 @@ class TestOtu:
             fol.join("tsv_test_otu.tsv"),
             fol.join("tsv_test_sample_metadata.tsv"),
             fol.join("tsv_test_obs_metadata.csv"),
-            dtype="tsv"
+            dtype="tsv",
         )
         assert otu_inst.otu_data.shape == otu_load2.otu_data.shape
