@@ -141,7 +141,7 @@ class Params(collections.Hashable):
             ----------
             name : str
                 The name of the IO element or parameter to be retrieved
-            category: {'input', 'output'}
+            category: {'input', 'output', 'parameters'}
                 Specifies whether the data is input, output or parameter information
 
             Returns
