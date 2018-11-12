@@ -1,0 +1,22 @@
+# User Configuration file for qiime pipeline
+title = "User run settings for the qiime pipeline for 454 sequencing data"
+
+order = ["qiime1_demultiplexing_454"]
+
+output_location = "~/Documents/results"
+
+[qiime1_demultiplexing_454]
+  module = "external"
+  [[qiime1_demultiplexing_454.input]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "/path/to/sequence_16s"
+  [[qiime1_demultiplexing_454.input]]
+    datatype = "sample_barcode_mapping"
+    format = ["txt"]
+    location = "/path/to/mapping"
+  [[qiime1_demultiplexing_454.input]]
+    datatype = "quality"
+    format = ["qual"]
+    location = "/path/to/quality"
+

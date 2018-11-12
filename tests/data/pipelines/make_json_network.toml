@@ -1,0 +1,13 @@
+title = "Create a json network"
+
+order  = ["make_json_network"]
+
+output_location = "~/Documents/results"
+
+[make_json_network]
+  module = "internal"
+  [[make_json_network.input]]
+    datatype = "metadata"
+    format = ["json"]
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/metadata.json"
+

@@ -1,0 +1,36 @@
+# User configuration file for spacc pipeline
+title = "User run settings for sparcc-network pipeline"
+
+order = ["drop_lineage_fromotu", "group_by_taxa", "sparcc", "make_json_network"]
+
+output_location = "/home/dileep/Documents/results"
+
+[drop_lineage_fromotu]
+  module = "helper"
+  [[drop_lineage_fromotu.input]]
+    datatype = "otu_table"
+    format = "tsv"
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/otu_table.txt"
+
+[group_by_taxa]
+  module = "internal"
+  [[group_by_taxa.parameters]]
+    process = "group_by_taxa"
+    tax_levels = "['family', 'genus', 'species']"
+
+[sparcc]
+  module = "nf"
+  [[sparcc.parameters]]
+    process = "compute_correlations"
+    niters = 5
+  [[sparcc.parameters]]
+    process = "resampling"
+    nboots = 100
+
+[make_json_network]
+  module = "internal"
+  [[make_json_network.input]]
+    datatype = "metadata"
+    format = ["json"]
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/metadata.json"
+
