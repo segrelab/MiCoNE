@@ -209,6 +209,11 @@ def pipeline_settings():
 
 
 @pytest.fixture(scope="module")
-def example_pipeline():
-    """ Fixture to load an example pipeline for testing """
-    pass
+def example_pipelines():
+    """ Fixture to load example pipelines for testing """
+    pipelines_dir = TEST_DATADIR / "pipelines"
+    pipelines = dict()
+    for pipeline_file in pipelines_dir.glob("*.toml"):
+        with open(pipeline_file) as fid:
+            pipelines[pipeline_file.stem] = toml.load(fid)
+    return pipelines
