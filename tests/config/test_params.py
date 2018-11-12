@@ -79,3 +79,13 @@ class TestParamsSet:
                     test_external_key = f"{l1}.{l2}.{l3}"
                     assert test_external_key in external
         assert test_internal_key in internal
+
+    def test_param_get(self, pipeline_settings):
+        internal_raw = pipeline_settings["internal"]
+        internal = InternalParamsSet(internal_raw)
+        curr_param = internal["group_by_taxa"]
+        assert curr_param.get("otu_table", category="input")
+        assert curr_param.get("group_by_taxa", category="parameters")
+        assert curr_param.get("children_map", category="output")
+
+    # TODO: Add tests for dict, merge, attach_to
