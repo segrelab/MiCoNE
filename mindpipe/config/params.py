@@ -287,7 +287,7 @@ class Params(collections.Hashable):
             user_settings: Dict[str, Any]
                 User defined settings for the current process
         """
-        for curr_input in user_settings["input"]:
+        for curr_input in user_settings.get("input", []):
             io_item: Input = self.get(curr_input["datatype"], category="input")
             for f in curr_input["format"]:
                 if f not in io_item.format:
@@ -299,7 +299,7 @@ class Params(collections.Hashable):
             )
             self.input.remove(io_item)
             self.input.add(updated_input)
-        for curr_params in user_settings["parameters"]:
+        for curr_params in user_settings.get("parameters", []):
             param_item: Parameters = self.get(
                 curr_params["process"], category="parameters"
             )
