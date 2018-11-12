@@ -4,7 +4,18 @@
 
 import collections
 import pathlib
-from typing import Any, Dict, Iterator, List, NamedTuple, Optional, Set, Tuple, Union
+from typing import (
+    Any,
+    Dict,
+    Iterator,
+    List,
+    NamedTuple,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    Union,
+)
 
 
 PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
@@ -211,7 +222,8 @@ class Params(collections.Hashable):
             category: {'input', 'output'}
                 Specifies whether the data is input or output information
         """
-        element = self.get(name, category=category)
+        element: Union[Input, Output] = self.get(name, category=category)
+        IO: Union[Type[Input], Type[Output]]
         if category == "input":
             IO = Input
             io_list = self.input
@@ -221,7 +233,9 @@ class Params(collections.Hashable):
         else:
             raise TypeError("Category can only be either 'Input' or 'Output'")
         new_element = IO(
-            datatype=element.datatype, format=element.format, location=location
+            datatype=element.datatype,
+            format=element.format,
+            location=pathlib.Path(location),
         )
         io_list.remove(element)
         io_list.add(new_element)
