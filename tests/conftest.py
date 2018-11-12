@@ -23,7 +23,7 @@ def biom_files():
     biom_fol = TEST_DATADIR / "otus/biom"
     data = {
         "good": list(biom_fol.glob("good/*.biom")),
-        "bad": list(biom_fol.glob("bad/*.biom"))
+        "bad": list(biom_fol.glob("bad/*.biom")),
     }
     return data
 
@@ -57,10 +57,7 @@ def lineage_data():
     good = {**base}
     bad = {**base}
     bad["Class"] = ""
-    data = {
-        "good": good,
-        "bad": bad,
-    }
+    data = {"good": good, "bad": bad}
     return data
 
 
@@ -115,13 +112,15 @@ def correlation_data(correlation_files):
             corr_data = pd.read_table(corr, index_col=0)
             pval_data = pd.read_table(pval, index_col=0)
             obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
-            with open(meta, 'r') as fid:
+            with open(meta, "r") as fid:
                 meta_data = json.load(fid)
-            with open(child, 'r') as fid:
+            with open(child, "r") as fid:
                 child_data = json.load(fid)
-            with open(cmeta, 'r') as fid:
+            with open(cmeta, "r") as fid:
                 cmeta_data = json.load(fid)
-            data[kind].append((corr_data, pval_data, meta_data, child_data, obsmeta_data, cmeta_data))
+            data[kind].append(
+                (corr_data, pval_data, meta_data, child_data, obsmeta_data, cmeta_data)
+            )
     return data
 
 
@@ -129,10 +128,7 @@ def correlation_data(correlation_files):
 def network_json_files():
     """ Fixture that loads the network files """
     net_fol = TEST_DATADIR / "networks"
-    data = {
-        "good": net_fol.glob("good/*.json"),
-        "bad": net_fol.glob("bad/*json")
-    }
+    data = {"good": net_fol.glob("good/*.json"), "bad": net_fol.glob("bad/*json")}
     return data
 
 
@@ -142,7 +138,7 @@ def raw_network_data(network_json_files):
     data = {"good": [], "bad": []}
     for kind in {"good", "bad"}:
         for file in network_json_files[kind]:
-            with open(file, 'r') as fid:
+            with open(file, "r") as fid:
                 data[kind].append(json.load(fid))
     return data
 
@@ -169,22 +165,18 @@ def config_template_files():
     """ Fixture for the config template files """
     template_file = {
         "input": TEST_DATADIR / "templates/config/sparcc.j2",
-        "output": TEST_DATADIR / "templates/config/sparcc.config"
+        "output": TEST_DATADIR / "templates/config/sparcc.config",
     }
     data = {
-        "compute_correlations": {
-            "niters": 10,
-        },
-        "resampling": {
-            "nboots": 100,
-        },
+        "compute_correlations": {"niters": 10},
+        "resampling": {"nboots": 100},
         "output_dir": "results",
         "input": {
             "otu_table": "/testing/data/otudata.tsv",
             "lineage_table": "/testing/data/lineagedata.csv",
             "sample_metadata": "/testing/data/sample_metadata.csv",
             "children_object": "/testing/data/children.json",
-        }
+        },
     }
     return template_file, data
 
@@ -194,7 +186,7 @@ def script_template_files():
     """ Fixture for the script template files """
     template_file = {
         "input": TEST_DATADIR / "templates/script/sparcc.j2",
-        "output": TEST_DATADIR / "templates/script/sparcc.nf"
+        "output": TEST_DATADIR / "templates/script/sparcc.nf",
     }
     process_folder = TEST_DATADIR / "templates/script/templates"
     return template_file, process_folder
@@ -212,9 +204,11 @@ def pipeline_settings():
         internal = toml.load(fid)
     with open(external_file) as fid:
         external = toml.load(fid)
-    settings = {
-        "datatypes": datatypes,
-        "internal": internal,
-        "external": external,
-    }
+    settings = {"datatypes": datatypes, "internal": internal, "external": external}
     return settings
+
+
+@pytest.fixture(scope="module")
+def example_pipeline():
+    """ Fixture to load an example pipeline for testing """
+    pass
