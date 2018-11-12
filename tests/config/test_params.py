@@ -2,6 +2,8 @@
     Module containing tests for the Params class
 """
 
+import pathlib
+
 import pytest
 
 from mindpipe.config import InternalParamsSet, ExternalParamsSet
@@ -88,4 +90,13 @@ class TestParamsSet:
         assert curr_param.get("group_by_taxa", category="parameters")
         assert curr_param.get("children_map", category="output")
 
-    # TODO: Add tests for dict, merge, attach_to
+    def test_param_update_location(self, pipeline_settings):
+        external_raw = pipeline_settings["external"]
+        external = ExternalParamsSet(external_raw)
+        curr_param = external["qiime1.demultiplexing.illumina"]
+        curr_param.update_location(
+            "sequence_16s", location="file_path", category="input"
+        )
+        assert external["qiime1.demultiplexing.illumina"].get(
+            "sequence_16s", "input"
+        ).location == pathlib.Path("file_path")
