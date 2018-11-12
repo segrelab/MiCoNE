@@ -31,15 +31,11 @@ class Command:
         output : str
             The 'stdout' of the process
     """
+
     _stdout: Optional[str] = None
     _stderr: Optional[str] = None
 
-    def __init__(
-            self,
-            cmd: str,
-            profile: str,
-            timeout: int = 1000
-    ) -> None:
+    def __init__(self, cmd: str, profile: str, timeout: int = 1000) -> None:
         # TODO: Set up profiles config
         command: List[str] = []
         if profile == "local":
@@ -95,14 +91,14 @@ class Command:
             stdout, stderr = self.process.communicate(timeout=self._timeout)
             stdout = stdout.decode("utf-8")
             stderr = stderr.decode("utf-8")
-        with open(log_file, 'w') as fid:
-            fid.write('-' * 40 + " [STDOUT] " + '-' * 40)
-            fid.write('\n')
+        with open(log_file, "w") as fid:
+            fid.write("-" * 40 + " [STDOUT] " + "-" * 40)
+            fid.write("\n")
             sys.stdout.write(stdout)
             fid.write(stdout)
-            fid.write('\n')
-            fid.write('-' * 40 + " [STDERR] " + '-' * 40)
-            fid.write('\n')
+            fid.write("\n")
+            fid.write("-" * 40 + " [STDERR] " + "-" * 40)
+            fid.write("\n")
             sys.stderr.write(stderr)
             fid.write(stderr)
 
@@ -124,7 +120,9 @@ class Command:
                 self._stdout = stdout.decode("utf-8")
                 self._stderr = stderr.decode("utf-8")
             except AttributeError:
-                raise NotImplementedError("Please run the command before requesting output!")
+                raise NotImplementedError(
+                    "Please run the command before requesting output!"
+                )
         return self._stdout
 
     @property
@@ -145,8 +143,11 @@ class Command:
                 self._stdout = stdout.decode("utf-8")
                 self._stderr = stderr.decode("utf-8")
             except AttributeError:
-                raise NotImplementedError("Please run the command before requesting errors!")
+                raise NotImplementedError(
+                    "Please run the command before requesting errors!"
+                )
         return self._stderr
+
 
 # QUESTION: What should write the profiles and resources `config` files? A new template module?
 # Fixes #44

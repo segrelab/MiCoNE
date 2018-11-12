@@ -40,24 +40,21 @@ class Config:
     """
 
     def __init__(
-            self,
-            datatypes_file: pathlib.Path = DATATYPES_FILE,
-            external_file: pathlib.Path = EXTERNAL_FILE,
-            internal_file: pathlib.Path = INTERNAL_FILE,
+        self,
+        datatypes_file: pathlib.Path = DATATYPES_FILE,
+        external_file: pathlib.Path = EXTERNAL_FILE,
+        internal_file: pathlib.Path = INTERNAL_FILE,
     ) -> None:
-        with open(datatypes_file, 'r') as fid:
+        with open(datatypes_file, "r") as fid:
             datatypes = DataTypes(toml.load(fid))
         self.datatypes = datatypes
-        with open(external_file, 'r') as fid:
+        with open(external_file, "r") as fid:
             external_params = ExternalParamsSet(toml.load(fid))
         self._check_io_integrity(external_params)
-        with open(internal_file, 'r') as fid:
+        with open(internal_file, "r") as fid:
             internal_params = InternalParamsSet(toml.load(fid))
         self._check_io_integrity(internal_params)
-        self.process_params = {
-            "internal": internal_params,
-            "external": external_params,
-        }
+        self.process_params = {"internal": internal_params, "external": external_params}
 
     def _check_io_integrity(self, process_params: ParamType) -> None:
         """
@@ -71,17 +68,27 @@ class Config:
         for param in process_params:
             for curr_input in param.input:
                 if curr_input.datatype not in self.datatypes:
-                    raise ValueError(f"Invalid datatype {curr_input.datatype} in input definition")
+                    raise ValueError(
+                        f"Invalid datatype {curr_input.datatype} in input definition"
+                    )
                 formats = self.datatypes[curr_input.datatype].format
                 for curr_format in curr_input.format:
                     if curr_format not in formats:
-                        raise ValueError(f"Unsupported format {curr_format} in input definition")
+                        raise ValueError(
+                            f"Unsupported format {curr_format} in input definition"
+                        )
             for curr_output in param.output:
                 if curr_output.datatype not in self.datatypes:
-                    raise ValueError(f"Invalid datatype {curr_output.datatype} in output definition")
+                    raise ValueError(
+                        f"Invalid datatype {curr_output.datatype} in output definition"
+                    )
                 formats = self.datatypes[curr_output.datatype].format
                 for curr_format in curr_output.format:
                     if curr_format not in formats:
-                        raise ValueError(f"Unsupported format {curr_format} in output definition")
+                        raise ValueError(
+                            f"Unsupported format {curr_format} in output definition"
+                        )
                 if not curr_output.location:
-                    raise ValueError(f"Relative location for output {curr_output} must be defined")
+                    raise ValueError(
+                        f"Relative location for output {curr_output} must be defined"
+                    )

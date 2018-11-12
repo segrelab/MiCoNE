@@ -23,10 +23,10 @@ def qiime2_to_default(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
         out_file : pathlib.Path
             The path to the default format output file
     """
-    with open(in_file, 'r') as fid:
-        csv_reader = csv.reader(fid, delimiter='\t')
+    with open(in_file, "r") as fid:
+        csv_reader = csv.reader(fid, delimiter="\t")
         data_dict: Dict[str, List[str]] = {key: [] for key in ObsmetaType._req_keys}
-        data_dict['ID'] = []
+        data_dict["ID"] = []
         header, *rest = csv_reader
         ekey = ObsmetaType._extra_key
         if ekey in header:
@@ -35,13 +35,13 @@ def qiime2_to_default(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
             if line[0].startswith("#q2:types"):
                 continue
             lineage = Lineage.from_str(line[header.index("Taxon")])
-            data_dict['ID'].append(line[0])
+            data_dict["ID"].append(line[0])
             for rkey in ObsmetaType._req_keys:
                 data_dict[rkey].append(getattr(lineage, rkey))
             if ekey in data_dict:
                 data_dict[ekey].append(line[header.index(ekey)])
     df = pd.DataFrame.from_dict(data_dict)
-    df.set_index('ID', inplace=True, verify_integrity=True)
+    df.set_index("ID", inplace=True, verify_integrity=True)
     df.to_csv(out_file, index=True)
 
 

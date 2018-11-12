@@ -51,16 +51,17 @@ class Process(collections.Hashable):
         env : Optional[pathlib.Path]
             The location of the virtual environment
     """
+
     env: Optional[pathlib.Path] = None
     _nf_path: pathlib.Path = pathlib.Path(os.environ["NF_PATH"])
 
     def __init__(
-            self,
-            params: Params,
-            profile: str,
-            script_name: str = "process.nf",
-            config_name: str = "process.config",
-            process_dir_name: str = "processes",
+        self,
+        params: Params,
+        profile: str,
+        script_name: str = "process.nf",
+        config_name: str = "process.config",
+        process_dir_name: str = "processes",
     ) -> None:
         self.params = params
         self.name = self.params.name
@@ -81,6 +82,7 @@ class Process(collections.Hashable):
     def __str__(self) -> str:
         return self.name
 
+    # TODO: Add profile and resource configuration setup also
     def build(self, output_dir: Optional[str] = None) -> None:
         """
             Builds the pipeline script and the config file at the output_dir
@@ -94,18 +96,24 @@ class Process(collections.Hashable):
         """
         if output_dir:
             self._output_location = pathlib.Path(output_dir)
-        if not self._output_location.is_absolute() or not self._output_location.exists():
-            raise FileNotFoundError(f"{self._output_location} must be an absolute path and must exist")
+        if (
+            not self._output_location.is_absolute()
+            or not self._output_location.exists()
+        ):
+            raise FileNotFoundError(
+                f"{self._output_location} must be an absolute path and must exist"
+            )
         script = self.script.render()
         script_file = self._output_location / f"{self.name}.nf"
         # TODO: Add logging here
-        with open(script_file, 'w') as fid:
+        with open(script_file, "w") as fid:
             fid.write(script)
         config = self.config.render(self.params.dict)
         config_file = self._output_location / f"{self.name}.config"
-        with open(config_file, 'w') as fid:
+        with open(config_file, "w") as fid:
             fid.write(config)
 
+    # TODO: Also add profile and resource configuration scripts to `cmd` and `build`
     @property
     def cmd(self) -> Command:
         """
@@ -124,7 +132,11 @@ class Process(collections.Hashable):
         script_path = self._output_location / f"{self.name}.nf"
         config_path = self._output_location / f"{self.name}.config"
         work_dir = self._output_location / "work"
-        if not script_path.exists() or not config_path.exists() or not work_dir.exists():
+        if (
+            not script_path.exists()
+            or not config_path.exists()
+            or not work_dir.exists()
+        ):
             warn("The process has not been built yet. Please run `build` before `run`")
         cmd = f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
         return Command(cmd, self.profile, self.env)
@@ -153,9 +165,16 @@ class Process(collections.Hashable):
             scope : {'all', 'work_dir'}
                 The scope to be cleaned
         """
-        warn("You are about to delete files and folders which is in irreversible process")
-        if not self._output_location.is_absolute() or not self._output_location.exists():
-            raise FileNotFoundError(f"{self._output_location} does not exist or is not an absolute path")
+        warn(
+            "You are about to delete files and folders which is in irreversible process"
+        )
+        if (
+            not self._output_location.is_absolute()
+            or not self._output_location.exists()
+        ):
+            raise FileNotFoundError(
+                f"{self._output_location} does not exist or is not an absolute path"
+            )
         script_path = self._output_location / f"{self.name}.nf"
         config_path = self._output_location / f"{self.name}.config"
         work_dir = self._output_location / "work"
@@ -166,7 +185,9 @@ class Process(collections.Hashable):
         elif scope == "work_dir":
             shutil.rmtree(work_dir)
         else:
-            raise ValueError("Unsupported scope. Please choose from {'all', 'work_dir'}")
+            raise ValueError(
+                "Unsupported scope. Please choose from {'all', 'work_dir'}"
+            )
 
     def attach_to(self, previous: "Process") -> None:
         """
@@ -196,13 +217,17 @@ class Process(collections.Hashable):
             if in_location is None:
                 raise ValueError("Process parameter inputs are incomplete")
             if not in_location.is_absolute():
-                self.params.update_location(input_.datatype, path / in_location, "input")
+                self.params.update_location(
+                    input_.datatype, path / in_location, "input"
+                )
         for output_ in self.params.output:
             out_location = output_.location
             if out_location is None:
                 raise ValueError("Process parameter outputs are incomplete")
             if not out_location.is_absolute():
-                self.params.update_location(output_.datatype, path / out_location, "output")
+                self.params.update_location(
+                    output_.datatype, path / out_location, "output"
+                )
 
 
 class InternalProcess(Process):
@@ -242,12 +267,12 @@ class InternalProcess(Process):
     """
 
     def __init__(
-            self,
-            params: Params,
-            profile: str,
-            script_name: str = "process.nf",
-            config_name: str = "process.config",
-            process_dir_name: str = "processes",
+        self,
+        params: Params,
+        profile: str,
+        script_name: str = "process.nf",
+        config_name: str = "process.config",
+        process_dir_name: str = "processes",
     ) -> None:
         super().__init__(params, profile, script_name, config_name, process_dir_name)
 
@@ -294,12 +319,12 @@ class ExternalProcess(Process):
     """
 
     def __init__(
-            self,
-            params: Params,
-            profile: str,
-            script_name: str = "process.nf",
-            config_name: str = "process.config",
-            process_dir_name: str = "processes",
+        self,
+        params: Params,
+        profile: str,
+        script_name: str = "process.nf",
+        config_name: str = "process.config",
+        process_dir_name: str = "processes",
     ) -> None:
         super().__init__(params, profile, script_name, config_name, process_dir_name)
         self.env = self.params.env

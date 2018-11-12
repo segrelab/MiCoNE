@@ -12,6 +12,7 @@ PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
 
 class Input(NamedTuple):
     """ The namedtuple class for storing input """
+
     datatype: str
     format: List[str]  # noqa: E701
     location: Optional[pathlib.Path] = None
@@ -22,6 +23,7 @@ class Input(NamedTuple):
 
 class Output(NamedTuple):
     """ The namedtuple class for storing output """
+
     datatype: str
     format: List[str]  # noqa: E701
     location: pathlib.Path
@@ -32,6 +34,7 @@ class Output(NamedTuple):
 
 class Parameters(NamedTuple):
     """ The namedtuple class for storing proces parameters """
+
     process: str
     params: dict
 
@@ -68,13 +71,8 @@ class Params(collections.Hashable):
         parameters : Set[Dict[str, Any]]
             The list of parameters of the process
     """
-    _req_keys = {
-        "root",
-        "output_location",
-        "input",
-        "output",
-        "parameters"
-    }
+
+    _req_keys = {"root", "output_location", "input", "output", "parameters"}
 
     def __init__(self, data: Tuple[str, Dict[str, Any]]) -> None:
         if len(data) != 2:
@@ -109,7 +107,9 @@ class Params(collections.Hashable):
             if "process" not in curr_param:
                 raise ValueError("Parameters is missing 'process' field")
             params = {k: v for k, v in curr_param.items() if k != "process"}
-            self.parameters.add(Parameters(process=curr_param["process"], params=params))
+            self.parameters.add(
+                Parameters(process=curr_param["process"], params=params)
+            )
 
     def __hash__(self) -> int:
         return hash(self.name)
@@ -148,14 +148,18 @@ class Params(collections.Hashable):
             query_set = self.parameters
             attr = "process"
         else:
-            raise TypeError("Category can only be one of {'input', 'output', 'parameters'}")
+            raise TypeError(
+                "Category can only be one of {'input', 'output', 'parameters'}"
+            )
         for element in query_set:
             if getattr(element, attr) == name:
                 return element
         raise KeyError(f"{name} not found in {category} of {self.name}")
 
     @staticmethod
-    def _process_io(data: List[Dict[str, Union[str, List[str]]]], category: str) -> Set[IOType]:
+    def _process_io(
+        data: List[Dict[str, Union[str, List[str]]]], category: str
+    ) -> Set[IOType]:
         """
             Process the input information
 
@@ -217,9 +221,7 @@ class Params(collections.Hashable):
         else:
             raise TypeError("Category can only be either 'Input' or 'Output'")
         new_element = IO(
-            datatype=element.datatype,
-            format=element.format,
-            location=location
+            datatype=element.datatype, format=element.format, location=location
         )
         io_list.remove(element)
         io_list.add(new_element)
@@ -234,7 +236,9 @@ class Params(collections.Hashable):
             if elem.location is None:
                 raise ValueError(f"Input: {elem} has not been assigned a location yet")
             if not elem.location.exists():
-                raise FileNotFoundError(f"Unable to location input file at {elem.location}")
+                raise FileNotFoundError(
+                    f"Unable to location input file at {elem.location}"
+                )
         for elem in self.output:
             if elem.location is None:
                 raise ValueError(f"Output: {elem} has not been assigned a location yet")
@@ -277,15 +281,16 @@ class Params(collections.Hashable):
             updated_input = Input(
                 datatype=io_item.datatype,
                 format=curr_input["format"],
-                location=curr_input["location"]
+                location=curr_input["location"],
             )
             self.input.remove(io_item)
             self.input.add(updated_input)
         for curr_params in user_settings["parameters"]:
-            param_item: Parameters = self.get(curr_params["process"], category="parameters")
+            param_item: Parameters = self.get(
+                curr_params["process"], category="parameters"
+            )
             updated_param = Parameters(
-                process=param_item.process,
-                params={**param_item.params, **curr_params}
+                process=param_item.process, params={**param_item.params, **curr_params}
             )
             self.parameters.remove(param_item)
             self.parameters.add(updated_param)
@@ -320,7 +325,9 @@ class ParamsSet(collections.Set):
         for key, value in data.items():
             process_params = Params((key, value))
             if process_params in self.processes:
-                raise ValueError("Duplicate process definitions detected in settings. Aborting")
+                raise ValueError(
+                    "Duplicate process definitions detected in settings. Aborting"
+                )
             self.processes.add(process_params)
 
     def __iter__(self) -> Iterator:

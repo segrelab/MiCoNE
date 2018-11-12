@@ -87,18 +87,18 @@ class Network:
     """
 
     def __init__(
-            self,
-            interactions: pd.DataFrame,
-            metadata: dict,
-            cmetadata: dict,
-            obs_metadata: pd.DataFrame,
-            pvalues: Optional[pd.DataFrame] = None,
-            children_map: Optional[dict] = None,
-            interaction_type: str = "correlation",
-            interaction_threshold: float = 0.3,
-            pvalue_threshold: float = 0.05,
-            pvalue_correction: Optional[str] = "fdr_bh",
-            directed: bool = False,
+        self,
+        interactions: pd.DataFrame,
+        metadata: dict,
+        cmetadata: dict,
+        obs_metadata: pd.DataFrame,
+        pvalues: Optional[pd.DataFrame] = None,
+        children_map: Optional[dict] = None,
+        interaction_type: str = "correlation",
+        interaction_threshold: float = 0.3,
+        pvalue_threshold: float = 0.05,
+        pvalue_correction: Optional[str] = "fdr_bh",
+        directed: bool = False,
     ) -> None:
         obsmeta_validator = ObsmetaType()
         obsmeta_validator.validate(obs_metadata)
@@ -116,7 +116,9 @@ class Network:
             pvalue_validator = PvaluematrixType(symm=directed)
             pvalue_validator.validate(pvalues)
             if pvalue_correction:
-                corrected_pvalues = self._correct_pvalues(pvalues, pvalue_correction, pvalue_threshold)
+                corrected_pvalues = self._correct_pvalues(
+                    pvalues, pvalue_correction, pvalue_threshold
+                )
             else:
                 corrected_pvalues = pvalues
         else:
@@ -147,8 +149,8 @@ class Network:
     def __repr__(self) -> str:
         n_nodes = len(self.nodes)
         n_links = len(self.links)
-        directionality = self.metadata['directionality']
-        interaction_type = self.metadata['interaction_type']
+        directionality = self.metadata["directionality"]
+        interaction_type = self.metadata["interaction_type"]
         string = (
             f"<Network nodes={n_nodes} links={n_links} "
             f"type={interaction_type} directionality={directionality}>"
@@ -167,8 +169,12 @@ class Network:
             pvalues : pd.DataFrame
                 The `DataFrame` containing the pvalue matrix
         """
-        if any(interactions.index != pvalues.index) or any(interactions.columns != pvalues.columns):
-            raise ValueError("Interaction and pvalue matrices do not have matching indices")
+        if any(interactions.index != pvalues.index) or any(
+            interactions.columns != pvalues.columns
+        ):
+            raise ValueError(
+                "Interaction and pvalue matrices do not have matching indices"
+            )
 
     @property
     def pcorr_methods(self) -> List[str]:
@@ -189,7 +195,9 @@ class Network:
         ]
         return methods
 
-    def _correct_pvalues(self, pvalues: pd.DataFrame, method: str, pvalue_threshold: float) -> pd.DataFrame:
+    def _correct_pvalues(
+        self, pvalues: pd.DataFrame, method: str, pvalue_threshold: float
+    ) -> pd.DataFrame:
         """
             Correct pvalues using 'method'
 
@@ -209,26 +217,30 @@ class Network:
                 DataFrame containing corrected pvalues
         """
         if method not in self.pcorr_methods:
-            raise ValueError(f"Method {method} not supported. Must be one of {self.pcorr_methods}")
+            raise ValueError(
+                f"Method {method} not supported. Must be one of {self.pcorr_methods}"
+            )
         flat_pvalues = pvalues.values.flatten()
-        reject, pvals_correct, *_ = multipletests(flat_pvalues, alpha=pvalue_threshold, method=method)
+        reject, pvals_correct, *_ = multipletests(
+            flat_pvalues, alpha=pvalue_threshold, method=method
+        )
         pval_correct_df = pd.DataFrame(
             data=pvals_correct.reshape(pvalues.shape),
             index=pvalues.index,
-            columns=pvalues.columns
+            columns=pvalues.columns,
         ).to_sparse()
         return pval_correct_df
 
     @staticmethod
     def _create_network(
-            interactions: pd.DataFrame,
-            pvalues: Optional[pd.DataFrame],
-            obs_metadata: pd.DataFrame,
-            emetadata: dict,
-            cmetadata: dict,
-            children_map: Optional[dict],
-            interaction_type: str,
-            directed: bool
+        interactions: pd.DataFrame,
+        pvalues: Optional[pd.DataFrame],
+        obs_metadata: pd.DataFrame,
+        emetadata: dict,
+        cmetadata: dict,
+        children_map: Optional[dict],
+        interaction_type: str,
+        directed: bool,
     ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
         """
             Create network from interaction matrix, pvalue matrix, metadata dictionary,
@@ -300,12 +312,7 @@ class Network:
             weight = interactions.loc[source, target]
             pvalue = pvalues.loc[source, target] if pvalues is not None else None
             links.append(
-                {
-                    "source": source,
-                    "target": target,
-                    "weight": weight,
-                    "pvalue": pvalue,
-                }
+                {"source": source, "target": target, "weight": weight, "pvalue": pvalue}
             )
             if not directed:
                 link_set.add(frozenset([source, target]))
@@ -319,10 +326,10 @@ class Network:
 
     @staticmethod
     def _apply_threshold(
-            links: List[Dict[str, Any]],
-            interaction_threshold: float,
-            pvalue_threshold: float,
-            pvalue_flag: bool,
+        links: List[Dict[str, Any]],
+        interaction_threshold: float,
+        pvalue_threshold: float,
+        pvalue_flag: bool,
     ) -> List[Dict[str, Any]]:
         """
             Apply threshold on the links of the network
@@ -344,8 +351,8 @@ class Network:
                 The list of links in the network after applying a threshold
         """
         interaction_threshold = abs(interaction_threshold)
-        interaction_filter = lambda x: abs(x['weight']) >= interaction_threshold
-        pvalue_filter = lambda x: x['pvalue'] <= pvalue_threshold
+        interaction_filter = lambda x: abs(x["weight"]) >= interaction_threshold
+        pvalue_filter = lambda x: x["pvalue"] <= pvalue_threshold
         if pvalue_flag:
             filter_fun = lambda x: interaction_filter(x) and pvalue_filter(x)
         else:
@@ -355,18 +362,18 @@ class Network:
 
     @classmethod
     def load_data(
-            cls,
-            interaction_file: str,
-            meta_file: str,
-            cmeta_file: str,
-            obsmeta_file: str,
-            pvalue_file: Optional[str] = None,
-            children_file: Optional[str] = None,
-            interaction_type: str = "correlation",
-            interaction_threshold: float = 0.3,
-            pvalue_threshold: float = 0.05,
-            pvalue_correction: Optional[str] = "fdr_bh",
-            directed: bool = False,
+        cls,
+        interaction_file: str,
+        meta_file: str,
+        cmeta_file: str,
+        obsmeta_file: str,
+        pvalue_file: Optional[str] = None,
+        children_file: Optional[str] = None,
+        interaction_type: str = "correlation",
+        interaction_threshold: float = 0.3,
+        pvalue_threshold: float = 0.05,
+        pvalue_correction: Optional[str] = "fdr_bh",
+        directed: bool = False,
     ) -> "Network":
         """
             Create a `Network` object from files (interaction tables and other metadata)
@@ -411,9 +418,9 @@ class Network:
                 The instance of the `Network` class
         """
         interactions = pd.read_table(interaction_file, index_col=0)
-        with open(meta_file, 'r') as fid:
+        with open(meta_file, "r") as fid:
             metadata = json.load(fid)
-        with open(cmeta_file, 'r') as fid:
+        with open(cmeta_file, "r") as fid:
             cmetadata = json.load(fid)
         extra_compdata = {
             "interaction_threshold": interaction_threshold,
@@ -427,7 +434,7 @@ class Network:
         else:
             pvalues = None
         if children_file is not None:
-            with open(children_file, 'r') as fid:
+            with open(children_file, "r") as fid:
                 children_map = json.load(fid)
         else:
             children_map = None
@@ -481,7 +488,7 @@ class Network:
             threshold : bool, optional
                 True if threshold needs to applied to links before writing to file
         """
-        with open(fpath, 'w') as fid:
+        with open(fpath, "w") as fid:
             fid.write(self.json(threshold=threshold))
 
     @classmethod
@@ -499,7 +506,7 @@ class Network:
             Network
                 The instance of the `Network` class
         """
-        with open(fpath, 'r') as fid:
+        with open(fpath, "r") as fid:
             raw_data = json.load(fid)
         # Validation
         nodes_model = NodesModel({"nodes": raw_data["nodes"]}, strict=False)
@@ -531,7 +538,9 @@ class Network:
                 lineages.append(lineage)
         obs_metadata = pd.DataFrame(lineages, index=index)
         mat_shape = (len(index), len(index))
-        interactions = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
+        interactions = pd.DataFrame(
+            data=np.zeros(mat_shape), index=index, columns=index
+        )
         pvalue_flag = True if raw_data["links"][0]["pvalue"] is not None else False
         if pvalue_flag:
             pvalues = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
@@ -563,17 +572,17 @@ class Network:
 
     @classmethod
     def load_elist(
-            cls,
-            elist_file: str,
-            meta_file: str,
-            cmeta_file: str,
-            obsmeta_file: str,
-            children_file: Optional[str] = None,
-            interaction_type: str = "correlation",
-            interaction_threshold: float = 0.3,
-            pvalue_threshold: float = 0.05,
-            pvalue_correction: Optional[str] = "fdr_bh",
-            directed: bool = False,
+        cls,
+        elist_file: str,
+        meta_file: str,
+        cmeta_file: str,
+        obsmeta_file: str,
+        children_file: Optional[str] = None,
+        interaction_type: str = "correlation",
+        interaction_threshold: float = 0.3,
+        pvalue_threshold: float = 0.05,
+        pvalue_correction: Optional[str] = "fdr_bh",
+        directed: bool = False,
     ) -> "Network":
         """
             Create `Network` instance from an edge list and associated metadata
@@ -622,13 +631,15 @@ class Network:
         elist_type.validate(elist)
         index = list(set([*elist["source"], *elist["target"]]))
         mat_shape = len(index), len(index)
-        interactions = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
+        interactions = pd.DataFrame(
+            data=np.zeros(mat_shape), index=index, columns=index
+        )
         pvalue_flag = True if "pvalue" in elist.columns else False
         if pvalue_flag:
             pvalues = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
         else:
             pvalues = None
-        for entry in elist.to_dict('records'):
+        for entry in elist.to_dict("records"):
             source, target, weight = entry["source"], entry["target"], entry["weight"]
             interactions.loc[source, target] = weight
             if not directed:
@@ -637,9 +648,9 @@ class Network:
                 pvalues.loc[source, target] = entry["pvalue"]
                 if not directed:
                     pvalues.loc[target, source] = entry["pvalue"]
-        with open(meta_file, 'r') as fid:
+        with open(meta_file, "r") as fid:
             metadata = json.load(fid)
-        with open(cmeta_file, 'r') as fid:
+        with open(cmeta_file, "r") as fid:
             cmetadata = json.load(fid)
         extra_compdata = {
             "interaction_threshold": interaction_threshold,
@@ -649,7 +660,7 @@ class Network:
         cmetadata = {**cmetadata, **extra_compdata}
         obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
         if children_file is not None:
-            with open(children_file, 'r') as fid:
+            with open(children_file, "r") as fid:
                 children_map = json.load(fid)
         else:
             children_map = None

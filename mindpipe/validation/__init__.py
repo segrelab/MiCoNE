@@ -1,8 +1,4 @@
-from .otu_schema import (
-    BiomType,
-    SamplemetaType,
-    ObsmetaType,
-)
+from .otu_schema import BiomType, SamplemetaType, ObsmetaType
 from .network_schema import (
     InteractionmatrixType,
     CorrelationmatrixType,

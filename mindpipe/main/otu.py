@@ -49,10 +49,10 @@ class Otu:
     """
 
     def __init__(
-            self,
-            otu_data: Table,
-            sample_metadata: Optional[pd.DataFrame] = None,
-            obs_metadata: Optional[pd.DataFrame] = None
+        self,
+        otu_data: Table,
+        sample_metadata: Optional[pd.DataFrame] = None,
+        obs_metadata: Optional[pd.DataFrame] = None,
     ) -> None:
         if not isinstance(otu_data, Table):
             raise TypeError("Otu data must be of type `biom.Table`")
@@ -60,11 +60,15 @@ class Otu:
         if sample_metadata:
             samplemeta_type = SamplemetaType()
             samplemeta_type.validate(sample_metadata)
-            otu_data_copy.add_metadata(sample_metadata.to_dict(orient="index"), axis="sample")
+            otu_data_copy.add_metadata(
+                sample_metadata.to_dict(orient="index"), axis="sample"
+            )
         if obs_metadata:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
-            otu_data_copy.add_metadata(obs_metadata.to_dict(orient="index"), axis="observation")
+            otu_data_copy.add_metadata(
+                obs_metadata.to_dict(orient="index"), axis="observation"
+            )
         biom_type = BiomType()
         biom_type.validate(otu_data_copy)
         self.otu_data = otu_data_copy
@@ -75,12 +79,12 @@ class Otu:
 
     @classmethod
     def load_data(
-            cls,
-            otu_file: str,
-            meta_file: Optional[str] = None,
-            tax_file: Optional[str] = None,
-            dtype: str = "biom",
-            ext: Optional[str] = None,
+        cls,
+        otu_file: str,
+        meta_file: Optional[str] = None,
+        tax_file: Optional[str] = None,
+        dtype: str = "biom",
+        ext: Optional[str] = None,
     ) -> "Otu":
         """
             Load data from files into the `Otu` class instance
@@ -125,7 +129,7 @@ class Otu:
             -------
             pd.DataFrame
         """
-        return self.otu_data.metadata_to_dataframe('sample')
+        return self.otu_data.metadata_to_dataframe("sample")
 
     @property
     def obs_metadata(self) -> pd.DataFrame:
@@ -136,7 +140,7 @@ class Otu:
             -------
             pd.DataFrame
         """
-        return self.otu_data.metadata_to_dataframe('observation')
+        return self.otu_data.metadata_to_dataframe("observation")
 
     @property
     def tax_level(self) -> str:
@@ -152,10 +156,10 @@ class Otu:
         return Lineage._fields[n_tax_levels - 1]
 
     def filter(
-            self,
-            ids: Iterable[str] = [],
-            func: Optional[Filterfun] = None,
-            axis: str = "observation"
+        self,
+        ids: Iterable[str] = [],
+        func: Optional[Filterfun] = None,
+        axis: str = "observation",
     ) -> "Otu":
         """
             Filter Otu instance based on ids or func
@@ -186,7 +190,7 @@ class Otu:
             raise TypeError("Either ids or func must be supplied")
         return Otu(otu_filtered)
 
-    def normalize(self, axis: str = 'sample', method: str = 'norm') -> "Otu":
+    def normalize(self, axis: str = "sample", method: str = "norm") -> "Otu":
         """
             Normalize the OTU table along the provided axis
 
@@ -203,24 +207,26 @@ class Otu:
             Otu
                 Otu instance which is normalized along the given axis
         """
-        if method == 'norm':
+        if method == "norm":
             norm_otu = self.otu_data.norm(axis=axis, inplace=False)
-        elif method == 'rarefy':
+        elif method == "rarefy":
             raise NotImplementedError("This method is not implemented yet")
-        elif method == 'css':
+        elif method == "css":
             raise NotImplementedError("This method is not implemented yet")
         else:
-            raise ValueError("Invalid method. Supported methods are {'norm', 'rarefy', 'css'}")
+            raise ValueError(
+                "Invalid method. Supported methods are {'norm', 'rarefy', 'css'}"
+            )
         return Otu(norm_otu)
 
-    def is_norm(self, axis: str = 'sample') -> bool:
+    def is_norm(self, axis: str = "sample") -> bool:
         """
             Returns true if the Otu instance has been normalized
         """
         df = self.otu_data.to_dataframe()
-        if axis == 'sample':
+        if axis == "sample":
             return bool(np.isclose(df.sum(axis=0), 1.0).all())
-        if axis == 'observation':
+        if axis == "observation":
             return bool(np.isclose(df.sum(axis=1), 1.0).all())
         raise ValueError("Axis must of either {'sample' or 'observation'}")
 
@@ -245,12 +251,16 @@ class Otu:
                 If Otu instance is normalized
         """
         if self.is_norm():
-            raise ValueError("Otu instance is normalized and hence will not work with this method")
+            raise ValueError(
+                "Otu instance is normalized and hence will not work with this method"
+            )
         filt_fun = lambda val, *_: round(val.sum()) >= count_thres
         new_otu = self.otu_data.filter(filt_fun, axis="sample", inplace=False)
         return Otu(new_otu)
 
-    def rm_sparse_obs(self, prevalence_thres: float = 0.05, abundance_thres: float = 0.01) -> "Otu":
+    def rm_sparse_obs(
+        self, prevalence_thres: float = 0.05, abundance_thres: float = 0.01
+    ) -> "Otu":
         """
             Remove observations with prevalence < `prevalence_thres` and abundance < `abundance_thres`
 
@@ -266,23 +276,33 @@ class Otu:
             Otu
                 Otu instance with bad observations removed
         """
-        filt_fun = lambda val, *_: (val.astype(int).astype(bool).mean()) >= prevalence_thres
-        otu_dense_obs = self.otu_data.filter(filt_fun, axis="observation", inplace=False)
+        filt_fun = (
+            lambda val, *_: (val.astype(int).astype(bool).mean()) >= prevalence_thres
+        )
+        otu_dense_obs = self.otu_data.filter(
+            filt_fun, axis="observation", inplace=False
+        )
         otu_df = otu_dense_obs.to_dataframe()
         otu_rel_abund = (otu_df / otu_df.sum(axis=0)).to_dense()
-        ind_above_thres = otu_rel_abund.index[(otu_rel_abund > abundance_thres).any(axis=1)]
-        new_otu = self.otu_data.filter(ind_above_thres, axis="observation", inplace=False)
+        ind_above_thres = otu_rel_abund.index[
+            (otu_rel_abund > abundance_thres).any(axis=1)
+        ]
+        new_otu = self.otu_data.filter(
+            ind_above_thres, axis="observation", inplace=False
+        )
         ind_below_thres = set(self.otu_data.ids("observation")) - set(ind_above_thres)
-        otu_sparse_obs = self.otu_data.filter(ind_below_thres, axis="observation", inplace=False)
+        otu_sparse_obs = self.otu_data.filter(
+            ind_below_thres, axis="observation", inplace=False
+        )
         new_row = Table(
             otu_sparse_obs.sum(axis="sample"),
-            ['otu_merged'],
-            self.otu_data.ids(axis="sample")
+            ["otu_merged"],
+            self.otu_data.ids(axis="sample"),
         )
         tax_level = self.tax_level
         new_row.add_metadata(
-            {'otu_merged': Lineage("Unclassified").to_dict(tax_level)},
-            axis='observation'
+            {"otu_merged": Lineage("Unclassified").to_dict(tax_level)},
+            axis="observation",
         )
         final_otu = new_otu.concat([new_row], axis="observation")
         return Otu(final_otu)
@@ -309,9 +329,13 @@ class Otu:
                 func = lambda id_, md: Lineage(**md).get_superset(level)
         """
         if axis == "observation" and self.is_norm(axis="sample"):
-            raise ValueError("Cannot partition sample normalized Otu instance on observation")
+            raise ValueError(
+                "Cannot partition sample normalized Otu instance on observation"
+            )
         if axis == "sample" and self.is_norm(axis="observation"):
-            raise ValueError("Cannot partition observation normalized Otu instance on sample")
+            raise ValueError(
+                "Cannot partition observation normalized Otu instance on sample"
+            )
         partitions = self.otu_data.partition(func, axis=axis)
         for label, table in partitions:
             yield label, Otu(table)
@@ -335,7 +359,9 @@ class Otu:
             raise ValueError(f"level must be one of {Lineage._fields}")
         func = lambda id_, md: str(Lineage(**md).get_superset(level))
         otu_collapse = self.otu_data.collapse(func, axis="observation", norm=False)
-        obs_dict = json.loads(otu_collapse.metadata_to_dataframe("observation").to_json(orient="split"))
+        obs_dict = json.loads(
+            otu_collapse.metadata_to_dataframe("observation").to_json(orient="split")
+        )
         curr_ids = otu_collapse.ids(axis="observation")
         unq_id_map = {k: f"{level}_{i}" for i, k in enumerate(curr_ids)}
         obs_ids = [unq_id_map[i] for i in obs_dict["index"]]  # get ordered unique ids
@@ -343,8 +369,12 @@ class Otu:
         children_dict = dict(zip(obs_ids, children_data))
         sample_ids = otu_collapse.ids(axis="sample")
         obs_raw_data = [Lineage.from_str(id_).to_dict(level) for id_ in curr_ids]
-        observation_metadata = pd.DataFrame(obs_raw_data, index=obs_ids).to_dict(orient="records")
-        sample_metadata = otu_collapse.metadata_to_dataframe(axis="sample").to_dict(orient="records")
+        observation_metadata = pd.DataFrame(obs_raw_data, index=obs_ids).to_dict(
+            orient="records"
+        )
+        sample_metadata = otu_collapse.metadata_to_dataframe(axis="sample").to_dict(
+            orient="records"
+        )
         new_table = Table(
             otu_collapse.matrix_data,
             obs_ids,
@@ -354,7 +384,9 @@ class Otu:
         )
         return Otu(new_table), children_dict
 
-    def write(self, base_name: str, fol_path: str = '', file_type: str = "biom") -> None:
+    def write(
+        self, base_name: str, fol_path: str = "", file_type: str = "biom"
+    ) -> None:
         """
             Write Otu instance object to required file_type
 
@@ -375,18 +407,18 @@ class Otu:
         if file_type == "biom":
             fname = base_name + ".biom"
             fpath = str(folder / fname)
-            with biom_open(fpath, 'w') as fid:
+            with biom_open(fpath, "w") as fid:
                 self.otu_data.to_hdf5(fid, "Constructed using mindpipe")
         elif file_type == "tsv":
             otu_name = base_name + "_otu.tsv"
             otu_path = folder / otu_name
-            with open(otu_path, 'w') as fid:
+            with open(otu_path, "w") as fid:
                 # NOTE: delete header comment from output
-                data = self.otu_data.to_tsv().split('\n', 1)[-1]
+                data = self.otu_data.to_tsv().split("\n", 1)[-1]
                 fid.write(data)
             sample_metadata_name = base_name + "_sample_metadata.tsv"
             sample_metadata_path = folder / sample_metadata_name
-            self.sample_metadata.to_csv(sample_metadata_path, sep='\t', index=True)
+            self.sample_metadata.to_csv(sample_metadata_path, sep="\t", index=True)
             obs_metadata_name = base_name + "_obs_metadata.csv"
             obs_metadata_path = folder / obs_metadata_name
             self.obs_metadata.to_csv(obs_metadata_path, index=True)

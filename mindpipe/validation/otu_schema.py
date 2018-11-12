@@ -39,7 +39,7 @@ class DataType(BaseType):
         self.norm = norm
 
     def validate_data_npfloat(self, value):
-        if not value.dtype == 'float64':
+        if not value.dtype == "float64":
             raise ValidationError("Invalid data. Abundances must be float64")
 
     def validate_data_range(self, value):
@@ -62,27 +62,24 @@ class SamplemetaType(BaseType):
 
     def validate_samplemeta_index(self, value):
         if len(value.index) != len(set(value.index)):
-            raise ValidationError("Invalid index in sample metadata. All indices must be unqiue")
+            raise ValidationError(
+                "Invalid index in sample metadata. All indices must be unqiue"
+            )
 
     def validate_structure(self, value):
         if any(not isinstance(v, str) for v in value.index):
             raise ValidationError("Invalid index. All indices must be strings")
-        if value.index.str.startswith('#').any():
-            raise ValidationError("Invalid sample metadata structure. Possibly incorrect header")
+        if value.index.str.startswith("#").any():
+            raise ValidationError(
+                "Invalid sample metadata structure. Possibly incorrect header"
+            )
 
 
 class ObsmetaType(BaseType):
     """ DataType that describes the expected structure and format for the observation metadata """
-    _req_keys = [
-        'Kingdom',
-        'Phylum',
-        'Class',
-        'Order',
-        'Family',
-        'Genus',
-        'Species'
-    ]
-    _extra_key = 'Confidence'
+
+    _req_keys = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
+    _extra_key = "Confidence"
 
     def validate_index(self, value):
         if any(not isinstance(v, str) for v in value.index):
@@ -92,8 +89,7 @@ class ObsmetaType(BaseType):
         for col in value.columns:
             if col not in self._req_keys and col != self._extra_key:
                 raise ValidationError(
-                    "Invalid observation metadata. "
-                    f"Unknown attribute {col} present"
+                    "Invalid observation metadata. " f"Unknown attribute {col} present"
                 )
         # Check if keys are in order
         # i.e. if genus is present everything above that level is present
@@ -128,16 +124,20 @@ class ObsmetaType(BaseType):
         else:
             df = value
         for level, data in df.items():
-            filt_data = data[data != '']
+            filt_data = data[data != ""]
             if level == "Species":
-                query = filt_data[~filt_data.str.contains(r'^[a-z][a-zA-Z0-9-._]+$')].any()
+                query = filt_data[
+                    ~filt_data.str.contains(r"^[a-z][a-zA-Z0-9-._]+$")
+                ].any()
                 if query:
                     raise ValidationError(
                         "Invalid observation metadata. "
                         f"Taxonomy names are not standard: {query} is not allowed in {level}"
                     )
             else:
-                query = filt_data[~filt_data.str.contains(r'^[A-Z][a-zA-Z0-9-._]+$')].any()
+                query = filt_data[
+                    ~filt_data.str.contains(r"^[A-Z][a-zA-Z0-9-._]+$")
+                ].any()
                 if query:
                     raise ValidationError(
                         "Invalid observation metadata. "
@@ -183,11 +183,11 @@ class BiomType(BaseType):
     def validate_sample_metadata(self, value):
         """ Check whether the sample metadata in the Table is valid """
         samplemeta_type = SamplemetaType()
-        sample_metadata = value.metadata_to_dataframe('sample')
+        sample_metadata = value.metadata_to_dataframe("sample")
         samplemeta_type.validate(sample_metadata)
 
     def validate_obs_metadata(self, value):
         """ Check whether the observation metadata in the Table is valid """
         obsmeta_type = ObsmetaType()
-        obs_metadata = value.metadata_to_dataframe('observation')
+        obs_metadata = value.metadata_to_dataframe("observation")
         obsmeta_type.validate(obs_metadata)

@@ -30,6 +30,4 @@ def json_to_elist(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
     df.to_csv(out_file, index=False)
 
 
-CONVERTERS = {
-    ("json", "elist"): json_to_elist,
-}
+CONVERTERS = {("json", "elist"): json_to_elist}

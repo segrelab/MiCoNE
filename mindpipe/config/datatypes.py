@@ -39,7 +39,9 @@ class DataType(collections.Hashable):
         if isinstance(value["format"], list):
             self.format = set(value["format"])
         else:
-            raise TypeError(f"Invalid DataType {data}. Format has to be a list of strings.")
+            raise TypeError(
+                f"Invalid DataType {data}. Format has to be a list of strings."
+            )
 
     def __hash__(self) -> int:
         return hash(self.name)

@@ -38,11 +38,8 @@ class Pipeline(collections.Sequence):
         processes : List[Union[InternalProcess, ExternalProcess]]
             The list of `Process` in the pipeline
     """
-    _req_keys = {
-        "title",
-        "order",
-        "output_location",
-    }
+
+    _req_keys = {"title", "order", "output_location"}
 
     def __init__(self, user_settings_file: str, **kwargs) -> None:
         self.config = Config()
@@ -52,7 +49,9 @@ class Pipeline(collections.Sequence):
         output_location = kwargs.get("output_location")
         self._order = order if order else user_settings["order"]
         self.title = title if title else user_settings["title"]
-        self.output_location = output_location if output_location else user_settings["output_location"]
+        self.output_location = (
+            output_location if output_location else user_settings["output_location"]
+        )
         self.processes = self._create_processes(user_settings)
 
     def _parse_settings(self, settings_file: str, **kwargs) -> dict:
@@ -69,25 +68,29 @@ class Pipeline(collections.Sequence):
             dict
                 The dictionary of verified user settings
         """
-        with open(settings_file, 'r') as fid:
+        with open(settings_file, "r") as fid:
             settings = toml.load(fid)
         for key in self._req_keys:
             if key not in settings or key not in kwargs:
-                raise ValueError(f"Required key {key} not in user_settings or parameters")
+                raise ValueError(
+                    f"Required key {key} not in user_settings or parameters"
+                )
         return settings
 
     def _create_processes(self, settings):
         process_list: List[Union[InternalProcess, ExternalProcess]] = []
         process_namelist = self._order
         for process_name in process_namelist:
-            if '.' in process_name:
+            if "." in process_name:
                 temp = settings
-                for x in process_name.split('.'):
+                for x in process_name.split("."):
                     temp = temp[x]
                 user_process_data = temp
             else:
                 user_process_data = settings[process_name]
-            process_data = self.config.process_params[user_process_data["module"]][process_name]
+            process_data = self.config.process_params[user_process_data["module"]][
+                process_name
+            ]
             process_data.merge(user_process_data)
             if user_process_data["module"] == "internal":
                 process_list.append(InternalProcess(process_data))
@@ -95,7 +98,7 @@ class Pipeline(collections.Sequence):
                 process_list.append(ExternalProcess(process_data))
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
-        # TODO: Connect output to inputs (check if order is important)
+        # TODO: Test to see whether merge vs. attach order is important
         for current, previous in zip(process_list[:-1], process_list[1:]):
             current.attach_to(previous)
             current.update_location(self.output_location)

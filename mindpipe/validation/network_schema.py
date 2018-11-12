@@ -37,14 +37,20 @@ class InteractionmatrixType(BaseType):
     def validate_isdataframe(self, value):
         """ Check whether the object is a pandas DataFrame """
         if not isinstance(value, pd.DataFrame):
-            raise ValidationError("Interaction matrix must be a `pd.DataFrame` instance")
+            raise ValidationError(
+                "Interaction matrix must be a `pd.DataFrame` instance"
+            )
 
     def validate_headers(self, value):
         """ Check whether the rows and columns are the same """
         if len(value.index) != len(value.columns):
-            raise ValidationError("Interaction matrix must have same number of rows and columns")
+            raise ValidationError(
+                "Interaction matrix must have same number of rows and columns"
+            )
         if any(value.index != value.columns):
-            raise ValidationError("Row and column header of an interaction matrix should match")
+            raise ValidationError(
+                "Row and column header of an interaction matrix should match"
+            )
 
     def validate_symmetry(self, value):
         """ Check whether the the interaction matrix is symmetric """
@@ -80,6 +86,7 @@ class PvaluematrixType(InteractionmatrixType):
 
 class MetadataModel(Model):
     """ Model that describes the expected structure of the network metadata input """
+
     host = StringType(required=True)
     condition = StringType(required=True)
     location = StringType(required=True)
@@ -101,30 +108,39 @@ class ChildrenmapType(BaseType):
     def validate_values(self, value):
         for v in value.values():
             if not isinstance(v, list):
-                raise ValidationError("Children map must have lists of strings as values")
+                raise ValidationError(
+                    "Children map must have lists of strings as values"
+                )
             for elem in v:
                 if not isinstance(elem, str):
-                    raise ValidationError("Children map must have lists of strings as values")
+                    raise ValidationError(
+                        "Children map must have lists of strings as values"
+                    )
 
 
 class NodeModel(Model):
     """ Model that describes the structure of one node in the network """
+
     id = StringType(min_length=2, required=True)
     lineage = StringType(required=True)
     name = StringType(required=True)
     taxid = IntType(required=True)
-    taxlevel = StringType(regex=r"(Kingdom|Phylum|Class|Order|Family|Genus|Species)", required=True)
+    taxlevel = StringType(
+        regex=r"(Kingdom|Phylum|Class|Order|Family|Genus|Species)", required=True
+    )
     abundance = FloatType()
     children = ListType(StringType, required=True)
 
 
 class NodesModel(Model):
     """ Model that describes the structure of the nodes in the network """
+
     nodes = ListType(ModelType(NodeModel), required=True)
 
 
 class LinkModel(Model):
     """ Model that describes the structure of one link in the network """
+
     pvalue = FloatType()
     weight = FloatType(required=True)
     source = StringType(min_length=2, required=True)
@@ -133,12 +149,16 @@ class LinkModel(Model):
 
 class LinksModel(Model):
     """ Model that describes the structure of one link in the network """
+
     links = ListType(ModelType(LinkModel), required=True)
 
 
 class NetworkmetadataModel(MetadataModel):
     """ Model that describes the expected structure of the network metadata """
-    computational_metadata = DictType(UnionType(types=(StringType, FloatType)), required=True)
+
+    computational_metadata = DictType(
+        UnionType(types=(StringType, FloatType)), required=True
+    )
     directionality = StringType(regex=r"(undirected|directed)", required=True)
     interaction_type = StringType()
 

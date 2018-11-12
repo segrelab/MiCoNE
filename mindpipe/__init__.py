@@ -1,5 +1,5 @@
 """Top-level package for Microbial Interaction Database Pipeline."""
 
 __author__ = """Dileep Kishore"""
-__email__ = 'dkishore@bu.edu'
-__version__ = '0.4.2'
+__email__ = "dkishore@bu.edu"
+__version__ = "0.4.2"
