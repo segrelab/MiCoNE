@@ -10,7 +10,7 @@ from mindpipe.config import InternalParamsSet, ExternalParamsSet
 from mindpipe.config.params import Params
 
 
-@pytest.mark.usefixtures("pipeline_settings")
+@pytest.mark.usefixtures("pipeline_settings", "example_pipelines")
 class TestParamsSet:
     """ Tests for ParamsSet class """
 
@@ -100,3 +100,18 @@ class TestParamsSet:
         assert external["qiime1.demultiplexing.illumina"].get(
             "sequence_16s", "input"
         ).location == pathlib.Path("file_path")
+
+    def test_param_merge(self, pipeline_settings, example_pipelines):
+        external_raw = pipeline_settings["external"]
+        external = ExternalParamsSet(external_raw)
+        curr_param = external["qiime1.demultiplexing.454"]
+        user_settings = example_pipelines["qiime1_demultiplexing_454"]
+        curr_param.merge(user_settings["qiime1_demultiplexing_454"])
+        assert (
+            curr_param.get("sequence_16s", "input").location == "/path/to/sequence_16s"
+        )
+        assert curr_param.get("quality", "input").location == "/path/to/quality"
+        assert (
+            curr_param.get("sample_barcode_mapping", "input").location
+            == "/path/to/mapping"
+        )
