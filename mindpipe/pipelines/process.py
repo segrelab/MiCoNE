@@ -113,6 +113,8 @@ class Process(collections.Hashable):
         config_file = self._output_location / f"{self.name}.config"
         with open(config_file, "w") as fid:
             fid.write(config)
+        work_dir = self._output_location / "work"
+        work_dir.mkdir()
 
     # TODO: Also add profile and resource configuration scripts to `cmd` and `build`
     @property
