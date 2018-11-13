@@ -202,7 +202,8 @@ class Process(collections.Hashable):
 
     def update_location(self, location: str) -> None:
         """
-            Update the location of an Input or Output element
+            Update the location of all Input and Output elements
+            Useful for an intermediate process
 
             Parameters
             ----------
