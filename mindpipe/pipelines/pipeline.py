@@ -99,7 +99,7 @@ class Pipeline(collections.Sequence):
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
         # TODO: Test to see whether merge vs. attach order is important
-        for current, previous in zip(process_list[:-1], process_list[1:]):
+        for previous, current in zip(process_list[:-1], process_list[1:]):
             current.attach_to(previous)
             current.update_location(self.output_location)
         return process_list
