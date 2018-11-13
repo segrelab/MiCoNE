@@ -1,0 +1,1 @@
+pick_otus:enable_rev_strand_match True
