@@ -49,6 +49,12 @@ class Command:
         self.cmd = " && ".join(command)
         self._timeout = timeout
 
+    def __str__(self) -> str:
+        return self.cmd
+
+    def __repr__(self) -> str:
+        return f"<Command cmd={self.cmd} timeout={self._timeout}>"
+
     def run(self, cwd: Optional[str] = None) -> subprocess.Popen:
         """
             Executes the command with the correct profile and resources
