@@ -96,6 +96,7 @@ class Process(collections.Hashable):
         """
         if output_dir:
             self._output_location = pathlib.Path(output_dir)
+            self.params.output_location = pathlib.Path(output_dir)
         if (
             not self._output_location.is_absolute()
             or not self._output_location.exists()
