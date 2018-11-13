@@ -295,7 +295,7 @@ class Params(collections.Hashable):
             updated_input = Input(
                 datatype=io_item.datatype,
                 format=curr_input["format"],
-                location=curr_input["location"],
+                location=pathlib.Path(curr_input["location"]),
             )
             self.input.remove(io_item)
             self.input.add(updated_input)
