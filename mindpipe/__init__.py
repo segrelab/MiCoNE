@@ -3,3 +3,5 @@
 __author__ = """Dileep Kishore"""
 __email__ = "dkishore@bu.edu"
 __version__ = "0.4.2"
+
+from .main import Otu, Lineage
