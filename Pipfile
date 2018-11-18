@@ -18,7 +18,6 @@ toml = "*"
 schematics = "*"
 "jinja2schema" = "*"
 click = "*"
-pre-commit = "*"
 
 [dev-packages]
 bumpversion = "*"
@@ -39,6 +38,7 @@ travis-sphinx = "*"
 sphinx-rtd-theme = "*"
 python-language-server = "*"
 black = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.6"
