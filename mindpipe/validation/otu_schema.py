@@ -89,7 +89,7 @@ class ObsmetaType(BaseType):
         for col in value.columns:
             if col not in self._req_keys and col != self._extra_key:
                 raise ValidationError(
-                    "Invalid observation metadata. " f"Unknown attribute {col} present"
+                    f"Invalid observation metadata. Unknown attribute {col} present"
                 )
         # Check if keys are in order
         # i.e. if genus is present everything above that level is present
@@ -98,8 +98,7 @@ class ObsmetaType(BaseType):
                 ind = self._req_keys.index(key)
                 if len(value.columns) != ind:
                     raise ValidationError(
-                        "Invalid observation metadata. "
-                        f"Required attribute {key} not present"
+                        f"Invalid observation metadata. Required attribute {key} not present"
                     )
                 else:
                     break
