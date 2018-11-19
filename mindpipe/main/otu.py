@@ -140,7 +140,13 @@ class Otu:
             -------
             pd.DataFrame
         """
-        return self.otu_data.metadata_to_dataframe("observation")
+        df = self.otu_data.metadata_to_dataframe("observation")
+        n_tax_levels = len(df.columns)
+        lineage = list(Lineage._fields)
+        # Unknown ordering if observation metadata contains extra columns
+        if set(df.columns) - set(lineage):
+            return df
+        return df[lineage[:n_tax_levels]]
 
     @property
     def tax_level(self) -> str:
