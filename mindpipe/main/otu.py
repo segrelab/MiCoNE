@@ -357,21 +357,36 @@ class Otu:
         """
         if level not in Lineage._fields:
             raise ValueError(f"level must be one of {Lineage._fields}")
-        func = lambda id_, md: str(Lineage(**md).get_superset(level))
-        otu_collapse = self.otu_data.collapse(func, axis="observation", norm=False)
+        cfunc = lambda id_, md: str(Lineage(**md).get_superset(level))
+        otu_collapse = self.otu_data.collapse(
+            cfunc, axis="observation", norm=False, include_collapsed_metadata=True
+        )
+        curr_ids = otu_collapse.ids(axis="observation")
+        children_group_list = [
+            i["collapsed_ids"] for i in otu_collapse.metadata(axis="observation")
+        ]
+        children_groups = dict(zip(curr_ids, children_group_list))
+        otu_collapse.del_metadata(axis="observation")
+        afunc = lambda x: pd.Series(
+            Lineage(**x.to_dict()).get_superset(level).to_dict(level)
+        )
+        obs_collapse = self.obs_metadata.apply(afunc, axis=1)
+        gfunc = lambda x: str(Lineage(**x.to_dict()))
+        obs_collapse.index = obs_collapse.apply(gfunc, axis=1)
+        obs_collapse.drop_duplicates(inplace=True)
+        otu_collapse.add_metadata(
+            obs_collapse.to_dict(orient="index"), axis="observation"
+        )
         obs_dict = json.loads(
             otu_collapse.metadata_to_dataframe("observation").to_json(orient="split")
         )
-        curr_ids = otu_collapse.ids(axis="observation")
         unq_id_map = {k: f"{level}_{i}" for i, k in enumerate(curr_ids)}
         obs_ids = [unq_id_map[i] for i in obs_dict["index"]]  # get ordered unique ids
-        children_data = [[i for i in l if i is not None] for l in obs_dict["data"]]
-        children_dict = dict(zip(obs_ids, children_data))
+        children_dict = {unq_id_map[k]: v for k, v in children_groups.items()}
         sample_ids = otu_collapse.ids(axis="sample")
-        obs_raw_data = [Lineage.from_str(id_).to_dict(level) for id_ in curr_ids]
-        observation_metadata = pd.DataFrame(obs_raw_data, index=obs_ids).to_dict(
-            orient="records"
-        )
+        observation_metadata = otu_collapse.metadata_to_dataframe(
+            axis="observation"
+        ).to_dict(orient="records")
         sample_metadata = otu_collapse.metadata_to_dataframe(axis="sample").to_dict(
             orient="records"
         )
