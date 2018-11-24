@@ -37,11 +37,11 @@ codecov = "*"
 travis-sphinx = "*"
 sphinx-rtd-theme = "*"
 python-language-server = "*"
-black = "*"
+black = "==18.9b0"
 pre-commit = "*"
 
 [requires]
 python_version = "3.6"
 
 [pipenv]
-allow_prereleases = true
+allow_prereleases = false
