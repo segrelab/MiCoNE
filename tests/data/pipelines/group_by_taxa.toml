@@ -1,0 +1,13 @@
+title = "Group abundances by taxonomy"
+
+order = ["group_by_taxa"]
+
+[group_by_taxa]
+  module = "internal"
+  [[group_by_taxa.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otus/biom/good/stool.biom"
+  [[group_by_taxa.parameters]]
+    process = "group_by_taxa"
+    tax_levels = "['Family', 'Genus', 'Species']"
