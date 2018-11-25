@@ -77,7 +77,7 @@ class Process(collections.Hashable):
         return hash(self.name)
 
     def __repr__(self) -> str:
-        return f"<Process name={self.name} cmd={self.cmd}>"
+        return f'<Process name={self.name} cmd="{self.cmd}">'
 
     def __str__(self) -> str:
         return self.name
