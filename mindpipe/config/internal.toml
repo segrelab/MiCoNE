@@ -37,9 +37,7 @@
     format = ["biom"]
   [[group_by_taxa.parameters]]
     process = "group_by_taxa"
-    rm_sparse_otu = "True"
-    rm_sparse_samples = "True"
-    tax_levels = "['phylum', 'class', 'order', 'family', 'genus', 'species']"
+    tax_levels = "['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species']"
   [[group_by_taxa.output]]
     datatype = "otu_table"
     format = ["biom"]
