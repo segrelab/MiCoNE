@@ -46,8 +46,8 @@ class Process(collections.Hashable):
             The process script template
         config : ConfigTemplate
             The process configuration template
-        cmd : str
-            The command that will be executing for running the process
+        cmd : Command
+            The `Command` instance that will be executing for running the process
         env : Optional[pathlib.Path]
             The location of the virtual environment
     """
