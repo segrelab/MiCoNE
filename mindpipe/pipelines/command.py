@@ -34,6 +34,7 @@ class Command:
 
     _stdout: Optional[str] = None
     _stderr: Optional[str] = None
+    process: Optional[subprocess.Popen] = None
 
     def __init__(self, cmd: str, profile: str, timeout: int = 1000) -> None:
         # TODO: Set up profiles config
