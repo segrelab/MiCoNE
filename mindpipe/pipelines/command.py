@@ -53,7 +53,7 @@ class Command:
         return self.cmd
 
     def __repr__(self) -> str:
-        return f"<Command cmd={self.cmd} timeout={self._timeout}>"
+        return f'<Command cmd="{self.cmd}" timeout={self._timeout}>'
 
     def run(self, cwd: Optional[str] = None) -> subprocess.Popen:
         """
