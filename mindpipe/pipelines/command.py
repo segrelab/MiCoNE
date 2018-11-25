@@ -95,9 +95,14 @@ class Command:
             stdout = self._stdout
             stderr = self._stderr
         else:
-            stdout, stderr = self.process.communicate(timeout=self._timeout)
-            stdout = stdout.decode("utf-8")
-            stderr = stderr.decode("utf-8")
+            try:
+                stdout, stderr = self.process.communicate(timeout=self._timeout)
+                stdout = stdout.decode("utf-8")
+                stderr = stderr.decode("utf-8")
+            except AttributeError:
+                raise NotImplementedError(
+                    "Please run the command before requesting errors!"
+                )
         with open(log_file, "w") as fid:
             fid.write("-" * 40 + " [STDOUT] " + "-" * 40)
             fid.write("\n")
