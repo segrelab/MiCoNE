@@ -142,7 +142,7 @@ class Process(collections.Hashable):
         ):
             warn("The process has not been built yet. Please run `build` before `run`")
         cmd = f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
-        return Command(cmd, self.profile, self.env)
+        return Command(cmd, self.profile)
 
     def run(self) -> Command:
         """
