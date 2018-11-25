@@ -10,4 +10,23 @@ output_location = "~/Documents/results"
     datatype = "metadata"
     format = ["json"]
     location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/metadata.json"
-
+  [[make_json_network.input]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/interactions.tsv"
+  [[make_json_network.input]]
+    datatype = "pvalue_table"
+    format = ["tsv"]
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/pvalues.tsv"
+  [[make_json_network.input]]
+    datatype = "observation_metadata"
+    format = ["csv"]
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/observation_metadata.csv"
+  [[make_json_network.input]]
+    datatype = "children_map"
+    format = ["json"]
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/children_map.json"
+  [[make_json_network.input]]
+    datatype = "computational_metadata"
+    format = ["json"]
+    location = "/home/dileep/Documents/boston_university/microbial-interaction-database/data/processed/bodysites/**/computational_metadata.json"
