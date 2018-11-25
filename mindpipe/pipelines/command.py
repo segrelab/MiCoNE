@@ -95,11 +95,11 @@ class Command:
             stdout = self._stdout
             stderr = self._stderr
         else:
-            try:
+            if self.process:
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
                 stdout = stdout.decode("utf-8")
                 stderr = stderr.decode("utf-8")
-            except AttributeError:
+            else:
                 raise NotImplementedError(
                     "Please run the command before requesting errors!"
                 )
@@ -127,11 +127,11 @@ class Command:
         if self._stdout is not None:
             stdout = self._stdout
         else:
-            try:
+            if self.process:
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
                 self._stdout = stdout.decode("utf-8")
                 self._stderr = stderr.decode("utf-8")
-            except AttributeError:
+            else:
                 raise NotImplementedError(
                     "Please run the command before requesting output!"
                 )
@@ -150,11 +150,11 @@ class Command:
         if self._stderr is not None:
             stderr = self._stderr
         else:
-            try:
+            if self.process:
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
                 self._stdout = stdout.decode("utf-8")
                 self._stderr = stderr.decode("utf-8")
-            except AttributeError:
+            else:
                 raise NotImplementedError(
                     "Please run the command before requesting errors!"
                 )
