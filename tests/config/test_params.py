@@ -107,11 +107,12 @@ class TestParamsSet:
         curr_param = external["qiime1.demultiplexing.454"]
         user_settings = example_pipelines["qiime1_demultiplexing_454"]
         curr_param.merge(user_settings["qiime1_demultiplexing_454"])
-        assert (
-            curr_param.get("sequence_16s", "input").location == "/path/to/sequence_16s"
+        assert curr_param.get("sequence_16s", "input").location == pathlib.Path(
+            "/path/to/sequence_16s"
         )
-        assert curr_param.get("quality", "input").location == "/path/to/quality"
-        assert (
-            curr_param.get("sample_barcode_mapping", "input").location
-            == "/path/to/mapping"
+        assert curr_param.get("quality", "input").location == pathlib.Path(
+            "/path/to/quality"
         )
+        assert curr_param.get(
+            "sample_barcode_mapping", "input"
+        ).location == pathlib.Path("/path/to/mapping")
