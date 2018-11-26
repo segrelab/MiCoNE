@@ -23,7 +23,13 @@
     datatype = "otu_table"
     format = ["biom"]
   [[normalize_otu_table.parameters]]
-    process = ""
+    process = "normalize_otu_table"
+    axis = "sample"
+    count_thres = 500
+    prevalence_thres = 0.05
+    abundance_thres = 0.01
+    rm_sparse_obs = "True"
+    rm_sparse_samples = "True"
   [[normalize_otu_table.output]]
     datatype = "otu_table"
     format = ["biom"]
