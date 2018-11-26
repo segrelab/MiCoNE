@@ -179,6 +179,17 @@ class Command:
                 )
         return self._stderr
 
+    def update(self, cmd: str) -> None:
+        """
+            Update the `cmd` of the current Command instance
+
+            Parameters
+            ----------
+            cmd : str
+                The new command to be executed
+        """
+        self.cmd = self._build_cmd(cmd)
+
 
 # QUESTION: What should write the profiles and resources `config` files? A new template module?
 # Fixes #44
