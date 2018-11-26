@@ -24,7 +24,7 @@ process group_by_taxa {
 
     output:
     set val(id), file("*.biom") into final_otu_chnl
-    set val(id), file("*_children.json") into final_childrendata_chnl
+    set val(id), file("*.json") into final_childrendata_chnl
 
     script:
     {{ group_by_taxa }}
