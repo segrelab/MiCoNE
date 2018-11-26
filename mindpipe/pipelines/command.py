@@ -133,6 +133,20 @@ class Command:
             sys.stderr.write(stderr)
             fid.write(stderr)
 
+    def proc_cmd_sync(self) -> bool:
+        """
+            Check whether the Command instance and subprocess.Popen process are in sync
+
+            Returns
+            -------
+            bool
+                True if both the `cmd` and `process` are the same
+        """
+        if self.cmd == self.process.args:
+            return True
+        else:
+            return False
+
     @property
     def output(self) -> str:
         """ Returns the output generated during execution of the command """
