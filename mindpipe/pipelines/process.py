@@ -52,8 +52,9 @@ class Process(collections.Hashable):
             The location of the virtual environment
     """
 
-    env: Optional[pathlib.Path] = None
+    _cmd: Optional[Command] = None
     _nf_path: pathlib.Path = pathlib.Path(os.environ["NF_PATH"])
+    env: Optional[pathlib.Path] = None
 
     def __init__(
         self,
@@ -142,7 +143,11 @@ class Process(collections.Hashable):
         ):
             warn("The process has not been built yet. Please run `build` before `run`")
         cmd = f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
-        return Command(cmd, self.profile)
+        if not self._cmd:
+            self._cmd = Command(cmd, self.profile)
+        else:
+            self._cmd.update(cmd)
+        return self._cmd
 
     def run(self) -> Command:
         """
