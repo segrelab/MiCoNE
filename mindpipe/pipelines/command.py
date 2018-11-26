@@ -135,14 +135,7 @@ class Command:
 
     @property
     def output(self) -> str:
-        """
-            Returns the output generated during execution of the command
-
-            Returns
-            -------
-            str
-                The `stdout` of the process
-        """
+        """ Returns the output generated during execution of the command """
         if self._stdout is not None:
             stdout = self._stdout
         else:
@@ -158,14 +151,7 @@ class Command:
 
     @property
     def error(self) -> str:
-        """
-            Returns the error generated during execution of the command
-
-            Returns
-            -------
-            str
-                The `stderr` of the process
-        """
+        """ Returns the error generated during execution of the command """
         if self._stderr is not None:
             stderr = self._stderr
         else:
