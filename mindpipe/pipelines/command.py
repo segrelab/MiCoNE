@@ -28,6 +28,8 @@ class Command:
         cmd : str
             The command that will be executed.
             This includes the profile and resource specifics
+        profile : {'local', 'sge'}
+            The execution environment
         output : str
             The 'stdout' of the process
     """
@@ -38,10 +40,11 @@ class Command:
 
     def __init__(self, cmd: str, profile: str, timeout: int = 1000) -> None:
         # TODO: Set up profiles config
-        self.cmd = self._build_cmd(cmd, profile)
+        self.profile = profile
+        self.cmd = self._build_cmd(cmd)
         self._timeout = timeout
 
-    def _build_cmd(self, cmd: str, profile: str) -> str:
+    def _build_cmd(self, cmd: str) -> str:
         """
             Builds the `cmd` for the current Command instance
 
@@ -49,8 +52,6 @@ class Command:
             ----------
             cmd : str
                 The command to be executed
-            profile : str
-                The execution environment
 
             Returns
             -------
@@ -58,9 +59,9 @@ class Command:
                 The final command to be executed
         """
         command: List[str] = []
-        if profile == "local":
+        if self.profile == "local":
             pass
-        elif profile == "sge":
+        elif self.profile == "sge":
             command.append("qsub")
         else:
             raise ValueError("Unsupported profile! Choose either 'local' or 'sge'")
