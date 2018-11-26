@@ -2,11 +2,7 @@
 
 def output_dir = file(params.output_dir)
 def otudata = params.otudata
-def sample_metadata = params.sample_metadata
-def lineagedata = params.lineagedata
 
-def rm_sparse_otu = params.rm_sparse_otu
-def rm_sparse_samples = params.rm_sparse_samples
 def tax_levels = params.tax_levels
 
 Channel
