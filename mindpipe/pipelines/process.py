@@ -164,6 +164,16 @@ class Process(collections.Hashable):
         self.cmd.run()
         return self.cmd
 
+    @property
+    def output(self) -> str:
+        """ Returns the output generated during execution of the process """
+        return self.cmd.output
+
+    @property
+    def error(self) -> str:
+        """ Returns the error generated during execution of the command """
+        return self.cmd.error
+
     def clean(self, scope: str) -> None:
         """
             Cleans out the requested scope
