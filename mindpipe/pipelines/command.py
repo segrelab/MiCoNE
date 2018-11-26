@@ -110,13 +110,13 @@ class Command:
             log_file : str
                 The log file to save the output and error to
         """
-        if not self.proc_cmd_sync():
-            warn("The process has not been re-run after cmd was updated")
         if self._stdout is not None and self._stderr is not None:
             stdout = self._stdout
             stderr = self._stderr
         else:
             if self.process:
+                if not self.proc_cmd_sync():
+                    warn("The process has not been re-run after cmd was updated")
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
                 stdout = stdout.decode("utf-8")
                 stderr = stderr.decode("utf-8")
@@ -152,12 +152,12 @@ class Command:
     @property
     def output(self) -> str:
         """ Returns the output generated during execution of the command """
-        if not self.proc_cmd_sync():
-            warn("The process has not been re-run after cmd was updated")
         if self._stdout is not None:
             stdout = self._stdout
         else:
             if self.process:
+                if not self.proc_cmd_sync():
+                    warn("The process has not been re-run after cmd was updated")
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
                 self._stdout = stdout.decode("utf-8")
                 self._stderr = stderr.decode("utf-8")
@@ -170,12 +170,12 @@ class Command:
     @property
     def error(self) -> str:
         """ Returns the error generated during execution of the command """
-        if not self.proc_cmd_sync():
-            warn("The process has not been re-run after cmd was updated")
         if self._stderr is not None:
             stderr = self._stderr
         else:
             if self.process:
+                if not self.proc_cmd_sync():
+                    warn("The process has not been re-run after cmd was updated")
                 stdout, stderr = self.process.communicate(timeout=self._timeout)
                 self._stdout = stdout.decode("utf-8")
                 self._stderr = stderr.decode("utf-8")
