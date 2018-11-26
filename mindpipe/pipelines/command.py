@@ -195,6 +195,12 @@ class Command:
                 The new command to be executed
         """
         self.cmd = self._build_cmd(cmd)
+        if self.process:
+            if not self.proc_cmd_sync():
+                warn("New command differs from executed command. Clearing previous run")
+                self._stdout = None
+                self._stderr = None
+                self.process = None
 
 
 # QUESTION: What should write the profiles and resources `config` files? A new template module?
