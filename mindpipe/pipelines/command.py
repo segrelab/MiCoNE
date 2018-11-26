@@ -38,6 +38,25 @@ class Command:
 
     def __init__(self, cmd: str, profile: str, timeout: int = 1000) -> None:
         # TODO: Set up profiles config
+        self.cmd = self._build_cmd(cmd, profile)
+        self._timeout = timeout
+
+    def _build_cmd(self, cmd: str, profile: str) -> str:
+        """
+            Builds the `cmd` for the current Command instance
+
+            Parameters
+            ----------
+            cmd : str
+                The command to be executed
+            profile : str
+                The execution environment
+
+            Returns
+            -------
+            str
+                The final command to be executed
+        """
         command: List[str] = []
         if profile == "local":
             pass
@@ -45,10 +64,9 @@ class Command:
             command.append("qsub")
         else:
             raise ValueError("Unsupported profile! Choose either 'local' or 'sge'")
-        # TODO: Might want to integrate conda with nextflow instead of this
         command.append(cmd)
-        self.cmd = " && ".join(command)
-        self._timeout = timeout
+        final_cmd = " && ".join(command)
+        return final_cmd
 
     def __str__(self) -> str:
         return self.cmd
