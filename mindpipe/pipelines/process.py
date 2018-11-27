@@ -218,7 +218,7 @@ class Process(collections.Hashable):
         """
         self.params.attach_to(previous.params)
 
-    def update_location(self, location: str) -> None:
+    def update_location(self, location: str, category: str) -> None:
         """
             Update the location of all Input and Output elements
             Useful for an intermediate process
@@ -227,26 +227,30 @@ class Process(collections.Hashable):
             ----------
             location : str
                 The location of the IO element
+            category : {'input', 'output'}
+                Specifies whether the data is input or output information
         """
         path = pathlib.Path(location)
         if not path.is_absolute():
             raise ValueError("location must be an absolute path")
-        for input_ in self.params.input:
-            in_location = input_.location
-            if in_location is None:
-                raise ValueError("Process parameter inputs are incomplete")
-            if not in_location.is_absolute():
-                self.params.update_location(
-                    input_.datatype, str(path / in_location), "input"
-                )
-        for output_ in self.params.output:
-            out_location = output_.location
-            if out_location is None:
-                raise ValueError("Process parameter outputs are incomplete")
-            if not out_location.is_absolute():
-                self.params.update_location(
-                    output_.datatype, str(path / out_location), "output"
-                )
+        if category == "input":
+            for input_ in self.params.input:
+                in_location = input_.location
+                if in_location is None:
+                    raise ValueError("Process parameter inputs are incomplete")
+                if not in_location.is_absolute():
+                    self.params.update_location(
+                        input_.datatype, str(path / in_location), "input"
+                    )
+        if category == "output":
+            for output_ in self.params.output:
+                out_location = output_.location
+                if out_location is None:
+                    raise ValueError("Process parameter outputs are incomplete")
+                if not out_location.is_absolute():
+                    self.params.update_location(
+                        output_.datatype, str(path / out_location), "output"
+                    )
 
 
 class InternalProcess(Process):
