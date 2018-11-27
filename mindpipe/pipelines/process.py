@@ -116,7 +116,10 @@ class Process(collections.Hashable):
         with open(config_file, "w") as fid:
             fid.write(config)
         work_dir = self._output_location / "work"
-        work_dir.mkdir()
+        if work_dir.exists():
+            warn("Work directory already exists (could be from another run)")
+        else:
+            work_dir.mkdir()
 
     # TODO: Also add profile and resource configuration scripts to `cmd` and `build`
     @property
