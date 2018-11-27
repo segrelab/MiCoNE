@@ -146,7 +146,7 @@ class Process(collections.Hashable):
             or not work_dir.exists()
         ):
             warn("The process has not been built yet. Please run `build` before `run`")
-        cmd = f"{self._nf_path} {script_path} -c {config_path} -w {work_dir}"
+        cmd = f"{self._nf_path} {script_path} -C {config_path} -w {work_dir}"
         if not self._cmd:
             self._cmd = Command(cmd, self.profile)
         else:
