@@ -251,7 +251,7 @@ class Params(collections.Hashable):
                 raise ValueError(f"Input: {elem} has not been assigned a location yet")
             if not elem.location.exists():
                 raise FileNotFoundError(
-                    f"Unable to location input file at {elem.location}"
+                    f"Unable to locate input file at {elem.location}"
                 )
         for elem in self.output:
             if elem.location is None:
