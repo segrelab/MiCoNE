@@ -244,20 +244,29 @@ class Params(collections.Hashable):
         """
             Verify whether the Input and Output elements have been assigned and are valid
         """
+
         if not self.output_location.is_absolute():
             raise ValueError("The output location must be absolute")
         for elem in self.input:
             if elem.location is None:
                 raise ValueError(f"Input: {elem} has not been assigned a location yet")
-            if not elem.location.exists():
+            elif "*" in str(elem.location):
+                str_loc = str(elem.location)
+                ind = str_loc.find("*")
+                files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
+                if len(files) == 0:
+                    raise FileNotFoundError(
+                        f"Unable to locate input files at {elem.location}"
+                    )
+            elif not elem.location.exists():
                 raise FileNotFoundError(
                     f"Unable to locate input file at {elem.location}"
                 )
         for elem in self.output:
             if elem.location is None:
                 raise ValueError(f"Output: {elem} has not been assigned a location yet")
-            if not elem.location.is_absolute():
-                raise ValueError("All the output objects do not have absolute paths")
+            elif not elem.location.is_absolute():
+                raise ValueError("Not all the output objects have absolute paths")
 
     @property
     def dict(self) -> Dict[str, Any]:
