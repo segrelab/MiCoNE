@@ -8,6 +8,9 @@ from typing import Dict, Set
 from jinja2 import Environment, FileSystemLoader, meta
 
 
+CONFIG_DIR: pathlib.Path = pathlib.Path.cwd() / "mindpipe/config"
+
+
 class Template:
     """
         Base class for manipulating and rendering Jinja2 templates
@@ -133,5 +136,34 @@ class ConfigTemplate(Template):
             The set of undeclared variables in the template
     """
 
+    _resource_config: pathlib.Path = CONFIG_DIR / "resources.config"
+    _profile_config: pathlib.Path = CONFIG_DIR / "profiles.config"
+
     def __init__(self, config_file: pathlib.Path) -> None:
         super().__init__(config_file)
+
+    def render(self, template_data: dict) -> str:
+        """
+            Render the template using the data passed in as arguments
+
+            Parameters
+            ----------
+            template_data : dict
+                Dictionary of data used to fill in the template
+
+            Returns
+            -------
+            str
+                The rendered template
+
+            Raises
+            ------
+            UndefinedError
+                If an undeclared variable is not provided a value in template_data
+        """
+        rendered_config = self._template.render(template_data)
+        with open(self._resource_config) as fid:
+            resource = fid.read()
+        with open(self._profile_config) as fid:
+            profile = fid.read()
+        return rendered_config + resource + profile
