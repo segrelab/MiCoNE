@@ -2,59 +2,62 @@
 
 from setuptools import setup, find_packages
 
-with open('README.rst') as readme_file:
+with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
+with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = [
-    'numpy',
-    'pandas',
-    'jinja2',
-    'dask',
-    'cloudpickle',
-    'biom-format',
-    'ete3',
-    'h5py',
-    'statsmodels',
-    'networkx',
-    'toml',
-    'schematics'
+    "biom-format",
+    "click",
+    "decorator",
+    "ete3",
+    "future",
+    "h5py",
+    "jinja2",
+    "jinja2schema",
+    "markupsafe",
+    "networkx",
+    "numpy",
+    "pandas",
+    "patsy",
+    "python-dateutil",
+    "pytz",
+    "schematics",
+    "scipy",
+    "six",
+    "statsmodels",
+    "toml",
 ]
 
-setup_requirements = ['pytest-runner', ]
+setup_requirements = ["pytest-runner"]
 
-test_requirements = ['pytest', 'pytest-cov']
+test_requirements = ["pytest", "pytest-cov"]
 
 setup(
     author="Dileep Kishore",
-    author_email='dkishore@bu.edu',
+    author_email="dkishore@bu.edu",
     classifiers=[
-        'Development Status :: Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        "Development Status :: Beta",
+        "Intended Audience :: Scientists, Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3.6",
     ],
     description="The pipeline that powers the Microbial Interaction Network Database",
-    entry_points={
-        'console_scripts': [
-            'mindpipe=mindpipe.cli:main',
-        ],
-    },
+    entry_points={"console_scripts": ["mindpipe=mindpipe.cli:main"]},
     install_requires=requirements,
     license="MIT license",
-    long_description=readme + '\n\n' + history,
+    long_description=readme + "\n\n" + history,
     include_package_data=True,
-    keywords='mindpipe',
-    name='mindpipe',
-    packages=find_packages(include=['mindpipe']),
+    keywords="mindpipe",
+    name="mindpipe",
+    packages=find_packages(include=["mindpipe"]),
     setup_requires=setup_requirements,
-    test_suite='tests',
+    test_suite="tests",
     tests_require=test_requirements,
-    url='https://github.com/dileep-kishore/mindpipe',
-    version='0.4.2',
+    url="https://github.com/dileep-kishore/mindpipe",
+    version="0.4.2",
     zip_safe=False,
 )
