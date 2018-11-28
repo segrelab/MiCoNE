@@ -6,6 +6,7 @@ import pathlib
 from typing import Dict, Set
 
 from jinja2 import Environment, FileSystemLoader, meta
+from jinja2schema import infer
 
 
 CONFIG_DIR: pathlib.Path = pathlib.Path.cwd() / "mindpipe/config"
@@ -31,7 +32,7 @@ class Template:
         self._env = Environment(loader=loader)
         self._template = self._env.get_template(template_file.name)
         source, *_ = self._env.loader.get_source(self._env, template_file.name)
-        self._vars = meta.find_undeclared_variables(self._env.parse(source))
+        self._vars = infer(source)
 
     def render(self, template_data: dict) -> str:
         """
@@ -55,7 +56,7 @@ class Template:
         return self._template.render(template_data)
 
     @property
-    def template_vars(self) -> Set[str]:
+    def template_vars(self) -> dict:
         """
             The variables in the template
         """
