@@ -142,7 +142,7 @@ class ConfigTemplate(Template):
     def __init__(self, config_file: pathlib.Path) -> None:
         super().__init__(config_file)
 
-    def render(self, template_data: dict) -> str:
+    def render(self, template_data: dict, resource_config: bool = False) -> str:
         """
             Render the template using the data passed in as arguments
 
@@ -150,6 +150,9 @@ class ConfigTemplate(Template):
             ----------
             template_data : dict
                 Dictionary of data used to fill in the template
+            resource_config : bool, optional
+                Flag to determine whether to append profile and resouce configs
+                Default value is False
 
             Returns
             -------
@@ -162,8 +165,12 @@ class ConfigTemplate(Template):
                 If an undeclared variable is not provided a value in template_data
         """
         rendered_config = self._template.render(template_data)
-        with open(self._resource_config) as fid:
-            resource = fid.read()
-        with open(self._profile_config) as fid:
-            profile = fid.read()
+        if resource_config:
+            with open(self._resource_config) as fid:
+                resource = fid.read()
+            with open(self._profile_config) as fid:
+                profile = fid.read()
+        else:
+            resource = ""
+            profile = ""
         return rendered_config + resource + profile
