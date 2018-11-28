@@ -111,7 +111,7 @@ class Process(collections.Hashable):
         # TODO: Add logging here
         with open(script_file, "w") as fid:
             fid.write(script)
-        config = self.config.render(self.params.dict)
+        config = self.config.render(self.params.dict, resource_config=True)
         config_file = self._output_location / f"{self.name}.config"
         with open(config_file, "w") as fid:
             fid.write(config)
