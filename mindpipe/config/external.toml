@@ -133,7 +133,20 @@
     format = ["fasta"]
     location = "rep_set.{fasta,fna}"
 
-# [qiime2.clustering.sequence_importer]
+[qiime2.importer.sequence]
+  env = "src/external/qiime2/env"
+  root = "src/external/qiime2/importer/sequence"
+  output_location = "qiime2/importer"
+  [[qiime2.importer.sequence.input]]
+    datatype = "dir"
+    format = [""]
+  [[qiime2.importer.sequence.output]]
+    datatype = "qiime2_sequence_16s"
+    format = ["qza"]
+    location = "*.qza"
+  [[qiime2.importer.sequence.parameters]]
+    process = "sequence_importer"
+    input_type = "EMPPairedEndSequences"
 
 # [qiime2.clustering.demultiplexing]
 
