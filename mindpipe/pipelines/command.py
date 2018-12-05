@@ -195,7 +195,3 @@ class Command:
                 self._stdout = None
                 self._stderr = None
                 self.process = None
-
-
-# QUESTION: What should write the profiles and resources `config` files? A new template module?
-# Fixes #44
