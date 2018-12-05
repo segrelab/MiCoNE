@@ -283,6 +283,7 @@ class Params(collections.Hashable):
         data["input"] = {elem.datatype: str(elem.location) for elem in self.input}
         data["output"] = {elem.datatype: str(elem.location) for elem in self.output}
         data["output_dir"] = self.output_location
+        data["env"] = self.env
         for process_params in self.parameters:
             data[process_params.process] = process_params.params
         return data
