@@ -106,7 +106,7 @@ class TestParamsSet:
         external = ExternalParamsSet(external_raw)
         curr_param = external["qiime1.demultiplexing.454"]
         user_settings = example_pipelines["qiime1_demultiplexing_454"]
-        curr_param.merge(user_settings["qiime1_demultiplexing_454"])
+        curr_param.merge(user_settings["qiime1"]["demultiplexing"]["454"])
         assert curr_param.get("sequence_16s", "input").location == pathlib.Path(
             "/path/to/sequence_16s"
         )
