@@ -13,16 +13,16 @@ def input_type = params.input_type
 Channel
     .fromPath(input_folder)
     .ifEmpty { exit 1, "Input folder not found" }
-    .set { input_folder_chnl }
+    .set { chnl_input_folder }
 
 
 // Processes
 process sequence_importer {
-    tag "sequence_importer"
-    publishDir "${output_dir}/sequence_importer"
+    tag "sequence"
+    publishDir "${output_dir}/imported"
 
     input:
-    file sequence_folder from input_folder_chnl
+    file sequence_folder from chnl_input_folder
 
     output:
     file('*.qza') into output_chnl
