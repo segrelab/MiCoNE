@@ -1,17 +1,58 @@
-# -*- coding: utf-8 -*-
+"""
+    Console script for mindpipe
+"""
 
-"""Console script for mindpipe."""
-import sys
 import click
 
+from .pipelines import Pipeline
+from .setup import Environments
 
-@click.command()
-def main(args=None):
-    """Console script for mindpipe."""
-    click.echo("Replace this message by putting your code into " "mindpipe.cli.main")
-    click.echo("See click documentation at http://click.pocoo.org/")
-    return 0
+
+@click.group()
+@click.pass_context
+def cli(ctx):
+    """ Main entry point to mindpipe """
+    return None
+
+
+@cli.command()
+@click.option(
+    "--env",
+    "-e",
+    default=None,
+    help="The environment to initialize. By default will initialize all",
+)
+@click.pass_context
+def init(ctx, env):
+    """ Initialize the package and environments """
+    environments = Environments()
+    environments.init(env)
+
+
+@cli.command()
+@click.option(
+    "--profile",
+    "-p",
+    default="local",
+    type=str,
+    help="The execution profile. Either 'local' or 'qsub'",
+)
+@click.option(
+    "--config",
+    "-c",
+    type=click.Path(exists=True),
+    help="The config file that defines the pipeline run",
+)
+@click.pass_context
+def run(ctx, profile, config):
+    """ Run the pipeline """
+    ctx.obj["PROFILE"] = profile
+    pipeline = Pipeline(config)
+
+
+def main():
+    cli(obj={})
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    main()
