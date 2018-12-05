@@ -14,6 +14,9 @@ from .template import ConfigTemplate, ScriptTemplate
 from ..config import Params
 
 
+NF_PATH = pathlib.Path(__file__).parent.parent / "bin/nextflow"
+
+
 class Process(collections.Hashable):
     """
         Class for executing a pipeline process
@@ -53,7 +56,9 @@ class Process(collections.Hashable):
     """
 
     _cmd: Optional[Command] = None
-    _nf_path: pathlib.Path = pathlib.Path(os.environ["NF_PATH"])
+    _nf_path: pathlib.Path = (
+        pathlib.Path(os.environ["NF_PATH"]) if os.environ.get("NF_PATH") else NF_PATH
+    )
     env: Optional[pathlib.Path] = None
 
     def __init__(
