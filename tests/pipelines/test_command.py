@@ -35,10 +35,13 @@ class TestCommand:
         profile = "local"
         timeout = 1000
         command = Command(cmd, profile, timeout)
+        with pytest.raises(FileNotFoundError):
+            command.run()
+        cmd = "ls &&"
+        command = Command(cmd, profile, timeout)
         command.run()
         error = command.error
-        print(error)
-        assert error == "/bin/sh: random_command: command not found\n"
+        assert error == "ls: cannot access '&&': No such file or directory\n"
 
     def test_log(self, tmpdir):
         cmd = "ls"
