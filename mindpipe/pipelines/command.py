@@ -100,6 +100,15 @@ class Command:
         )
         return self.process
 
+    def wait(self) -> None:
+        """
+            Wait for the process to complete or terminate
+        """
+        if self.process:
+            stdout, stderr = self.process.communicate(timeout=self._timeout)
+            self._stderr = stderr.decode("utf-8")
+            self._stdout = stdout.decode("utf-8")
+
     # TODO: Change the `log_file` to the logger class
     def log(self, log_file: str) -> None:
         """
