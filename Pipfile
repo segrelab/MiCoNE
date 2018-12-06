@@ -16,6 +16,7 @@ toml = "*"
 schematics = "*"
 "jinja2schema" = "*"
 click = "*"
+halo = "*"
 
 [dev-packages]
 bumpversion = "*"
