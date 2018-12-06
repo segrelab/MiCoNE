@@ -41,7 +41,7 @@ class Command:
     def __init__(self, cmd: str, profile: str, timeout: int = 1000) -> None:
         # TODO: Set up profiles config
         self.profile = profile
-        self.cmd = self._build_cmd(cmd)
+        self._cmd = self._build_cmd(cmd)
         self._timeout = timeout
 
     def _build_cmd(self, cmd: str) -> str:
@@ -65,15 +65,19 @@ class Command:
             command.append("qsub")
         else:
             raise ValueError("Unsupported profile! Choose either 'local' or 'sge'")
-        command.append(cmd)
-        final_cmd = " && ".join(command)
-        return final_cmd
+        command.extend(cmd.split(" "))
+        return command
 
     def __str__(self) -> str:
         return self.cmd
 
     def __repr__(self) -> str:
         return f'<Command cmd="{self.cmd}" timeout={self._timeout}>'
+
+    @property
+    def cmd(self) -> str:
+        """ The command that will be executed """
+        return " ".join(self._cmd)
 
     def run(self, cwd: Optional[str] = None) -> subprocess.Popen:
         """
@@ -92,9 +96,9 @@ class Command:
         """
         # QUESTION: Replace this with asyncio.subprocess.create_subprocess_shell
         self.process = subprocess.Popen(
-            self.cmd,
+            self._cmd,
             cwd=cwd,
-            shell=True,
+            shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
