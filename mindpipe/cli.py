@@ -3,6 +3,7 @@
 """
 
 import click
+from halo import Halo
 
 from .pipelines import Pipeline
 from .setup import Environments
@@ -12,6 +13,9 @@ from .setup import Environments
 @click.pass_context
 def cli(ctx):
     """ Main entry point to mindpipe """
+    spinner = Halo(text="Starting up...", spinner="dots")
+    spinner.start()
+    ctx.obj["SPINNER"] = spinner
     return None
 
 
@@ -25,6 +29,8 @@ def cli(ctx):
 @click.pass_context
 def init(ctx, env):
     """ Initialize the package and environments """
+    spinner = ctx.obj["SPINNER"]
+    spinner.text = "Initializing environment: "
     environments = Environments()
     environments.init(env)
 
