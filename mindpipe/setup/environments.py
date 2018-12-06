@@ -46,17 +46,21 @@ class Environments:
         """
         if env is None:
             for config, env_loc in zip(self.configs, self.env_locs):
-                cmd = f"conda create -f {config} -p {env_loc}"
+                if not env_loc.exists():
+                    env_loc.mkdir()
+                cmd = f"conda env create -f {config} -p {env_loc}"
                 init_cmd = Command(cmd, profile="local")
                 init_cmd.run()
-        if env in self.env_names:
+                print(env_loc.parent.stem)
+                init_cmd.wait()
+        elif env in self.env_names:
             ind = self.env_names.index(env)
             config = self.configs[ind]
             env_loc = self.env_locs[ind]
             cmd = f"conda create -f {config} -p {env_loc}"
             init_cmd = Command(cmd, profile="local")
             init_cmd.run()
-        if env not in self.env_names:
+        elif env not in self.env_names:
             raise ValueError(f"{env} not a supported environment")
 
     def load(self, env: str) -> None:
