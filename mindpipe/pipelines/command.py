@@ -153,7 +153,7 @@ class Command:
             bool
                 True if both the `cmd` and `process` are the same
         """
-        if self.cmd == self.process.args:
+        if self._cmd == self.process.args:
             return True
         else:
             return False
@@ -199,7 +199,7 @@ class Command:
             cmd : str
                 The new command to be executed
         """
-        self.cmd = self._build_cmd(cmd)
+        self._cmd = self._build_cmd(cmd)
         if self.process:
             if not self.proc_cmd_sync():
                 warn("New command differs from executed command. Clearing previous run")
