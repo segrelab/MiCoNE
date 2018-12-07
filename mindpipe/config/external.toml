@@ -4,7 +4,7 @@
 ################################################################################
 
 [qiime1.demultiplexing.454]
-  env = "src/external/qiime1/env"
+  env = "mindpipe-qiime1"
   root = "src/external/qiime1/demultiplexing/454"
   output_location = "qiime1/demultiplexing"
   [[qiime1.demultiplexing.454.input]]
@@ -25,7 +25,7 @@
     location = "seqs/*.fna"
 
 [qiime1.demultiplexing.illumina]
-  env = "src/external/qiime1/env"
+  env = "mindpipe-qiime1"
   root = "src/external/qiime1/demultiplexing/illumina"
   output_location = "qiime1/demultiplexing"
   [[qiime1.demultiplexing.illumina.input]]
@@ -46,7 +46,7 @@
     location  = "seqs/*.fna"
 
 [qiime1.clustering.denovo]
-  env = "src/external/qiime1/env"
+  env = "mindpipe-qiime1"
   root = "src/external/qiime1/clustering/denovo"
   output_location = "qiime1/clustering"
   [[qiime1.clustering.denovo.input]]
@@ -72,7 +72,7 @@
     location = "rep_seqs.{fasta,fna}"
 
 [qiime1.clustering.closedref]
-  env = "src/external/qiime1/env"
+  env = "mindpipe-qiime1"
   root = "src/external/qiime1/clustering/closedref"
   output_location = "qiime1/clustering"
   [[qiime1.clustering.closedref.input]]
@@ -102,7 +102,7 @@
     location = "rep_set.tre"
 
 [qiime1.clustering.openref]
-  env = "src/external/qiime1/env"
+  env = "mindpipe-qiime1"
   root = "src/external/qiime1/clustering/openref"
   output_location = "qiime1/clustering"
   [[qiime1.clustering.openref.input]]
@@ -134,7 +134,7 @@
     location = "rep_set.{fasta,fna}"
 
 [qiime2.importer.sequence]
-  env = "src/external/qiime2/env"
+  env = "mindpipe-qiime2"
   root = "src/external/qiime2/importer/sequence"
   output_location = "qiime2/importer"
   [[qiime2.importer.sequence.input]]
