@@ -17,6 +17,8 @@ from typing import (
     Union,
 )
 
+from ..pipelines import Command
+
 
 PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
 
@@ -100,11 +102,19 @@ class Params(collections.Hashable):
                 "Please reinstall the package"
             )
         if "env" in value:
-            self.env = PIPELINE_DIR / value["env"]
+            cmd = Command("conda info -e", profile="local")
+            cmd.run()
+            envs = [o.strip() for o in cmd.output.split("\n")[2:]]
+            env_loc = ""
+            for env in envs:
+                if env.startswith(value["env"]):
+                    env_loc = env.split(" ")[-1]
+                    break
+            self.env = pathlib.Path(env_loc)
             if not self.env.exists() or not self.env.is_dir():
                 raise FileNotFoundError(
                     f"The directory for the environment: {self.env} doesn't exist. "
-                    "Please reinstall the package"
+                    "Please run mindpipe init {value['env']}"
                 )
         else:
             self.env = None
