@@ -22,16 +22,13 @@ class Environments:
         ----------
         configs : List[pathlib.Path]
             The list of locations of the environment config files
-        env_locs : List[pathlib.Path]
-            The list of locations of environments
         env_names : List[str]
             The list of names of environments
     """
 
     def __init__(self) -> None:
         self.configs = list(EX_PIPELINE_DIR.glob("**/env.yml"))
-        self.env_locs = [c.parent / "env" for c in self.configs]
-        self.env_names = [str(c.parent) for c in self.configs]
+        self.env_names = [f"mindpipe-{c.parent.stem}" for c in self.configs]
 
     def init(self, env: Optional[str] = None) -> None:
         """
@@ -45,19 +42,17 @@ class Environments:
                 Default value is None
         """
         if env is None:
-            for config, env_loc in zip(self.configs, self.env_locs):
-                if not env_loc.exists():
-                    env_loc.mkdir()
-                cmd = f"conda env create -f {config} -p {env_loc}"
+            for config, env_name in zip(self.configs, self.env_names):
+                cmd = f"conda env create -f {config} -n {env_name}"
                 init_cmd = Command(cmd, profile="local")
                 init_cmd.run()
-                print(env_loc.parent.stem)
+                print(env_name)
                 init_cmd.wait()
         elif env in self.env_names:
             ind = self.env_names.index(env)
             config = self.configs[ind]
-            env_loc = self.env_locs[ind]
-            cmd = f"conda create -f {config} -p {env_loc}"
+            env_name = self.env_names[ind]
+            cmd = f"conda create -f {config} -n {env_name}"
             init_cmd = Command(cmd, profile="local")
             init_cmd.run()
         elif env not in self.env_names:
@@ -76,7 +71,7 @@ class Environments:
         if env not in self.env_names:
             raise ValueError(f"{env} not a supported environment")
         ind = self.env_names.index(env)
-        env_loc = self.env_locs[ind]
-        cmd = f"source activate {env_loc}"
+        env_name = self.env_names[ind]
+        cmd = f"source activate {env_name}"
         load_cmd = Command(cmd, profile="local")
         load_cmd.run()
