@@ -19,7 +19,7 @@ Channel
 // Processes
 process sequence_importer {
     tag "sequence"
-    publishDir "${output_dir}/imported"
+    publishDir "${output_dir}/importer"
 
     input:
     file sequence_folder from chnl_input_folder
