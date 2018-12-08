@@ -6,8 +6,8 @@ install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
     - export PATH="$HOME/miniconda/bin:$PATH"
-    - pip install -r requirements.txt
-    - pip install -r requirements_dev.txt
+    - conda env create -f env_dev.yml -n mindpipe-test
+    - source activate mindpipe-test
     - pip install .
 
 script:
