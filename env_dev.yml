@@ -77,7 +77,6 @@ dependencies:
     - log-symbols==0.0.11
     - markupsafe==1.1.0
     - mccabe==0.6.1
-    - mindpipe==0.4.2
     - more-itertools==4.3.0
     - mypy==0.641
     - mypy-extensions==0.4.1
