@@ -3,7 +3,7 @@
 """
 
 import pathlib
-from typing import Optional, List
+from typing import Iterable, Optional, List
 
 from ..pipelines import Command
 
@@ -30,7 +30,7 @@ class Environments:
         self.configs = list(EX_PIPELINE_DIR.glob("**/env.yml"))
         self.env_names = [f"mindpipe-{c.parent.stem}" for c in self.configs]
 
-    def init(self, env: Optional[str] = None) -> None:
+    def init(self, env: Optional[str] = None) -> Iterable[Command]:
         """
             Initialize the requested conda environment
 
@@ -46,8 +46,7 @@ class Environments:
                 cmd = f"conda env create -f {config} -n {env_name}"
                 init_cmd = Command(cmd, profile="local")
                 init_cmd.run()
-                print(env_name)
-                init_cmd.wait()
+                yield init_cmd
         elif env in self.env_names:
             ind = self.env_names.index(env)
             config = self.configs[ind]
@@ -55,6 +54,7 @@ class Environments:
             cmd = f"conda env create -f {config} -n {env_name}"
             init_cmd = Command(cmd, profile="local")
             init_cmd.run()
+            yield init_cmd
         elif env not in self.env_names:
             raise ValueError(f"{env} not a supported environment")
 

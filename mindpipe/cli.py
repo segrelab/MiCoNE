@@ -30,9 +30,10 @@ def cli(ctx):
 def init(ctx, env):
     """ Initialize the package and environments """
     spinner = ctx.obj["SPINNER"]
-    spinner.text = "Initializing environment: "
     environments = Environments()
-    environments.init(env)
+    for env_cmd in environments.init(env):
+        spinner.text = f"Initializing environment: {env_cmd.cmd}"
+        env_cmd.wait()
 
 
 @cli.command()
