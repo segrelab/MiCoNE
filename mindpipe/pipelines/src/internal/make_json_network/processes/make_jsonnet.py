@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-from mind.utils import CooccurNet
 
-network = CooccurNet.load_data(
-    corr_file="$correlation_file",
-    pval_file="$pvalue_file",
+from mindpipe import Network
+
+network = Network.load_data(
+    interaction_file="$correlation_file",
     meta_file="$metadata_file",
-    lineage_file="$taxondata_file",
+    cmeta_file="$cmetadata_file",
+    obsmeta_file="$obsdata_file",
+    pvalue_file="$pvalue_file",
     children_file="$childrendata_file",
 )
-json_str = network.network_json
-with open("${id}_${level}_net.json", "w") as fid:
-    fid.write(json_str)
+json_str = network.write("${id}_${level}_net.json", threshold=False)
