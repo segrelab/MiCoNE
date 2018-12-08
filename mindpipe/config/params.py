@@ -105,17 +105,17 @@ class Params(collections.Hashable):
             cmd = Command("conda info -e", profile="local")
             cmd.run()
             envs = [o.strip() for o in cmd.output.split("\n")[2:]]
-            env_loc = ""
+            env_loc = None
             for env in envs:
                 if env.startswith(value["env"]):
-                    env_loc = env.split(" ")[-1]
+                    env_loc = pathlib.Path(env.split(" ")[-1])
                     break
-            self.env = pathlib.Path(env_loc)
-            if not self.env.exists() or not self.env.is_dir():
+            if not env_loc or not env_loc.exists() or not env_loc.is_dir():
                 raise FileNotFoundError(
-                    f"The directory for the environment: {self.env} doesn't exist. "
-                    "Please run mindpipe init {value['env']}"
+                    f"The directory for the environment: {value['env']} doesn't exist. "
+                    f"Please run mindpipe init {value['env']}"
                 )
+            self.env = env_loc
         else:
             self.env = None
         self.output_location = pathlib.Path(value["output_location"])
