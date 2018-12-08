@@ -52,7 +52,7 @@ class Environments:
             ind = self.env_names.index(env)
             config = self.configs[ind]
             env_name = self.env_names[ind]
-            cmd = f"conda create -f {config} -n {env_name}"
+            cmd = f"conda env create -f {config} -n {env_name}"
             init_cmd = Command(cmd, profile="local")
             init_cmd.run()
         elif env not in self.env_names:
