@@ -1,9 +1,7 @@
-# Config file for automatic testing at travis-ci.org
-
 language: python
+
 python: 3.6
 
-# Command to install dependencies, e.g. pip install r requirements.txt usemirrors
 install:
     - apt-get update
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
@@ -13,12 +11,19 @@ install:
     - pip install -r requirements_dev.txt
     - pip install .
 
-# Command to run tests, e.g. python setup.py test
 script:
     - mindpipe init
     - pytest -sv --cov=mindpipe
     - flake8 mindpipe
     - travis-sphinx build --source=docs --nowarn
+
+deploy:
+  provider: pypi
+  user: dileep-kishore
+  password:
+    secure: G+OpBD6xqvxRY0xiLZ/fDN/hdPCwyr6Ld45tRTi3MHrrxUMxfDEbcLAx/2Rmu3YYtmN/7pkLVhYjasN0SrrjGFkPc8u4RkOmLVPYWJnFKhdEUc9WtGeuOfHn8yyQdESKLfyeJlyftprAOFlIO3UFFgK5pdFlNKjTMZWM8LB2bE+dFaC3dhQCD2MsW0iTZ7sAv544MUp5XbcAfVgpN+hdqb8IuRVMA2SjbplzPBWQah6U7vGQDU9UT2mA24WDl5NEYJ1b8NdrusNA87Oa+HKQNBINkYjzgOe2cWR1OgVlOECpqed7xvR7Ja6f78pqk4CaygPINTyHcbycVwCi55ibrk/SIyiIgRgDjeLX5wYO8SMxUBx6mDnJSsLr4LVdIaZT643ILMpXDtGw/7qHw7ekzk7hhn1v7FtziyWaPshzzfDCcrM83f16MN3D+lQHqgV5VnDCX5p/jUCgOU6EA/+CbmE490F5JbiR4xSqdNk1JgBXDnqgZ19KQZf2PkmqHrrCGnLwJhc1PNexKn80M3U28w0Nduu9Gy/HKHma8AGo+D1/j4W3vqq4lsyuC/qp78rVKjFILPhR65zRs8hOyupBJdXDNDgxyU7nAhiODe9xhETXNr5BMGOwvOK95EJSpevGuWTXh6jICmpRD0CG42+yZNLcLNI2vwB7APU8kZH5oPU=
+  on:
+    tags: true
 
 after_success:
     - travis-sphinx deploy
