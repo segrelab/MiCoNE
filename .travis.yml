@@ -15,6 +15,7 @@ install:
 
 # Command to run tests, e.g. python setup.py test
 script:
+    - mindpipe init
     - pytest -sv --cov=mindpipe
     - flake8 mindpipe
     - travis-sphinx build --source=docs --nowarn
