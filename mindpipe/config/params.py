@@ -339,10 +339,11 @@ class Params(collections.Hashable):
                 The `Param` instance to attach current instance to
         """
         for input_ in self.input:
-            output_ = previous.get(input_.datatype, category="output")
-            self.update_location(
-                input_.datatype, str(output_.location), category="input"
-            )
+            if not input_.location or not input_.location.is_absolute():
+                output_ = previous.get(input_.datatype, category="output")
+                self.update_location(
+                    input_.datatype, str(output_.location), category="input"
+                )
         return None
 
 
