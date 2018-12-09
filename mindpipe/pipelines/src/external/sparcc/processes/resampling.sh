@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-MakeBootstraps.py $otu_file -n $nboots -t ${level}_#.resamp
+fastspar_bootstrap --otu_table $otu_file --number $bootstraps --prefix $id

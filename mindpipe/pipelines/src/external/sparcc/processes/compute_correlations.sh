@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
-SparCC.py ${otu_file} -i $niters -c ${level}_corr.tsv > sparcc.log
+fastspar --iterations $iterations --yes \
+    --otu_table $otu_file \
+    --correlation ${id}_corr.tsv \
+    --covariance ${id}_cov.tsv

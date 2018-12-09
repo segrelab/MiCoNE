@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
-SparCC.py $resample -i $niters -c ${resample.baseName}.boot > sparcc.log
+fastspar --iterations $iterations --yes \
+    --otu_table $resample \
+    --correlation ${resample.baseName}_corr.boot \
+    --covariance ${resample.baseName}_cov.boot

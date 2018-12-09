@@ -164,3 +164,24 @@
 
 # [format_converters.sff2fasta]
 
+
+[sparcc]
+  env = "mindpipe-sparcc"
+  root = "src/external/sparcc"
+  output_location = "sparcc"
+  [[sparcc.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[sparcc.output]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+    location = "*_corr.tsv"
+  [[sparcc.output]]
+    datatype = "pvalue_table"
+    format = ["tsv"]
+    location = "*_pval.tsv"
+  [[sparcc.parameters]]
+    process = "sparcc"
+    iterations = 50
+    bootstraps = 1000
+    threads = 1
