@@ -98,10 +98,10 @@ class Pipeline(collections.Sequence):
                 process_list.append(ExternalProcess(process_data))
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
-        # TODO: Test to see whether merge vs. attach order is important
-        for previous, current in zip(process_list[:-1], process_list[1:]):
-            current.attach_to(previous)
-            current.update_location(self.output_location)
+        for i, current_process in enumerate(process_list[1:]):
+            for previous_process in reversed(process_list[:i]):
+                current_process.attach_to(previous_process)
+            current_process.update_location(self.output_location)
         return process_list
 
     def __iter__(self) -> Iterator:
