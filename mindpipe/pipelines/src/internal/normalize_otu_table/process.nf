@@ -14,14 +14,14 @@ Channel
     .fromPath(otudata)
     .ifEmpty {exit 1, "Otu files not found"}
     .map { tuple(it.baseName, it) }
-    .set { otudata_chnl }
+    .set { chnl_otudata }
 
 process normalize_otu_table {
     tag "$id"
     publishDir "${output_dir}/normalize_otu_table"
 
     input:
-    set val(id), file(otu_file) from otudata_chnl
+    set val(id), file(otu_file) from chnl_otudata
 
     output:
     set val(id), file("*.biom") into final_otu_chnl
