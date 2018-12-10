@@ -165,22 +165,22 @@
 # [format_converters.sff2fasta]
 
 
-[sparcc]
+[network_inference.correlation.sparcc]
   env = "mindpipe-sparcc"
-  root = "src/external/sparcc"
-  output_location = "sparcc"
-  [[sparcc.input]]
+  root = "src/external/network_inference/correlation/sparcc"
+  output_location = "network_inference/sparcc"
+  [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
     format = ["biom"]
-  [[sparcc.output]]
+  [[network_inference.correlation.sparcc.output]]
     datatype = "interaction_table"
     format = ["tsv"]
     location = "*_corr.tsv"
-  [[sparcc.output]]
+  [[network_inference.correlation.sparcc.output]]
     datatype = "pvalue_table"
     format = ["tsv"]
     location = "*_pval.tsv"
-  [[sparcc.parameters]]
+  [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 50
     bootstraps = 1000
