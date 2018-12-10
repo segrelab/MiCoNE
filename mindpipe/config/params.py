@@ -113,7 +113,7 @@ class Params(collections.Hashable):
             if not env_loc or not env_loc.exists() or not env_loc.is_dir():
                 raise FileNotFoundError(
                     f"The directory for the environment: {value['env']} doesn't exist. "
-                    f"Please run mindpipe init {value['env']}"
+                    f"Please run mindpipe init --env {value['env']}"
                 )
             self.env = env_loc
         else:
