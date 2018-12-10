@@ -21,7 +21,7 @@ process biom2tsv {
     set val(id), file(otu_file) from chnl_otudata_biom
 
     output:
-    set val(id), file('*.tsv') into into chnl_otudata_corr, chnl_otudata_resamp, chnl_otudata_pval
+    set val(id), file('*.tsv') into chnl_otudata_corr, chnl_otudata_resamp, chnl_otudata_pval
 
     script:
     {{ biom2tsv }}
@@ -49,13 +49,13 @@ process resampling {
     set val(id), file(otu_file) from chnl_otudata_resamp
 
     output:
-    set val(id), file('*.resamp') into resamplings
+    set val(id), file('*.tsv') into resamplings
 
     script:
     {{ resampling }}
 }
 
-# TODO: Maybe instead of this we can use GNU parallel to run in parallel in single job
+// TODO: Maybe instead of this we can use GNU parallel to run in parallel in single job
 resamplings
     .map { id, resamp ->
             resamp.collect { resampid -> [id, resampid] }
@@ -70,14 +70,14 @@ process bootstrapping {
     set val(id), file(resample) from resamplings_bootstrap_corrs
 
     output:
-    set val(id), file('*_corr.boot') into bootstraps
+    set val(id), file('*_corr.boot') into chnl_bootstraps
 
     script:
     {{ bootstrapping }}
 }
 
-bootstraps
-    .groupTuple(by: 0)
+chnl_bootstraps
+    .groupTuple()
     .join(corr_pval, by: 0)
     .join(chnl_otudata_pval, by: 0)
     .set { pval_input_chnl }
