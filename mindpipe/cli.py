@@ -54,7 +54,7 @@ def init(ctx, env):
 def run(ctx, profile, config):
     """ Run the pipeline """
     ctx.obj["PROFILE"] = profile
-    pipeline = Pipeline(config)
+    Pipeline(config)
 
 
 def main():

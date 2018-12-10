@@ -3,7 +3,6 @@
 """
 
 import collections
-import os
 import pathlib
 import shutil
 from typing import Optional

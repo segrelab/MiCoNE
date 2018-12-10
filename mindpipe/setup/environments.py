@@ -3,7 +3,7 @@
 """
 
 import pathlib
-from typing import Iterable, Optional, List
+from typing import Iterable, Optional
 
 from ..pipelines import Command
 

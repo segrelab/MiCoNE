@@ -3,9 +3,9 @@
 """
 
 import pathlib
-from typing import Dict, Set
+from typing import Dict
 
-from jinja2 import Environment, FileSystemLoader, meta
+from jinja2 import Environment, FileSystemLoader
 from jinja2schema import infer
 
 
