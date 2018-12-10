@@ -12,14 +12,28 @@ Channel
     .fromPath(otudata)
     .ifEmpty {exit 1, "Otu files not found"}
     .map { tuple(it.baseName, it) }
-    .into { otudata_chnl_corr; otudata_chnl_resamp; otudata_chnl_pval }
+    .set { chnl_otudata_biom }
+
+process biom2tsv {
+    tag "$id"
+
+    input:
+    set val(id), file(otu_file) from chnl_otudata_biom
+
+    output:
+    set val(id), file('*.tsv') into into chnl_otudata_corr, chnl_otudata_resamp, chnl_otudata_pval
+
+    script:
+    {{ biom2tsv }}
+}
+
 
 process compute_correlations {
     tag "${id}"
     publishDir "${output_dir}/sparcc"
 
     input:
-    set val(id), file(otu_file) from otudata_chnl_corr
+    set val(id), file(otu_file) from chnl_otudata_corr
 
     output:
     set val(id), file('*_corr.tsv') into corr_pval
@@ -32,7 +46,7 @@ process resampling {
     tag "${id}"
 
     input:
-    set val(id), file(otu_file) from otudata_chnl_resamp
+    set val(id), file(otu_file) from chnl_otudata_resamp
 
     output:
     set val(id), file('*.resamp') into resamplings
@@ -65,7 +79,7 @@ process bootstrapping {
 bootstraps
     .groupTuple(by: 0)
     .join(corr_pval, by: 0)
-    .join(otudata_chnl_pval, by: 0)
+    .join(chnl_otudata_pval, by: 0)
     .set { pval_input_chnl }
 
 process calculate_pvalues {
