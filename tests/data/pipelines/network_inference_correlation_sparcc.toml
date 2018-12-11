@@ -10,7 +10,7 @@ output_location = "/home/dileep/Documents/results"
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "correlations/good/fmt_deblur/otu_table.biom"
+    location = "correlations/good/fmt_deblur/deblur.biom"
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 5

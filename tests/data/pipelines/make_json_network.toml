@@ -9,7 +9,7 @@ output_location = "~/Documents/results"
   [[make_json_network.input]]
     datatype = "metadata"
     format = ["json"]
-    location = "correlations/good/fmt_deblur/metadata.json"
+    location = "correlations/good/fmt_deblur/deblur_metadata.json"
   [[make_json_network.input]]
     datatype = "interaction_table"
     format = ["tsv"]
@@ -21,12 +21,12 @@ output_location = "~/Documents/results"
   [[make_json_network.input]]
     datatype = "observation_metadata"
     format = ["csv"]
-    location = "correlations/good/fmt_deblur/obs_metadata.csv"
+    location = "correlations/good/fmt_deblur/deblur_obs_metadata.csv"
   [[make_json_network.input]]
     datatype = "children_map"
     format = ["json"]
-    location = "correlations/good/fmt_deblur/children_map.json"
+    location = "correlations/good/fmt_deblur/deblur_children_map.json"
   [[make_json_network.input]]
     datatype = "computational_metadata"
     format = ["json"]
-    location = "correlations/good/fmt_deblur/cmetadata.json"
+    location = "correlations/good/fmt_deblur/deblur_cmetadata.json"
