@@ -166,6 +166,10 @@ class Process(collections.Hashable):
         self.cmd.run()
         return self.cmd
 
+    def wait(self) -> None:
+        """ Wait for the process to complete or terminate """
+        return self.cmd.wait()
+
     @property
     def output(self) -> str:
         """ Returns the output generated during execution of the process """
