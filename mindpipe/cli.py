@@ -31,21 +31,23 @@ def cli(ctx):
 def init(ctx, env):
     """ Initialize the package and environments """
     spinner = ctx.obj["SPINNER"]
-    spinner.start()
     environments = Environments()
     for env_cmd in environments.init(env):
-        spinner.text = f"Initializing environment: {env_cmd.cmd}"
+        spinner.start()
+        spinner.text = f"Initializing environment: {env_cmd}"
         env_cmd.wait()
         if env_cmd.error:
-            spinner.fail(f"{env_cmd} failed")
-    spinner.succeed("Initialized all requested environments")
-    spinner.start()
+            spinner.fail(f"{env_cmd} Failed")
+        else:
+            spinner.succeed(f"{env_cmd} Passed")
     for post_cmd in environments.post_install(env):
-        spinner.text = f"Running post installation: {post_cmd.cmd}"
+        spinner.start()
+        spinner.text = f"Running post installation: {post_cmd}"
         post_cmd.wait()
         if post_cmd.error:
-            spinner.fail(f"{post_cmd} failed")
-    spinner.succeed("Post installation successful for all requested environments")
+            spinner.fail(f"{post_cmd} Failed")
+        else:
+            spinner.succeed(f"{post_cmd} Passed")
 
 
 @cli.command()
