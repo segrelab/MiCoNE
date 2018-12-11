@@ -242,7 +242,7 @@ class TestExternalProcess:
         with pytest.raises(FileNotFoundError):
             json_process.build(tmpdir)
         sparcc_process.run()
-        print(sparcc_process.output)
-        print(sparcc_process.error)
+        sparcc_process.wait()
         json_process.build(tmpdir)
         json_process.run()
+        json_process.wait()
