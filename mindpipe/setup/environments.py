@@ -58,6 +58,28 @@ class Environments:
         elif env not in self.env_names:
             raise ValueError(f"{env} not a supported environment")
 
+    def post_install(self, env: Optional[str] = None) -> None:
+        """
+            Run any post installation scripts for environment setup
+
+            Parameters
+            ----------
+            env : Optional[str]
+                The name of the conda environment to setup
+                If None then all the listed conda environments will be initialized
+                Default value is None
+        """
+        if env is None:
+            post_scripts = EX_PIPELINE_DIR.glob("**/post_install.sh")
+        else:
+            env = env.strip("mindpipe-")
+            post_scripts = EX_PIPELINE_DIR.glob(f"**/{env}/post_install.sh")
+        for script in post_scripts:
+            cmd_str = f"bash {script}"
+            post_cmd = Command(cmd_str, profile="local")
+            post_cmd.run()
+            yield post_cmd
+
     def load(self, env: str) -> None:
         """
             Load the requested conda environment
