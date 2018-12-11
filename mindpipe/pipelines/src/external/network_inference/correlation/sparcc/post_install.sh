@@ -10,8 +10,8 @@ FOLDER=/tmp/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
 mkdir "$FOLDER"
 mkdir "$FOLDER/fastspar"
 
-wget -O "$FOLDER/fastspar.tar.gz" "$URL"
-tar xvzf "$FOLDER/fastspar.tar.gz" -C "$FOLDER"
+wget -O "$FOLDER/fastspar.tar.gz" --quiet "$URL"
+tar xzf "$FOLDER/fastspar.tar.gz" -C "$FOLDER"
 
 source activate mindpipe-sparcc
 
