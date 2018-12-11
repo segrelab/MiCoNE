@@ -40,6 +40,11 @@ class Environments:
                 The name of the conda environment to initialize
                 If None then all the listed conda environments will be initialized
                 Default value is None
+
+            Yields
+            ------
+            Command
+                The currently running initialization command
         """
         if env is None:
             for config, env_name in zip(self.configs, self.env_names):
@@ -58,7 +63,7 @@ class Environments:
         elif env not in self.env_names:
             raise ValueError(f"{env} not a supported environment")
 
-    def post_install(self, env: Optional[str] = None) -> None:
+    def post_install(self, env: Optional[str] = None) -> Iterable[Command]:
         """
             Run any post installation scripts for environment setup
 
@@ -68,6 +73,11 @@ class Environments:
                 The name of the conda environment to setup
                 If None then all the listed conda environments will be initialized
                 Default value is None
+
+            Yields
+            ------
+            Command
+                The currently running post_install command
         """
         if env is None:
             post_scripts = EX_PIPELINE_DIR.glob("**/post_install.sh")
