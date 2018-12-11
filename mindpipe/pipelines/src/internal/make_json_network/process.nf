@@ -58,7 +58,7 @@ process make_json_network {
     publishDir "${output_dir}/make_jsonnet"
 
     input:
-    set val(id), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file), file(cmetadata_file), file(metadata_file) from chln_input
+    set val(id), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file), file(cmetadata_file), file(metadata_file) from chnl_input
 
     output:
     set val(id), file('*_network.json') into chnl_output

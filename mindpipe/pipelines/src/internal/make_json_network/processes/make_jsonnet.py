@@ -10,4 +10,4 @@ network = Network.load_data(
     pvalue_file="$pval_file",
     children_file="$childrenmap_file",
 )
-json_str = network.write("${id}_net.json", threshold=False)
+json_str = network.write("${id}_network.json", threshold=False)
