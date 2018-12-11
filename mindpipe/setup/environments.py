@@ -43,16 +43,16 @@ class Environments:
         """
         if env is None:
             for config, env_name in zip(self.configs, self.env_names):
-                cmd = f"conda env create -f {config} -n {env_name}"
-                init_cmd = Command(cmd, profile="local")
+                cmd_str = f"conda env create -f {config} -n {env_name}"
+                init_cmd = Command(cmd_str, profile="local")
                 init_cmd.run()
                 yield init_cmd
         elif env in self.env_names:
             ind = self.env_names.index(env)
             config = self.configs[ind]
             env_name = self.env_names[ind]
-            cmd = f"conda env create -f {config} -n {env_name}"
-            init_cmd = Command(cmd, profile="local")
+            cmd_str = f"conda env create -f {config} -n {env_name}"
+            init_cmd = Command(cmd_str, profile="local")
             init_cmd.run()
             yield init_cmd
         elif env not in self.env_names:
@@ -72,6 +72,6 @@ class Environments:
             raise ValueError(f"{env} not a supported environment")
         ind = self.env_names.index(env)
         env_name = self.env_names[ind]
-        cmd = f"source activate {env_name}"
-        load_cmd = Command(cmd, profile="local")
+        cmd_str = f"source activate {env_name}"
+        load_cmd = Command(cmd_str, profile="local")
         load_cmd.run()
