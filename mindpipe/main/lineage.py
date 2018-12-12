@@ -224,15 +224,15 @@ class Lineage(BaseLineage):
             int
                 The NCBI taxonomy id
         """
-        # FIXME: I think get name translator expects a string like "Escherichia coli" not separated
-        taxid_dict = NCBI.get_name_translator(self)
-        try:
-            taxid_list = taxid_dict[self.name[1]]
-        except KeyError:
+        query = list(self)
+        query[-1] = (query[-2] + " " + query[-1]).strip()
+        taxid_dict = NCBI.get_name_translator(query)
+        for taxa in reversed(query):
+            if taxa != "" and taxa in taxid_dict:
+                taxid_list = taxid_dict[taxa]
+                break
+        if taxa != query[-1]:
             warn(f"Lowest level in {self} could not be queried. Using higher level")
-            low_ind = self.index(self.name[1])
-            # NOTE: If this fails again the program will crash
-            taxid_list = taxid_dict[self[low_ind - 1]]
         if len(taxid_list) > 1:
             warn(f"{self.name} has multiple taxids. Picking the first one")
         taxid = taxid_list[0]
