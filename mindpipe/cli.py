@@ -36,17 +36,17 @@ def init(ctx, env):
         spinner.start()
         spinner.text = f"Initializing environment: {env_cmd}"
         env_cmd.wait()
-        if env_cmd.error:
+        if env_cmd.status == "failure":
             spinner.fail(f"{env_cmd} Failed")
-        else:
+        elif env_cmd.status == "success":
             spinner.succeed(f"{env_cmd} Passed")
     for post_cmd in environments.post_install(env):
         spinner.start()
         spinner.text = f"Running post installation: {post_cmd}"
         post_cmd.wait()
-        if post_cmd.error:
+        if post_cmd.status == "failure":
             spinner.fail(f"{post_cmd} Failed")
-        else:
+        elif post_cmd.status == "success":
             spinner.succeed(f"{post_cmd} Passed")
 
 
