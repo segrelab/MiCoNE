@@ -1,7 +1,14 @@
 {
-  "authors": [
-    "Dileep Kishore"
-  ],
+  "publication": {
+    "authors": [
+      {
+        "name": "Dileep Kishore",
+        "email": "dkishore@bu.edu"
+      }
+    ],
+    "date": "2018-08-22",
+    "pubmed_id": "0123"
+  },
   "computational_metadata": {
     "denoising": "deblur",
     "interaction_threshold": 0.3,
@@ -11,7 +18,6 @@
     "taxonomy_db": "greengenes"
   },
   "condition": "FMT controls",
-  "date": "2018-08-22",
   "description": "Controls from a Fecal Microbiome Transplant experiment",
   "directionality": "undirected",
   "disease_state": "Healthy",
@@ -1326,6 +1332,5 @@
       "taxid": 586,
       "taxlevel": "Genus"
     }
-  ],
-  "pubmed_id": "0123"
+  ]
 }

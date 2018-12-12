@@ -1,12 +1,19 @@
 {
+  "publication": {
+    "authors": [
+      {
+        "name": "Dileep Kishore",
+        "email": "dkishore@bu.edu"
+      }
+    ],
+    "date": "2018-08-22",
+    "pubmed_id": "0123"
+  },
   "host": "Homo Sapiens",
   "condition": "FMT controls",
   "disease_state": "Healthy",
   "location": "Stool",
   "description": "Controls from a Fecal Microbiome Transplant experiment",
-  "authors": ["Dileep Kishore"],
-  "date": "2018-08-22",
-  "pubmed_id": "0123",
   "experimental_metadata": {
     "data-type": "16S rRNA",
     "region": "V4",
