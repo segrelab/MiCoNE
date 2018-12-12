@@ -206,3 +206,25 @@ class Command:
                 self._stdout = None
                 self._stderr = None
                 self.process = None
+
+    @property
+    def status(self) -> str:
+        """
+            Return the status of the command execution
+
+            Returns
+            -------
+            str
+                Either of {'success', 'failure', 'in progress', 'not started'}
+        """
+        if self.process:
+            poll = self.process.poll()
+            if poll is None:
+                return "in progress"
+            if poll == 0:
+                return "success"
+            if poll > 0:
+                return "failure"
+            raise RuntimeError("Proces status is undefined")
+        else:
+            return "not started"
