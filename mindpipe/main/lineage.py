@@ -231,7 +231,8 @@ class Lineage(BaseLineage):
             if taxa != "" and taxa in taxid_dict:
                 taxid_list = taxid_dict[taxa]
                 break
-        if taxa != query[-1]:
+        name = [q for q in reversed(query) if q != ""][0]
+        if taxa != name:
             warn(f"Lowest level in {self} could not be queried. Using higher level")
         if len(taxid_list) > 1:
             warn(f"{self.name} has multiple taxids. Picking the first one")
