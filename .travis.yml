@@ -8,6 +8,7 @@ install:
     - export PATH="$HOME/miniconda/bin:$PATH"
     - conda env create -f env_dev.yml -n mindpipe-test
     - source activate mindpipe-test
+    - nextflow self-update
     - pip install .
 
 script:
