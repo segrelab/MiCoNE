@@ -84,6 +84,14 @@ class PvaluematrixType(InteractionmatrixType):
             raise ValidationError("Pvalue matrix must be bound by 0 and 1")
 
 
+class PublicationModel(Model):
+    """ Model that describes the expected structure of the publication input """
+
+    date = DateType(required=True)
+    authors = ListType(DictType(StringType), required=True)
+    pubmed_id = StringType(required=True)
+
+
 class MetadataModel(Model):
     """ Model that describes the expected structure of the network metadata input """
 
@@ -91,10 +99,8 @@ class MetadataModel(Model):
     condition = StringType(required=True)
     location = StringType(required=True)
     experimental_metadata = DictType(StringType, required=True)
-    pubmed_id = StringType(required=True)
+    publication = ModelType(PublicationModel, required=True)
     description = StringType(required=True)
-    date = DateType(required=True)
-    authors = ListType(StringType, required=True)
 
 
 class ChildrenmapType(BaseType):
