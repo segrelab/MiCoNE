@@ -93,12 +93,13 @@ def correlation_files():
     data = {"good": [], "bad": []}
     for kind in ("good", "bad"):
         for data_fol in (corr_fol / kind).iterdir():
-            corr = data_fol / "correlations.tsv"
-            pval = data_fol / "pvalues.tsv"
-            meta = data_fol / "metadata.json"
-            child = data_fol / "children_map.json"
-            obsmeta = data_fol / "obs_metadata.csv"
-            cmeta = data_fol / "cmetadata.json"
+            name = data_fol.stem
+            corr = data_fol / f"{name}_correlations.tsv"
+            pval = data_fol / f"{name}_pvalues.tsv"
+            meta = data_fol / f"{name}_metadata.json"
+            child = data_fol / f"{name}_children_map.json"
+            obsmeta = data_fol / f"{name}_obs_metadata.csv"
+            cmeta = data_fol / f"{name}_cmetadata.json"
             data[kind].append((corr, pval, meta, child, obsmeta, cmeta))
     return data
 
