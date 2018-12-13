@@ -122,14 +122,14 @@ class Network:
                 )
             else:
                 corrected_pvalues = pvalues
+            if "pvalue_threshold" not in cmetadata:
+                cmetadata["pvalue_threshold"] = pvalue_threshold
+            if "pvalue_correction" not in cmetadata:
+                cmetadata["pvalue_correction"] = pvalue_correction
         else:
             corrected_pvalues = None
         if "interaction_threshold" not in cmetadata:
             cmetadata["interaction_threshold"] = interaction_threshold
-        if "pvalue_threshold" not in cmetadata:
-            cmetadata["pvalue_threshold"] = pvalue_threshold
-        if "pvalue_correction" not in cmetadata:
-            cmetadata["pvalue_correction"] = pvalue_correction
         self.nodes, self.links, self.metadata = self._create_network(
             interactions,
             corrected_pvalues,
