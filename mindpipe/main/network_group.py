@@ -19,7 +19,7 @@ class NetworkGroup(Collection):
 
         Parameters
         ----------
-        networks : Dict[str, Network]
+        networks : List[Network]
             The collection of networks to be grouped
             key = context-id, value = Network
 
@@ -35,26 +35,25 @@ class NetworkGroup(Collection):
             The list of all contexts in the network group
     """
 
-    def __init__(self, networks: Dict[str, Network]) -> None:
-        self.nodeid_map: Dict[str, Dict[str, str]] = dict()
+    def __init__(self, networks: List[Network]) -> None:
+        self.nodeid_map: Dict[int, Dict[str, str]] = dict()
         self._networks = networks
         self.nodes, self.links, self.links_thres, self.contexts = self._combine_networks(
             networks
         )
 
     def __contains__(self, key) -> bool:
-        for context in self.contexts:
-            if context["cid"] == key:
-                return True
+        if key in range(len(self)):
+            return True
         return False
 
     def __len__(self) -> int:
         return len(self.contexts)
 
     def __iter__(self) -> Iterator:
-        return iter(self._networks.values())
+        return iter(self._networks)
 
-    def _combine_nodes(self, all_nodes: Dict[str, DType]) -> DType:
+    def _combine_nodes(self, all_nodes: Dict[int, DType]) -> DType:
         """ Combine nodes of individual networks into a single list """
         nodes: DType = []
         node_hash: Dict[int, int] = dict()  # taxid => nodes.index
@@ -77,7 +76,7 @@ class NetworkGroup(Collection):
                     self.nodeid_map[cid][id_old] = id_new
         return nodes
 
-    def _combine_links(self, all_links: Dict[str, DType]) -> DType:
+    def _combine_links(self, all_links: Dict[int, DType]) -> DType:
         """ Combine links of individual networks into a single list """
         links = []
         for cid, network_links in all_links.items():
@@ -86,19 +85,26 @@ class NetworkGroup(Collection):
                 new_source = self.nodeid_map[cid][source]
                 new_target = self.nodeid_map[cid][target]
                 links.append(
-                    {**link, **{"source": new_source, "target": new_target, "cid": cid}}
+                    {
+                        **link,
+                        **{
+                            "source": new_source,
+                            "target": new_target,
+                            "context_index": cid,
+                        },
+                    }
                 )
         return links
 
     def _combine_networks(
-        self, networks: Dict[str, Network]
+        self, networks: List[Network]
     ) -> Tuple[DType, DType, DType, DType]:
         """
             Combine networks into a network group
 
             Parameters
             ----------
-            networks : Dict[str, Network]
+            networks : List[Network]
                 The list of networks to be grouped
                 key = context-id, value = Network
 
@@ -111,12 +117,11 @@ class NetworkGroup(Collection):
         links_dict = dict()
         links_thres_dict = dict()
         contexts = []
-        for cid, network in networks.items():
+        for cid, network in enumerate(networks):
             nodes_dict[cid] = network.nodes
             links_dict[cid] = network.links
             links_thres_dict[cid] = network.links_thres
             context = network.metadata
-            context["cid"] = cid
             contexts.append(context)
         merged_nodes = self._combine_nodes(nodes_dict)
         merged_links = self._combine_links(links_dict)
