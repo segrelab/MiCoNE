@@ -104,8 +104,9 @@ class Network:
         obsmeta_validator.validate(obs_metadata)
         metadata_model = MetadataModel(metadata, strict=False)
         metadata_model.validate()
-        children_validator = ChildrenmapType()
-        children_validator.validate(children_map)
+        if children_map:
+            children_validator = ChildrenmapType()
+            children_validator.validate(children_map)
         if interaction_type == "correlation":
             interaction_validator = CorrelationmatrixType()
         else:
