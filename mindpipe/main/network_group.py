@@ -85,7 +85,9 @@ class NetworkGroup(Collection):
                 source, target = link["source"], link["target"]
                 new_source = self.nodeid_map[cid][source]
                 new_target = self.nodeid_map[cid][target]
-                links.append({**link, **{"source": new_source, "target": new_target}})
+                links.append(
+                    {**link, **{"source": new_source, "target": new_target, "cid": cid}}
+                )
         return links
 
     def _combine_networks(
