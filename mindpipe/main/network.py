@@ -110,7 +110,7 @@ class Network:
         if interaction_type == "correlation":
             interaction_validator = CorrelationmatrixType()
         else:
-            interaction_validator = InteractionmatrixType(symm=directed)
+            interaction_validator = InteractionmatrixType(symm=not directed)
         interaction_validator.validate(interactions)
         if pvalues is not None:
             self._verify_integrity(interactions, pvalues)
