@@ -126,7 +126,7 @@ class ObsmetaType(BaseType):
             filt_data = data[data != ""]
             if level == "Species":
                 query = filt_data[
-                    ~filt_data.str.contains(r"^[a-z][a-zA-Z0-9-._]+$")
+                    ~filt_data.str.contains(r"^[a-z][a-zA-Z0-9-._ ]+(?<! )$")
                 ].any()
                 if query:
                     raise ValidationError(
@@ -135,7 +135,7 @@ class ObsmetaType(BaseType):
                     )
             else:
                 query = filt_data[
-                    ~filt_data.str.contains(r"^[A-Z][a-zA-Z0-9-._]+$")
+                    ~filt_data.str.contains(r"^[A-Z][a-zA-Z0-9-._ ]+(?<! )$")
                 ].any()
                 if query:
                     raise ValidationError(
