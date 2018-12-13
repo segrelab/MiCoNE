@@ -286,7 +286,10 @@ class Network:
                 lineage = Lineage(**obs_metadata.drop("Abundance").loc[node].to_dict())
                 abundance = obs_metadata.loc[node].Abundance
             else:
-                lineage = Lineage(**obs_metadata.loc[node].to_dict())
+                if node not in obs_metadata.index:
+                    lineage = Lineage(Kingdom="Bacteria")
+                else:
+                    lineage = Lineage(**obs_metadata.loc[node].to_dict())
                 abundance = None
             if children_map:
                 children = children_map.get(node, [])
@@ -423,11 +426,14 @@ class Network:
             metadata = json.load(fid)
         with open(cmeta_file, "r") as fid:
             cmetadata = json.load(fid)
-        extra_compdata = {
-            "interaction_threshold": interaction_threshold,
-            "pvalue_threshold": pvalue_threshold,
-            "pvalue_correction": pvalue_correction,
-        }
+        if pvalue_file:
+            extra_compdata = {
+                "interaction_threshold": interaction_threshold,
+                "pvalue_threshold": pvalue_threshold,
+                "pvalue_correction": pvalue_correction,
+            }
+        else:
+            extra_compdata = {"interaction_threshold": interaction_threshold}
         cmetadata = {**cmetadata, **extra_compdata}
         obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
         if pvalue_file is not None:
@@ -653,11 +659,14 @@ class Network:
             metadata = json.load(fid)
         with open(cmeta_file, "r") as fid:
             cmetadata = json.load(fid)
-        extra_compdata = {
-            "interaction_threshold": interaction_threshold,
-            "pvalue_threshold": pvalue_threshold,
-            "pvalue_correction": pvalue_correction,
-        }
+        if pvalue_flag:
+            extra_compdata = {
+                "interaction_threshold": interaction_threshold,
+                "pvalue_threshold": pvalue_threshold,
+                "pvalue_correction": pvalue_correction,
+            }
+        else:
+            extra_compdata = {"interaction_threshold": interaction_threshold}
         cmetadata = {**cmetadata, **extra_compdata}
         obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
         if children_file is not None:
