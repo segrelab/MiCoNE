@@ -129,4 +129,16 @@ class Pipeline(collections.Sequence):
     def __str__(self) -> str:
         return self.title
 
-    # TODO: Create a run method
+    def run(self) -> Iterator[Union[InternalProcess, ExternalProcess]]:
+        """
+            Starts the execution of the pipeline
+            Returns an iterator over the processes being executed
+
+            Returns
+            -------
+            Iterator[Union[InternalProcess, ExternalProcess]]
+                Iterator over each process currently being executed
+       """
+        for process in self.processes:
+            process.run()
+            yield process
