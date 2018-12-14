@@ -99,3 +99,5 @@
     datatype = "sample_metadata"
     format = ["csv"]
     location = "export_biom/*_sample_metadata.tsv"
+  [[export_biom.parameters]]
+    process = "export_biom"
