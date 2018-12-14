@@ -102,9 +102,9 @@ class Pipeline(collections.Sequence):
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
         for i, current_process in enumerate(process_list[1:]):
-            for previous_process in reversed(process_list[:i]):
+            for previous_process in reversed(process_list[: i + 1]):
                 current_process.attach_to(previous_process)
-            current_process.update_location(self.output_location)
+            current_process.update_location(self.output_location, "output")
         return process_list
 
     def __iter__(self) -> Iterator:
