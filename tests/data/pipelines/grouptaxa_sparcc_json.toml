@@ -1,0 +1,36 @@
+title = "A example pipeline for testing"
+
+order = ["group_by_taxa", "network_inference.correlation.sparcc", "export_biom", "make_json_network"]
+
+output_location = "~/Documents/results"
+
+[group_by_taxa]
+  module = "internal"
+  [[group_by_taxa.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "correlations/good/deblur/deblur.biom"
+  [[group_by_taxa.parameters]]
+    process = "group_by_taxa"
+    tax_levels = "['Family', 'Genus', 'Species']"
+
+[network_inference.correlation.sparcc]
+  module = "external"
+  [[network_inference.correlation.sparcc.parameters]]
+    process = "sparcc"
+    iterations = 5
+    bootstraps = 10
+
+[export_biom]
+  module = "internal"
+
+[make_json_network]
+  module = "internal"
+  [[make_json_network.input]]
+    datatype = "metadata"
+    format = ["json"]
+    location = "correlations/good/deblur/deblur_metadata.json"
+  [[make_json_network.input]]
+    datatype = "computational_metadata"
+    format = ["json"]
+    location = "correlations/good/deblur/deblur_cmetadata.json"
