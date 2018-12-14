@@ -4,7 +4,7 @@
 
 import collections
 import pathlib
-from typing import Iterator, List, Union
+from typing import Iterator, List, Optional, Union
 
 import toml
 
@@ -22,6 +22,10 @@ class Pipeline(collections.Sequence):
             The user created settings file that describes the pipeline
         profile : {'local', 'sge'}
             The execution environment
+        base_dir : str, optional
+            The absolute location of the base directory for the input files
+            This needs to be supplied if the input files location in the settings are relative
+            If None, then current working directory is used
 
         Other Parameters
         ----------------
@@ -38,15 +42,35 @@ class Pipeline(collections.Sequence):
             The title of the pipeline
         output_location : str
             The base output location to store all pipeline results
+        config : Config
+            The configuration object for the `mindpipe` pipelines
+        profile : str
+            The execution environment for the pipeline
+        base_dir : pathlib.Path
+            The absolute path to the base input file directory
         processes : List[Union[InternalProcess, ExternalProcess]]
             The list of `Process` in the pipeline
     """
 
     _req_keys = {"title", "order", "output_location"}
 
-    def __init__(self, user_settings_file: str, profile: str, **kwargs) -> None:
+    def __init__(
+        self,
+        user_settings_file: str,
+        profile: str,
+        base_dir: Optional[str] = None,
+        **kwargs,
+    ) -> None:
         self.config = Config()
         self.profile = profile
+        if base_dir is None:
+            self.base_dir = pathlib.Path.cwd()
+        else:
+            base_path = pathlib.Path(base_dir)
+            if base_path.is_absolute() and base_path.exists():
+                self.base_dir = base_path
+            else:
+                raise ValueError("base_dir path must be absolute and must exist")
         user_settings = self._parse_settings(user_settings_file, **kwargs)
         title = kwargs.get("title")
         order = kwargs.get("order")
@@ -103,6 +127,7 @@ class Pipeline(collections.Sequence):
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
         for i, current_process in enumerate(process_list[1:]):
+            current_process.update_location(str(self.base_dir), "input")
             for previous_process in reversed(process_list[: i + 1]):
                 current_process.attach_to(previous_process)
             current_process.update_location(self.output_location, "output")
@@ -129,18 +154,6 @@ class Pipeline(collections.Sequence):
 
     def __str__(self) -> str:
         return self.title
-
-    def update_relative_location(self, location: str) -> None:
-        """
-            Update pipeline inputs that have relative locations to get absolute locations
-
-            Parameters
-            ----------
-            location : str
-                The absolute path to the base directory containing inputs
-        """
-        for process in self.processes:
-            process.update_location(location, "input")
 
     def run(self) -> Iterator[Union[InternalProcess, ExternalProcess]]:
         """
