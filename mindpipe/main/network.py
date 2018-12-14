@@ -74,7 +74,7 @@ class Network:
             The list of nodes in the network and their corresponding properties
         links : List[Dict[str, Any]]
             The list of links in the network and their corresponding properties
-        links_thres : List[Dict[str, Any]]
+        filtered_links : List[Dict[str, Any]]
             The list of links in the network after applying thresholds
         metadata : Dict[str, Any]
             The metadata for the network
@@ -140,12 +140,9 @@ class Network:
             interaction_type,
             directed,
         )
-        self.links_thres = self._apply_threshold(
-            self.links,
-            interaction_threshold,
-            pvalue_threshold,
-            pvalue_flag=pvalues is not None,
-        )
+        self.interaction_threshold = interaction_threshold
+        self.pvalue_threshold = pvalue_threshold
+        self._pvalue_flag = True if pvalues is not None else False
 
     def __repr__(self) -> str:
         n_nodes = len(self.nodes)
@@ -328,40 +325,24 @@ class Network:
         networkmetadata_model.validate()
         return nodes, links, metadata
 
-    @staticmethod
-    def _apply_threshold(
-        links: List[Dict[str, Any]],
-        interaction_threshold: float,
-        pvalue_threshold: float,
-        pvalue_flag: bool,
-    ) -> List[Dict[str, Any]]:
+    @property
+    def filtered_links(self) -> List[Dict[str, Any]]:
         """
-            Apply threshold on the links of the network
-
-            Parameters
-            ----------
-            links : List[Dict[str, Any]]
-                The list of links in the network and their associated properties
-            interaction_threshold : float
-                The threshold (absolute) to apply on the interactions
-            pvalue_threshold : float
-                The maximum pvalue allowed for the interactions
-            pvalue_flag : bool
-                True if pvalues were passed in as input and threshold needs to be applied
+            The links of the network after applying filtering
 
             Returns
             -------
             List[Dict[str, Any]]
                 The list of links in the network after applying a threshold
         """
-        interaction_threshold = abs(interaction_threshold)
+        interaction_threshold = abs(self.interaction_threshold)
         interaction_filter = lambda x: abs(x["weight"]) >= interaction_threshold
-        pvalue_filter = lambda x: x["pvalue"] <= pvalue_threshold
-        if pvalue_flag:
+        pvalue_filter = lambda x: x["pvalue"] <= self.pvalue_threshold
+        if self._pvalue_flag:
             filter_fun = lambda x: interaction_filter(x) and pvalue_filter(x)
         else:
             filter_fun = interaction_filter
-        links_thres = list(filter(filter_fun, links))
+        links_thres = list(filter(filter_fun, self.links))
         return links_thres
 
     @classmethod
@@ -477,7 +458,7 @@ class Network:
         """ Network as a JSON string """
         nodes = {"nodes": self.nodes}
         if threshold:
-            links = {"links": self.links_thres}
+            links = {"links": self.filtered_links}
         else:
             links = {"links": self.links}
         metadata = self.metadata
