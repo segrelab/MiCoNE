@@ -238,7 +238,11 @@ class Process(collections.Hashable):
         """
         path = pathlib.Path(location)
         if not path.is_absolute():
-            raise ValueError("location must be an absolute path")
+            if str(path).startswith("~/"):
+                str_path = str(path).replace("~/", str(path.home()))
+                path = pathlib.Path(str_path)
+            else:
+                raise ValueError("location must be an absolute path")
         if category == "input":
             for input_ in self.params.input:
                 in_location = input_.location
