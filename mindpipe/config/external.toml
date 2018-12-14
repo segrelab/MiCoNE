@@ -175,11 +175,11 @@
   [[network_inference.correlation.sparcc.output]]
     datatype = "interaction_table"
     format = ["tsv"]
-    location = "*_corr.tsv"
+    location = "sparcc/*_corr.tsv"
   [[network_inference.correlation.sparcc.output]]
     datatype = "pvalue_table"
     format = ["tsv"]
-    location = "*_pval.tsv"
+    location = "sparcc/*_pval.tsv"
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 50
