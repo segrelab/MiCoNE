@@ -97,7 +97,7 @@ class Pipeline(collections.Sequence):
             process_data.merge(user_process_data)
             if user_process_data["module"] == "internal":
                 process_list.append(InternalProcess(process_data, self.profile))
-            elif process_data["module"] == "external":
+            elif user_process_data["module"] == "external":
                 process_list.append(ExternalProcess(process_data, self.profile))
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
