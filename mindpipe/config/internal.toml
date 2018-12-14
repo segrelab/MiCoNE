@@ -81,27 +81,21 @@
     format = ["json"]
     location = "make_jsonnet/**/*_net.json"
 
-[drop_lineage_fromotu]
-  root = "src/internal/drop_lineage_fromotu"
-  output_location = "drop_lineage_fromotu"
-  [[drop_lineage_fromotu.input]]
+[export_biom]
+  root = "src/internal/export_biom"
+  output_location = "export_biom"
+  [[export_biom.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[export_biom.output]]
     datatype = "otu_table"
     format = ["tsv"]
-  [[drop_lineage_fromotu.parameters]]
-    process = "drop_lineage"
-  [[drop_lineage_fromotu.parameters]]
-    process = "make_lineage"
-  [[drop_lineage_fromotu.parameters]]
-    process = "make_sample_metadata"
-  [[drop_lineage_fromotu.output]]
-    datatype = "otu_table"
-    format = ["tsv"]
-    location = "drop_lineage_fromotu/*_otu.tsv"
-  [[drop_lineage_fromotu.output]]
+    location = "export_biom/*_otu.tsv"
+  [[export_biom.output]]
     datatype = "observation_metadata"
     format = ["csv"]
-    location = "drop_lineage_fromotu/*_taxondata.csv"
-  [[drop_lineage_fromotu.output]]
+    location = "export_biom/*_obs_metadata.csv"
+  [[export_biom.output]]
     datatype = "sample_metadata"
     format = ["csv"]
-    location = "drop_lineage_fromotu/*_sample_metadata.csv"
+    location = "export_biom/*_sample_metadata.tsv"
