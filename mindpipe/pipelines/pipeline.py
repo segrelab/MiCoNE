@@ -19,6 +19,8 @@ class Pipeline(collections.Sequence):
         ----------
         user_settings_file : str
             The user created settings file that describes the pipeline
+        profile : {'local', 'sge'}
+            The execution environment
 
         Other Parameters
         ----------------
@@ -41,8 +43,9 @@ class Pipeline(collections.Sequence):
 
     _req_keys = {"title", "order", "output_location"}
 
-    def __init__(self, user_settings_file: str, **kwargs) -> None:
+    def __init__(self, user_settings_file: str, profile: str, **kwargs) -> None:
         self.config = Config()
+        self.profile = profile
         user_settings = self._parse_settings(user_settings_file, **kwargs)
         title = kwargs.get("title")
         order = kwargs.get("order")
@@ -93,9 +96,9 @@ class Pipeline(collections.Sequence):
             ]
             process_data.merge(user_process_data)
             if user_process_data["module"] == "internal":
-                process_list.append(InternalProcess(process_data))
+                process_list.append(InternalProcess(process_data, self.profile))
             elif process_data["module"] == "external":
-                process_list.append(ExternalProcess(process_data))
+                process_list.append(ExternalProcess(process_data, self.profile))
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
         for i, current_process in enumerate(process_list[1:]):
@@ -125,3 +128,5 @@ class Pipeline(collections.Sequence):
 
     def __str__(self) -> str:
         return self.title
+
+    # TODO: Create a run method
