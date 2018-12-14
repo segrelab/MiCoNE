@@ -340,10 +340,13 @@ class Params(collections.Hashable):
         """
         for input_ in self.input:
             if not input_.location:
-                output_ = previous.get(input_.datatype, category="output")
-                self.update_location(
-                    input_.datatype, str(output_.location), category="input"
-                )
+                try:
+                    output_ = previous.get(input_.datatype, category="output")
+                    self.update_location(
+                        input_.datatype, str(output_.location), category="input"
+                    )
+                except KeyError:
+                    pass
         return None
 
 
