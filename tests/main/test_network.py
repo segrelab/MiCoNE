@@ -31,7 +31,7 @@ class TestNetwork:
             n_nodes = corr_data.shape[0]
             assert n_nodes == len(network.nodes)
             assert (n_nodes ** 2 - n_nodes) // 2 == len(network.links)
-            assert len(network.links_thres) <= len(network.links)
+            assert len(network.filtered_links) <= len(network.links)
             assert all(key in network.metadata for key in meta_data)
 
     def test_load_data(self, correlation_files):
@@ -52,7 +52,7 @@ class TestNetwork:
             n_nodes = corr_data.shape[0]
             assert n_nodes == len(network.nodes)
             assert (n_nodes ** 2 - n_nodes) // 2 == len(network.links)
-            assert len(network.links_thres) <= len(network.links)
+            assert len(network.filtered_links) <= len(network.links)
             assert all(key in network.metadata for key in meta_data)
 
     def test_graph(self, correlation_data):
@@ -92,7 +92,7 @@ class TestNetwork:
             assert net_loaded["links"] == network.links
             net_loaded_thres = json.loads(network.json(threshold=True))
             assert net_loaded_thres["nodes"] == network.nodes
-            assert net_loaded_thres["links"] == network.links_thres
+            assert net_loaded_thres["links"] == network.filtered_links
 
     def test_write_load_network(self, correlation_data, tmpdir):
         for (
@@ -111,7 +111,7 @@ class TestNetwork:
             network_loaded = Network.load_json(network_file)
             assert network.metadata == network_loaded.metadata
             assert network.nodes == network_loaded.nodes
-            assert network.links_thres == network_loaded.links_thres
+            assert network.filtered_links == network_loaded.filtered_links
 
     def test_load_elist(self, network_elist_files):
         for (
@@ -142,9 +142,9 @@ class TestNetwork:
                     return frozenset([x["source"], x["target"]])
 
             links1 = {
-                fun(x): (x["pvalue"], x["weight"]) for x in network_elist.links_thres
+                fun(x): (x["pvalue"], x["weight"]) for x in network_elist.filtered_links
             }
             links2 = {
-                fun(x): (x["pvalue"], x["weight"]) for x in network_json.links_thres
+                fun(x): (x["pvalue"], x["weight"]) for x in network_json.filtered_links
             }
             assert links1 == links2
