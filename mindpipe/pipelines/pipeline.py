@@ -74,9 +74,9 @@ class Pipeline(collections.Sequence):
         with open(settings_file, "r") as fid:
             settings = toml.load(fid)
         for key in self._req_keys:
-            if key not in settings or key not in kwargs:
+            if key not in settings and key not in kwargs:
                 raise ValueError(
-                    f"Required key {key} not in user_settings or parameters"
+                    f"Required key '{key}' not found in user_settings or parameters to constructor"
                 )
         return settings
 
