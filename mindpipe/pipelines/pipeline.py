@@ -126,6 +126,8 @@ class Pipeline(collections.Sequence):
                 process_list.append(ExternalProcess(process_data, self.profile))
             else:
                 raise ValueError(f"Unsupported process type: {process_data['module']}")
+        process_list[0].update_location(str(self.base_dir), "input")
+        process_list[0].update_location(self.output_location, "output")
         for i, current_process in enumerate(process_list[1:]):
             current_process.update_location(str(self.base_dir), "input")
             for previous_process in reversed(process_list[: i + 1]):
