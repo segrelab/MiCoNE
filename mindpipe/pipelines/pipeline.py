@@ -3,6 +3,7 @@
 """
 
 import collections
+import pathlib
 from typing import Iterator, List, Union
 
 import toml
@@ -128,6 +129,18 @@ class Pipeline(collections.Sequence):
 
     def __str__(self) -> str:
         return self.title
+
+    def update_relative_location(self, location: str) -> None:
+        """
+            Update pipeline inputs that have relative locations to get absolute locations
+
+            Parameters
+            ----------
+            location : str
+                The absolute path to the base directory containing inputs
+        """
+        for process in self.processes:
+            process.update_location(location, "input")
 
     def run(self) -> Iterator[Union[InternalProcess, ExternalProcess]]:
         """
