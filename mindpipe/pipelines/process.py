@@ -247,7 +247,7 @@ class Process(collections.Hashable):
             for input_ in self.params.input:
                 in_location = input_.location
                 if in_location is None:
-                    raise ValueError("Process parameter inputs are incomplete")
+                    continue
                 if not in_location.is_absolute():
                     self.params.update_location(
                         input_.datatype, str(path / in_location), "input"
@@ -256,7 +256,7 @@ class Process(collections.Hashable):
             for output_ in self.params.output:
                 out_location = output_.location
                 if out_location is None:
-                    raise ValueError("Process parameter outputs are incomplete")
+                    continue
                 if not out_location.is_absolute():
                     self.params.update_location(
                         output_.datatype, str(path / out_location), "output"
