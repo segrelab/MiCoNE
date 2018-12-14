@@ -9,6 +9,6 @@ def main(biom_file, id_):
 
 
 if __name__ == "__main__":
-    BIOM_FILE = "$biom_file"
+    BIOM_FILE = "$otu_file"
     ID = "$id"
     main(BIOM_FILE, ID)
