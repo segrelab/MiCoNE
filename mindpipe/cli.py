@@ -5,19 +5,24 @@
 import click
 from halo import Halo
 
+from .logging import LOG
 from .pipelines import Pipeline
 from .setup import Environments
 
 
 @click.group()
+@click.option(
+    "--log", "-l", default=False, type=bool, help="Flag to turn on/off logging"
+)
 @click.pass_context
-def cli(ctx):
+def cli(ctx, log):
     """ Main entry point to mindpipe """
     spinner = Halo(text="Starting up...", spinner="dots")
     spinner.start()
     ctx.obj["SPINNER"] = spinner
     spinner.succeed("Successfully initialized mindpipe")
-    return None
+    if log:
+        LOG.enable("mindpipe")
 
 
 @cli.command()
@@ -89,7 +94,7 @@ def run(ctx, profile, config, output_location, base_dir):
         spinner.start()
         spinner.text = f"Executing {process} process"
         process.wait()
-        if process.cmd.status == "success":
+        if process.status == "success":
             spinner.succeed(f"Finished executing {process}")
         else:
             spinner.fail(f"Failed to execute {process}")
