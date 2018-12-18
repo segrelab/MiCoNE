@@ -5,7 +5,6 @@
 import subprocess
 import sys
 from typing import List, Optional
-from warnings import warn
 
 from ..logging import LOG
 
@@ -179,7 +178,9 @@ class Command:
         self._cmd = self._build_cmd(cmd)
         if self.process:
             if not self.proc_cmd_sync():
-                warn("New command differs from executed command. Clearing previous run")
+                LOG.warning(
+                    "New command differs from executed command. Clearing previous run"
+                )
                 self._stdout = None
                 self._stderr = None
                 self.process = None
