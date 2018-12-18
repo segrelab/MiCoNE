@@ -79,7 +79,7 @@
   [[make_json_network.output]]
     datatype = "network"
     format = ["json"]
-    location = "make_jsonnet/**/*_net.json"
+    location = "make_json_network/*_network.json"
 
 [export_biom]
   root = "src/internal/export_biom"
