@@ -104,6 +104,6 @@ class Environments:
             raise ValueError(f"{env} not a supported environment")
         ind = self.env_names.index(env)
         env_name = self.env_names[ind]
-        cmd_str = f"source activate {env_name}"
+        cmd_str = f"conda activate {env_name}"
         load_cmd = Command(cmd_str, profile="local")
         load_cmd.run()
