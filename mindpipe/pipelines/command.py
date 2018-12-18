@@ -215,7 +215,7 @@ class Command:
             Returns
             -------
             str
-                Either of {'success', 'failure', 'in progress', 'not started'}
+                One of {'success', 'failure', 'in progress', 'not started'}
         """
         if self.process:
             poll = self.process.poll()

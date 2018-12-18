@@ -270,7 +270,7 @@ class Process(collections.Hashable):
             Returns
             -------
             str
-                Either of {'success', 'failure', 'in progress', 'not started'}
+                One of {'success', 'failure', 'in progress', 'not started'}
         """
         if self.cmd.status == "success":
             for output in self.params.output:
