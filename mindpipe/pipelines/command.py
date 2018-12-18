@@ -7,6 +7,8 @@ import sys
 from typing import List, Optional
 from warnings import warn
 
+from ..logging import LOG
+
 
 class Command:
     """
@@ -111,38 +113,13 @@ class Command:
             self._stderr = stderr.decode("utf-8")
             self._stdout = stdout.decode("utf-8")
 
-    # TODO: Change the `log_file` to the logger class
-    def log(self, log_file: str) -> None:
-        """
-            Logs the output of the process to the log_file
-
-            Parameters
-            ----------
-            log_file : str
-                The log file to save the output and error to
-        """
-        if self._stdout is not None and self._stderr is not None:
-            stdout = self._stdout
-            stderr = self._stderr
-        else:
-            if self.process:
-                stdout, stderr = self.process.communicate(timeout=self._timeout)
-                stdout = stdout.decode("utf-8")
-                stderr = stderr.decode("utf-8")
-            else:
-                raise NotImplementedError(
-                    "Please run the command before requesting errors!"
-                )
-        with open(log_file, "w") as fid:
-            fid.write("-" * 40 + " [STDOUT] " + "-" * 40)
-            fid.write("\n")
-            sys.stdout.write(stdout)
-            fid.write(stdout)
-            fid.write("\n")
-            fid.write("-" * 40 + " [STDERR] " + "-" * 40)
-            fid.write("\n")
-            sys.stderr.write(stderr)
-            fid.write(stderr)
+    def log(self) -> None:
+        """ Logs the stdout and stderr of the command execution to the log_file """
+        LOG.info(f"Running command: {self.cmd}")
+        LOG.info("-" * 4 + " [STDOUT] " + "-" * 4)
+        LOG.success(self.output)
+        LOG.info("-" * 4 + " [STDERR] " + "-" * 4)
+        LOG.error(self.error)
 
     def proc_cmd_sync(self) -> bool:
         """
