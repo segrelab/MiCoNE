@@ -23,21 +23,21 @@ flake8==3.6.0
 future==0.17.1
 ghp-import==0.5.5
 identify==1.1.7
-idna==2.7
+idna==2.8
 imagesize==1.1.0
 importlib-metadata==0.7
 importlib-resources==1.0.2 ; python_version < '3.7'
 ipython-genutils==0.2.0
 ipython==7.2.0
 isort==4.3.4
-jedi==0.13.1
+jedi==0.13.2
 jinja2==2.10
 lazy-object-proxy==1.3.1
 markupsafe==1.1.0
 mccabe==0.6.1
 more-itertools==4.3.0
 mypy-extensions==0.4.1
-mypy==0.641
+mypy==0.650
 nodeenv==1.3.3
 numpydoc==0.8.0
 packaging==18.0
@@ -52,17 +52,17 @@ ptyprocess==0.6.0
 py==1.7.0
 pycodestyle==2.4.0
 pyflakes==2.0.0
-pygments==2.3.0
+pygments==2.3.1
 pylint==2.2.2
 pyparsing==2.3.0
 pytest-cov==2.6.0
 pytest-runner==4.2
-pytest==4.0.1
+pytest==4.0.2
 python-jsonrpc-server==0.0.2
 python-language-server==0.21.4
 pytz==2018.7
 pyyaml==3.13
-requests==2.20.1
+requests==2.21.0
 six==1.11.0
 snowballstemmer==1.2.1
 sphinx-rtd-theme==0.4.2
@@ -71,7 +71,7 @@ sphinxcontrib-websupport==1.1.0
 toml==0.10.0
 traitlets==4.3.2
 travis-sphinx==2.2.1
-typed-ast==1.1.0 ; python_version < '3.7' and implementation_name == 'cpython'
+typed-ast==1.1.1 ; python_version < '3.7' and implementation_name == 'cpython'
 urllib3==1.24.1
 virtualenv==16.1.0
 watchdog==0.9.0

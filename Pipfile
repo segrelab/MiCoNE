@@ -17,6 +17,7 @@ schematics = "*"
 "jinja2schema" = "*"
 click = "*"
 halo = "*"
+loguru = "*"
 
 [dev-packages]
 bumpversion = "*"
