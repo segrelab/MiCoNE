@@ -4,8 +4,8 @@ def correlations = params.correlations
 def pvalues = params.pvalues
 def obs_metadata = params.obs_metadata
 def children_map = params.children_map
-def cmetadata = params.cmetadata
-def metadata = params.metadata
+def cmetadata = file(params.cmetadata)
+def metadata = file(params.metadata)
 def output_dir = file(params.output_dir)
 
 Channel
@@ -30,35 +30,21 @@ Channel
 Channel
     .fromPath(children_map)
     .ifEmpty {exit 1, "Childrendata files not found"}
-    .map { tuple(it.baseName.split("_children_map")[0], it) }
+    .map { tuple(it.baseName.split("_children")[0], it) }
     .set { chnl_children_map }
-
-Channel
-    .fromPath(cmetadata)
-    .ifEmpty {exit 1, "Computational metadata files not found"}
-    .map { tuple(it.baseName.split("_cmetadata")[0], it) }
-    .set { chnl_cmetadata }
-
-Channel
-    .fromPath(metadata)
-    .ifEmpty {exit 1, "Metadata files not found"}
-    .map { tuple(it.baseName.split("_metadata")[0], it) }
-    .set { chnl_metadata }
 
 chnl_correlation
     .join(chnl_pvalue, by: 0)
     .join(chnl_obs_metadata, by: 0)
     .join(chnl_children_map, by: 0)
-    .join(chnl_cmetadata, by: 0)
-    .join(chnl_metadata, by: 0)
     .set { chnl_input }
 
 process make_json_network {
     tag "$id"
-    publishDir "${output_dir}/make_jsonnet"
+    publishDir "${output_dir}/make_json_network"
 
     input:
-    set val(id), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file), file(cmetadata_file), file(metadata_file) from chnl_input
+    set val(id), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file) from chnl_input
 
     output:
     set val(id), file('*_network.json') into chnl_output
