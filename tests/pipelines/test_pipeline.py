@@ -17,6 +17,13 @@ class TestPipeline:
         user_settings = example_pipeline_files["grouptaxa_sparcc_json"]
         assert Pipeline(user_settings, profile="local")
 
+    def test_pipeline_len_getitem(self, example_pipeline_files):
+        user_settings = example_pipeline_files["grouptaxa_sparcc_json"]
+        pipeline = Pipeline(user_settings, profile="local")
+        assert len(pipeline) == 4
+        process = pipeline["make_json_network"]
+        assert process.name == "make_json_network"
+
     def test_pipeline_run(self, example_pipeline_files, tmpdir):
         user_settings = example_pipeline_files["grouptaxa_sparcc_json"]
         pipeline_dir = tmpdir.mkdir("test_pipeline")
