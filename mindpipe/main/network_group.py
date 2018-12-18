@@ -29,7 +29,7 @@ class NetworkGroup(Collection):
             The list of nodes in the network group
         links: DType
             The list of links in the network group
-        links_thres: DType
+        filtered_links: DType
             The list of links in the network group after applying thresholds
         contexts: DType
             The list of all contexts in the network group
@@ -38,7 +38,7 @@ class NetworkGroup(Collection):
     def __init__(self, networks: List[Network]) -> None:
         self.nodeid_map: Dict[int, Dict[str, str]] = dict()
         self._networks = networks
-        self.nodes, self.links, self.links_thres, self.contexts = self._combine_networks(
+        self.nodes, self.links, self.filtered_links, self.contexts = self._combine_networks(
             networks
         )
 
@@ -115,24 +115,24 @@ class NetworkGroup(Collection):
         """
         nodes_dict = dict()
         links_dict = dict()
-        links_thres_dict = dict()
+        filtered_links_dict = dict()
         contexts = []
         for cid, network in enumerate(networks):
             nodes_dict[cid] = network.nodes
             links_dict[cid] = network.links
-            links_thres_dict[cid] = network.links_thres
+            filtered_links_dict[cid] = network.filtered_links
             context = network.metadata
             contexts.append(context)
         merged_nodes = self._combine_nodes(nodes_dict)
         merged_links = self._combine_links(links_dict)
-        merged_links_thres = self._combine_links(links_thres_dict)
-        return merged_nodes, merged_links, merged_links_thres, contexts
+        merged_filtered_links = self._combine_links(filtered_links_dict)
+        return merged_nodes, merged_links, merged_filtered_links, contexts
 
     def json(self, threshold: bool = True) -> str:
         """ Network group as a JSON string """
         nodes = self.nodes
         if threshold:
-            links = self.links_thres
+            links = self.filtered_links
         else:
             links = self.links
         contexts = self.contexts
