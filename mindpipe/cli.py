@@ -94,6 +94,7 @@ def run(ctx, profile, config, output_location, base_dir):
         spinner.start()
         spinner.text = f"Executing {process} process"
         process.wait()
+        process.log()
         if process.status == "success":
             spinner.succeed(f"Finished executing {process}")
         else:
