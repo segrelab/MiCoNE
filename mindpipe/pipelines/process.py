@@ -6,11 +6,11 @@ import collections
 import pathlib
 import shutil
 from typing import Optional
-from warnings import warn
 
 from .command import Command
 from .template import ConfigTemplate, ScriptTemplate
 from ..config import Params
+from ..logging import LOG
 
 
 class Process(collections.Hashable):
@@ -106,16 +106,17 @@ class Process(collections.Hashable):
             )
         script = self.script.render()
         script_file = self._output_location / f"{self.name}.nf"
-        # TODO: Add logging here
+        LOG.success(f"Building script: {script_file}")
         with open(script_file, "w") as fid:
             fid.write(script)
         config = self.config.render(self.params.dict, resource_config=True)
         config_file = self._output_location / f"{self.name}.config"
+        LOG.success(f"Building config: {config_file}")
         with open(config_file, "w") as fid:
             fid.write(config)
         work_dir = self._output_location / "work"
         if work_dir.exists():
-            warn("Work directory already exists (could be from another run)")
+            LOG.warning("Work directory already exists (could be from another run)")
         else:
             work_dir.mkdir()
 
@@ -129,11 +130,6 @@ class Process(collections.Hashable):
             -------
             Command
                 The `Command` instance for the process
-
-            Raises
-            ------
-            Warning
-                If `build` has not been run yet
         """
         script_path = self._output_location / f"{self.name}.nf"
         config_path = self._output_location / f"{self.name}.config"
@@ -143,7 +139,9 @@ class Process(collections.Hashable):
             or not config_path.exists()
             or not work_dir.exists()
         ):
-            warn("The process has not been built yet. Please run `build` before `run`")
+            LOG.warning(
+                "The process has not been built yet. Please run `build` before `run`"
+            )
         cmd = f"nextflow -C {config_path} run {script_path} -w {work_dir} -profile {self.profile}"
         if not self._cmd:
             self._cmd = Command(cmd, self.profile)
@@ -165,6 +163,13 @@ class Process(collections.Hashable):
         # TODO: This step also needs to fill in the profiles and resources templates
         self.cmd.run()
         return self.cmd
+
+    def log(self) -> None:
+        """ Logs the stdout and stderr of the process to the log_file """
+        LOG.info(
+            f"Running process: {self.name} with profile {self.profile} and env {self.env}"
+        )
+        self.cmd.log()
 
     def wait(self) -> None:
         """ Wait for the process to complete or terminate """
@@ -189,7 +194,7 @@ class Process(collections.Hashable):
             scope : {'all', 'work_dir'}
                 The scope to be cleaned
         """
-        warn(
+        LOG.warning(
             "You are about to delete files and folders which is in irreversible process"
         )
         if (
@@ -222,6 +227,7 @@ class Process(collections.Hashable):
             previous : Process
                 The `Process` instance to attach the current instance to
         """
+        LOG.info(f"Attaching IO of {previous.name} to {self.name}")
         self.params.attach_to(previous.params)
 
     def update_location(self, location: str, category: str) -> None:
@@ -243,6 +249,7 @@ class Process(collections.Hashable):
                 path = pathlib.Path(str_path)
             else:
                 raise ValueError("location must be an absolute path")
+        LOG.info(f"Updating location of {category}s of {self.name} to {location}")
         if category == "input":
             for input_ in self.params.input:
                 in_location = input_.location
