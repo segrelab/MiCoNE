@@ -41,6 +41,7 @@ def init(ctx, env):
         spinner.start()
         spinner.text = f"Initializing environment: {env_cmd}"
         env_cmd.wait()
+        env_cmd.log()
         if env_cmd.status == "failure":
             spinner.fail(f"{env_cmd} Failed")
         elif env_cmd.status == "success":
@@ -49,6 +50,7 @@ def init(ctx, env):
         spinner.start()
         spinner.text = f"Running post installation: {post_cmd}"
         post_cmd.wait()
+        post_cmd.log()
         if post_cmd.status == "failure":
             spinner.fail(f"{post_cmd} Failed")
         elif post_cmd.status == "success":
