@@ -64,11 +64,35 @@ def init(ctx, env):
     type=click.Path(exists=True),
     help="The config file that defines the pipeline run",
 )
+@click.option(
+    "--output_location",
+    "-o",
+    type=click.Path(exists=True),
+    default=None,
+    help="The base output location to store pipeline results",
+)
+@click.option(
+    "--base_dir",
+    "-b",
+    type=click.Path(exists=True),
+    default=None,
+    help="The location of base directory for input files",
+)
 @click.pass_context
-def run(ctx, profile, config):
+def run(ctx, profile, config, output_location, base_dir):
     """ Run the pipeline """
-    ctx.obj["PROFILE"] = profile
-    Pipeline(config)
+    spinner = ctx.obj["SPINNER"]
+    pipeline = Pipeline(config, profile, base_dir, output_location=output_location)
+    spinner.start()
+    spinner.text = "Starting pipeline execution"
+    for process in pipeline.run():
+        spinner.start()
+        spinner.text = f"Executing {process} process"
+        process.wait()
+        if process.cmd.status == "success":
+            spinner.succeed(f"Finished executing {process}")
+        else:
+            spinner.fail(f"Failed to execute {process}")
 
 
 def main():
