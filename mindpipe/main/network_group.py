@@ -4,7 +4,7 @@
 
 from collections.abc import Collection
 import json
-from typing import Any, Dict, Iterator, List, Set, Tuple
+from typing import Any, Dict, Iterator, List, Tuple
 
 from .network import Network
 from ..utils import JsonEncoder
