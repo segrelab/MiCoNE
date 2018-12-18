@@ -262,6 +262,30 @@ class Process(collections.Hashable):
                         output_.datatype, str(path / out_location), "output"
                     )
 
+    @property
+    def status(self) -> str:
+        """
+            Return the status of the current process
+
+            Returns
+            -------
+            str
+                Either of {'success', 'failure', 'in progress', 'not started'}
+        """
+        if self.cmd.status == "success":
+            for output in self.params.output:
+                if "*" in str(output.location):
+                    str_loc = str(output.location)
+                    ind = str_loc.find("*")
+                    files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
+                    if files:
+                        return "success"
+                elif output.location.exists():
+                    return "success"
+            return "failure"
+        else:
+            return self.cmd.status
+
 
 class InternalProcess(Process):
     """
