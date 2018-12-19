@@ -36,12 +36,4 @@ class TestPipeline:
         )
         for process in pipeline.run():
             process.wait()
-            assert process.cmd.status == "success"
-            for output in process.params.output:
-                if "*" in str(output.location):
-                    str_loc = str(output.location)
-                    ind = str_loc.find("*")
-                    files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
-                    assert len(files) > 0
-                else:
-                    assert output.location.exists()
+            assert process.status == "success"
