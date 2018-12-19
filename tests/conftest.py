@@ -129,7 +129,10 @@ def correlation_data(correlation_files):
 def network_json_files():
     """ Fixture that loads the network files """
     net_fol = TEST_DATADIR / "networks"
-    data = {"good": net_fol.glob("good/*.json"), "bad": net_fol.glob("bad/*json")}
+    data = {
+        "good": list(net_fol.glob("good/*.json")),
+        "bad": list(net_fol.glob("bad/*json")),
+    }
     return data
 
 
