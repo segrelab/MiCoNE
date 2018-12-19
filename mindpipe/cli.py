@@ -22,7 +22,7 @@ def cli(ctx, log):
     ctx.obj["SPINNER"] = spinner
     spinner.succeed("Successfully initialized mindpipe")
     if log:
-        LOG.enable("mindpipe")
+        LOG.enable()
 
 
 @cli.command()
@@ -101,6 +101,7 @@ def run(ctx, profile, config, output_location, base_dir):
             spinner.succeed(f"Finished executing {process}")
         else:
             spinner.fail(f"Failed to execute {process}")
+    click.secho(f"Log file is at {LOG.path}")
 
 
 def main():

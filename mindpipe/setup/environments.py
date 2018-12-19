@@ -49,7 +49,7 @@ class Environments:
         """
         if env is None:
             for config, env_name in zip(self.configs, self.env_names):
-                LOG.info(f"Initializing {env_name} environment")
+                LOG.logger.info(f"Initializing {env_name} environment")
                 cmd_str = f"conda env create -f {config} -n {env_name}"
                 init_cmd = Command(cmd_str, profile="local")
                 init_cmd.run()
@@ -58,7 +58,7 @@ class Environments:
             ind = self.env_names.index(env)
             config = self.configs[ind]
             env_name = self.env_names[ind]
-            LOG.info(f"Initializing {env_name} environment")
+            LOG.logger.info(f"Initializing {env_name} environment")
             cmd_str = f"conda env create -f {config} -n {env_name}"
             init_cmd = Command(cmd_str, profile="local")
             init_cmd.run()
@@ -89,7 +89,7 @@ class Environments:
             post_scripts = list(EX_PIPELINE_DIR.glob(f"**/{env}/post_install.sh"))
         for script in post_scripts:
             cmd_str = f"bash {script}"
-            LOG.info(f"Running post_install for {env} environment")
+            LOG.logger.info(f"Running post_install for {env} environment")
             post_cmd = Command(cmd_str, profile="local")
             post_cmd.run()
             yield post_cmd
@@ -109,6 +109,6 @@ class Environments:
         ind = self.env_names.index(env)
         env_name = self.env_names[ind]
         cmd_str = f"conda activate {env_name}"
-        LOG.info(f"Loading {env} environment")
+        LOG.logger.info(f"Loading {env} environment")
         load_cmd = Command(cmd_str, profile="local")
         load_cmd.run()

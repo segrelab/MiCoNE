@@ -106,17 +106,19 @@ class Process(collections.Hashable):
             )
         script = self.script.render()
         script_file = self._output_location / f"{self.name}.nf"
-        LOG.success(f"Building script: {script_file}")
+        LOG.logger.success(f"Building script: {script_file}")
         with open(script_file, "w") as fid:
             fid.write(script)
         config = self.config.render(self.params.dict, resource_config=True)
         config_file = self._output_location / f"{self.name}.config"
-        LOG.success(f"Building config: {config_file}")
+        LOG.logger.success(f"Building config: {config_file}")
         with open(config_file, "w") as fid:
             fid.write(config)
         work_dir = self._output_location / "work"
         if work_dir.exists():
-            LOG.warning("Work directory already exists (could be from another run)")
+            LOG.logger.warning(
+                "Work directory already exists (could be from another run)"
+            )
         else:
             work_dir.mkdir()
 
@@ -139,7 +141,7 @@ class Process(collections.Hashable):
             or not config_path.exists()
             or not work_dir.exists()
         ):
-            LOG.warning(
+            LOG.logger.warning(
                 "The process has not been built yet. Please run `build` before `run`"
             )
         cmd = f"nextflow -C {config_path} run {script_path} -w {work_dir} -profile {self.profile}"
@@ -166,7 +168,7 @@ class Process(collections.Hashable):
 
     def log(self) -> None:
         """ Logs the stdout and stderr of the process to the log_file """
-        LOG.info(
+        LOG.logger.info(
             f"Running process: {self.name} with profile {self.profile} and env {self.env}"
         )
         self.cmd.log()
@@ -194,7 +196,7 @@ class Process(collections.Hashable):
             scope : {'all', 'work_dir'}
                 The scope to be cleaned
         """
-        LOG.warning(
+        LOG.logger.warning(
             "You are about to delete files and folders which is in irreversible process"
         )
         if (
@@ -227,7 +229,7 @@ class Process(collections.Hashable):
             previous : Process
                 The `Process` instance to attach the current instance to
         """
-        LOG.info(f"Attaching IO of {previous.name} to {self.name}")
+        LOG.logger.info(f"Attaching IO of {previous.name} to {self.name}")
         self.params.attach_to(previous.params)
 
     def update_location(self, location: str, category: str) -> None:
@@ -249,7 +251,9 @@ class Process(collections.Hashable):
                 path = pathlib.Path(str_path)
             else:
                 raise ValueError("location must be an absolute path")
-        LOG.info(f"Updating location of {category}s of {self.name} to {location}")
+        LOG.logger.info(
+            f"Updating location of {category}s of {self.name} to {location}"
+        )
         if category == "input":
             for input_ in self.params.input:
                 in_location = input_.location

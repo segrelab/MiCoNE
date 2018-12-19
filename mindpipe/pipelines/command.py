@@ -114,11 +114,11 @@ class Command:
 
     def log(self) -> None:
         """ Logs the stdout and stderr of the command execution to the log_file """
-        LOG.info(f"Running command: {self.cmd}")
-        LOG.info("-" * 4 + " [STDOUT] " + "-" * 4)
-        LOG.success(self.output)
-        LOG.info("-" * 4 + " [STDERR] " + "-" * 4)
-        LOG.error(self.error)
+        LOG.logger.info(f"Running command: {self.cmd}")
+        LOG.logger.info("-" * 4 + " [STDOUT] " + "-" * 4)
+        LOG.logger.success(self.output)
+        LOG.logger.info("-" * 4 + " [STDERR] " + "-" * 4)
+        LOG.logger.error(self.error)
 
     def proc_cmd_sync(self) -> bool:
         """
@@ -178,7 +178,7 @@ class Command:
         self._cmd = self._build_cmd(cmd)
         if self.process:
             if not self.proc_cmd_sync():
-                LOG.warning(
+                LOG.logger.warning(
                     "New command differs from executed command. Clearing previous run"
                 )
                 self._stdout = None
