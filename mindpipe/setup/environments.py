@@ -83,10 +83,10 @@ class Environments:
                 The currently running post_install command
         """
         if env is None:
-            post_scripts = EX_PIPELINE_DIR.glob("**/post_install.sh")
+            post_scripts = list(EX_PIPELINE_DIR.glob("**/post_install.sh"))
         else:
             env = env.strip("mindpipe-")
-            post_scripts = EX_PIPELINE_DIR.glob(f"**/{env}/post_install.sh")
+            post_scripts = list(EX_PIPELINE_DIR.glob(f"**/{env}/post_install.sh"))
         for script in post_scripts:
             cmd_str = f"bash {script}"
             LOG.info(f"Running post_install for {env} environment")
