@@ -5,9 +5,10 @@
 
 from collections import namedtuple
 from typing import Dict, Tuple
-from warnings import warn
 
 from ete3 import NCBITaxa
+
+from ..logging import LOG
 
 
 BaseLineage = namedtuple("Lineage", "Kingdom Phylum Class Order Family Genus Species")
@@ -233,8 +234,12 @@ class Lineage(BaseLineage):
                 break
         name = [q for q in reversed(query) if q != ""][0]
         if taxa != name:
-            warn(f"Lowest level in {self} could not be queried. Using higher level")
+            LOG.logger.warning(
+                f"Lowest level in {self} could not be queried. Using higher level"
+            )
         if len(taxid_list) > 1:
-            warn(f"{self.name} has multiple taxids. Picking the first one")
+            LOG.logger.warning(
+                f"{self.name} has multiple taxids. Picking the first one"
+            )
         taxid = taxid_list[0]
         return taxid
