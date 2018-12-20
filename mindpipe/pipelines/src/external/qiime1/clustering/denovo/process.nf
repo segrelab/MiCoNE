@@ -27,7 +27,7 @@ process pick_de_novo_otus {
     set file(sequence_file) from sequence_data_chnl
 
     output:
-    set file('otu_table.biom'), file('rep_set.tre'), file('log*.txt') into output_chnl
+    set file('otu_table.biom'), file('rep_set/seqs_rep_set.fasta'), file('log*.txt') into output_chnl
 
     script:
     {{ pick_de_novo_otus }}

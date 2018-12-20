@@ -63,13 +63,9 @@
     format = ["biom"]
     location = "otu_table.biom"
   [[qiime1.clustering.denovo.output]]
-    datatype = "phylogenetic_tree"
-    format = ["tre"]
-    location = "rep_set.tre"
-  [[qiime1.clustering.denovo.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
-    location = "rep_seqs.{fasta,fna}"
+    location = "seqs_rep_set.fasta"
 
 [qiime1.clustering.closedref]
   env = "mindpipe-qiime1"
