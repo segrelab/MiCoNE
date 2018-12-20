@@ -98,13 +98,11 @@ class Process(collections.Hashable):
             self._output_location = pathlib.Path(output_dir)
             self.params.output_location = pathlib.Path(output_dir)
         self.update_location(str(self._output_location), category="output")
-        if (
-            not self._output_location.is_absolute()
-            or not self._output_location.exists()
-        ):
+        if not self._output_location.is_absolute():
             raise FileNotFoundError(
                 f"{self._output_location} must be an absolute path and must exist"
             )
+        self._output_location.mkdir(exist_ok=True, parents=True)
         script = self.script.render()
         script_file = self._output_location / f"{self.name}.nf"
         LOG.logger.success(f"Building script: {script_file}")

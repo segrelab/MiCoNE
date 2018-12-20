@@ -168,6 +168,7 @@ class Pipeline(collections.Sequence):
                 Iterator over each process currently being executed
        """
         for process in self.processes:
-            process.build(self.output_location)
+            loc = pathlib.Path(self.output_location)  # / process.params.output_location
+            process.build(str(loc))
             process.run()
             yield process
