@@ -7,6 +7,7 @@ import os
 import pytest
 
 from mindpipe.pipelines import Command
+from mindpipe.logging import LOG
 
 
 class TestCommand:
@@ -49,10 +50,8 @@ class TestCommand:
         timeout = 1000
         command = Command(cmd, profile, timeout)
         command.run()
-        log_file = tmpdir.mkdir("test_command_log").join("log.txt")
-        assert not os.path.exists(log_file)
-        command.log(log_file)
-        assert os.path.exists(log_file)
+        command.log()
+        assert os.path.exists(LOG.path)
 
     def test_profile(self):
         cmd = "ls"
