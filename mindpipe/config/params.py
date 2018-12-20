@@ -3,7 +3,9 @@
 """
 
 import collections
+import os
 import pathlib
+import re
 from subprocess import Popen, PIPE
 from typing import (
     Any,
@@ -214,8 +216,13 @@ class Params(collections.Hashable):
             for field in item:
                 if field not in IO._fields:
                     raise ValueError(f"Invalid {category}: {data}. Extra {field}")
-            item_subset = {k: item[k] for k in req_fields}
-            loc = item_subset.get("location")
+            item_subset = {k: item.get(k) for k in IO._fields}
+            loc: Optional[str] = item_subset.get("location")
+            if loc and "$" in loc:
+                pattern = re.compile(r"\$\{(.*?)\}")
+                if re.match(pattern, loc):
+                    env_var = re.match(pattern, loc).group(1)
+                    loc = re.sub(pattern, os.environ.get(env_var), loc)
             item_subset["location"] = pathlib.Path(loc) if loc else None
             io_tuples.add(IO(**item_subset))
         return io_tuples
