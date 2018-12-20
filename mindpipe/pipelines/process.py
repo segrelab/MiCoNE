@@ -6,6 +6,7 @@ import collections
 import pathlib
 import shutil
 from typing import Optional
+from warnings import warn
 
 from .command import Command
 from .template import ConfigTemplate, ScriptTemplate
@@ -116,9 +117,9 @@ class Process(collections.Hashable):
             fid.write(config)
         work_dir = self._output_location / "work"
         if work_dir.exists():
-            LOG.logger.warning(
-                "Work directory already exists (could be from another run)"
-            )
+            warning_msg = "Work directory already exists (could be from another run)"
+            LOG.logger.warning(warning_msg)
+            warn(warning_msg)
         else:
             work_dir.mkdir()
 
@@ -141,9 +142,11 @@ class Process(collections.Hashable):
             or not config_path.exists()
             or not work_dir.exists()
         ):
-            LOG.logger.warning(
+            warning_msg = (
                 "The process has not been built yet. Please run `build` before `run`"
             )
+            LOG.logger.warning(warning_msg)
+            warn(warning_msg)
         cmd = f"nextflow -C {config_path} run {script_path} -w {work_dir} -profile {self.profile}"
         if not self._cmd:
             self._cmd = Command(cmd, self.profile)
@@ -196,9 +199,11 @@ class Process(collections.Hashable):
             scope : {'all', 'work_dir'}
                 The scope to be cleaned
         """
-        LOG.logger.warning(
+        warning_msg = (
             "You are about to delete files and folders which is in irreversible process"
         )
+        LOG.logger.warning(warning_msg)
+        warn(warning_msg)
         if (
             not self._output_location.is_absolute()
             or not self._output_location.exists()
