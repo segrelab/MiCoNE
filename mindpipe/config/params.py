@@ -4,6 +4,7 @@
 
 import collections
 import pathlib
+from subprocess import Popen, PIPE
 from typing import (
     Any,
     Dict,
@@ -16,8 +17,6 @@ from typing import (
     Type,
     Union,
 )
-
-from ..pipelines import Command
 
 
 PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
@@ -102,9 +101,11 @@ class Params(collections.Hashable):
                 "Please reinstall the package"
             )
         if "env" in value:
-            cmd = Command("conda info -e", profile="local")
-            cmd.run()
-            envs = [o.strip() for o in cmd.output.split("\n")[2:]]
+            process = Popen(
+                ["conda", "info", "-e"], shell=False, stdout=PIPE, stderr=PIPE
+            )
+            stdout, _ = process.communicate()
+            envs = [o.strip() for o in stdout.decode("utf-8").split("\n")[2:]]
             env_loc = None
             for env in envs:
                 if env.startswith(value["env"]):
