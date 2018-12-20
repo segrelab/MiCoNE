@@ -97,9 +97,9 @@
     format = ["biom"]
     location = "otu_table.biom"
   [[qiime1.clustering.closedref.output]]
-    datatype = "phylogenetic_tree"
-    format = ["tre"]
-    location = "rep_set.tre"
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "seqs_rep_set.fasta"
 
 [qiime1.clustering.openref]
   env = "mindpipe-qiime1"

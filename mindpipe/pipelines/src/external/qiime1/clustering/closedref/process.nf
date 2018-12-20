@@ -28,7 +28,7 @@ process pick_closed_reference_otus {
     val sequence_file from chnl_sequences
 
     output:
-    set file('otu_table.biom'), file('*.tre'), file('log*.txt') into output_chnl
+    set file('otu_table.biom'), file('rep_set/seqs_rep_set.fasta') file('log*.txt') into output_chnl
 
     script:
     {{ pick_closed_reference_otus }}
