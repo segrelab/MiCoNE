@@ -24,6 +24,7 @@ class TestPipeline:
         process = pipeline["make_json_network"]
         assert process.name == "make_json_network"
 
+    @pytest.mark.filterwarnings("ignore::UserWarning")
     def test_pipeline_run(self, example_pipeline_files, tmpdir):
         user_settings = example_pipeline_files["grouptaxa_sparcc_json"]
         pipeline_dir = tmpdir.mkdir("test_pipeline")
@@ -36,4 +37,5 @@ class TestPipeline:
         )
         for process in pipeline.run():
             process.wait()
+            process.log()
             assert process.status == "success"
