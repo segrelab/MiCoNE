@@ -292,13 +292,14 @@ class Network:
                 children = children_map.get(node, [])
             else:
                 children = []
+            sup_lineage = lineage.get_superset(lineage.taxid[0])
             nodes.append(
                 {
                     "id": node,
-                    "lineage": str(lineage),
-                    "name": lineage.name[1],
-                    "taxid": lineage.taxid,
-                    "taxlevel": lineage.name[0],
+                    "lineage": str(sup_lineage),
+                    "name": sup_lineage.name[1],
+                    "taxid": sup_lineage.taxid[1],
+                    "taxlevel": sup_lineage.name[0],
                     "abundance": abundance,
                     "children": children,
                 }
