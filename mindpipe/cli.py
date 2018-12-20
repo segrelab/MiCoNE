@@ -102,6 +102,7 @@ def run(ctx, profile, config, output_location, base_dir):
         else:
             spinner.fail(f"Failed to execute {process}")
     click.secho(f"Log file is at {LOG.path}")
+    LOG.cleanup()
 
 
 def main():
