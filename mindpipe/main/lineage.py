@@ -217,24 +217,27 @@ class Lineage(BaseLineage):
         return Lineage(*tax)
 
     @property
-    def taxid(self) -> int:
+    def taxid(self) -> Tuple[str, int]:
         """
             Get the NCBI taxonomy id of the Lineage
 
             Returns
             -------
-            int
-                The NCBI taxonomy id
+            Tuple[str, int]
+                A tuple containing (taxonomy level, NCBI taxonomy id)
         """
         query = list(self)
-        query[-1] = (query[-2] + " " + query[-1]).strip()
+        # species or subspecies level
+        query.append(query[-2] + " " + query[-1].strip())
+        # species level
+        query[-2] = query[-3] + " " + query[-2].split(" ")[0].strip()
         taxid_dict = NCBI.get_name_translator(query)
         for taxa in reversed(query):
             if taxa != "" and taxa in taxid_dict:
                 taxid_list = taxid_dict[taxa]
                 break
-        name = [q for q in reversed(query) if q != ""][0]
-        if taxa != name:
+        name = [q for q in reversed(query) if q != ""]
+        if taxa != name[0] and taxa != name[1]:
             warning_msg = (
                 f"Lowest level in {self} could not be queried. Using higher level"
             )
@@ -245,4 +248,5 @@ class Lineage(BaseLineage):
             LOG.logger.warning(warning_msg)
             warn(RuntimeWarning(warning_msg))
         taxid = taxid_list[0]
-        return taxid
+        rank = self._fields[min(query.index(taxa), len(self._fields) - 1)]
+        return rank, taxid
