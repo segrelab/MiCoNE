@@ -81,17 +81,17 @@
   [[qiime1.clustering.closedref.input]]
     datatype = "sequence_16s_reference"
     format = ["fasta"]
-    location = "src/external/qiime1/env/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
+    location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
   [[qiime1.clustering.closedref.input]]
     datatype = "sequence_taxonomy_mapping"
     format = ["txt"]
-    location = "src/external/qiime1/env/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/taxonomy/97_otu_taxonomy.txt"
+    location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/taxonomy/97_otu_taxonomy.txt"
   [[qiime1.clustering.closedref.input]]
     datatype = "qiime1_parameters"
     format = ["txt"]
   [[qiime1.clustering.closedref.parameters]]
     process = "pick_closed_reference_otus"
-    ncpus = 4
+    ncpus = 1
   [[qiime1.clustering.closedref.output]]
     datatype = "otu_table"
     format = ["biom"]
