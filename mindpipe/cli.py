@@ -55,6 +55,8 @@ def init(ctx, env):
             spinner.fail(f"{post_cmd} Failed")
         elif post_cmd.status == "success":
             spinner.succeed(f"{post_cmd} Passed")
+    click.secho(f"Log file is at {LOG.path}")
+    LOG.cleanup()
 
 
 @cli.command()
