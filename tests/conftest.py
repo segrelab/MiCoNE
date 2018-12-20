@@ -10,6 +10,11 @@ import pandas as pd
 import pytest
 import toml
 
+from mindpipe.logging import LOG
+
+LOG.enable()
+print(f"Log file is at {LOG.path}")
+
 
 BASEDIR = pathlib.Path.cwd()
 TEST_DATADIR = BASEDIR / "tests/data"
