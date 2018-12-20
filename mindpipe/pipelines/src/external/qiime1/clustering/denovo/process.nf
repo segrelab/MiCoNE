@@ -24,15 +24,11 @@ process pick_de_novo_otus {
     publishDir "${output_dir}/denovo_picking"
 
     input:
-    val sequence_files from sequence_data_chnl.collect()
+    set file(sequence_file) from sequence_data_chnl
 
     output:
-    set file('otu_table.biom'),
-        file('rep_set.tre'),
-        file('rep_set/seqs_rep_set.{fasta,fna}'),
-        file('log*.txt') into output_chnl
+    set file('otu_table.biom'), file('rep_set.tre'), file('log*.txt') into output_chnl
 
     script:
-    sequence_list = sequence_files.join(',')
     {{ pick_de_novo_otus }}
 }

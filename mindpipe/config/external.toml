@@ -57,7 +57,7 @@
     format = ["txt"]
   [[qiime1.clustering.denovo.parameters]]
     process = "pick_de_novo_otus"
-    ncpus = 4
+    ncpus = 1
   [[qiime1.clustering.denovo.output]]
     datatype = "otu_table"
     format = ["biom"]
