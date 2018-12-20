@@ -12,7 +12,7 @@ from mindpipe.main import Network
 
 
 @pytest.mark.usefixtures("correlation_data", "correlation_files", "network_elist_files")
-@pytest.mark.filterwarnings("ignore::UserWarning")
+@pytest.mark.filterwarnings("ignore::RuntimeWarning")
 class TestNetwork:
     """ Tests for the Network class """
 
