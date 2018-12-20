@@ -5,6 +5,7 @@
 
 from collections import namedtuple
 from typing import Dict, Tuple
+from warnings import warn
 
 from ete3 import NCBITaxa
 
@@ -234,12 +235,14 @@ class Lineage(BaseLineage):
                 break
         name = [q for q in reversed(query) if q != ""][0]
         if taxa != name:
-            LOG.logger.warning(
+            warning_msg = (
                 f"Lowest level in {self} could not be queried. Using higher level"
             )
+            LOG.logger.warning(warning_msg)
+            warn(RuntimeWarning(warning_msg))
         if len(taxid_list) > 1:
-            LOG.logger.warning(
-                f"{self.name} has multiple taxids. Picking the first one"
-            )
+            warning_msg = f"{self.name} has multiple taxids. Picking the first one"
+            LOG.logger.warning(warning_msg)
+            warn(RuntimeWarning(warning_msg))
         taxid = taxid_list[0]
         return taxid
