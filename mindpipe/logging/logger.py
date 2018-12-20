@@ -77,4 +77,4 @@ class Log:
             file.unlink()
 
 
-LOG = Log(TMP_FOL, format_str="{time:YY-MM-DD at HH:mm:ss} | {level} | {message}")
+LOG = Log(TMP_FOL, format_str="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}")
