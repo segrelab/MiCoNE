@@ -88,5 +88,5 @@ class TestLineage:
         lineage3 = Lineage.from_str(
             "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacterales;f__Enterobacteriaceae;g__Escherichia;s__dragon"
         )
-        with pytest.warns(UserWarning):
+        with pytest.warns(RuntimeWarning):
             assert lineage3.taxid == 561
