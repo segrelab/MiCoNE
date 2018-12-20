@@ -262,7 +262,6 @@ class Params(collections.Hashable):
         """
             Verify whether the Input and Output elements have been assigned and are valid
         """
-
         if not self.output_location.is_absolute():
             raise ValueError("The output location must be absolute")
         for elem in self.input:
