@@ -20,22 +20,16 @@ Channel
     .set { sequence_data_chnl }
 
 // Processes
-
-// Step1: Pick open reference otus
 process pick_open_reference_otus {
-    tag "open_reference"
+    tag "${sequence_file.baseName}"
     publishDir "${output_dir}/openref_picking"
 
     input:
-    val sequence_files from sequence_data_chnl.collect()
+    set file(sequence_files) from sequence_data_chnl.collect()
 
     output:
-    set file('*.biom'),
-        file('rep_set.{fna,fasta}'),
-        file('rep_set.tre'),
-        file('log*.txt') into output_chnl
+    set file('otu_table.biom'), file('seqs_rep_set.fasta'), file('log*.txt') into output_chnl
 
     script:
-    sequence_list = sequence_files.join(',')
     {{ pick_open_reference_otus }}
 }

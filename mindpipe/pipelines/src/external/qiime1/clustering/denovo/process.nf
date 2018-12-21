@@ -20,11 +20,11 @@ Channel
 
 // Step1: Pick de novo otus
 process pick_de_novo_otus {
-    tag "de_novo"
+    tag "${sequence_file.baseName}"
     publishDir "${output_dir}/denovo_picking"
 
     input:
-    set file(sequence_file) from sequence_data_chnl
+    file sequence_file from sequence_data_chnl
 
     output:
     set file('otu_table.biom'), file('rep_set/seqs_rep_set.fasta'), file('log*.txt') into output_chnl
