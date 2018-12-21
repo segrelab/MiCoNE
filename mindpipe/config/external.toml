@@ -65,7 +65,7 @@
   [[qiime1.clustering.denovo.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
-    location = "seqs_rep_set.fasta"
+    location = "rep_seqs.fasta"
 
 [qiime1.clustering.closedref]
   env = "mindpipe-qiime1"
