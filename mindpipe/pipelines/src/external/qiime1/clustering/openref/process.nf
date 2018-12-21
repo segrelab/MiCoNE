@@ -2,7 +2,7 @@
 
 // Initialize variables
 def sequences = params.sequences
-def references = file(params.references)
+def sequence_reference = file(params.sequence_reference)
 def output_dir = file(params.output_dir)
 
 
@@ -10,14 +10,13 @@ def output_dir = file(params.output_dir)
 def parameters = file(params.parameters) // "-p $parameters"
 def picking_method = params.picking_method // "-m $picking_method"
 def ncpus = params.ncpus // "-a -O $ncpus"
-def percent_subsample = params.percent_subsample // "-s $percent_subsample"
 
 
 // Channels
 Channel
     .fromPath(sequences)
     .ifEmpty { exit 1, "16S sequences not found" }
-    .set { sequence_data_chnl }
+    .set { chnl_sequences }
 
 // Processes
 process pick_open_reference_otus {
@@ -25,10 +24,10 @@ process pick_open_reference_otus {
     publishDir "${output_dir}/openref_picking"
 
     input:
-    set file(sequence_files) from sequence_data_chnl.collect()
+    file sequence_files from chnl_sequences
 
     output:
-    set file('otu_table.biom'), file('seqs_rep_set.fasta'), file('log*.txt') into output_chnl
+    set file('otu_table.biom'), file('rep_seqs.fasta'), file('log*.txt') into output_chnl
 
     script:
     {{ pick_open_reference_otus }}
