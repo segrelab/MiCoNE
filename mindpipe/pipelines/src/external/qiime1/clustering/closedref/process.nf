@@ -25,7 +25,7 @@ process pick_closed_reference_otus {
     publishDir "${output_dir}/closedref_picking"
 
     input:
-    val sequence_file from chnl_sequences
+    file sequence_file from chnl_sequences
 
     output:
     set file('otu_table.biom'), file('rep_set/seqs_rep_set.fasta') file('log*.txt') into output_chnl
