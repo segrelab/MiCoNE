@@ -3,7 +3,6 @@
 // Initialize variables
 def sequences = params.sequences
 def sequence_reference = file(params.sequence_reference)
-def taxonomy_mapping = file(params.taxonomy_mapping)
 def output_dir = file(params.output_dir)
 
 
@@ -28,7 +27,7 @@ process pick_closed_reference_otus {
     file sequence_file from chnl_sequences
 
     output:
-    set file('otu_table.biom'), file('rep_set/seqs_rep_set.fasta') file('log*.txt') into output_chnl
+    set file('otu_table.biom'), file('rep_seqs.fasta') file('log*.txt') into output_chnl
 
     script:
     {{ pick_closed_reference_otus }}

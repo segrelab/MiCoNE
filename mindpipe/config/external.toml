@@ -79,10 +79,6 @@
     format = ["fasta"]
     location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
   [[qiime1.clustering.closedref.input]]
-    datatype = "sequence_taxonomy_mapping"
-    format = ["txt"]
-    location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/taxonomy/97_otu_taxonomy.txt"
-  [[qiime1.clustering.closedref.input]]
     datatype = "qiime1_parameters"
     format = ["txt"]
   [[qiime1.clustering.closedref.parameters]]
@@ -95,7 +91,7 @@
   [[qiime1.clustering.closedref.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
-    location = "seqs_rep_set.fasta"
+    location = "rep_seqs.fasta"
 
 [qiime1.clustering.openref]
   env = "mindpipe-qiime1"
