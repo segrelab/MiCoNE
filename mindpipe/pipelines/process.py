@@ -145,7 +145,10 @@ class Process(collections.Hashable):
             )
             LOG.logger.warning(warning_msg)
             warn(warning_msg)
-        cmd = f"nextflow -C {config_path} run {script_path} -w {work_dir} -profile {self.profile}"
+        cmd = (
+            f"nextflow -C {config_path} run {script_path} -w {work_dir} "
+            f"-profile {self.profile} -log {self._output_location}"
+        )
         if not self._cmd:
             self._cmd = Command(cmd, self.profile)
         else:
