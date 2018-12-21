@@ -13,7 +13,7 @@ def ncpus = params.ncpus // "-a -O $ncpus"
 Channel
     .fromPath(sequences)
     .ifEmpty { exit 1, "16S sequences not found" }
-    .set { sequence_data_chnl }
+    .set { chnl_sequences }
 
 
 // Processes
@@ -24,7 +24,7 @@ process pick_de_novo_otus {
     publishDir "${output_dir}/denovo_picking"
 
     input:
-    file sequence_file from sequence_data_chnl
+    file sequence_file from chnl_sequences
 
     output:
     set file('otu_table.biom'), file('rep_set/seqs_rep_set.fasta'), file('log*.txt') into output_chnl
