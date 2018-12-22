@@ -53,9 +53,6 @@
 [qiime2_sequence_16s]
   desc = "File that contains the qiime2 sequence artifact"
   format = ["qza"]
-[qiime2_mapping]
-  desc = "File that maps sample metadata to barcodes"
-  format = ["tsv", "txt"]
 [quality]
   desc = "File that encodes quality of sequences in the fasta file"
   format = ["qual"]
