@@ -49,13 +49,15 @@ process validate_mapping {
     {{ validate_mapping }}
 }
 
-map_validity = is_map_valid
-                .map { e ->
-                    if (e == 'No errors or warnings were found in mapping file.\n')
-                       'No errors pipeline execution proceeding'
-                    else
-                        exit 1, 'Mapping file has errors'
-                }
+map_validity = (
+    is_map_valid
+    .map { e ->
+        if (e == 'No errors or warnings were found in mapping file.\n')
+           'No errors pipeline execution proceeding'
+        else
+            exit 1, 'Mapping file has errors'
+    }
+)
 
 
 // Step1: Create lists of [id, sequence, barcode, mapping] for each sample
