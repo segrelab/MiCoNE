@@ -1,6 +1,0 @@
-pick_open_reference_otus:otu_picking_method uclust
-pick_open_reference_otus:enable_rev_strand_match True
-pick_open_reference_otus:parallel True
-pick_open_reference_otus:jobs_to_start 10
-pick_open_reference_otus:prefilter_percent_id
-pick_open_reference_otus:min_otu_size
