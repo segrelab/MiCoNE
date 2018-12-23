@@ -1,0 +1,80 @@
+# Pipelines for the otu_processing module
+
+## Filtering
+
+[otu_processing.filtering.group]
+  env = "mindpipe"
+  output_location = "filtering/group"
+  [[otu_processing.filtering.group.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[otu_processing.filtering.group.parameters]]
+    process = "group"
+    tax_levels = "['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species']"
+  [[otu_processing.filtering.group.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "*/*.biom"
+  [[otu_processing.filtering.group.output]]
+    datatype = "children_map"
+    format = ["json"]
+    location = "**/*_children.json"
+
+[otu_processing.filtering.partition]
+  env = "mindpipe"
+  output_location = "filtering/partition"
+  [[otu_processing.filtering.partition.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[otu_processing.filtering.partition.parameters]]
+    process = ""
+  [[otu_processing.filtering.partition.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = *.biom"
+
+
+## Transform
+
+[otu_processing.transform.normalize]
+  env = "mindpipe"
+  output_location = "transform/normalize"
+  [[otu_processing.transform.normalize.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[otu_processing.transform.normalize.parameters]]
+    process = "normalize"
+    axis = "sample"
+    count_thres = 500
+    prevalence_thres = 0.05
+    abundance_thres = 0.01
+    rm_sparse_obs = "True"
+    rm_sparse_samples = "True"
+  [[otu_processing.transform.normalize.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "*.biom"
+
+
+## Export
+
+[otu_processing.export.biom2tsv]
+  env = "mindpipe"
+  output_location = "export/biom2tsv"
+  [[otu_processing.export.biom2tsv.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[otu_processing.export.biom2tsv.output]]
+    datatype = "otu_table"
+    format = ["tsv"]
+    location = "*_otu.tsv"
+  [[otu_processing.export.biom2tsv.output]]
+    datatype = "observation_metadata"
+    format = ["csv"]
+    location = "*_obs_metadata.csv"
+  [[otu_processing.export.biom2tsv.output]]
+    datatype = "sample_metadata"
+    format = ["csv"]
+    location = "*_sample_metadata.tsv"
+  [[otu_processing.export.biom2tsv.parameters]]
+    process = "biom2tsv"
