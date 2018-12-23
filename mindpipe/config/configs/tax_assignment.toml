@@ -1,0 +1,16 @@
+# Pipelines for the tax_assignment module
+
+## Taxonomy mapping
+
+# [tax_assignment.tax_mapping.gg]
+
+# [tax_assignment.tax_mapping.silva]
+
+# [tax_assignment.tax_mapping.ncbi]
+
+
+## Phylogeny
+
+# [tax_assignment.phylogeny.alignment]
+
+# [tax_assignment.phylogeny.diversity]
