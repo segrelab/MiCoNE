@@ -1,0 +1,63 @@
+# Pipelines for the network_inference module
+
+## Correlation
+
+[network_inference.correlation.sparcc]
+  env = "mindpipe-sparcc"
+  output_location = "network_inference/sparcc"
+  [[network_inference.correlation.sparcc.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[network_inference.correlation.sparcc.output]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+    location = "sparcc/*_corr.tsv"
+  [[network_inference.correlation.sparcc.output]]
+    datatype = "pvalue_table"
+    format = ["tsv"]
+    location = "sparcc/*_pval.tsv"
+  [[network_inference.correlation.sparcc.parameters]]
+    process = "sparcc"
+    iterations = 50
+    bootstraps = 1000
+    threads = 1
+
+
+## Direct
+
+# [network_inference.direct.daa]
+
+# [network_inference.direct.mldm]
+
+# [network_inference.direct.spieceasi]
+
+
+## Network
+
+[network_inference.network.make_network]
+  env = "mindpipe"
+  output_location = "network"
+  [[network_inference.network.make_network.input]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+  [[network_inference.network.make_network.input]]
+    datatype = "pvalue_table"
+    format = ["tsv"]
+  [[network_inference.network.make_network.input]]
+    datatype = "observation_metadata"
+    format = ["csv"]
+  [[network_inference.network.make_network.input]]
+    datatype = "children_map"
+    format = ["json"]
+  [[network_inference.network.make_network.input]]
+    datatype = "computational_metadata"
+    format = ["json"]
+  [[network_inference.network.make_network.input]]
+    datatype = "metadata"
+    format = ["json"]
+  [[network_inference.network.make_network.parameters]]
+    process = "make_jsonnet"
+  [[network_inference.network.make_network.output]]
+    datatype = "network"
+    format = ["json"]
+    location = "*_network.json"
