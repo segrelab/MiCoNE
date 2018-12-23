@@ -1,0 +1,196 @@
+# Pipelines for the otu_assignment module
+
+## Sequence processing
+
+[otu_assignment.sequence_processing.join_reads]
+  env = "mindpipe-qiime2"
+  output_location = "joint_reads"
+  [[otu_assignment.sequence_processing.join_reads.input]]
+    datatype = "sequence_16s_forward"
+    format = ["fastq", "fastq.gz"]
+  [[otu_assignment.sequence_processing.join_reads.input]]
+    datatype = "sequence_16s_reverse"
+    format = ["fastq", "fastq.gz"]
+  [[otu_assignment.sequence_processing.join_reads.output]]
+    datatype = "sequence_16s"
+    format = ["fastq"]
+    location = "*.fastq"
+  [[otu_assignment.sequence_processing.join_reads.parameters]]
+    process = "join_reads"
+
+[otu_assignment.sequence_processing.demultiplexing_illumina]
+  env = "mindpipe-qiime2"
+  output_location = "demultiplexing"
+  [[otu_assignment.sequence_processing.demultiplexing_illumina.input]]
+    datatype = "sequence_16s"
+    format = ["fastq", "fastq.gz"]
+  [[otu_assignment.sequence_processing.demultiplexing_illumina.input]]
+    datatype = "barcode"
+    format = ["fastq", "fastq.gz"]
+  [[otu_assignment.sequence_processing.demultiplexing_illumina.input]]
+    datatype = "sample_barcode_mapping"
+    format = ["tsv", "txt"]
+  [[otu_assignment.sequence_processing.demultiplexing_illumina.output]]
+    datatype = "sequence_16s"
+    format = ["fastq"]
+    location = "seqs/*.fastq"
+  [[otu_assignment.sequence_processing.demultiplexing_illumina.parameters]]
+    process = "demultiplexing"
+
+[otu_assignment.sequence_processing.demultiplexing_454]
+  env = "mindpipe-qiime1"
+  output_location = "demultiplexing"
+  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
+    datatype = "quality"
+    format = ["qual"]
+  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
+    datatype = "sample_barcode_mapping"
+    format = ["tsv", "txt"]
+  [[otu_assignment.sequence_processing.demultiplexing_454.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "seqs/*.fna"
+  [[otu_assignment.sequence_processing.demultiplexing_454.parameters]]
+    process = "demultiplexing"
+
+# [otu_assignment.sequence_processing.quality_control]
+
+[otu_assignment.sequence_processing.chimera_checking]
+  env = "mindpipe-qiime2"
+  output_location = "chimera_checking"
+  [[otu_assignment.sequence_processing.chimera_checking.input]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+  [[otu_assignment.sequence_processing.chimera_checking.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[otu_assignment.sequence_processing.chimera_checking.output]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+    location = "*_nonchimeric.fasta"
+  [[otu_assignment.sequence_processing.chimera_checking.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "*_nonchimeric.biom"
+  [[otu_assignment.sequence_processing.chimera_checking.parameters]]
+    process = "chimera_checking"
+
+
+## Denosing and clustering
+
+[otu_assignment.denoise_cluster.denovo]
+  env = "mindpipe-qiime1"
+  output_location = "denoise_cluster"
+  [[otu_assignment.denoise_cluster.denovo.input]]
+    datatype = "sequence_16s"
+    format = ["fastq"]
+  [[otu_assignment.denoise_cluster.denovo.input]]
+    datatype = "qiime1_parameters"
+    format = ["txt"]
+  [[otu_assignment.denoise_cluster.denovo.parameters]]
+    process = "pick_de_novo_otus"
+    ncpus = 1
+  [[otu_assignment.denoise_cluster.denovo.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otu_table.biom"
+  [[otu_assignment.denoise_cluster.denovo.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "rep_seqs.fasta"
+
+[otu_assignment.denoise_cluster.closedref]
+  env = "mindpipe-qiime1"
+  output_location = "denoise_cluster"
+  [[otu_assignment.denoise_cluster.closedref.input]]
+    datatype = "sequence_16s"
+    format = ["fastq"]
+  [[otu_assignment.denoise_cluster.closedref.input]]
+    datatype = "sequence_16s_reference"
+    format = ["fasta"]
+    location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
+  [[otu_assignment.denoise_cluster.closedref.input]]
+    datatype = "qiime1_parameters"
+    format = ["txt"]
+  [[otu_assignment.denoise_cluster.closedref.parameters]]
+    process = "pick_closed_reference_otus"
+    ncpus = 1
+  [[otu_assignment.denoise_cluster.closedref.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otu_table.biom"
+  [[otu_assignment.denoise_cluster.closedref.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "rep_seqs.fasta"
+
+[otu_assignment.denoise_cluster.openref]
+  env = "mindpipe-qiime1"
+  output_location = "denoise_cluster"
+  [[otu_assignment.denoise_cluster.openref.input]]
+    datatype = "sequence_16s"
+    format = ["fastq"]
+  [[otu_assignment.denoise_cluster.openref.input]]
+    datatype = "sequence_16s_reference"
+    format = ["fasta"]
+    location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
+  [[otu_assignment.denoise_cluster.openref.input]]
+    datatype = "qiime1_parameters"
+    format = ["txt"]
+  [[otu_assignment.denoise_cluster.openref.parameters]]
+    process = "pick_open_reference_otus"
+    ncpus = 1
+    picking_method = "sortmerna_sumaclust"
+  [[otu_assignment.denoise_cluster.openref.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otu_table.biom"
+  [[otu_assignment.denoise_cluster.openref.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "rep_seqs.fasta"
+
+[otu_assignment.denoise_cluster.dada2]
+  env = "mindpipe-qiime2"
+  output_location = "denoise_cluster"
+  [[otu_assignment.denoise_cluster.dada2.input]]
+    datatype = "sequence_16s"
+    format = ["fastq"]
+  [[otu_assignment.denoise_cluster.dada2.input]]
+    datatype = "qiime1_parameters"
+    format = ["txt"]
+  [[otu_assignment.denoise_cluster.dada2.parameters]]
+    process = "pick_de_novo_otus"
+    ncpus = 1
+  [[otu_assignment.denoise_cluster.dada2.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otu_table.biom"
+  [[otu_assignment.denoise_cluster.dada2.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "rep_seqs.fasta"
+
+[otu_assignment.denoise_cluster.deblur]
+  env = "mindpipe-qiime2"
+  output_location = "denoise_cluster"
+  [[otu_assignment.denoise_cluster.deblur.input]]
+    datatype = "sequence_16s"
+    format = ["fastq"]
+  [[otu_assignment.denoise_cluster.deblur.input]]
+    datatype = "qiime1_parameters"
+    format = ["txt"]
+  [[otu_assignment.denoise_cluster.deblur.parameters]]
+    process = "pick_de_novo_otus"
+    ncpus = 1
+  [[otu_assignment.denoise_cluster.deblur.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "otu_table.biom"
+  [[otu_assignment.denoise_cluster.deblur.output]]
+    datatype = "sequence_16s"
+    format = ["fasta"]
+    location = "rep_seqs.fasta"
