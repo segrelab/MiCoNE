@@ -72,8 +72,6 @@ class Params(collections.Hashable):
         ----------
         name : str
             Process name
-        root : pathlib.Path
-            Root directory where the process pipeline is stored
         env : pathlib.Path
             Location of the virtual environment for the process
         output_location : pathlib.Path
@@ -86,7 +84,7 @@ class Params(collections.Hashable):
             The list of parameters of the process
     """
 
-    _req_keys = {"root", "output_location", "input", "output", "parameters"}
+    _req_keys = {"output_location", "input", "output", "parameters"}
 
     def __init__(self, data: Tuple[str, Dict[str, Any]]) -> None:
         if len(data) != 2:
@@ -96,7 +94,7 @@ class Params(collections.Hashable):
             if req_key not in value:
                 raise ValueError(f"Invalid process data. {req_key} not found")
         self.name = key
-        self.root = PIPELINE_DIR / value["root"]
+        self.root = PIPELINE_DIR / "src" / key.replace(".", "/")
         if not self.root.exists() or not self.root.is_dir():
             raise FileNotFoundError(
                 f"The root directory: {self.root} doesn't exist. "
