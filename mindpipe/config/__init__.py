@@ -1,3 +1,3 @@
 from .datatypes import DataTypes
-from .params import Params, InternalParamsSet, ExternalParamsSet
+from .params import Params, ParamsSet
 from .config import Config

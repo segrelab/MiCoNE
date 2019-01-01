@@ -368,8 +368,14 @@ class ParamsSet(collections.Set):
     """
 
     def __init__(self, data: Dict[str, Any]) -> None:
+        processed_data = {}
+        for level_1 in data:
+            for level_2 in data[level_1]:
+                for level_3 in data[level_1][level_2]:
+                    name = f"{level_1}.{level_2}.{level_3}"
+                    processed_data[name] = data[level_1][level_2][level_3]
         self.processes: Set[Params] = set()
-        for key, value in data.items():
+        for key, value in processed_data.items():
             process_params = Params((key, value))
             if process_params in self.processes:
                 raise ValueError(
@@ -395,45 +401,3 @@ class ParamsSet(collections.Set):
     def __repr__(self) -> str:
         processes = [process.name for process in self.processes]
         return f"<ParamsSet n={len(self)} processes={processes}>"
-
-
-class InternalParamsSet(ParamsSet):
-    """
-        The set of all supported internal pipeline processes
-
-        Parameters
-        ----------
-        data : Dict[str, Any]
-            A dictionary containing information about the internal pipeline processes
-    """
-
-    def __init__(self, data: Dict[str, Any]) -> None:
-        super().__init__(data)
-
-    def __repr__(self) -> str:
-        processes = [process.name for process in self.processes]
-        return f"<InternalParamsSet n={len(self)} processes={processes}>"
-
-
-class ExternalParamsSet(ParamsSet):
-    """
-        The set of all supported external pipeline processes
-
-        Parameters
-        ----------
-        data : Dict[str, Any]
-            A dictionary containing information about the external pipeline processes
-    """
-
-    def __init__(self, data: Dict[str, Any]) -> None:
-        data_processed = {}
-        for level_1 in data:
-            for level_2 in data[level_1]:
-                for level_3 in data[level_1][level_2]:
-                    name = f"{level_1}.{level_2}.{level_3}"
-                    data_processed[name] = data[level_1][level_2][level_3]
-        super().__init__(data_processed)
-
-    def __repr__(self) -> str:
-        processes = [process.name for process in self.processes]
-        return f"<ExternalParamsSet n={len(self)} processes={processes}>"
