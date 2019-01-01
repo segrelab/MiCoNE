@@ -16,17 +16,5 @@ class TestConfig:
         assert Config()
 
     def test_integrity(self, tmpdir, pipeline_settings):
-        file = tmpdir.mkdir("test_config_integrity").join("datatypes.toml")
-        datatypes_raw = pipeline_settings["datatypes"]
-        missing_datatype = dict(datatypes_raw)
-        del missing_datatype["otu_table"]
-        with open(file, "w") as fid:
-            toml.dump(missing_datatype, fid)
-        with pytest.raises(ValueError):
-            assert Config(datatypes_file=file)
-        wrong_formats = dict(datatypes_raw)
-        wrong_formats["otu_table"]["format"] = [".out"]
-        with open(file, "w") as fid:
-            toml.dump(wrong_formats, fid)
-        with pytest.raises(ValueError):
-            assert Config(datatypes_file=file)
+        config_folder = pipeline_settings["config_folder"]
+        assert Config(config_folder)

@@ -1,21 +1,20 @@
 # User Configuration file for qiime pipeline
 title = "User run settings for the qiime pipeline for 454 sequencing data"
 
-order = ["qiime1.demultiplexing.454"]
+order = ["otu_assignment.sequence_processing.demultiplexing_454"]
 
 output_location = "~/Documents/results"
 
-[qiime1.demultiplexing.454]
-  module = "external"
-  [[qiime1.demultiplexing.454.input]]
+[otu_assignment.sequence_processing.demultiplexing_454]
+  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
     datatype = "sequence_16s"
     format = ["fasta"]
     location = "/path/to/sequence_16s"
-  [[qiime1.demultiplexing.454.input]]
+  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
     datatype = "sample_barcode_mapping"
     format = ["txt"]
     location = "/path/to/mapping"
-  [[qiime1.demultiplexing.454.input]]
+  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
     datatype = "quality"
     format = ["qual"]
     location = "/path/to/quality"

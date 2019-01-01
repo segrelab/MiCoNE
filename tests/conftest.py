@@ -18,7 +18,7 @@ print(f"Log file is at {LOG.path}")
 
 BASEDIR = pathlib.Path.cwd()
 TEST_DATADIR = BASEDIR / "tests/data"
-SETTINGS_DIR = BASEDIR / "mindpipe/config"
+SETTINGS_DIR = BASEDIR / "mindpipe/config/configs"
 PIPELINE_DIR = BASEDIR / "mindpipe/pipelines/src"
 
 
@@ -204,16 +204,20 @@ def script_template_files():
 @pytest.fixture(scope="module")
 def pipeline_settings():
     """ Fixture to load pipeline settings files """
-    datatypes_file = SETTINGS_DIR / "datatypes.toml"
-    internal_file = SETTINGS_DIR / "internal.toml"
-    external_file = SETTINGS_DIR / "external.toml"
-    with open(datatypes_file) as fid:
-        datatypes = toml.load(fid)
-    with open(internal_file) as fid:
-        internal = toml.load(fid)
-    with open(external_file) as fid:
-        external = toml.load(fid)
-    settings = {"datatypes": datatypes, "internal": internal, "external": external}
+    settings_files = [
+        "otu_assignment",
+        "tax_assignment",
+        "otu_processing",
+        "network_inference",
+        "datatypes",
+    ]
+    settings = {}
+    for file in settings_files:
+        fname = SETTINGS_DIR / f"{file}.toml"
+        with open(fname) as fid:
+            data = toml.load(fid)
+        settings[file] = data
+    settings["config_folder"] = SETTINGS_DIR
     return settings
 
 

@@ -7,14 +7,14 @@ import os
 
 import pytest
 
-from mindpipe.config import InternalParamsSet, ExternalParamsSet
-from mindpipe.pipelines import InternalProcess, ExternalProcess
+from mindpipe.config import ParamsSet
+from mindpipe.pipelines import Process
 from mindpipe.config.params import Input
 
 
 def setup_internal(pipeline_settings, example_pipelines, pipeline="make_json_network"):
     internal_raw = pipeline_settings["internal"]
-    internal = InternalParamsSet(internal_raw)
+    internal = ParamsSet(internal_raw)
     user_settings = example_pipelines[pipeline]
     params = internal[pipeline]
     params.merge(user_settings[pipeline])
@@ -25,7 +25,7 @@ def setup_external(
     pipeline_settings, example_pipelines, pipeline="qiime1.demultiplexing.454"
 ):
     external_raw = pipeline_settings["external"]
-    external = ExternalParamsSet(external_raw)
+    external = ParamsSet(external_raw)
     if "." in pipeline:
         pipeline_fname = pipeline.replace(".", "_")
     else:
@@ -44,16 +44,16 @@ def setup_external(
 
 
 @pytest.mark.usefixtures("pipeline_settings", "example_pipelines")
-class TestInternalProcess:
-    """ Tests for the `InternalProcess` class """
+class TestProcess:
+    """ Tests for the `Process` class """
 
     def test_init(self, pipeline_settings, example_pipelines):
         params = setup_internal(pipeline_settings, example_pipelines)
-        assert InternalProcess(params, profile="local")
+        assert Process(params, profile="local")
 
     def test_update_location(self, pipeline_settings, example_pipelines):
         params = setup_internal(pipeline_settings, example_pipelines)
-        process = InternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         output_dir = pathlib.Path.home() / "Documents/results"
         process.update_location(str(output_dir), "input")
         for input_ in process.params.input:
@@ -66,7 +66,7 @@ class TestInternalProcess:
 
     def test_build_bad(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_internal(pipeline_settings, example_pipelines)
-        process = InternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_build")
         output_dir = pathlib.Path.cwd() / "tests/data"
         with pytest.raises(FileNotFoundError):
@@ -78,7 +78,7 @@ class TestInternalProcess:
         params = setup_internal(
             pipeline_settings, example_pipelines, pipeline="group_by_taxa"
         )
-        process = InternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_build")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -92,7 +92,7 @@ class TestInternalProcess:
         params = setup_internal(
             pipeline_settings, example_pipelines, pipeline="group_by_taxa"
         )
-        process = InternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         with pytest.warns(UserWarning):
             process.cmd
         process_dir = tmpdir.mkdir("test_process_cmd")
@@ -108,7 +108,7 @@ class TestInternalProcess:
         params = setup_internal(
             pipeline_settings, example_pipelines, pipeline="group_by_taxa"
         )
-        process = InternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_run")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -116,6 +116,7 @@ class TestInternalProcess:
         process.run()
         assert process.output
         assert not process.error
+        process.log()
         for output in process.params.output:
             if "*" in str(output.location):
                 str_loc = str(output.location)
@@ -130,7 +131,7 @@ class TestInternalProcess:
         params = setup_internal(
             pipeline_settings, example_pipelines, pipeline="group_by_taxa"
         )
-        process = InternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_clean")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -155,11 +156,11 @@ class TestInternalProcess:
         previous_params = setup_internal(
             pipeline_settings, example_pipelines, pipeline="normalize_otu_table"
         )
-        previous_process = InternalProcess(previous_params, profile="local")
+        previous_process = Process(previous_params, profile="local")
         curr_params = setup_internal(
             pipeline_settings, example_pipelines, pipeline="group_by_taxa"
         )
-        curr_process = InternalProcess(curr_params, profile="local")
+        curr_process = Process(curr_params, profile="local")
         output_dir = pathlib.Path.cwd() / "tests/data"
         previous_process.update_location(str(output_dir), "input")
         previous_process.build(tmpdir)
@@ -176,7 +177,7 @@ class TestInternalProcess:
         params = setup_internal(
             pipeline_settings, example_pipelines, pipeline="group_by_taxa"
         )
-        process = InternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_dict")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -190,18 +191,18 @@ class TestInternalProcess:
 
 
 @pytest.mark.usefixtures("pipeline_settings", "example_pipelines")
-class TestExternalProcess:
-    """ Tests for the `ExternalProcess` class """
+class TestProcess:
+    """ Tests for the `Process` class """
 
     def test_init(self, pipeline_settings, example_pipelines):
         params = setup_external(pipeline_settings, example_pipelines)
-        assert ExternalProcess(params, profile="local")
+        assert Process(params, profile="local")
 
     def test_run(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_external(
             pipeline_settings, example_pipelines, pipeline="qiime2.importer.sequence"
         )
-        process = ExternalProcess(params, profile="local")
+        process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_run")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -209,6 +210,7 @@ class TestExternalProcess:
         process.run()
         assert process.output
         assert not process.error
+        process.log()
         for output in process.params.output:
             if "*" in str(output.location):
                 str_loc = str(output.location)
@@ -232,8 +234,8 @@ class TestExternalProcess:
         for remove in to_remove:
             json_params.input.remove(remove)
             json_params.input.add(Input(datatype=remove.datatype, format=remove.format))
-        sparcc_process = ExternalProcess(sparcc_params, profile="local")
-        json_process = InternalProcess(json_params, profile="local")
+        sparcc_process = Process(sparcc_params, profile="local")
+        json_process = Process(json_params, profile="local")
         output_dir = pathlib.Path.cwd() / "tests/data"
         sparcc_process.update_location(str(output_dir), "input")
         sparcc_process.build(tmpdir)
