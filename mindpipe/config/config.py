@@ -3,19 +3,14 @@
 """
 
 import pathlib
-from typing import Union
 
 import toml
 
 from .datatypes import DataTypes
-from .params import InternalParamsSet, ExternalParamsSet
+from .params import ParamsSet
 
 
-CONFIG_FOLDER = pathlib.Path(__file__).parent
-DATATYPES_FILE = CONFIG_FOLDER / "datatypes.toml"
-EXTERNAL_FILE = CONFIG_FOLDER / "external.toml"
-INTERNAL_FILE = CONFIG_FOLDER / "internal.toml"
-ParamType = Union[InternalParamsSet, ExternalParamsSet]
+CONFIG_FOLDER = pathlib.Path(__file__).parent / "configs"
 
 
 class Config:
@@ -24,48 +19,49 @@ class Config:
 
         Parameters
         ----------
-        datatypes_file : pathlib.Path
-            The path to the datatypes definition file
-        external_file : pathlib.Path
-            The path to the external process defintion file
-        internal_file : pathlib.Path
-            The path to the internal process defintion file
+        config_folder : pathlib.Path
+            The path to the folder containing the configuration files
 
         Attributes
         ----------
         datatypes : DataTypes
             The set of supported datatypes
-        process_params : Dict[str, ParamType]
-            The dictionary containing internal and external process configurations
+        params_set : ParamsSet
+            The dictionary containing process configurations
     """
 
-    def __init__(
-        self,
-        datatypes_file: pathlib.Path = DATATYPES_FILE,
-        external_file: pathlib.Path = EXTERNAL_FILE,
-        internal_file: pathlib.Path = INTERNAL_FILE,
-    ) -> None:
+    def __init__(self, config_folder: pathlib.Path = CONFIG_FOLDER) -> None:
+        datatypes_file = config_folder / "datatypes.toml"
         with open(datatypes_file, "r") as fid:
             datatypes = DataTypes(toml.load(fid))
         self.datatypes = datatypes
-        with open(external_file, "r") as fid:
-            external_params = ExternalParamsSet(toml.load(fid))
-        self._check_io_integrity(external_params)
-        with open(internal_file, "r") as fid:
-            internal_params = InternalParamsSet(toml.load(fid))
-        self._check_io_integrity(internal_params)
-        self.process_params = {"internal": internal_params, "external": external_params}
+        process_types = [
+            "otu_assignment",
+            "tax_assignment",
+            "otu_processing",
+            "network_inference",
+        ]
+        combined_params: dict = {}
+        for process_type in process_types:
+            fname = config_folder / f"{process_type}.toml"
+            with open(fname, "r") as fid:
+                params = toml.load(fid)
+            for key, value in params.items():
+                combined_params[key] = value
+        params_set = ParamsSet(combined_params)
+        self._check_io_integrity(params_set)
+        self.params_set = params_set
 
-    def _check_io_integrity(self, process_params: ParamType) -> None:
+    def _check_io_integrity(self, params_set: ParamsSet) -> None:
         """
-            Verify whether all the datatypes in the process_params are valid
+            Verify whether all the datatypes in the params_set are valid
 
             Parameters
             ----------
-            process_params : ParamType
+            params_set : ParamsSet
                 The params to be verified
         """
-        for param in process_params:
+        for param in params_set:
             for curr_input in param.input:
                 if curr_input.datatype not in self.datatypes:
                     raise ValueError(
