@@ -65,6 +65,15 @@
 [sequence_16s]
   desc = "16S rDNA sequences"
   format = ["fastq", "fastq.gz", "fasta"]
+[sequence_16s_forward]
+  desc = "16S rDNA forward sequences"
+  format = ["fastq", "fastq.gz", "fasta"]
+[sequence_16s_reverse]
+  desc = "16S rDNA reverse sequences"
+  format = ["fastq", "fastq.gz", "fasta"]
+[sequence_16s_representative]
+  desc = "Representative 16S rDNA sequences"
+  format = ["fasta"]
 [sequence_16s_reference]
   desc = "Reference sequences for taxonomic classification"
   format =  ["fasta"]
