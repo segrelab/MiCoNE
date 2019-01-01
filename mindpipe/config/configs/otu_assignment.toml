@@ -102,27 +102,27 @@
     format = ["fasta"]
     location = "rep_seqs.fasta"
 
-[otu_assignment.denoise_cluster.closedref]
+[otu_assignment.denoise_cluster.closed_reference]
   env = "mindpipe-qiime1"
   output_location = "denoise_cluster"
-  [[otu_assignment.denoise_cluster.closedref.input]]
+  [[otu_assignment.denoise_cluster.closed_reference.input]]
     datatype = "sequence_16s"
     format = ["fastq"]
-  [[otu_assignment.denoise_cluster.closedref.input]]
+  [[otu_assignment.denoise_cluster.closed_reference.input]]
     datatype = "sequence_16s_reference"
     format = ["fasta"]
     location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
-  [[otu_assignment.denoise_cluster.closedref.input]]
+  [[otu_assignment.denoise_cluster.closed_reference.input]]
     datatype = "qiime1_parameters"
     format = ["txt"]
-  [[otu_assignment.denoise_cluster.closedref.parameters]]
+  [[otu_assignment.denoise_cluster.closed_reference.parameters]]
     process = "pick_closed_reference_otus"
     ncpus = 1
-  [[otu_assignment.denoise_cluster.closedref.output]]
+  [[otu_assignment.denoise_cluster.closed_reference.output]]
     datatype = "otu_table"
     format = ["biom"]
     location = "otu_table.biom"
-  [[otu_assignment.denoise_cluster.closedref.output]]
+  [[otu_assignment.denoise_cluster.closed_reference.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
     location = "rep_seqs.fasta"
