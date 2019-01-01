@@ -31,7 +31,7 @@
   [[otu_processing.filtering.partition.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = *.biom"
+    location = "*.biom"
 
 
 ## Transform
