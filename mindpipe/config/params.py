@@ -365,6 +365,11 @@ class ParamsSet(collections.Set):
         ----------
         data : Dict[str, Any]
             A dictionary containing information about the pipeline processes
+
+        Attributes
+        ----------
+        processes : Set[Params]
+            The set of parameters for all the pipeline processes
     """
 
     def __init__(self, data: Dict[str, Any]) -> None:
