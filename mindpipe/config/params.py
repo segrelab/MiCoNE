@@ -394,7 +394,7 @@ class ParamsSet(collections.Set):
     def __len__(self) -> int:
         return len(self.processes)
 
-    def __contains__(self, value: str) -> bool:
+    def __contains__(self, value) -> bool:
         return value in [process.name for process in self.processes]
 
     def __getitem__(self, key: str) -> Params:
