@@ -1,5 +1,5 @@
 """
-    Module that defines the environment setup for external processes
+    Module that defines the environment setup for processes
 """
 
 import pathlib
@@ -9,7 +9,7 @@ from ..pipelines import Command
 from ..logging import LOG
 
 
-EX_PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines/src/external"
+ENV_DIR = pathlib.Path(__file__).parent.parent / "pipelines/envs"
 
 
 class Environments:
@@ -28,7 +28,7 @@ class Environments:
     """
 
     def __init__(self) -> None:
-        self.configs = list(EX_PIPELINE_DIR.glob("**/env.yml"))
+        self.configs = list(ENV_DIR.glob("**/env.yml"))
         self.env_names = [f"mindpipe-{c.parent.stem}" for c in self.configs]
 
     def init(self, env: Optional[str] = None) -> Iterable[Command]:
@@ -83,10 +83,10 @@ class Environments:
                 The currently running post_install command
         """
         if env is None:
-            post_scripts = list(EX_PIPELINE_DIR.glob("**/post_install.sh"))
+            post_scripts = list(ENV_DIR.glob("**/post_install.sh"))
         else:
             env = env.strip("mindpipe-")
-            post_scripts = list(EX_PIPELINE_DIR.glob(f"**/{env}/post_install.sh"))
+            post_scripts = list(ENV_DIR.glob(f"**/{env}/post_install.sh"))
         for script in post_scripts:
             cmd_str = f"bash {script}"
             LOG.logger.info(f"Running post_install for {env} environment")
