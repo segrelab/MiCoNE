@@ -12,19 +12,38 @@ from mindpipe.pipelines import Process
 from mindpipe.config.params import Input
 
 
-def setup_internal(pipeline_settings, example_pipelines, pipeline="make_json_network"):
-    internal_raw = pipeline_settings["internal"]
+def setup_internal(
+    pipeline_settings,
+    example_pipelines,
+    module="network_inference",
+    pipeline="network_inference.network.make_network",
+):
+    internal_raw = pipeline_settings[module]
     internal = ParamsSet(internal_raw)
-    user_settings = example_pipelines[pipeline]
+    if "." in pipeline:
+        pipeline_fname = pipeline.replace(".", "_")
+    else:
+        pipeline_fname = pipeline
+    user_settings = example_pipelines[pipeline_fname]
     params = internal[pipeline]
-    params.merge(user_settings[pipeline])
+    if "." in pipeline:
+        levels = pipeline.split(".")
+        x = user_settings
+        for i in range(len(levels)):
+            x = x[levels[i]]
+        params.merge(x)
+    else:
+        params.merge(user_settings[pipeline])
     return params
 
 
 def setup_external(
-    pipeline_settings, example_pipelines, pipeline="qiime1.demultiplexing.454"
+    pipeline_settings,
+    example_pipelines,
+    module="otu_assignment",
+    pipeline="otu_assignment.sequence_processing.demultiplexing_454",
 ):
-    external_raw = pipeline_settings["external"]
+    external_raw = pipeline_settings[module]
     external = ParamsSet(external_raw)
     if "." in pipeline:
         pipeline_fname = pipeline.replace(".", "_")
@@ -44,7 +63,7 @@ def setup_external(
 
 
 @pytest.mark.usefixtures("pipeline_settings", "example_pipelines")
-class TestProcess:
+class TestInternalProcess:
     """ Tests for the `Process` class """
 
     def test_init(self, pipeline_settings, example_pipelines):
@@ -76,21 +95,27 @@ class TestProcess:
 
     def test_build_good(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_internal(
-            pipeline_settings, example_pipelines, pipeline="group_by_taxa"
+            pipeline_settings,
+            example_pipelines,
+            module="otu_processing",
+            pipeline="otu_processing.filtering.group",
         )
         process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_build")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
         process.build(process_dir)
-        script_file = os.path.join(process_dir, "group_by_taxa.nf")
-        config_file = os.path.join(process_dir, "group_by_taxa.nf")
+        script_file = os.path.join(process_dir, "otu_processing.filtering.group.nf")
+        config_file = os.path.join(process_dir, "otu_processing.filtering.group.config")
         assert os.path.exists(script_file)
         assert os.path.exists(config_file)
 
     def test_cmd(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_internal(
-            pipeline_settings, example_pipelines, pipeline="group_by_taxa"
+            pipeline_settings,
+            example_pipelines,
+            module="otu_processing",
+            pipeline="otu_processing.filtering.group",
         )
         process = Process(params, profile="local")
         with pytest.warns(UserWarning):
@@ -102,11 +127,15 @@ class TestProcess:
         cmd = process.cmd
         paths = [p for p in str(cmd).split(" ") if not p.startswith("-") and "/" in p]
         for path in paths:
-            assert pathlib.Path(path).exists()
+            if path.endswith(".config") or path.endswith(".nf"):
+                assert pathlib.Path(path).exists()
 
     def test_run(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_internal(
-            pipeline_settings, example_pipelines, pipeline="group_by_taxa"
+            pipeline_settings,
+            example_pipelines,
+            module="otu_processing",
+            pipeline="otu_processing.filtering.group",
         )
         process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_run")
@@ -129,7 +158,10 @@ class TestProcess:
     @pytest.mark.filterwarnings("ignore::UserWarning")
     def test_clean(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_internal(
-            pipeline_settings, example_pipelines, pipeline="group_by_taxa"
+            pipeline_settings,
+            example_pipelines,
+            module="otu_processing",
+            pipeline="otu_processing.filtering.group",
         )
         process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_clean")
@@ -138,6 +170,8 @@ class TestProcess:
         process.build(process_dir)
         cmd = process.cmd
         paths = [p for p in str(cmd).split(" ") if not p.startswith("-") and "/" in p]
+        process.run()
+        process.wait()
         for path in paths:
             assert pathlib.Path(path).exists()
         process.clean("all")
@@ -149,16 +183,23 @@ class TestProcess:
             if "work" in path:
                 assert not pathlib.Path(path).exists()
             else:
-                assert pathlib.Path(path).exists()
+                if not path.endswith(".log"):
+                    assert pathlib.Path(path).exists()
 
     @pytest.mark.filterwarnings("ignore::UserWarning")
     def test_attach_to(self, pipeline_settings, example_pipelines, tmpdir):
         previous_params = setup_internal(
-            pipeline_settings, example_pipelines, pipeline="normalize_otu_table"
+            pipeline_settings,
+            example_pipelines,
+            module="otu_processing",
+            pipeline="otu_processing.transform.normalize",
         )
         previous_process = Process(previous_params, profile="local")
         curr_params = setup_internal(
-            pipeline_settings, example_pipelines, pipeline="group_by_taxa"
+            pipeline_settings,
+            example_pipelines,
+            module="otu_processing",
+            pipeline="otu_processing.filtering.group",
         )
         curr_process = Process(curr_params, profile="local")
         output_dir = pathlib.Path.cwd() / "tests/data"
@@ -175,7 +216,10 @@ class TestProcess:
 
     def test_dict(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_internal(
-            pipeline_settings, example_pipelines, pipeline="group_by_taxa"
+            pipeline_settings,
+            example_pipelines,
+            module="otu_processing",
+            pipeline="otu_processing.filtering.group",
         )
         process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_dict")
@@ -191,7 +235,7 @@ class TestProcess:
 
 
 @pytest.mark.usefixtures("pipeline_settings", "example_pipelines")
-class TestProcess:
+class TestExternalProcess:
     """ Tests for the `Process` class """
 
     def test_init(self, pipeline_settings, example_pipelines):
