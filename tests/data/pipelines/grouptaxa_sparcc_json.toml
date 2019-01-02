@@ -11,7 +11,7 @@ output_location = "~/Documents/results"
     format = ["biom"]
     location = "correlations/good/deblur/deblur.biom"
   [[otu_processing.filtering.group.parameters]]
-    process = "group_by_taxa"
+    process = "group"
     tax_levels = "['Family', 'Genus', 'Species']"
 
 [network_inference.correlation.sparcc]
