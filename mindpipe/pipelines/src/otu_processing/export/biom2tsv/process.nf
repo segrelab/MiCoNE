@@ -10,9 +10,9 @@ Channel
     .map { tuple(it.baseName, it) }
     .set { chnl_otu }
 
-process drop_lineage {
+process biom2tsv {
     tag "$id"
-    publishDir "${output_dir}/export_biom"
+    publishDir "${output_dir}/biom2tsv"
 
     input:
     set val(id), file(otu_file) from chnl_otu
@@ -23,5 +23,5 @@ process drop_lineage {
     set val(id), file("*_sample_metadata.tsv") into observations_raw
 
     script:
-    {{ export_from_biom }}
+    {{ biom2tsv }}
 }
