@@ -134,6 +134,7 @@ class Process(collections.Hashable):
         """
         script_path = self._output_location / f"{self.name}.nf"
         config_path = self._output_location / f"{self.name}.config"
+        log_path = self._output_location / f"{self.name}.log"
         work_dir = self._output_location / "work"
         if (
             not script_path.exists()
@@ -146,7 +147,7 @@ class Process(collections.Hashable):
             LOG.logger.warning(warning_msg)
             warn(warning_msg)
         cmd = (
-            f"nextflow -C {config_path} -log {self._output_location} run {script_path} -w {work_dir} "
+            f"nextflow -C {config_path} -log {log_path} run {script_path} -w {work_dir} "
             f"-profile {self.profile}"
         )
         if not self._cmd:
