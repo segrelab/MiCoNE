@@ -244,7 +244,10 @@ class TestExternalProcess:
 
     def test_run(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_external(
-            pipeline_settings, example_pipelines, pipeline="qiime2.importer.sequence"
+            pipeline_settings,
+            example_pipelines,
+            module="network_inference",
+            pipeline="network_inference.correlation.sparcc",
         )
         process = Process(params, profile="local")
         process_dir = tmpdir.mkdir("test_process_run")
@@ -264,10 +267,12 @@ class TestExternalProcess:
             else:
                 assert output.location.exists()
 
+    @pytest.mark.filterwarnings("ignore::UserWarning")
     def test_ix_attach_to(self, pipeline_settings, example_pipelines, tmpdir):
         sparcc_params = setup_external(
             pipeline_settings,
             example_pipelines,
+            module="network_inference",
             pipeline="network_inference.correlation.sparcc",
         )
         json_params = setup_internal(pipeline_settings, example_pipelines)

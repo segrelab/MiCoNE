@@ -76,6 +76,7 @@ class TestLineage:
         lineage2 = Lineage(**{**lineage_data["good"], **{"Genus": "", "Species": ""}})
         assert lineage1.get_superset("Family") == lineage2
 
+    @pytest.mark.filterwarnings("ignore::RuntimeWarning")
     def test_taxid(self, lineage_data):
         lineage1 = Lineage.from_str(
             "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae"
