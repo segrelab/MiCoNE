@@ -1,16 +1,16 @@
 title = "A example pipeline for testing"
 
-order = ["group_by_taxa", "network_inference.correlation.sparcc", "export_biom", "make_json_network"]
+order = ["otu_processing.filtering.group", "network_inference.correlation.sparcc", "export_biom", "network_inference.network.make_network"]
 
 output_location = "~/Documents/results"
 
-[group_by_taxa]
+[otu_processing.filtering.group]
   module = "internal"
-  [[group_by_taxa.input]]
+  [[otu_processing.filtering.group.input]]
     datatype = "otu_table"
     format = ["biom"]
     location = "correlations/good/deblur/deblur.biom"
-  [[group_by_taxa.parameters]]
+  [[otu_processing.filtering.group.parameters]]
     process = "group_by_taxa"
     tax_levels = "['Family', 'Genus', 'Species']"
 
@@ -24,13 +24,13 @@ output_location = "~/Documents/results"
 [export_biom]
   module = "internal"
 
-[make_json_network]
+[network_inference.network.make_network]
   module = "internal"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "metadata"
     format = ["json"]
     location = "correlations/good/deblur/deblur_metadata.json"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "computational_metadata"
     format = ["json"]
     location = "correlations/good/deblur/deblur_cmetadata.json"

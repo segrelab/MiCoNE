@@ -1,10 +1,10 @@
 title = "Normalize OTU table"
 
-order = ["normalize_otu_table"]
+order = ["otu_processing.transform.normalize"]
 
-[normalize_otu_table]
+[otu_processing.transform.normalize]
   module = "internal"
-  [[normalize_otu_table.input]]
+  [[otu_processing.transform.normalize.input]]
     datatype = "otu_table"
     format = ["biom"]
     location = "otus/biom/good/saliva.biom"

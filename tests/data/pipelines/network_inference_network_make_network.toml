@@ -1,32 +1,32 @@
 title = "Create a json network"
 
-order  = ["make_json_network"]
+order  = ["network_inference.network.make_network"]
 
 output_location = "~/Documents/results"
 
-[make_json_network]
+[network_inference.network.make_network]
   module = "internal"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "metadata"
     format = ["json"]
     location = "correlations/good/deblur/deblur_metadata.json"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "interaction_table"
     format = ["tsv"]
     location = "correlations/good/deblur/deblur_correlations.tsv"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "pvalue_table"
     format = ["tsv"]
     location = "correlations/good/deblur/deblur_pvalues.tsv"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "observation_metadata"
     format = ["csv"]
     location = "correlations/good/deblur/deblur_obs_metadata.csv"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "children_map"
     format = ["json"]
     location = "correlations/good/deblur/deblur_children_map.json"
-  [[make_json_network.input]]
+  [[network_inference.network.make_network.input]]
     datatype = "computational_metadata"
     format = ["json"]
     location = "correlations/good/deblur/deblur_cmetadata.json"

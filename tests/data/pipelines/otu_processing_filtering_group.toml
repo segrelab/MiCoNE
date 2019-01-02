@@ -1,15 +1,15 @@
 title = "Group abundances by taxonomy"
 
-order = ["group_by_taxa"]
+order = ["otu_processing.filtering.group"]
 
 output_location = "~/Documents/results"
 
-[group_by_taxa]
+[otu_processing.filtering.group]
   module = "internal"
-  [[group_by_taxa.input]]
+  [[otu_processing.filtering.group.input]]
     datatype = "otu_table"
     format = ["biom"]
     location = "otus/biom/good/stool.biom"
-  [[group_by_taxa.parameters]]
+  [[otu_processing.filtering.group.parameters]]
     process = "group_by_taxa"
     tax_levels = "['Family', 'Genus', 'Species']"
