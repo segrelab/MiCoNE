@@ -13,6 +13,6 @@ mkdir "$FOLDER/fastspar"
 wget -O "$FOLDER/fastspar.tar.gz" --quiet "$URL"
 tar xzf "$FOLDER/fastspar.tar.gz" -C "$FOLDER"
 
-conda activate mindpipe-sparcc
+source activate mindpipe-sparcc
 
 cp $FOLDER/$FNAME/fastspar* "$CONDA_PREFIX/bin/"
