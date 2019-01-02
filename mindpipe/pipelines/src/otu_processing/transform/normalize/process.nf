@@ -16,9 +16,9 @@ Channel
     .map { tuple(it.baseName, it) }
     .set { chnl_otudata }
 
-process normalize_otu_table {
+process normalize {
     tag "$id"
-    publishDir "${output_dir}/normalize_otu_table"
+    publishDir "${output_dir}/normalize"
 
     input:
     set val(id), file(otu_file) from chnl_otudata
@@ -27,5 +27,5 @@ process normalize_otu_table {
     set val(id), file("*.biom") into final_otu_chnl
 
     script:
-    {{ normalize_otu_table }}
+    {{ normalize }}
 }
