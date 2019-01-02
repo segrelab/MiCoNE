@@ -60,4 +60,4 @@
   [[network_inference.network.make_network.output]]
     datatype = "network"
     format = ["json"]
-    location = "*_network.json"
+    location = "make_network/*_network.json"

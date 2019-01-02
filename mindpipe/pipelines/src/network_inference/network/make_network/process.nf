@@ -39,9 +39,9 @@ chnl_correlation
     .join(chnl_children_map, by: 0)
     .set { chnl_input }
 
-process make_json_network {
+process make_network {
     tag "$id"
-    publishDir "${output_dir}/make_json_network"
+    publishDir "${output_dir}/make_network"
 
     input:
     set val(id), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file) from chnl_input
@@ -50,5 +50,5 @@ process make_json_network {
     set val(id), file('*_network.json') into chnl_output
 
     script:
-    {{ make_jsonnet }}
+    {{ make_network }}
 }
