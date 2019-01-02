@@ -11,9 +11,9 @@ Channel
     .map { tuple(it.baseName, it) }
     .set { chnl_otudata }
 
-process group_by_taxa {
+process group {
     tag "$id"
-    publishDir "${output_dir}/group_by_taxa/${id}"
+    publishDir "${output_dir}/group/${id}"
 
     input:
     set val(id), file(otu_file) from chnl_otudata
@@ -23,5 +23,5 @@ process group_by_taxa {
     set val(id), file("*.json") into final_childrendata_chnl
 
     script:
-    {{ group_by_taxa }}
+    {{ group }}
 }
