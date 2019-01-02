@@ -9,7 +9,7 @@ from typing import Iterator, List, Optional, Union
 import toml
 
 from ..config import Config
-from .process import InternalProcess, ExternalProcess
+from .process import Process
 
 
 class Pipeline(collections.Sequence):
@@ -48,7 +48,7 @@ class Pipeline(collections.Sequence):
             The execution environment for the pipeline
         base_dir : pathlib.Path
             The absolute path to the base input file directory
-        processes : List[Union[InternalProcess, ExternalProcess]]
+        processes : List[Process]
             The list of `Process` in the pipeline
     """
 
@@ -106,26 +106,14 @@ class Pipeline(collections.Sequence):
         return settings
 
     def _create_processes(self, settings):
-        process_list: List[Union[InternalProcess, ExternalProcess]] = []
+        process_list: List[Process] = []
         process_namelist = self._order
         for process_name in process_namelist:
-            if "." in process_name:
-                temp = settings
-                for x in process_name.split("."):
-                    temp = temp[x]
-                user_process_data = temp
-            else:
-                user_process_data = settings[process_name]
-            process_data = self.config.process_params[user_process_data["module"]][
-                process_name
-            ]
+            level_1, level_2, level_3 = process_name.split(".")
+            user_process_data = settings[level_1][level_2][level_3]
+            process_data = self.config.params_set[process_name]
             process_data.merge(user_process_data)
-            if user_process_data["module"] == "internal":
-                process_list.append(InternalProcess(process_data, self.profile))
-            elif user_process_data["module"] == "external":
-                process_list.append(ExternalProcess(process_data, self.profile))
-            else:
-                raise ValueError(f"Unsupported process type: {process_data['module']}")
+            process_list.append(Process(process_data, self.profile))
         process_list[0].update_location(str(self.base_dir), "input")
         process_list[0].update_location(self.output_location, "output")
         for i, current_process in enumerate(process_list[1:]):
@@ -141,7 +129,7 @@ class Pipeline(collections.Sequence):
     def __len__(self) -> int:
         return len(self.processes)
 
-    def __getitem__(self, key: str) -> Union[InternalProcess, ExternalProcess]:
+    def __getitem__(self, key: str) -> Process:
         for process in self:
             if process.name == key:
                 return process
@@ -157,14 +145,14 @@ class Pipeline(collections.Sequence):
     def __str__(self) -> str:
         return self.title
 
-    def run(self) -> Iterator[Union[InternalProcess, ExternalProcess]]:
+    def run(self) -> Iterator[Process]:
         """
             Starts the execution of the pipeline
             Returns an iterator over the processes being executed
 
             Returns
             -------
-            Iterator[Union[InternalProcess, ExternalProcess]]
+            Iterator[Process]
                 Iterator over each process currently being executed
        """
         for process in self.processes:
@@ -172,3 +160,5 @@ class Pipeline(collections.Sequence):
             process.build(str(loc))
             process.run()
             yield process
+
+    # TODO: Create computational metadata
