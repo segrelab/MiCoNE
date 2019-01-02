@@ -6,6 +6,23 @@ Unreleased
 ----------
 
 
+0.5.0 (2019-01-02)
+------------------
+
+Major update! Implemeting the core pipeline functionality
+
+Added
++++++
+- ``NetworkGroup`` class represents a group of networks
+- ``Config`` class to extract, process and store pipeline settings
+- ``Command`` class is a wrapper for running subprocesses
+- ``Process`` class for executing a pipeline process
+- ``Pipeline`` class defines the pipeline and methods to run the pipeline
+- ``Environments`` class that creates, lists and loads conda environments
+- Logging functionality
+- CLI interface for mindpipe
+
+
 0.4.2 (2018-10-08)
 ------------------
 
