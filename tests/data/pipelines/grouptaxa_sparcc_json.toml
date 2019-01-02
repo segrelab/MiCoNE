@@ -1,11 +1,10 @@
 title = "A example pipeline for testing"
 
-order = ["otu_processing.filtering.group", "network_inference.correlation.sparcc", "export_biom", "network_inference.network.make_network"]
+order = ["otu_processing.filtering.group", "network_inference.correlation.sparcc", "otu_processing.export.biom2tsv", "network_inference.network.make_network"]
 
 output_location = "~/Documents/results"
 
 [otu_processing.filtering.group]
-  module = "internal"
   [[otu_processing.filtering.group.input]]
     datatype = "otu_table"
     format = ["biom"]
@@ -15,17 +14,14 @@ output_location = "~/Documents/results"
     tax_levels = "['Family', 'Genus', 'Species']"
 
 [network_inference.correlation.sparcc]
-  module = "external"
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 5
     bootstraps = 10
 
-[export_biom]
-  module = "internal"
+[otu_processing.export.biom2tsv]
 
 [network_inference.network.make_network]
-  module = "internal"
   [[network_inference.network.make_network.input]]
     datatype = "metadata"
     format = ["json"]
