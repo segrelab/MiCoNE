@@ -215,11 +215,13 @@ class Process(collections.Hashable):
             )
         script_path = self._output_location / f"{self.name}.nf"
         config_path = self._output_location / f"{self.name}.config"
+        log_path = self._output_location / f"{self.name}.log"
         work_dir = self._output_location / "work"
         if scope == "all":
             shutil.rmtree(work_dir)
             script_path.unlink()
             config_path.unlink()
+            log_path.unlink()
         elif scope == "work_dir":
             shutil.rmtree(work_dir)
         else:
