@@ -14,7 +14,7 @@
   [[otu_processing.filtering.group.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "*/*.biom"
+    location = "**/*.biom"
   [[otu_processing.filtering.group.output]]
     datatype = "children_map"
     format = ["json"]
