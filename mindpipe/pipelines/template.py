@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 from jinja2schema import infer
 
 
-CONFIG_DIR: pathlib.Path = pathlib.Path.cwd() / "mindpipe/config"
+CONFIG_DIR: pathlib.Path = pathlib.Path.cwd() / "mindpipe/config/configs"
 
 
 class Template:
