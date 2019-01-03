@@ -8,6 +8,10 @@ def output_dir = file(params.output_dir)
 
 // NOTE: All the above file muset have the same baseNames
 
+// Parameters
+def rev_comp_barcodes = params.rev_comp_barcodes
+def rev_comp_mapping_barcodes = params.rev_comp_mapping_barcodes
+
 
 // Channels
 Channel
@@ -40,7 +44,7 @@ chnl_sequences
 // Step2: Demultiplexing
 process demultiplexing {
     tag "${id}"
-    publishDir "${output_dir}/demultiplexing"
+    publishDir "${output_dir}/demultiplexing/${id}"
 
     input:
     set val(id), file(sequence_file), file(barcode_file), file(mapping_file) from chnl_combined_data
@@ -49,5 +53,7 @@ process demultiplexing {
     set file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST') into demultiplexed_seqs
 
     script:
+    def rcb = rev_comp_barcodes == 'True' ? '--p-rev-comp-barcodes' : '--p-no-rev-comp-barcodes'
+    def rcmb = rev_comp_mapping_barcodes == 'True' ? '--p-rev-comp-mapping-barcodes' : '--p-no-rev-comp-mapping-barcodes'
     {{ demultiplexing }}
 }

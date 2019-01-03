@@ -12,7 +12,10 @@ qiime demux emp-single \
     --i-seqs ${id}_sequences.qza \
     --m-barcodes-file ${mapping_file} \
     --m-barcodes-column BarcodeSequence \
+    ${rcb} \
+    ${rcmb} \
     --o-per-sample-sequences ${id}_demux.qza
+    --output-dir output
 
 qiime tools export \
     --input-path ${id}_demux.qza \

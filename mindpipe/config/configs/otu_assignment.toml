@@ -40,6 +40,8 @@
     location = "demultiplexing/MANIFEST"
   [[otu_assignment.sequence_processing.demultiplexing_illumina.parameters]]
     process = "demultiplexing"
+    rev_comp_barcodes = "False"
+    rev_comp_mapping_barcodes = "False"
 
 [otu_assignment.sequence_processing.demultiplexing_454]
   env = "mindpipe-qiime1"
