@@ -33,7 +33,11 @@
   [[otu_assignment.sequence_processing.demultiplexing_illumina.output]]
     datatype = "sequence_16s"
     format = ["fastq"]
-    location = "seqs/*.fastq"
+    location = "demultiplexing/*.fastq.gz"
+  [[otu_assignment.sequence_processing.demultiplexing_illumina.output]]
+    datatype = "sample_sequence_manifest"
+    format = [""]
+    location = "demultiplexing/MANIFEST"
   [[otu_assignment.sequence_processing.demultiplexing_illumina.parameters]]
     process = "demultiplexing"
 

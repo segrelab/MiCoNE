@@ -38,21 +38,6 @@
 [qiime1_parameters]
   desc = "File that contains the parameters for Qiime modules"
   format = ["txt"]
-[qiime2_artifact]
-  desc = "A qiime2 artifact"
-  format = ["qza"]
-[qiime2_observation_metadata]
-  desc = "File that contains the qiime2 observation metadata"
-  format = ["qza"]
-[qiime2_otu_table]
-  desc = "File that contains the qiime2 OTU abundance table"
-  format = ["qza"]
-[qiime2_phylogenetic_tree]
-  desc = "File that contains the qiime2 phylogenetic taxonomic tree"
-  format = ["qza"]
-[qiime2_sequence_16s]
-  desc = "File that contains the qiime2 sequence artifact"
-  format = ["qza"]
 [quality]
   desc = "File that encodes quality of sequences in the fasta file"
   format = ["qual"]
@@ -62,6 +47,9 @@
 [sample_metadata]
   desc = "Metadata for each sample"
   format = ["csv"]
+[sample_sequence_manifest]
+  desc = "File that maps sample metadata to demultiplexed sequences"
+  format = [""]
 [sequence_16s]
   desc = "16S rDNA sequences"
   format = ["fastq", "fastq.gz", "fasta"]
