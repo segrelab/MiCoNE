@@ -6,7 +6,7 @@ mv ${manifest_file} sequence_folder
 
 cd sequence_folder
 qiime tools import \
-    --type 'SampleData[SequenceWithQuality]' \
+    --type 'SampleData[SequencesWithQuality]' \
     --input-path MANIFEST \
     --input-format SingleEndFastqManifestPhred33 \
     --output-path ${id}_sequences.qza

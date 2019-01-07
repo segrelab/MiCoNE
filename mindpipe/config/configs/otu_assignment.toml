@@ -76,16 +76,16 @@
   [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
     datatype = "sequence_16s"
     format = ["fastq.gz"]
-    location = "trimmed/*.fastq.gz"
+    location = "trimmed/**/*.fastq.gz"
   [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
     datatype = "sample_sequence_manifest"
     format = [""]
-    location = "trimmed/MANIFEST"
+    location = "trimmed/**/MANIFEST"
   [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
     process = "export_visualization"
-    seq_sample_size = 10000
+    seq_samplesize = 10000
   [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
-    process = "trim"
+    process = "trimming"
     ncpus = 2
 
 [otu_assignment.sequence_processing.chimera_checking]

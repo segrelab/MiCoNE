@@ -4,6 +4,7 @@
 
 def sequence_16s = params.sequence_16s
 def sample_sequence_manifest = params.sample_sequence_manifest
+def output_dir = params.output_dir
 
 
 // Parameters
@@ -19,14 +20,14 @@ Channel
     .ifEmpty { exit 1, "Sequences not found in channel" }
     .map { tuple(it.getParent().baseName, it) }
     .groupTuple()
-    .set { chnl_seqs, chnl_seqs_trim }
+    .into { chnl_seqs; chnl_seqs_trim }
 
 Channel
     .fromPath(sample_sequence_manifest)
     .ifEmpty { exit 1, "Manifest files not found in channel"  }
     .map { tuple(it.getParent().baseName, it) }
     .groupTuple()
-    .set { chnl_manifest, chnl_manifest_trim }
+    .into { chnl_manifest; chnl_manifest_trim }
 
 chnl_seqs
     .join(chnl_manifest, by: 0)
@@ -77,7 +78,7 @@ chnl_seqs_trim
     .set { chnl_trim }
 
 // 4. Trimming the sequences using cutadapt
-proces trim {
+process trimming {
     tag "${id}"
     publishDir "${output_dir}/trimmed/${id}"
     input:
@@ -85,6 +86,5 @@ proces trim {
     output:
     set val(id), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST') into chnl_output
     script:
-    def sequence_glob = sequence_files?.find{it}.getParent() + "/*.fastq.gz"
-    {{ trim }}
+    {{ trimming }}
 }

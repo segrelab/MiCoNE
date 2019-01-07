@@ -25,15 +25,15 @@ def main(sequence_glob, trim_cmd, ncpus):
     with open(trim_cmd) as fid:
         for line in fid:
             cutadapt_args.append(line.strip())
-    folder, glob = sequence_glob.rsplit("/", 1)
-    sequences = list(str(p) for p in pathlib.Path(folder).glob(glob))
+    folder = pathlib.Path()
+    sequences = list(str(p) for p in folder.glob(sequence_glob))
     trim_func = partial(trim, cutadapt_args=cutadapt_args)
     with mp.Pool(processes=ncpus) as pool:
         pool.map(trim_func, sequences)
 
 
 if __name__ == "__main__":
-    SEQUENCE_GLOB = "${sequence_glob}"
+    SEQUENCE_GLOB = "*.fastq.gz"
     TRIM_CMD = "${trim_cmd}"
     NCPUS = $ncpus
     main(SEQUENCE_GLOB, TRIM_CMD, NCPUS)
