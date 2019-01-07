@@ -62,7 +62,31 @@
   [[otu_assignment.sequence_processing.demultiplexing_454.parameters]]
     process = "demultiplexing"
 
-# [otu_assignment.sequence_processing.quality_control]
+# [otu_assignment.sequence_processing.trim_filter_auto]
+
+[otu_assignment.sequence_processing.trim_filter_fixed]
+  env = "mindpipe-qiime2"
+  output_location = "trimmed"
+  [[otu_assignment.sequence_processing.trim_filter_fixed.input]]
+    datatype = "sequence_16s"
+    format = ["fastq.gz"]
+  [[otu_assignment.sequence_processing.trim_filter_fixed.input]]
+    datatype = "sample_sequence_manifest"
+    format = [""]
+  [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
+    datatype = "sequence_16s"
+    format = ["fastq.gz"]
+    location = "trimmed/*.fastq.gz"
+  [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
+    datatype = "sample_sequence_manifest"
+    format = [""]
+    location = "trimmed/MANIFEST"
+  [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
+    process = "export_visualization"
+    seq_sample_size = 10000
+  [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
+    process = "trim"
+    ncpus = 2
 
 [otu_assignment.sequence_processing.chimera_checking]
   env = "mindpipe-qiime2"
