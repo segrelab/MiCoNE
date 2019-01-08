@@ -1,4 +1,4 @@
-# Use configuration file for custom fixed length trimming pipeline
+# User configuration file for custom fixed length trimming pipeline
 title = "User run settings for trim_filter_fixed pipeline"
 
 order = ["otu_assignment.sequence_processing.trim_filter_fixed"]
