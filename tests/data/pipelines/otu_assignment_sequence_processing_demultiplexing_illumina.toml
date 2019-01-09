@@ -1,0 +1,20 @@
+# User configuration file for illumina demultiplex pipeline
+title = "User run settings for demultiplex_illumina pipeline"
+
+order = ["otu_assignment.sequence_processing.demultiplex_illumina"]
+
+output_location = "/home/dileep/Documents/results"
+
+[otu_assignment.sequence_processing.demultiplex_illumina]
+  [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
+    datatype = "sequence_16s"
+    format = ["fastq.gz"]
+    location = "/home/dileep/Documents/microbiome_analysis/seqs/mock_6/sequences/mock6_reads.fastq.gz"
+  [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
+    datatype = "barcode"
+    format = ["fastq.gz"]
+    location = "/home/dileep/Documents/microbiome_analysis/seqs/mock_6/sequences/mock6_barcodes.fastq.gz"
+  [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
+    datatype = "sample_barcode_mapping"
+    format = ["tsv"]
+    location = "/home/dileep/Documents/microbiome_analysis/seqs/mock_6/mock6_map.tsv"
