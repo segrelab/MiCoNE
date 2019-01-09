@@ -12,7 +12,7 @@ from .setup import Environments
 
 @click.group()
 @click.option(
-    "--log", "-l", default=False, type=bool, help="Flag to turn on/off logging"
+    "--log", "-l", default=True, type=bool, help="Flag to turn on/off logging"
 )
 @click.pass_context
 def cli(ctx, log):
