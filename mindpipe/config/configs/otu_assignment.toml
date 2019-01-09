@@ -3,20 +3,26 @@
 ## Sequence processing
 
 [otu_assignment.sequence_processing.join_reads]
-  env = "mindpipe-qiime2"
-  output_location = "joint_reads"
+  env = "mindpipe-qiime1"
+  output_location = "joined_reads"
   [[otu_assignment.sequence_processing.join_reads.input]]
-    datatype = "sequence_16s_forward"
+    datatype = "sequence_16s"
     format = ["fastq", "fastq.gz"]
   [[otu_assignment.sequence_processing.join_reads.input]]
-    datatype = "sequence_16s_reverse"
+    datatype = "barcode"
     format = ["fastq", "fastq.gz"]
   [[otu_assignment.sequence_processing.join_reads.output]]
     datatype = "sequence_16s"
-    format = ["fastq"]
-    location = "*.fastq"
+    format = ["fastq.gz"]
+    location = "join_reads/**/*_reads.fastq.gz"
+  [[otu_assignment.sequence_processing.join_reads.output]]
+    datatype = "barcode"
+    format = ["fastq.gz"]
+    location = "join_reads/**/*_barcodes.fastq.gz"
   [[otu_assignment.sequence_processing.join_reads.parameters]]
     process = "join_reads"
+    min_overlap = 6
+    perc_max_diff = 8
 
 # [otu_assignment.sequence_processing.join_reads_demux]
 
