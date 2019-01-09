@@ -18,28 +18,30 @@
   [[otu_assignment.sequence_processing.join_reads.parameters]]
     process = "join_reads"
 
-[otu_assignment.sequence_processing.demultiplexing_illumina]
+# [otu_assignment.sequence_processing.join_reads_demux]
+
+[otu_assignment.sequence_processing.demultiplex_illumina]
   env = "mindpipe-qiime2"
-  output_location = "demultiplexing"
-  [[otu_assignment.sequence_processing.demultiplexing_illumina.input]]
+  output_location = "demultiplex"
+  [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
     datatype = "sequence_16s"
     format = ["fastq", "fastq.gz"]
-  [[otu_assignment.sequence_processing.demultiplexing_illumina.input]]
+  [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
     datatype = "barcode"
     format = ["fastq", "fastq.gz"]
-  [[otu_assignment.sequence_processing.demultiplexing_illumina.input]]
+  [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
     datatype = "sample_barcode_mapping"
     format = ["tsv", "txt"]
-  [[otu_assignment.sequence_processing.demultiplexing_illumina.output]]
+  [[otu_assignment.sequence_processing.demultiplex_illumina.output]]
     datatype = "sequence_16s"
-    format = ["fastq"]
-    location = "demultiplexing/*.fastq.gz"
-  [[otu_assignment.sequence_processing.demultiplexing_illumina.output]]
+    format = ["fastq.gz"]
+    location = "demultiplex/**/*.fastq.gz"
+  [[otu_assignment.sequence_processing.demultiplex_illumina.output]]
     datatype = "sample_sequence_manifest"
     format = [""]
-    location = "demultiplexing/MANIFEST"
-  [[otu_assignment.sequence_processing.demultiplexing_illumina.parameters]]
-    process = "demultiplexing"
+    location = "demultiplex/**/MANIFEST"
+  [[otu_assignment.sequence_processing.demultiplex_illumina.parameters]]
+    process = "demultiplex"
     rev_comp_barcodes = "False"
     rev_comp_mapping_barcodes = "False"
 
