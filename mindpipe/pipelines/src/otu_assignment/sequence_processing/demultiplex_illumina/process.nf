@@ -38,22 +38,45 @@ Channel
 // Step1: Create lists of [id, sequence, barcode, mapping] for each sample
 chnl_sequences
     .join(chnl_barcodes)
-    .join(chnl_mapping)
-    .set { chnl_combined_data }
+    .set { chnl_sequence_import }
 
-// Step2: Demultiplexing
-process demultiplexing {
+// Step2: Import the sequences into a qiime2 artifact
+process import_sequences {
     tag "${id}"
-    publishDir "${output_dir}/demultiplexing/${id}"
-
     input:
-    set val(id), file(sequence_file), file(barcode_file), file(mapping_file) from chnl_combined_data
-
+    set val(id), file(sequence_file), file(barcode_file) from chnl_sequence_import
     output:
-    set file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST') into demultiplexed_seqs
+    set val(id), file('*_sequences.qza') into chnl_seqartifact
+    script:
+    {{ import_sequences }}
+}
 
+chnl_seqartifact
+    .join(chnl_mapping)
+    .set { chnl_demux_input }
+
+
+// Step3: demultiplex
+process demultiplex {
+    tag "${id}"
+    input:
+    set val(id), file(sequence_artifact), file(mapping_file) from chnl_demux_input
+    output:
+    set val(id), file('*_demux.qza') into chnl_seqdemux_export
     script:
     def rcb = rev_comp_barcodes == 'True' ? '--p-rev-comp-barcodes' : '--p-no-rev-comp-barcodes'
     def rcmb = rev_comp_mapping_barcodes == 'True' ? '--p-rev-comp-mapping-barcodes' : '--p-no-rev-comp-mapping-barcodes'
-    {{ demultiplexing }}
+    {{ demultiplex }}
+}
+
+// Step4: Export the sequences and fix the manifest file
+process export_sequences {
+    tag "${id}"
+    publishDir "${output_dir}/demulitplex/${id}", saveAs: { filename -> filename.split("/")[1] }
+    input:
+    set val(id), file(demux_artifact) from chnl_seqdemux_export
+    output:
+    set val(id), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST') into chnl_seqdemux
+    script:
+    {{ export_sequences }}
 }
