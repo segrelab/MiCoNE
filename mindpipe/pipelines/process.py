@@ -117,7 +117,6 @@ class Process(collections.Hashable):
         if work_dir.exists():
             warning_msg = "Work directory already exists (could be from another run)"
             LOG.logger.warning(warning_msg)
-            warn(warning_msg)
         else:
             work_dir.mkdir()
 
