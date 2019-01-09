@@ -260,6 +260,7 @@ class Params(collections.Hashable):
         """
             Verify whether the Input and Output elements have been assigned and are valid
         """
+        mult_pattern = re.compile(".*{(.*)}.*")
         if not self.output_location.is_absolute():
             raise ValueError("The output location must be absolute")
         for elem in self.input:
@@ -267,12 +268,20 @@ class Params(collections.Hashable):
                 raise ValueError(f"Input: {elem} has not been assigned a location yet")
             elif "*" in str(elem.location):
                 str_loc = str(elem.location)
-                ind = str_loc.find("*")
-                files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
-                if len(files) == 0:
-                    raise FileNotFoundError(
-                        f"Unable to locate input files at {elem.location}"
-                    )
+                mult_match = re.match(mult_pattern, str_loc)
+                if mult_match:
+                    str_loc_list = []
+                    for pattern in mult_match.group(1).split(","):
+                        str_loc_list.append(re.sub(r"{.*}", pattern, str_loc))
+                else:
+                    str_loc_list = [str_loc]
+                for str_loc in str_loc_list:
+                    ind = str_loc.find("*")
+                    files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
+                    if len(files) == 0:
+                        raise FileNotFoundError(
+                            f"Unable to locate input files at {elem.location}"
+                        )
             elif not elem.location.exists():
                 raise FileNotFoundError(
                     f"Unable to locate input file at {elem.location}"
