@@ -6,5 +6,4 @@ qiime demux emp-single \
     --m-barcodes-column BarcodeSequence \
     ${rcb} \
     ${rcmb} \
-    --o-per-sample-sequences ${id}_demux.qza \
-    --output-dir output
+    --o-per-sample-sequences ${id}_demux.qza
