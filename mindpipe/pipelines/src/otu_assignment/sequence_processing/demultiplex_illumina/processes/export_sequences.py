@@ -7,10 +7,10 @@ import subprocess
 def fix_manifest(manifest_file):
     data = []
     with open(manifest_file) as fid:
-        header = next(fid).split(",")
+        header = next(fid).strip().split(",")
         for line in fid:
             if not line.startswith("#"):
-                data.append(line.split(","))
+                data.append(line.strip().split(","))
     header[1] = "absolute-filepath"
     for i in range(len(data)):
         data[i][1] = "\$PWD/" + data[i][1]
