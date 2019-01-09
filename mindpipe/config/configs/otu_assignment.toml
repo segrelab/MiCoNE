@@ -14,11 +14,11 @@
   [[otu_assignment.sequence_processing.join_reads.output]]
     datatype = "sequence_16s"
     format = ["fastq.gz"]
-    location = "join_reads/**/*_reads.fastq.gz"
+    location = "joined_reads/**/*_reads.fastq.gz"
   [[otu_assignment.sequence_processing.join_reads.output]]
     datatype = "barcode"
     format = ["fastq.gz"]
-    location = "join_reads/**/*_barcodes.fastq.gz"
+    location = "joined_reads/**/*_barcodes.fastq.gz"
   [[otu_assignment.sequence_processing.join_reads.parameters]]
     process = "join_reads"
     min_overlap = 6
