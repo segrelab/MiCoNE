@@ -11,6 +11,8 @@ def output_dir = params.output_dir
 
 def seq_samplesize = params.seq_samplesize
 def ncpus = params.ncpus
+def front_adapter = params.front_adapter
+def tail_adapter = params.tail_adapter
 
 
 // Channels

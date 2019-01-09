@@ -89,6 +89,8 @@
   [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
     process = "trimming"
     ncpus = 2
+    front_adapter = ""
+    tail_adapter = ""
 
 [otu_assignment.sequence_processing.chimera_checking]
   env = "mindpipe-qiime2"
