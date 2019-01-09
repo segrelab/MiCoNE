@@ -11,6 +11,10 @@
   [[otu_assignment.sequence_processing.join_reads.input]]
     datatype = "barcode"
     format = ["fastq", "fastq.gz"]
+  [[otu_assignment.sequence_processing.join_reads.parameters]]
+    process = "join_reads"
+    min_overlap = 6
+    perc_max_diff = 8
   [[otu_assignment.sequence_processing.join_reads.output]]
     datatype = "sequence_16s"
     format = ["fastq.gz"]
@@ -19,10 +23,6 @@
     datatype = "barcode"
     format = ["fastq.gz"]
     location = "joined_reads/**/*_barcodes.fastq.gz"
-  [[otu_assignment.sequence_processing.join_reads.parameters]]
-    process = "join_reads"
-    min_overlap = 6
-    perc_max_diff = 8
 
 # [otu_assignment.sequence_processing.join_reads_demux]
 
@@ -38,6 +38,10 @@
   [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
     datatype = "sample_barcode_mapping"
     format = ["tsv", "txt"]
+  [[otu_assignment.sequence_processing.demultiplex_illumina.parameters]]
+    process = "demultiplex"
+    rev_comp_barcodes = "False"
+    rev_comp_mapping_barcodes = "False"
   [[otu_assignment.sequence_processing.demultiplex_illumina.output]]
     datatype = "sequence_16s"
     format = ["fastq.gz"]
@@ -46,10 +50,6 @@
     datatype = "sample_sequence_manifest"
     format = [""]
     location = "demultiplex/**/MANIFEST"
-  [[otu_assignment.sequence_processing.demultiplex_illumina.parameters]]
-    process = "demultiplex"
-    rev_comp_barcodes = "False"
-    rev_comp_mapping_barcodes = "False"
 
 [otu_assignment.sequence_processing.demultiplexing_454]
   env = "mindpipe-qiime1"
@@ -81,14 +81,6 @@
   [[otu_assignment.sequence_processing.trim_filter_fixed.input]]
     datatype = "sample_sequence_manifest"
     format = [""]
-  [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
-    datatype = "sequence_16s"
-    format = ["fastq.gz"]
-    location = "trimmed/**/*.fastq.gz"
-  [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
-    datatype = "sample_sequence_manifest"
-    format = [""]
-    location = "trimmed/**/MANIFEST"
   [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
     process = "export_visualization"
     seq_samplesize = 10000
@@ -97,6 +89,14 @@
     ncpus = 2
     front_adapter = ""
     tail_adapter = ""
+  [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
+    datatype = "sequence_16s"
+    format = ["fastq.gz"]
+    location = "trimmed/**/*.fastq.gz"
+  [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
+    datatype = "sample_sequence_manifest"
+    format = [""]
+    location = "trimmed/**/MANIFEST"
 
 [otu_assignment.sequence_processing.chimera_checking]
   env = "mindpipe-qiime2"
