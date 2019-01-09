@@ -178,9 +178,8 @@ class Params(collections.Hashable):
                 return element
         raise KeyError(f"{name} not found in {category} of {self.name}")
 
-    @staticmethod
     def _process_io(
-        data: List[Dict[str, Union[str, List[str]]]], category: str
+        self, data: List[Dict[str, Union[str, List[str]]]], category: str
     ) -> Set[IOType]:
         """
             Process the input information
@@ -220,7 +219,11 @@ class Params(collections.Hashable):
                 pattern = re.compile(r"\$\{(.*?)\}")
                 if re.match(pattern, loc):
                     env_var = re.match(pattern, loc).group(1)
-                    loc = re.sub(pattern, os.environ.get(env_var), loc)
+                    if env_var == "CONDA_PREFIX":
+                        replacement = str(self.env)
+                    else:
+                        replacement = os.environ.get(env_var)
+                    loc = re.sub(pattern, replacement, loc)
             item_subset["location"] = pathlib.Path(loc) if loc else None
             io_tuples.add(IO(**item_subset))
         return io_tuples
