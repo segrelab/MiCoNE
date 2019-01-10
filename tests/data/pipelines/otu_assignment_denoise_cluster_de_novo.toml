@@ -1,0 +1,19 @@
+# User configuration file for de_novo clustering pipeline
+title = "User run setttings for de_novo pipeline"
+
+order = ["otu_assignment.denoise_cluster.de_novo"]
+
+output_location = "/home/dileep/Documents/results"
+
+[otu_assignment.denoise_cluster.de_novo]
+  [[otu_assignment.denoise_cluster.de_novo.input]]
+    datatype = "sequence_16s"
+    format = ["fastq.gz"]
+    location = "/home/dileep/Documents/microbiome_analysis/seqs/fmt/fmt_seqs_1/*.fastq.gz"
+  [[otu_assignment.denoise_cluster.de_novo.input]]
+    datatype = "sample_sequence_manifest"
+    format = [""]
+    location = "/home/dileep/Documents/microbiome_analysis/seqs/fmt/fmt_seqs_1/MANIFEST"
+  [[otu_assignment.denoise_cluster.de_novo.parameters]]
+    process = "pick_de_novo_otus"
+    ncpus = 1
