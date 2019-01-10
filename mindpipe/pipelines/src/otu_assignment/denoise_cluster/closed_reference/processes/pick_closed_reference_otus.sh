@@ -2,7 +2,7 @@
 
 pick_closed_reference_otus.py \
   -i ${fasta_file} \
-  -a -O ${ncpus} \
+  ${parallel_option} \
   -r ${sequence_16s_reference} \
   ${parameters_option} \
   --suppress_taxonomy_assignment \
