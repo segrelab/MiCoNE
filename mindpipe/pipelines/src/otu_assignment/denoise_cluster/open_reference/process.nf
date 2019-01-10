@@ -1,34 +1,60 @@
 #!/usr/bin/env nextflow
 
 // Initialize variables
-def sequences = params.sequences
-def sequence_reference = file(params.sequence_reference)
+def sequence_16s = params.sequence_16s
+def sample_sequence_manifest = params.sample_sequence_manifest
+def sequence_16s_reference = file(params.sequence_16s_reference)
 def output_dir = file(params.output_dir)
 
 
 // Parameters
-def parameters = file(params.parameters) // "-p $parameters"
-def picking_method = params.picking_method // "-m $picking_method"
+def parameters = params.parameters
 def ncpus = params.ncpus // "-a -O $ncpus"
+def picking_method = params.picking_method
 
 
 // Channels
 Channel
-    .fromPath(sequences)
-    .ifEmpty { exit 1, "16S sequences not found" }
+    .fromPath(sequence_16s)
+    .ifEmpty { exit 1, "Sequences not found in channel" }
+    .map { tuple(it.getParent().baseName, it) }
+    .groupTuple()
     .set { chnl_sequences }
 
+Channel
+    .fromPath(sample_sequence_manifest)
+    .ifEmpty { exit 1, "Manifest files not found in channel"  }
+    .map { tuple(it.getParent().baseName, it) }
+    .groupTuple()
+    .set { chnl_manifest }
+
+chnl_sequences
+    .join(chnl_manifest)
+    .set { chnl_seqcollection }
+
 // Processes
-process pick_open_reference_otus {
-    tag "${sequence_file.baseName}"
-    publishDir "${output_dir}/openref_picking"
 
+// Step1: Convert fastq to fasta and merge
+process fastq2fasta {
+    tag "${id}"
     input:
-    file sequence_files from chnl_sequences
+    set val(id), file(sequence_files), file(manifest_file) from chnl_seqcollection
+    output:
+    set val(id), file("${id}.fasta") into chnl_fasta_openref
+    script:
+    {{ fastq2fasta }}
+}
 
+// Step2: open reference OTU picking
+process pick_open_reference_otus {
+    tag "${id}"
+    publishDir "${output_dir}/open_reference/${id}"
+    input:
+    set val(id), file(fasta_file) from chnl_fasta_openref
     output:
     set file('otu_table.biom'), file('rep_seqs.fasta'), file('log*.txt') into output_chnl
-
     script:
+    def parameters_option = parameters == '' ? '' : "-p ${parameters}"
+    def parallel_option = ncpus > 1 ? '' : "-a -O ${ncpus}"
     {{ pick_open_reference_otus }}
 }
