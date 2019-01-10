@@ -123,24 +123,25 @@
 
 [otu_assignment.denoise_cluster.de_novo]
   env = "mindpipe-qiime1"
-  output_location = "denoise_cluster"
+  output_location = "de_novo"
   [[otu_assignment.denoise_cluster.de_novo.input]]
     datatype = "sequence_16s"
-    format = ["fastq"]
+    format = ["fastq.gz", "fastq"]
   [[otu_assignment.denoise_cluster.de_novo.input]]
-    datatype = "qiime1_parameters"
-    format = ["txt"]
+    datatype = "sample_sequence_manifest"
+    format = [""]
   [[otu_assignment.denoise_cluster.de_novo.parameters]]
     process = "pick_de_novo_otus"
+    parameters = ""
     ncpus = 1
   [[otu_assignment.denoise_cluster.de_novo.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "otu_table.biom"
+    location = "de_novo/**/otu_table.biom"
   [[otu_assignment.denoise_cluster.de_novo.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
-    location = "rep_seqs.fasta"
+    location = "de_novo/**/rep_seqs.fasta"
 
 [otu_assignment.denoise_cluster.closed_reference]
   env = "mindpipe-qiime1"
