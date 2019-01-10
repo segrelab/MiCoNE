@@ -150,7 +150,7 @@ class Process(collections.Hashable):
             f"-profile {self.profile}"
         )
         if not self._cmd:
-            self._cmd = Command(cmd, self.profile)
+            self._cmd = Command(cmd, self.profile, timeout=100_000)
         else:
             self._cmd.update(cmd)
         return self._cmd
