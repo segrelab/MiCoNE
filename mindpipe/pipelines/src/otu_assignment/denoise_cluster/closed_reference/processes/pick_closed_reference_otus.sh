@@ -9,6 +9,6 @@ pick_closed_reference_otus.py \
   -f -o \$PWD/
 
 pick_rep_set.py \
-  -i uclust_ref_picked_otus/seqs_otus.txt \
+  -i uclust_ref_picked_otus/${id}_otus.txt \
   -f ${fasta_file} \
   -o rep_seqs.fasta
