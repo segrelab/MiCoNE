@@ -129,10 +129,12 @@ def quality_analysis(forward_quality: str) -> None:
         scores, counts = analyze_quality(forward_quality)
         left_trim = trimmer(scores, counts)
         length_trim = trimmer(scores, counts, direction=1)
-        fid.write("--cut={}\\n".format(left_trim))
-        fid.write("--length={}\\n".format(length_trim))
-        fid.write("--minimum-length={}\\n".format(length_trim))
-        fid.write("--maximum-length={}".format(length_trim))
+        # fid.write("--cut={}\\n".format(left_trim))
+        # fid.write("--length={}\\n".format(length_trim))
+        # fid.write("--minimum-length={}\\n".format(length_trim))
+        # fid.write("--maximum-length={}".format(length_trim))
+        fid.write("trimLeft,{}\\n".format(left_trim))
+        fid.write("truncLen,{}\\n".format(length_trim))
 
 
 if __name__ == "__main__":

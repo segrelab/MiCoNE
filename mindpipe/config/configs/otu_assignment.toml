@@ -87,8 +87,8 @@
   [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
     process = "trimming"
     ncpus = 2
-    front_adapter = ""
-    tail_adapter = ""
+    max_ee = 2
+    trunc_q = 2
   [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
     datatype = "sequence_16s"
     format = ["fastq.gz"]
