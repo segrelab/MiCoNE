@@ -21,7 +21,8 @@ from typing import (
 )
 
 
-PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines"
+PIPELINE_DIR = pathlib.Path(__file__).parent.parent / "pipelines/src"
+os.environ["PIPELINE_DIR"] = str(PIPELINE_DIR)
 
 
 class Input(NamedTuple):
@@ -94,7 +95,7 @@ class Params(collections.Hashable):
             if req_key not in value:
                 raise ValueError(f"Invalid process data. {req_key} not found")
         self.name = key
-        self.root = PIPELINE_DIR / "src" / key.replace(".", "/")
+        self.root = PIPELINE_DIR / key.replace(".", "/")
         if not self.root.exists() or not self.root.is_dir():
             raise FileNotFoundError(
                 f"The root directory: {self.root} doesn't exist. "
