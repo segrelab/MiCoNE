@@ -12,5 +12,6 @@ recursive-exclude * *.py[co]
 recursive-include * *.toml
 recursive-include * *.nf *.config *.j2
 recursive-include * *.yml *.yaml
+recursive-include * *.txt
 
 recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
