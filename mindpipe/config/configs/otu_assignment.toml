@@ -132,7 +132,7 @@
     format = [""]
   [[otu_assignment.denoise_cluster.de_novo.parameters]]
     process = "pick_de_novo_otus"
-    parameters = ""
+    parameters = "${PIPELINE_DIR}/otu_assignment/denoise_cluster/qiime1_parameters.txt"
     ncpus = 1
   [[otu_assignment.denoise_cluster.de_novo.output]]
     datatype = "otu_table"
@@ -159,7 +159,7 @@
   [[otu_assignment.denoise_cluster.closed_reference.parameters]]
     process = "pick_closed_reference_otus"
     ncpus = 1
-    parameters = ""
+    parameters = "${PIPELINE_DIR}/otu_assignment/denoise_cluster/qiime1_parameters.txt"
   [[otu_assignment.denoise_cluster.closed_reference.output]]
     datatype = "otu_table"
     format = ["biom"]
@@ -185,7 +185,7 @@
   [[otu_assignment.denoise_cluster.open_reference.parameters]]
     process = "pick_open_reference_otus"
     ncpus = 1
-    parameters = ""
+    parameters = "${PIPELINE_DIR}/otu_assignment/denoise_cluster/qiime1_parameters.txt"
     picking_method = "sortmerna_sumaclust"
   [[otu_assignment.denoise_cluster.open_reference.output]]
     datatype = "otu_table"
