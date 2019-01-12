@@ -4,7 +4,7 @@ pick_closed_reference_otus.py \
   -i ${fasta_file} \
   ${parallel_option} \
   -r ${sequence_16s_reference} \
-  ${parameters_option} \
+  -p ${parameters} \
   --suppress_taxonomy_assignment \
   -f -o \$PWD/
 

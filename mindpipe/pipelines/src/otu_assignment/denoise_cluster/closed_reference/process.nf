@@ -8,7 +8,7 @@ def output_dir = file(params.output_dir)
 
 
 // Parameters
-def parameters = params.parameters
+def parameters = file(params.parameters)
 def ncpus = params.ncpus // "-a -O $ncpus"
 
 
@@ -53,7 +53,6 @@ process pick_closed_reference_otus {
     output:
     set file('otu_table.biom'), file('rep_seqs.fasta'), file('log*.txt') into output_chnl
     script:
-    def parameters_option = parameters == '' ? '' : "-p ${parameters}"
     def parallel_option = ncpus > 1 ? '' : "-a -O ${ncpus}"
     {{ pick_closed_reference_otus }}
 }
