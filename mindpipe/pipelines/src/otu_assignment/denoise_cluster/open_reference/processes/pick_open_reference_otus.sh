@@ -4,7 +4,7 @@ pick_open_reference_otus.py \
     -i ${fasta_file} \
     -m ${picking_method} \
     -r ${sequence_16s_reference} \
-    ${parameters_option} \
+    -p ${parameters} \
     ${parallel_option} \
     --suppress_taxonomy_assignment \
     --suppress_align_and_tree \
