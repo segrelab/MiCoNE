@@ -220,21 +220,23 @@
 
 [otu_assignment.denoise_cluster.deblur]
   env = "mindpipe-qiime2"
-  output_location = "denoise_cluster"
+  output_location = "deblur"
   [[otu_assignment.denoise_cluster.deblur.input]]
     datatype = "sequence_16s"
-    format = ["fastq"]
+    format = ["fastq.gz", "fastq"]
   [[otu_assignment.denoise_cluster.deblur.input]]
-    datatype = "qiime1_parameters"
-    format = ["txt"]
+    datatype = "sample_sequence_manifest"
+    format = [""]
   [[otu_assignment.denoise_cluster.deblur.parameters]]
-    process = "pick_de_novo_otus"
+    process = "deblur"
     ncpus = 1
+    min_reads = 2
+    min_size = 2
   [[otu_assignment.denoise_cluster.deblur.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "otu_table.biom"
+    location = "deblur/**/otu_table.biom"
   [[otu_assignment.denoise_cluster.deblur.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
-    location = "rep_seqs.fasta"
+    location = "deblur/**/rep_seqs.fasta"
