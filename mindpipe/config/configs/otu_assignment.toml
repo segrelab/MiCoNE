@@ -209,8 +209,6 @@
     process = "dada2"
     ncpus = 1
     big_data = "FALSE"
-  [[otu_assignment.denoise_cluster.dada2.parameters]]
-    process = "hashing"
   [[otu_assignment.denoise_cluster.dada2.output]]
     datatype = "otu_table"
     format = ["biom"]
