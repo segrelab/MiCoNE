@@ -197,25 +197,28 @@
     location = "open_reference/**/rep_seqs.fasta"
 
 [otu_assignment.denoise_cluster.dada2]
-  env = "mindpipe-qiime2"
-  output_location = "denoise_cluster"
+  env = "mindpipe-dada2"
+  output_location = "dada2"
   [[otu_assignment.denoise_cluster.dada2.input]]
     datatype = "sequence_16s"
-    format = ["fastq"]
+    format = ["fastq.gz", "fastq"]
   [[otu_assignment.denoise_cluster.dada2.input]]
-    datatype = "qiime1_parameters"
-    format = ["txt"]
+    datatype = "sample_sequence_manifest"
+    format = [""]
   [[otu_assignment.denoise_cluster.dada2.parameters]]
-    process = "pick_de_novo_otus"
+    process = "dada2"
     ncpus = 1
+    big_data = "FALSE"
+  [[otu_assignment.denoise_cluster.dada2.parameters]]
+    process = "hashing"
   [[otu_assignment.denoise_cluster.dada2.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "otu_table.biom"
+    location = "dada2/**/otu_table.biom"
   [[otu_assignment.denoise_cluster.dada2.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
-    location = "rep_seqs.fasta"
+    location = "dada2/**/rep_seqs.fasta"
 
 [otu_assignment.denoise_cluster.deblur]
   env = "mindpipe-qiime2"

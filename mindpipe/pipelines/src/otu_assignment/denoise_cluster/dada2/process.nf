@@ -1,85 +1,61 @@
 #!/usr/bin/env nextflow
 
 // Initialize variables
-def sequence_artifacts = params.sequence_artifacts
+def sequence_16s = params.sequence_16s
+def sample_sequence_manifest = params.sample_sequence_manifest
 def output_dir = file(params.output_dir)
 
 
 // Parameters
-n_threads = params.n_threads  // --p-n-threads
-max_ee = params.max_ee  // --p-max-ee
-trunc_q = params.trunc_q  // --p-trunc-q
+def ncpus = params.ncpus
+def big_data = params.big_data
 
 
 // Channels
 Channel
-    .fromPath(sequence_artifacts)
-    .ifEmpty { exit 1, "Sequence artifacts not found" }
-    .into { sequence_artifact_viz; sequence_artifact_type; sequence_artifact_dada2 }
+    .fromPath(sequence_16s)
+    .ifEmpty { exit 1, "Sequences not found in channel" }
+    .map { tuple(it.getParent().baseName, it) }
+    .groupTuple()
+    .set { chnl_sequences }
+
+Channel
+    .fromPath(sample_sequence_manifest)
+    .ifEmpty { exit 1, "Manifest files not found in channel"  }
+    .map { tuple(it.getParent().baseName, it) }
+    .groupTuple()
+    .set { chnl_manifest }
+
+chnl_sequences
+    .join(chnl_manifest)
+    .set { chnl_seqcollection }
 
 
 // Processes
-process get_visualization {
-    tag "visualization"
-    publishDir "${output_dir}/visualization"
-
-    input:
-    file sequence_artifact from sequence_artifact_viz
-
-    output:
-    file ('output/*-seven-number-summaries.csv') into sequence_viz_chnl
-
-    script:
-    {{ get_visualization }}
-}
-
-process get_filetype {
-    tag "filetype"
-    publishDir "${output_dir}/filetype"
-
-    input:
-    file sequence_artifact from sequence_artifact_type
-
-    output:
-    file ('filetype.txt') into (filetype_quality, filetype_dada2)
-
-    script:
-    {{ get_filetype }}
-}
-
-process quality_analysis {
-    tag "quality_analysis"
-    publishDir "${output_dir}/quality_analysis"
-
-    input:
-    val filetype from filetype_quality
-    file summaries from sequence_viz_chnl
-
-    output:
-    file ('trim.txt') into quality_cmd_chnl
-
-    script:
-    def itype = filetype.text.contains('SingleEnd') ? 'single' : 'paired'
-    // NOTE: Here we assumed that the summaries just get copied over
-    def forward = "forward-seven-number-summaries.csv"
-    def reverse = itype == 'paired' ? "reverse-seven-number-summaries.csv" : ""
-    {{ quality_analysis }}
-}
-
 process dada2 {
-    tag "dada2"
-    publishDir "${output_dir}/dada2"
+    tag "${id}"
+    publishDir "${output_dir}/dada2/${id}"
 
     input:
-    file sequence_artifact from sequence_artifact_dada2
-    val filetype from filetype_dada2
-    val quality_cmd from quality_cmd_chnl
+    set val(id), file(sequence_files), file(manifest_file) from chnl_seqcollection
 
     output:
-    file('*.qza') into output_chnl
+    set val(id), file('*.biom'), file('*.fasta') into chln_biomseq_hashing
 
     script:
-    def itype = filetype.text.contains('SingleEnd') ? 'single' : 'paired'
-    def trim_cmd = quality_cmd.text
     {{ dada2 }}
+}
+
+process hashing {
+    tag "${id}"
+    publishDir "${output_dir}/dada2/${id}"
+
+    input:
+    set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs) from chln_biomseq_hashing
+
+    output:
+    set val(id), file('otu_table.biom'), file('rep_seqs.fasta') into chnl_output
+
+    script:
+    {{ hashing }}
 }
