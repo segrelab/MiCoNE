@@ -93,7 +93,9 @@ class Params(collections.Hashable):
         key, value = data
         for req_key in self._req_keys:
             if req_key not in value:
-                raise ValueError(f"Invalid process data. {req_key} not found")
+                raise ValueError(
+                    f"Invalid process data. {req_key} not found in {key} pipeline"
+                )
         self.name = key
         self.root = PIPELINE_DIR / key.replace(".", "/")
         if not self.root.exists() or not self.root.is_dir():
