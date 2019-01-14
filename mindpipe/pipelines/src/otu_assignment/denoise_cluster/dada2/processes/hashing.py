@@ -5,6 +5,7 @@ import hashlib
 from biom import load_table, Table
 from biom.util import biom_open
 from Bio import SeqIO
+from Bio.SeqIO import FastaIO
 
 
 def hash_function(seq):
@@ -26,7 +27,9 @@ def hash_rep_seqs(unhashed_rep_seqs, output_file):
         seq.id = hash_function(seq.id)
         seq.description = ""
         seq.name = ""
-    SeqIO.write(seqs, output_file, "fasta")
+    with open(output_file, "w") as fid:
+        fasta_writer = FastaIO.FastaWriter(fid, wrap=None)
+        fasta_writer.write_file(seqs)
 
 
 def hashing(unhashed_otu_table, unhashed_rep_seqs):
