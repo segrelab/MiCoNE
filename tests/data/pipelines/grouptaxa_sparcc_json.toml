@@ -1,15 +1,15 @@
 title = "A example pipeline for testing"
 
-order = ["otu_processing.filtering.group", "network_inference.correlation.sparcc", "otu_processing.export.biom2tsv", "network_inference.network.make_network"]
+order = ["otu_processing.filter.group", "network_inference.correlation.sparcc", "otu_processing.export.biom2tsv", "network_inference.network.make_network"]
 
 output_location = "~/Documents/results"
 
-[otu_processing.filtering.group]
-  [[otu_processing.filtering.group.input]]
+[otu_processing.filter.group]
+  [[otu_processing.filter.group.input]]
     datatype = "otu_table"
     format = ["biom"]
     location = "correlations/good/deblur/deblur.biom"
-  [[otu_processing.filtering.group.parameters]]
+  [[otu_processing.filter.group.parameters]]
     process = "group"
     tax_levels = "['Family', 'Genus', 'Species']"
 
