@@ -2,23 +2,27 @@
 
 set -e
 
-qiime deblur denoise-16S  \
-    --i-demultiplexed-seqs ${sequence_artifact} \
-    --p-trim-length -1 \
-    --p-sample-stats \
-    --p-min-reads ${min_reads} \
-    --p-min-size ${min_size} \
-    --p-jobs-to-start ${ncpus} \
-    --o-representative-sequences rep_seqs.qza \
-    --o-table otu_table.qza \
-    --o-stats stats.qza \
+mkdir sequence_folder
+mv ${sequence_files} sequence_folder
+mv ${manifest_file} sequence_folder
 
-qiime tools export \
-    --input-path otu_table.qza \
-    --output-path otu_table
-mv otu_table/feature-table.biom otu_table.biom
+deblur workflow \
+    --seqs-fp  sequence_folder \
+    --output-dir deblur_output \
+    -t -1 \
+    --left-trim-length 0 \
+    --min-reads ${min_reads} \
+    --min-size ${min_size} \
+    --jobs-to-start ${ncpus} \
+    --keep-tmp-files
 
-qiime tools export \
-    --input-path rep_seqs.qza \
-    --output-path rep_seqs
-mv rep_seqs/dna-sequences.fasta rep_seqs.fasta
+# Build otu table and rep seqs for the step before chimera checking
+mkdir otu_table
+deblur build-biom-table \
+    --min-reads ${min_reads} \
+    --file_type .trim.derep.no_artifacts.msa.deblur \
+    deblur_output/deblur_working_dir \
+    otu_table
+
+mv otu_table/all.biom unhashed_otu_table.biom
+mv otu_table/all.seq.fa unhashed_rep_seqs.fasta

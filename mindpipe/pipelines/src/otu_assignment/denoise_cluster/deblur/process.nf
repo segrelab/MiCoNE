@@ -34,25 +34,26 @@ chnl_sequences
 
 // Processes
 
-// Step1: Import sequences to  sequence artifact
+// Step1: Denoise using deblur
 process import_sequences {
     tag "${id}"
+    publishDir "${output_dir}/deblur/${id}"
     input:
     set val(id), file(sequence_files), file(manifest_file) from chnl_seqcollection
     output:
-    set val(id), file('sequence_folder/*.qza') into chln_seqartifact_deblur
+    set val(id), file('*_otu_table.biom'), file('*_rep_seqs.fasta') into chnl_biomseq_hashing
     script:
-    {{ import_sequences }}
+    {{ deblur }}
 }
 
-// Step2: Denoise using deblur
+// Step2: Replace the ids with hashes of the sequences
 process deblur {
     tag "${id}"
     publishDir "${output_dir}/deblur/${id}"
     input:
-    set val(id), file(sequence_artifact) from chln_seqartifact_deblur
+    set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs) from chnl_biomseq_hashing
     output:
     set val(id), file('otu_table.biom'), file('rep_seqs.fasta') into chln_output
     script:
-    {{ deblur }}
+    {{ hashing }}
 }
