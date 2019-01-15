@@ -32,6 +32,8 @@ chnl_sequences
 
 
 // Processes
+
+// Step1: Denoise using dada2
 process dada2 {
     tag "${id}"
     publishDir "${output_dir}/dada2/${id}"
@@ -43,6 +45,7 @@ process dada2 {
     {{ dada2 }}
 }
 
+// Step2: Replace the ids with hashes of the sequences
 process hashing {
     tag "${id}"
     publishDir "${output_dir}/dada2/${id}"
