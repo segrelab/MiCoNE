@@ -35,13 +35,10 @@ chnl_sequences
 process dada2 {
     tag "${id}"
     publishDir "${output_dir}/dada2/${id}"
-
     input:
     set val(id), file(sequence_files), file(manifest_file) from chnl_seqcollection
-
     output:
     set val(id), file('*.biom'), file('*.fasta') into chln_biomseq_hashing
-
     script:
     {{ dada2 }}
 }
@@ -49,13 +46,10 @@ process dada2 {
 process hashing {
     tag "${id}"
     publishDir "${output_dir}/dada2/${id}"
-
     input:
     set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs) from chln_biomseq_hashing
-
     output:
     set val(id), file('otu_table.biom'), file('rep_seqs.fasta') into chnl_output
-
     script:
     {{ hashing }}
 }
