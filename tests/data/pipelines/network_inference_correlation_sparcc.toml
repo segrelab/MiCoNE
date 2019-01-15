@@ -6,7 +6,6 @@ order = ["network_inference.correlation.sparcc"]
 output_location = "/home/dileep/Documents/results"
 
 [network_inference.correlation.sparcc]
-  module = "nf"
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
     format = ["biom"]
