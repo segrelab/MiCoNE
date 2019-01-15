@@ -5,12 +5,10 @@ suppressWarnings(library(dada2))
 big.data <- ${big_data}
 multithread <- ${ncpus}
 
-# Load fastq files
-reads <- list.files(".", pattern=".fastq", full.names=TRUE)
-
-# Load sample names from manifest file
+# Load file names and sample names from manifest file
 manifest <- read.csv("MANIFEST", comment.char="#")
-sample.names <- manifest\$sample.id
+reads <- sapply(as.character(manifest\$absolute.filepath), basename)
+sample.names <- as.character(manifest\$sample.id)
 names(reads) <- sample.names
 
 # Denoising
