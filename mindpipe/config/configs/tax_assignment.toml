@@ -13,6 +13,9 @@
   [[tax_assignment.assign.blast.input]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
+  [[tax_assignment.assign.blast.input]]
+    datatype = "sample_metadata"
+    format = ["tsv", "csv"]
   [[tax_assignment.assign.blast.parameters]]
     process = "blast"
     blast_db = ""

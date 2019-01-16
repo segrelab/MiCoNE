@@ -3,6 +3,7 @@
 // Initialize variables
 def otu_table = params.otu_table
 def sequence_16s_representative = params.sequence_16s_representative
+def sample_metadata = params.sample_metadata
 def output_dir = file(params.output_dir)
 
 
@@ -25,6 +26,11 @@ Channel
     .fromPath(sequence_16s_representative)
     .map { tuple(it.getParent().baseName, it) }
     .set { chnl_rep_seqs }
+
+Channel
+    .fromPath(sample_metadata)
+    .map { tuple(it.getParent().baseName, it) }
+    .set { chnl_sample_metadata }
 
 
 // Processes
@@ -54,14 +60,15 @@ process parser {
 
 chnl_otu_table
     .join(chnl_tax_assignment)
-    .set { chnl_combined_data }
+    .join(chnl_sample_metadata)
+    .set { chnl_combined }
 
 // Step3: Attach the taxonomy assignment to the OTU table
 process addtax2biom {
     tag "${id}"
     publishDir "${output_dir}/blast/${id}", saveAs: { "otu_table.biom" }
     input:
-    set val(id), file(otu_table), file(tax_assignment) from chnl_combined_data
+    set val(id), file(otu_table_file), file(tax_assignment), file(sample_metadata_file) from chnl_combined
     output:
     set val(id), file("otu_table_wtax.biom") into chnl_output
     script:
