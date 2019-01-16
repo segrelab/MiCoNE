@@ -42,7 +42,7 @@ def tsv_files():
         for data_fol in (tsv_fol / kind).iterdir():
             otu = data_fol / "otu.tsv"
             sample = data_fol / "sample_metadata.tsv"
-            tax = data_fol / "tax_metadata.tsv"
+            tax = data_fol / "obs_metadata.csv"
             data[kind].append((otu, sample, tax))
     return data
 
@@ -71,7 +71,7 @@ def tax_conversion_data():
     """ Fixture that loads data for testing the tax convertors """
     tsv_fol = TEST_DATADIR / "otus/tsv"
     data = {
-        "qiime2": tsv_fol / "bad/bad_tax/tax_metadata.tsv",
+        "qiime2": tsv_fol / "bad/bad_tax/obs_metadata.csv",
         "qiime1": "",
         "defaul": "",
     }
