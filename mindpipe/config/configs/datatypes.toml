@@ -43,7 +43,7 @@
   format = ["tsv", "txt"]
 [sample_metadata]
   desc = "Metadata for each sample"
-  format = ["csv"]
+  format = ["csv", "tsv"]
 [sample_sequence_manifest]
   desc = "File that maps sample metadata to demultiplexed sequences"
   format = [""]
