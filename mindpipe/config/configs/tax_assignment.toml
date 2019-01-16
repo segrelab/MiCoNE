@@ -2,11 +2,31 @@
 
 ## Taxonomy mapping
 
-# [tax_assignment.tax_mapping.gg]
+# [tax_assignment.tax_mapping.naive_bayes]
 
-# [tax_assignment.tax_mapping.silva]
-
-# [tax_assignment.tax_mapping.ncbi]
+[tax_assignment.assign.blast]
+  env = "mindpipe-blast"
+  output_location = "blast"
+  [[tax_assignment.assign.blast.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[tax_assignment.assign.blast.input]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+  [[tax_assignment.assign.blast.parameters]]
+    process = "blast"
+    blast_db = ""
+    evalue_cutoff = 1e-10
+    ncpus = 1
+  [[tax_assignment.assign.blast.parameters]]
+    process = "parser"
+    tax_map = ""
+    n_hits = 10
+    ncpus = 1
+  [[tax_assignment.assign.blast.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "blast/**/otu_table.biom"
 
 
 ## Phylogeny

@@ -4,15 +4,17 @@ import os
 
 from Bio.Blast.Applications import NcbiblastnCommandline
 
-os.environ["BLASTDB"] = "${blastdb}"
+os.environ["BLASTDB"] = "${blast_db}"
 
 
-def blast(query, db):
+# How can we parallelize this?
+# Separate into smaller fasta files and then use multiprocessing
+def blast(query, db, evalue_cutoff):
     cline = NcbiblastnCommandline(
         query=query,
         db=db,
         strand="plus",
-        evalue=1e-20,
+        evalue=evalue_cutoff,
         out="blast_output.xml",
         outfmt=5,
     )
@@ -20,6 +22,7 @@ def blast(query, db):
 
 
 if __name__ == "__main__":
-    QUERY = "${query}"
-    DB = "${db}"
-    blast(QUERY, DB)
+    QUERY = "${rep_seqs}"
+    DB = "${blast_db.baseName}"
+    EVALUE_CUTOFF = float("${evalue_cutoff}")
+    blast(QUERY, DB, EVALUE_CUTOFF)

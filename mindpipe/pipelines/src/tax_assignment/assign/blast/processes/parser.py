@@ -1,32 +1,33 @@
 #!/usr/bin/env python3
 
-
-from Bio import Entrez
 from Bio.Blast.NCBIXML import parse
 import pandas as pd
 
-Entrez.email = "${email}"
+
+# TODO: Add consensus/scoring function
+def scoring():
+    pass
 
 
-def parser(blast_file: str, n_hits: int):
+# TODO: Might want to parallelize this
+def parser(blast_file, tax_map, n_hits):
+    map_file = tax_map
+    map_data = pd.read_table(map_file, index_col=0, header=None)
     tax_list = []
     with open(blast_file, "r") as fid:
         for record in parse(fid):
-            # QUESTION: Do we want to verify evalue again? (use description.e)
-            # Do we want to use evalue to calculate the scores?
-            # We want to limit the number of blast hits we query
             for description in record.descriptions:
                 id_ = description.accession
-                handle = Entrez.esummary(db="nucleotide", id=id_)
-                summary = Entrez.read(handle)
-                taxid = summary[0]["TaxId"]
-                tax_list.append({"id": record.query, "taxid": taxid})
-                handle.close()
+                tax = map_data.loc[id_][1]
+                tax_list.append({"id": record.query, "Taxon": tax})
                 break
     return pd.DataFrame(tax_list)
 
 
 if __name__ == "__main__":
     BLAST_FILE = "${blast_output}"
-    df = parser(BLAST_FILE)
-    df.to_csv("taxonomy.csv")
+    TAX_MAP = "${tax_map}"
+    N_HITS = int("${n_hits}")
+    df = parser(BLAST_FILE, TAX_MAP, N_HITS)
+    df.set_index("id", inplace=True)
+    df.to_csv("tax_assignment.tsv", index=True, sep="\t")
