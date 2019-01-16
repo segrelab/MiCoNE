@@ -5,9 +5,6 @@
 [barcode]
   desc = "Barcodes to map sequence reads to samples"
   format = ["fastq", "fastq.gz", "fasta"]
-[blast_db]
-  desc = "Blast database to use for taxonomy assignment"
-  format = [""]
 [children_map]
   desc = "File describing taxonomy mapping from parent taxonomy to child"
   format = ["json"]
