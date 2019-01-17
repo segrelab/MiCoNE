@@ -94,17 +94,19 @@ def run(ctx, profile, config, output_location, base_dir):
     pipeline = Pipeline(config, profile, base_dir, output_location=output_location)
     spinner.start()
     spinner.text = "Starting pipeline execution"
-    for process in pipeline.run():
-        spinner.start()
-        spinner.text = f"Executing {process} process"
-        process.wait()
-        process.log()
-        if process.status == "success":
-            spinner.succeed(f"Finished executing {process}")
-        else:
-            spinner.fail(f"Failed to execute {process}")
-    click.secho(f"Log file is at {LOG.path}")
-    LOG.cleanup()
+    try:
+        for process in pipeline.run():
+            spinner.start()
+            spinner.text = f"Executing {process} process"
+            process.wait()
+            process.log()
+            if process.status == "success":
+                spinner.succeed(f"Finished executing {process}")
+            else:
+                spinner.fail(f"Failed to execute {process}")
+    finally:
+        click.secho(f"Log file is at {LOG.path}")
+        LOG.cleanup()
 
 
 def main():
