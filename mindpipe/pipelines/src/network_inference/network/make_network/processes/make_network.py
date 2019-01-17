@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from mindpipe import Network
+from mindpipe import Network, NetworkGroup
 
 network = Network.load_data(
     interaction_file="$corr_file",
@@ -10,4 +10,5 @@ network = Network.load_data(
     pvalue_file="$pval_file",
     children_file="$childrenmap_file",
 )
-json_str = network.write("${id}_network.json", threshold=False)
+network_group = NetworkGroup([network])
+network_group.write("${id}_network.json", threshold=False)
