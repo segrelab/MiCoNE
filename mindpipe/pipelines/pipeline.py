@@ -26,6 +26,9 @@ class Pipeline(collections.Sequence):
             The absolute location of the base directory for the input files
             This needs to be supplied if the input files location in the settings are relative
             If None, then current working directory is used
+        resume : bool, optional
+            The flag to determine whether a previous execution is resumed
+            Default value is False
 
         Other Parameters
         ----------------
@@ -59,10 +62,12 @@ class Pipeline(collections.Sequence):
         user_settings_file: str,
         profile: str,
         base_dir: Optional[str] = None,
+        resume: Optional[bool] = False,
         **kwargs,
     ) -> None:
         self.config = Config()
         self.profile = profile
+        self.resume = resume
         if base_dir is None:
             self.base_dir = pathlib.Path.cwd()
         else:
@@ -157,8 +162,11 @@ class Pipeline(collections.Sequence):
        """
         for process in self.processes:
             loc = pathlib.Path(self.output_location)  # / process.params.output_location
-            process.build(str(loc))
-            process.run()
-            yield process
+            if self.resume and process.io_exist:
+                yield process
+            else:
+                process.build(str(loc))
+                process.run()
+                yield process
 
     # TODO: Create computational metadata

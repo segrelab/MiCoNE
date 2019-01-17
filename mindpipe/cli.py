@@ -87,23 +87,33 @@ def init(ctx, env):
     default=None,
     help="The location of base directory for input files",
 )
+@click.option(
+    "--resume",
+    is_flag=True,
+    help="The flag to determine whether a previous execution is resumed",
+)
 @click.pass_context
-def run(ctx, profile, config, output_location, base_dir):
+def run(ctx, profile, config, output_location, base_dir, resume):
     """ Run the pipeline """
     spinner = ctx.obj["SPINNER"]
-    pipeline = Pipeline(config, profile, base_dir, output_location=output_location)
+    pipeline = Pipeline(
+        config, profile, base_dir, resume, output_location=output_location
+    )
     spinner.start()
     spinner.text = "Starting pipeline execution"
     try:
         for process in pipeline.run():
             spinner.start()
             spinner.text = f"Executing {process} process"
-            process.wait()
-            process.log()
-            if process.status == "success":
-                spinner.succeed(f"Finished executing {process}")
+            if resume and process.io_exist:
+                spinner.succeed(f"Resumed {process}")
             else:
-                spinner.fail(f"Failed to execute {process}")
+                process.wait()
+                process.log()
+                if process.status == "success":
+                    spinner.succeed(f"Finished executing {process}")
+                else:
+                    spinner.fail(f"Failed to execute {process}")
     finally:
         click.secho(f"Log file is at {LOG.path}")
         LOG.cleanup()

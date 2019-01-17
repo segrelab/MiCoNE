@@ -3,7 +3,9 @@
 """
 
 import collections
+from itertools import chain
 import pathlib
+import re
 import shutil
 from typing import Optional
 from warnings import warn
@@ -304,3 +306,37 @@ class Process(collections.Hashable):
             return "failure"
         else:
             return self.cmd.status
+
+    @property
+    def io_exist(self) -> bool:
+        """
+            Return True if the expected input and output of the process already exist
+            Useful when resuming a pipeline execution
+
+            Returns
+            -------
+            bool
+                True if the expected input and output of the process already exist
+        """
+        mult_pattern = re.compile(".*{(.*)}.*")
+        for io in chain(self.params.input, self.params.output):
+            loc = io.location
+            if loc is None:
+                return False
+            elif "*" in str(loc):
+                str_loc = str(loc)
+                mult_match = re.match(mult_pattern, str_loc)
+                if mult_match:
+                    str_loc_list = []
+                    for pattern in mult_match.group(1).split(","):
+                        str_loc_list.append(re.sub(r"{.*}", pattern, str_loc))
+                else:
+                    str_loc_list = [str_loc]
+                for str_loc in str_loc_list:
+                    ind = str_loc.find("*")
+                    files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
+                    if len(files) == 0:
+                        return False
+            elif not loc.exists():
+                return False
+        return True
