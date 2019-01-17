@@ -46,7 +46,7 @@ class Lineage(BaseLineage):
         empty = [i for i, tax in enumerate(tax_order) if tax == ""]
         if empty and (len(tax_order) - empty[0] != len(empty)):
             raise ValueError(
-                "Lower levels should not be filled if higher levels are empty"
+                f"Lower levels should not be filled if higher levels are empty: {tax_order}"
             )
         else:
             norm_taxa = [cls._normalize_tax(i) for i in tax_order]
