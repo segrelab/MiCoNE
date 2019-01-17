@@ -11,7 +11,7 @@ HEADERS = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
 
 
 def tax_splitter(full_tax):
-    tax_list = [tax.strip() for tax in full_tax.Taxon.split(";")]
+    tax_list = [tax.strip().split("__")[-1] for tax in full_tax.Taxon.split(";")]
     tax_list.extend([""] * (len(HEADERS) - len(tax_list)))
     return pd.Series(data=tax_list, index=HEADERS)
 
