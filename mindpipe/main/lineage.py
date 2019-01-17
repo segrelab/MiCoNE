@@ -102,7 +102,7 @@ class Lineage(BaseLineage):
             name = self[ind]
             if name != "":
                 return field, name
-        return "Kingdom", ""
+        return "Kingdom", "unclassified"
 
     @classmethod
     def from_str(cls, lineage_str: str, style: str = "gg") -> "Lineage":
