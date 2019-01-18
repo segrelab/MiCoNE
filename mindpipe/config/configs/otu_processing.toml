@@ -2,6 +2,22 @@
 
 ## filter
 
+[otu_processing.filter.abundance]
+  env = "mindpipe"
+  output_location = "filter/abundance"
+  [[otu_processing.filter.abundance.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[otu_processing.filter.abundance.parameters]]
+    process = "filter"
+    count_thres = 500
+    prevalence_thres = 0.05
+    abundance_thres = 0.01
+  [[otu_processing.filter.abundance.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "filter/abundance/**/*_filtered.biom"
+
 [otu_processing.filter.group]
   env = "mindpipe"
   output_location = "filter/group"
