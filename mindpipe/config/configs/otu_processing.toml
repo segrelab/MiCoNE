@@ -1,37 +1,37 @@
 # Pipelines for the otu_processing module
 
-## Filtering
+## filter
 
-[otu_processing.filtering.group]
+[otu_processing.filter.group]
   env = "mindpipe"
-  output_location = "filtering/group"
-  [[otu_processing.filtering.group.input]]
+  output_location = "filter/group"
+  [[otu_processing.filter.group.input]]
     datatype = "otu_table"
     format = ["biom"]
-  [[otu_processing.filtering.group.parameters]]
+  [[otu_processing.filter.group.parameters]]
     process = "group"
     tax_levels = "['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species']"
-  [[otu_processing.filtering.group.output]]
+  [[otu_processing.filter.group.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "group/**/*.biom"
-  [[otu_processing.filtering.group.output]]
+    location = "filter/group/**/*.biom"
+  [[otu_processing.filter.group.output]]
     datatype = "children_map"
     format = ["json"]
-    location = "group/**/*_children.json"
+    location = "filter/group/**/*_children.json"
 
-[otu_processing.filtering.partition]
+[otu_processing.filter.partition]
   env = "mindpipe"
-  output_location = "filtering/partition"
-  [[otu_processing.filtering.partition.input]]
+  output_location = "filter/partition"
+  [[otu_processing.filter.partition.input]]
     datatype = "otu_table"
     format = ["biom"]
-  [[otu_processing.filtering.partition.parameters]]
+  [[otu_processing.filter.partition.parameters]]
     process = ""
-  [[otu_processing.filtering.partition.output]]
+  [[otu_processing.filter.partition.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "*.biom"
+    location = "filter/partition/**/*.biom"
 
 
 ## Transform
