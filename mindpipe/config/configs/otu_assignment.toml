@@ -98,25 +98,47 @@
     format = [""]
     location = "trimmed/**/MANIFEST"
 
-[otu_assignment.sequence_processing.chimera_checking]
+[otu_assignment.chimera_checking.uchime]
   env = "mindpipe-qiime2"
   output_location = "chimera_checking"
-  [[otu_assignment.sequence_processing.chimera_checking.input]]
+  [[otu_assignment.chimera_checking.uchime.input]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
-  [[otu_assignment.sequence_processing.chimera_checking.input]]
+  [[otu_assignment.chimera_checking.uchime.input]]
     datatype = "otu_table"
     format = ["biom"]
-  [[otu_assignment.sequence_processing.chimera_checking.output]]
+  [[otu_assignment.chimera_checking.uchime.parameters]]
+    process = "remove_chimeras"
+  [[otu_assignment.chimera_checking.uchime.output]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
-    location = "*_nonchimeric.fasta"
-  [[otu_assignment.sequence_processing.chimera_checking.output]]
+    location = "chimera_checking/**/*.fasta"
+  [[otu_assignment.chimera_checking.uchime.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "*_nonchimeric.biom"
-  [[otu_assignment.sequence_processing.chimera_checking.parameters]]
-    process = "chimera_checking"
+    location = "chimera_checking/**/*.biom"
+
+[otu_assignment.chimera_checking.remove_bimera]
+  env = "mindpipe-dada2"
+  output_location = "chimera_checking"
+  [[otu_assignment.chimera_checking.remove_bimera.input]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+  [[otu_assignment.chimera_checking.remove_bimera.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[otu_assignment.chimera_checking.remove_bimera.parameters]]
+    process = "remove_chimeras"
+    ncpus = 1
+    chimera_method = "consensus"
+  [[otu_assignment.chimera_checking.remove_bimera.output]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+    location = "chimera_checking/**/*.fasta"
+  [[otu_assignment.chimera_checking.remove_bimera.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "chimera_checking/**/*.biom"
 
 
 ## Denosing and clustering
