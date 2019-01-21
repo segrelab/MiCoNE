@@ -86,7 +86,7 @@
     seq_samplesize = 10000
   [[otu_assignment.sequence_processing.trim_filter_fixed.parameters]]
     process = "trimming"
-    ncpus = 2
+    ncpus = 1
     max_ee = 2
     trunc_q = 2
   [[otu_assignment.sequence_processing.trim_filter_fixed.output]]
