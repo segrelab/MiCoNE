@@ -3,7 +3,6 @@
 // Initialize variables
 def sequence_16s = params.sequence_16s
 def sample_sequence_manifest = params.sample_sequence_manifest
-def sequence_16s_reference = file(params.sequence_16s_reference)
 def output_dir = file(params.output_dir)
 
 
@@ -11,6 +10,7 @@ def output_dir = file(params.output_dir)
 def parameters = file(params.parameters)
 def ncpus = params.ncpus // "-a -O $ncpus"
 def picking_method = params.picking_method
+def reference_sequences = file(params.reference_sequences)
 
 
 // Channels

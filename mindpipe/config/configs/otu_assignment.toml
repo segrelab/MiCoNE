@@ -174,14 +174,11 @@
   [[otu_assignment.denoise_cluster.closed_reference.input]]
     datatype = "sample_sequence_manifest"
     format = [""]
-  [[otu_assignment.denoise_cluster.closed_reference.input]]
-    datatype = "sequence_16s_reference"
-    format = ["fasta"]
-    location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
   [[otu_assignment.denoise_cluster.closed_reference.parameters]]
     process = "pick_closed_reference_otus"
     ncpus = 1
     parameters = "${PIPELINE_DIR}/otu_assignment/denoise_cluster/qiime1_parameters.txt"
+    reference_sequences = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
   [[otu_assignment.denoise_cluster.closed_reference.output]]
     datatype = "otu_table"
     format = ["biom"]
@@ -200,14 +197,11 @@
   [[otu_assignment.denoise_cluster.open_reference.input]]
     datatype = "sample_sequence_manifest"
     format = [""]
-  [[otu_assignment.denoise_cluster.open_reference.input]]
-    datatype = "sequence_16s_reference"
-    format = ["fasta"]
-    location = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
   [[otu_assignment.denoise_cluster.open_reference.parameters]]
     process = "pick_open_reference_otus"
     ncpus = 1
     parameters = "${PIPELINE_DIR}/otu_assignment/denoise_cluster/qiime1_parameters.txt"
+    reference_sequences = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
     picking_method = "sortmerna_sumaclust"
   [[otu_assignment.denoise_cluster.open_reference.output]]
     datatype = "otu_table"

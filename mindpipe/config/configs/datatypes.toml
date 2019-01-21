@@ -53,6 +53,3 @@
 [sequence_16s_representative]
   desc = "Representative 16S rDNA sequences"
   format = ["fasta"]
-[sequence_16s_reference]
-  desc = "Reference sequences for taxonomic classification"
-  format =  ["fasta"]
