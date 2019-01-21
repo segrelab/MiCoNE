@@ -112,11 +112,11 @@
   [[otu_assignment.chimera_checking.uchime.output]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
-    location = "chimera_checking/**/*.fasta"
+    location = "chimera_checking/**/*_nonchimeric.fasta"
   [[otu_assignment.chimera_checking.uchime.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "chimera_checking/**/*.biom"
+    location = "chimera_checking/**/*_nonchimeric.biom"
 
 [otu_assignment.chimera_checking.remove_bimera]
   env = "mindpipe-dada2"
@@ -134,11 +134,11 @@
   [[otu_assignment.chimera_checking.remove_bimera.output]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
-    location = "chimera_checking/**/*.fasta"
+    location = "chimera_checking/**/*_nonchimeric.fasta"
   [[otu_assignment.chimera_checking.remove_bimera.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "chimera_checking/**/*.biom"
+    location = "chimera_checking/**/*_nonchimeric.biom"
 
 
 ## Denosing and clustering
