@@ -51,26 +51,30 @@
     format = [""]
     location = "demultiplex/**/MANIFEST"
 
-[otu_assignment.sequence_processing.demultiplexing_454]
+[otu_assignment.sequence_processing.demultiplex_454]
   env = "mindpipe-qiime1"
-  output_location = "demultiplexing"
-  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
+  output_location = "demultiplex"
+  [[otu_assignment.sequence_processing.demultiplex_454.input]]
     datatype = "sequence_16s"
     format = ["fasta"]
-  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
+  [[otu_assignment.sequence_processing.demultiplex_454.input]]
     datatype = "quality"
     format = ["qual"]
-  [[otu_assignment.sequence_processing.demultiplexing_454.input]]
+  [[otu_assignment.sequence_processing.demultiplex_454.input]]
     datatype = "sample_barcode_mapping"
     format = ["tsv", "txt"]
-  [[otu_assignment.sequence_processing.demultiplexing_454.output]]
+  [[otu_assignment.sequence_processing.demultiplex_454.output]]
     datatype = "sequence_16s"
     format = ["fasta"]
     location = "seqs/*.fna"
-  [[otu_assignment.sequence_processing.demultiplexing_454.parameters]]
-    process = "demultiplexing"
+  [[otu_assignment.sequence_processing.demultiplex_454.parameters]]
+    process = "demultiplex"
 
 # [otu_assignment.sequence_processing.trim_filter_auto]
+    # [[otu_assignment.sequence_processing.trim_filter_auto.parameters]]
+      # process = "trimming"
+      # front_adapter = ""
+      # tail_adapter = ""
 
 [otu_assignment.sequence_processing.trim_filter_fixed]
   env = "mindpipe-qiime2"
