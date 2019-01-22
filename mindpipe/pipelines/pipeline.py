@@ -118,7 +118,7 @@ class Pipeline(collections.Sequence):
             user_process_data = settings[level_1][level_2][level_3]
             process_data = self.config.params_set[process_name]
             process_data.merge(user_process_data)
-            process_list.append(Process(process_data, self.profile))
+            process_list.append(Process(process_data, self.profile, resume=self.resume))
         process_list[0].update_location(str(self.base_dir), "input")
         process_list[0].update_location(self.output_location, "output")
         for i, current_process in enumerate(process_list[1:]):

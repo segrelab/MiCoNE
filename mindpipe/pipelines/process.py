@@ -35,6 +35,9 @@ class Process(collections.Hashable):
         process_dir_name : str, optional
             The name of the process directory where the templates are stored
             Default is 'processes'
+        resume: bool, optional
+            The flag to determine whether a previous execution is resumed
+            Default value is False
 
         Attributes
         ----------
@@ -63,10 +66,12 @@ class Process(collections.Hashable):
         script_name: str = "process.nf",
         config_name: str = "process.config",
         process_dir_name: str = "processes",
+        resume: Optional[bool] = False,
     ) -> None:
         self.params = params
         self.name = self.params.name
         self.profile = profile
+        self.resume = resume
         script_file = self.params.root / script_name
         process_dir = self.params.root / process_dir_name
         config_file = self.params.root / config_name
@@ -151,6 +156,8 @@ class Process(collections.Hashable):
             f"nextflow -C {config_path} -log {log_path} run {script_path} -w {work_dir} "
             f"-profile {self.profile}"
         )
+        if self.resume:
+            cmd += " -resume"
         if not self._cmd:
             self._cmd = Command(cmd, self.profile, timeout=100_000)
         else:
