@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # import reference sequences
 # NOTE: qiime feature-classifier extract-reads must already be performed on the reference sequences
 qiime tools import \
