@@ -1,0 +1,24 @@
+# User configuration file for naive_bayes pipeline
+title = "User run setttings for naive_bayes pipeline"
+
+order = ["tax_assignment.assign.naive_bayes"]
+
+output_location = "/home/dileep/Documents/results"
+
+[tax_assignment.assign.naive_bayes]
+  [[tax_assignment.assign.naive_bayes.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "/home/dileep/Documents/results/dada2/dada2/fmt_seqs_1/otu_table.biom"
+  [[tax_assignment.assign.naive_bayes.input]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+    location = "/home/dileep/Documents/results/dada2/dada2/fmt_seqs_1/rep_seqs.fasta"
+  [[tax_assignment.assign.naive_bayes.input]]
+    datatype = "sample_metadata"
+    format = ["tsv"]
+    location = "/home/dileep/Documents/results/dada2/dada2/fmt_seqs_1/sample_metadata.tsv"
+  [[tax_assignment.assign.naive_bayes.parameters]]
+    process = "train_classifier"
+    reference_sequences = "/home/dileep/Documents/tax_reference_databases/gg_13_8_otus/rep_set/99_otus.fasta"
+    tax_map = "/home/dileep/Documents/tax_reference_databases/gg_13_8_otus/taxonomy/99_otu_taxonomy.txt"
