@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # import reads
 qiime tools import \
     --type 'FeatureData[Sequence]' \
@@ -11,7 +13,6 @@ qiime feature-classifier classify-sklearn \
     --i-classifier ${classifier} \
     --i-reads rep_seqs.qza \
     --p-n-jobs ${ncpus} \
-    --p-reads-per-batch ${read_per_batch} \
     --p-confidence ${confidence} \
     --o-classification taxonomy.qza
 

@@ -44,9 +44,7 @@ process train_classifier {
 // TODO: Check if the flatMap works
 chnl_rep_seqs
     .combine(chnl_classifier_artifact)
-    .flatMap {it}
     .set { chnl_repseqs_classifier }
-
 
 // Step2: Assign taxonomy using the classifier
 process assign_taxonomy {
