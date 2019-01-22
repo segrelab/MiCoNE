@@ -2,7 +2,30 @@
 
 ## Taxonomy mapping
 
-# [tax_assignment.tax_mapping.naive_bayes]
+[tax_assignment.assign.naive_bayes]
+  env = "mindpipe-qiime2"
+  output_location = "naive_bayes"
+  [[tax_assignment.assign.naive_bayes.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+  [[tax_assignment.assign.naive_bayes.input]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+  [[tax_assignment.assign.naive_bayes.input]]
+    datatype = "sample_metadata"
+    format = ["tsv", "csv"]
+  [[tax_assignment.assign.naive_bayes.parameters]]
+    process = "train_classifier"
+    reference_sequences = ""
+    tax_map = ""
+  [[tax_assignment.assign.naive_bayes.parameters]]
+    process = "assign_taxonomy"
+    confidence = 0.7
+    ncpus = 1
+  [[tax_assignment.assign.naive_bayes.output]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "naive_bayes/**/otu_table.biom"
 
 [tax_assignment.assign.blast]
   env = "mindpipe-blast"
