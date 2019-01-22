@@ -8,12 +8,12 @@ def output_dir = file(params.output_dir)
 
 
 // Parameters
-def blast_ncpus = params.blast_ncpus
-def parser_ncpus = params.parser_ncpus
-def evalue_cutoff = params.evalue_cutoff
-def n_hits = params.n_hits
-def blast_db = file(params.blast_db)
+def reference_sequences = file(params.reference_sequences)
 def tax_map = file(params.tax_map)
+def max_accepts = params.max_accepts
+def perc_identity = params.perc_identity
+def evalue = params.evalue
+def min_consensus = params.min_consensus
 
 
 // Channels
@@ -35,42 +35,54 @@ Channel
 
 // Processes
 
-// Step1: Blast representative sequences against the blast database
-process blast {
+// Step1a: Import files
+process import_reads {
     tag "${id}"
-    publishDir "${output_dir}/blast/${id}"
     input:
     set val(id), file(rep_seqs) from chnl_rep_seqs
     output:
-    set val(id), file("blast_output.xml") into chnl_blast_results
+    set val(id), file('rep_seqs.qza') into chnl_repseqs_artifact
     script:
-    {{ blast }}
+    {{ import_reads }}
 }
 
-// Step2: Parse the blast results and obtain consensus taxonomy for each rep_seq
-process parser {
-    tag "${id}"
-    input:
-    set val(id), file(blast_output) from chnl_blast_results
+// Step1b: Import references
+process import_references {
     output:
-    set val(id), file("tax_assignment.tsv")  into chnl_tax_assignment
+    set file('tax_map.qza'), file('reference_sequences.qza') into chnl_reftax_artifact
     script:
-    {{ parser }}
+    {{ import_references }}
+}
+
+chnl_repseqs_artifact
+    .combine(chnl_reftax_artifact)
+    .set { chnl_repseqs_reftax }
+
+// Step2: Blast representative sequences against the blast database
+process assign_taxonomy {
+    tag "${id}"
+    publishDir "${output_dir}/blast/${id}"
+    input:
+    set val(id), file(repseq_artifact), file(taxmap_artifact), file(refseq_artifact) from chnl_repseqs_reftax
+    output:
+    set val(id), file("taxonomy.tsv") into chnl_taxonomy
+    script:
+    {{ assign_taxonomy }}
 }
 
 chnl_otu_table
-    .join(chnl_tax_assignment)
+    .join(chnl_taxonomy)
     .join(chnl_sample_metadata)
-    .set { chnl_combined }
+    .set { chnl_otu_md }
 
-// Step3: Attach the taxonomy assignment to the OTU table
-process addtax2biom {
+// Step3: Attach the observation and sample metadata to the OTU table
+process add_md2biom {
     tag "${id}"
     publishDir "${output_dir}/blast/${id}", saveAs: { "otu_table.biom" }
     input:
-    set val(id), file(otu_table_file), file(tax_assignment), file(sample_metadata_file) from chnl_combined
+    set val(id), file(otu_table_file), file(tax_assignment), file(sample_metadata_file) from chnl_otu_md
     output:
     set val(id), file("otu_table_wtax.biom") into chnl_output
     script:
-    {{ addtax2biom }}
+    {{ add_md2biom }}
 }

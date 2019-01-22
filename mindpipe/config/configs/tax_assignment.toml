@@ -28,7 +28,7 @@
     location = "naive_bayes/**/otu_table.biom"
 
 [tax_assignment.assign.blast]
-  env = "mindpipe-blast"
+  env = "mindpipe-qiime2"
   output_location = "blast"
   [[tax_assignment.assign.blast.input]]
     datatype = "otu_table"
@@ -40,15 +40,13 @@
     datatype = "sample_metadata"
     format = ["tsv", "csv"]
   [[tax_assignment.assign.blast.parameters]]
-    process = "blast"
-    blast_db = ""
-    evalue_cutoff = 1e-10
-    ncpus = 1
-  [[tax_assignment.assign.blast.parameters]]
-    process = "parser"
+    process = "assign_taxonomy"
+    reference_sequences = ""
     tax_map = ""
-    n_hits = 10
-    ncpus = 1
+    max_accepts = 10
+    perc_identify = 0.8
+    evalue = 0.001
+    min_consensus = 0.51
   [[tax_assignment.assign.blast.output]]
     datatype = "otu_table"
     format = ["biom"]
