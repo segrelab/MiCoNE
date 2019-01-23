@@ -131,7 +131,11 @@ class Params(collections.Hashable):
         for curr_param in value["parameters"]:
             if "process" not in curr_param:
                 raise ValueError("Parameters is missing 'process' field")
-            params = {k: v for k, v in curr_param.items() if k != "process"}
+            params = {
+                k: self._replace_envvar(v)
+                for k, v in curr_param.items()
+                if k != "process"
+            }
             self.parameters.add(
                 Parameters(process=curr_param["process"], params=params)
             )
