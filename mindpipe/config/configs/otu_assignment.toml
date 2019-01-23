@@ -206,7 +206,7 @@
     ncpus = 1
     parameters = "${PIPELINE_DIR}/otu_assignment/denoise_cluster/qiime1_parameters.txt"
     reference_sequences = "${CONDA_PREFIX}/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta"
-    picking_method = "sortmerna_sumaclust"
+    picking_method = "uclust"
   [[otu_assignment.denoise_cluster.open_reference.output]]
     datatype = "otu_table"
     format = ["biom"]
