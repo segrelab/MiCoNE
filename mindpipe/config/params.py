@@ -181,30 +181,35 @@ class Params(collections.Hashable):
                 return element
         raise KeyError(f"{name} not found in {category} of {self.name}")
 
-    def _replace_envvar(self, string: str) -> str:
+    def _replace_envvar(self, item: Any) -> str:
         """
-            Replace the environment variable in the "string" with it's value
+            Replace the environment variable in the "item" with it's value
 
             Parameters
             ----------
-            string : str
-                The string which contains the environment variable
+            item : Any
+                The item which contains the environment variable
+                Replacement is only done if item is a string
+                Otherwise the item is returned as is
 
             Returns
             -------
-            str
-                The string where the env variable is replaced by it's value
+            Any
+                The item where the env variable is replaced by it's value
         """
-        pattern = re.compile(r"\$\{(.*?)\}")
-        if re.match(pattern, string):
-            env_var = re.match(pattern, string).group(1)
-            if env_var == "CONDA_PREFIX":
-                replacement = str(self.env)
+        if isinstance(item, str):
+            pattern = re.compile(r"\$\{(.*?)\}")
+            if re.match(pattern, item):
+                env_var = re.match(pattern, item).group(1)
+                if env_var == "CONDA_PREFIX":
+                    replacement = str(self.env)
+                else:
+                    replacement = os.environ.get(env_var)
+                return re.sub(pattern, replacement, item)
             else:
-                replacement = os.environ.get(env_var)
-            return re.sub(pattern, replacement, string)
+                return item
         else:
-            return string
+            return item
 
     def _process_io(
         self, data: List[Dict[str, Union[str, List[str]]]], category: str
@@ -243,8 +248,7 @@ class Params(collections.Hashable):
                     raise ValueError(f"Invalid {category}: {data}. Extra {field}")
             item_subset = {k: item.get(k) for k in IO._fields}
             loc: Optional[str] = item_subset.get("location")
-            if loc and "$" in loc:
-                loc = self._replace_envvar(loc)
+            loc = self._replace_envvar(loc)
             item_subset["location"] = pathlib.Path(loc) if loc else None
             io_tuples.add(IO(**item_subset))
         return io_tuples
