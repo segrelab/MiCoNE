@@ -54,6 +54,6 @@ process pick_open_reference_otus {
     output:
     set file('otu_table.biom'), file('rep_seqs.fasta'), file('log*.txt') into output_chnl
     script:
-    def parallel_option = ncpus > 1 ? '' : "-a -O ${ncpus}"
+    def parallel_option = ncpus > 1 ? "-a -O ${ncpus}" : ''
     {{ pick_open_reference_otus }}
 }
