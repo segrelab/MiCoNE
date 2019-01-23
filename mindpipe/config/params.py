@@ -181,6 +181,31 @@ class Params(collections.Hashable):
                 return element
         raise KeyError(f"{name} not found in {category} of {self.name}")
 
+    def _replace_envvar(self, string: str) -> str:
+        """
+            Replace the environment variable in the "string" with it's value
+
+            Parameters
+            ----------
+            string : str
+                The string which contains the environment variable
+
+            Returns
+            -------
+            str
+                The string where the env variable is replaced by it's value
+        """
+        pattern = re.compile(r"\$\{(.*?)\}")
+        if re.match(pattern, string):
+            env_var = re.match(pattern, string).group(1)
+            if env_var == "CONDA_PREFIX":
+                replacement = str(self.env)
+            else:
+                replacement = os.environ.get(env_var)
+            return re.sub(pattern, replacement, string)
+        else:
+            return string
+
     def _process_io(
         self, data: List[Dict[str, Union[str, List[str]]]], category: str
     ) -> Set[IOType]:
@@ -219,14 +244,7 @@ class Params(collections.Hashable):
             item_subset = {k: item.get(k) for k in IO._fields}
             loc: Optional[str] = item_subset.get("location")
             if loc and "$" in loc:
-                pattern = re.compile(r"\$\{(.*?)\}")
-                if re.match(pattern, loc):
-                    env_var = re.match(pattern, loc).group(1)
-                    if env_var == "CONDA_PREFIX":
-                        replacement = str(self.env)
-                    else:
-                        replacement = os.environ.get(env_var)
-                    loc = re.sub(pattern, replacement, loc)
+                loc = self._replace_envvar(loc)
             item_subset["location"] = pathlib.Path(loc) if loc else None
             io_tuples.add(IO(**item_subset))
         return io_tuples
