@@ -6,7 +6,7 @@ pick_closed_reference_otus.py \
   -r ${reference_sequences} \
   -p ${parameters} \
   --suppress_taxonomy_assignment \
-  -f -o \$PWD/
+  -f -o \$PWD
 
 pick_rep_set.py \
   -i uclust_ref_picked_otus/${id}_otus.txt \

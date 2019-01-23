@@ -8,7 +8,7 @@ pick_open_reference_otus.py \
     ${parallel_option} \
     --suppress_taxonomy_assignment \
     --suppress_align_and_tree \
-    -f -o \$PWD/
+    -f -o \$PWD
 
 mv rep_set.fna rep_seqs.fasta
 mv otu_table_mc2.biom otu_table.biom
