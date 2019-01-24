@@ -10,6 +10,7 @@ def output_dir = file(params.output_dir)
 // Parameters
 def reference_sequences = file(params.reference_sequences)
 def tax_map = file(params.tax_map)
+def classifier = params.classifier
 def ncpus = params.ncpus
 def confidence = params.confidence
 
@@ -34,14 +35,19 @@ Channel
 // Processes
 
 // Step1: Train classifier on reference_sequences and taxonomy_map
-process train_classifier {
-    output:
-    file('classifier.qza') into chnl_classifier_artifact
-    script:
-    {{ train_classifier }}
+if(classifier) {
+    Channel
+        .fromPath(classifier)
+        .set { chnl_classifier_artifact }
+} else {
+    process train_classifier {
+        output:
+        file('classifier.qza') into chnl_classifier_artifact
+        script:
+        {{ train_classifier }}
+    }
 }
 
-// TODO: Check if the flatMap works
 chnl_rep_seqs
     .combine(chnl_classifier_artifact)
     .set { chnl_repseqs_classifier }
