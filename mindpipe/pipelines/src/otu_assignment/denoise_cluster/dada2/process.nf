@@ -40,12 +40,24 @@ process dada2 {
     input:
     set val(id), file(sequence_files), file(manifest_file) from chnl_seqcollection
     output:
-    set val(id), file('*.biom'), file('*.fasta') into chln_biomseq_hashing
+    set val(id), file("seq_table.tsv") into chnl_seqtable
     script:
     {{ dada2 }}
 }
 
-// Step2: Replace the ids with hashes of the sequences
+// Step2: Make representative sequences and biom table from sequence table
+process make_biom_repseqs {
+    tag "${id}"
+    publishDir "${output_dir}/dada2/${id}"
+    input:
+    set val(id), file(seq_table_file) from chnl_seqtable
+    output:
+    set val(id), file('*.biom'), file('*.fasta') into chln_biomseq_hashing
+    script:
+    {{ make_biom_repseqs }}
+}
+
+// Step3: Replace the ids with hashes of the sequences
 process hashing {
     tag "${id}"
     publishDir "${output_dir}/dada2/${id}"

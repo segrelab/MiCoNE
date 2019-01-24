@@ -28,15 +28,6 @@ if(big.data) {
 }
 
 seq.table <- makeSequenceTable(reads.dada)
+rownames(seq.table) <- sample.names
 
-# Export sequences
-uniquesToFasta(
-   getUniques(seq.table),
-   fout="unhashed_rep_seqs.fasta",
-   ids=paste0("Seq", seq(length(getUniques(seq.table))))
-)
-
-# Export to biom
-library(biomformat)
-st.biom <- make_biom(t(seq.table))
-write_biom(st.biom, "unhashed_otu_table.biom")
+write.table(t(seq.table), file="seq_table.tsv", col.names=NA, sep="\t")
