@@ -18,6 +18,7 @@
     process = "train_classifier"
     reference_sequences = ""
     tax_map = ""
+    classifier = ""
   [[tax_assignment.assign.naive_bayes.parameters]]
     process = "assign_taxonomy"
     confidence = 0.7
