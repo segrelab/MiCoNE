@@ -1,0 +1,16 @@
+# User configuration file for vserach uchime-denovo chimera checking pipeline
+title = "User run setttings for the uchime pipeline"
+
+order = ["otu_assignment.chimera_checking.uchime"]
+
+output_location = "/home/dileep/Documents/results/uchime"
+
+[otu_assignment.chimera_checking.uchime]
+  [[otu_assignment.chimera_checking.uchime.input]]
+    datatype = "sequence_16s_representative"
+    format = ["fasta"]
+    location = "/home/dileep/Documents/results/dada2/dada2/fmt_seqs_1/rep_seqs.fasta"
+  [[otu_assignment.chimera_checking.uchime.input]]
+    datatype = "otu_table"
+    format = ["biom"]
+    location = "/home/dileep/Documents/results/dada2/dada2/fmt_seqs_1/otu_table.biom"
