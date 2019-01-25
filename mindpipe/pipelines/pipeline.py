@@ -4,8 +4,9 @@
 
 import collections
 import pathlib
-from typing import Iterator, List, Optional, Union
+from typing import Iterator, List, Optional
 
+import networkx as nx
 import toml
 
 from ..config import Config
@@ -80,12 +81,51 @@ class Pipeline(collections.Sequence):
         title = kwargs.get("title")
         order = kwargs.get("order")
         output_location = kwargs.get("output_location")
-        self._order = order if order else user_settings["order"]
+        self._process_tree = self._parse_process_tree(
+            order if order else user_settings["order"]
+        )
         self.title = title if title else user_settings["title"]
         self.output_location = (
             output_location if output_location else user_settings["output_location"]
         )
         self.processes = self._create_processes(user_settings)
+
+    @staticmethod
+    def _parse_process_tree(process_string: str) -> nx.Graph:
+        """
+            Parses the process string and creates a process tree from it
+
+            Parameters
+            ----------
+            process_string : str
+                The string that represents the process tree
+
+            Returns
+            -------
+            nx.Graph
+                A nx.Graph representing the process tree
+        """
+        processes = [
+            p for p in process_string.strip().replace("\n", " ").split(" ") if p
+        ]
+        graph = nx.DiGraph()
+        process_stack = [processes[0]]
+        delimiters = {"(", ")", "|"}
+        for process in processes[1:]:
+            print(process)
+            if process not in delimiters:
+                parent = process_stack.pop()
+                graph.add_edge(parent, process)
+                print(parent, process)
+                process_stack.append(process)
+            elif process == "(":
+                process_stack.append(process_stack[-1])
+            elif process == "|":
+                process_stack.pop()
+                process_stack.append(process_stack[-1])
+            elif process == ")":
+                process_stack.pop()
+        return graph
 
     def _parse_settings(self, settings_file: str, **kwargs) -> dict:
         """
@@ -112,7 +152,7 @@ class Pipeline(collections.Sequence):
 
     def _create_processes(self, settings):
         process_list: List[Process] = []
-        process_namelist = self._order
+        process_namelist = self._process_tree
         for process_name in process_namelist:
             level_1, level_2, level_3 = process_name.split(".")
             user_process_data = settings[level_1][level_2][level_3]
