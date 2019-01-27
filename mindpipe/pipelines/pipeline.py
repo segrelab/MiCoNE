@@ -238,4 +238,23 @@ class Pipeline(collections.Sequence):
                 process.run()
                 yield process
 
+    def draw_process_tree(self, fpath: str) -> None:
+        """
+            Draw the DAG chart of the process tree
+
+            Parameters
+            ----------
+            fpath: str
+                The file path where the DAG chart should be saved
+        """
+        import matplotlib.pyplot as plt
+
+        tree = self.process_tree
+        nodes = list(self.process_tree.nodes)
+        labels = {n: n.split(".", 2)[-1] for n in nodes}
+        pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="dot")
+        nx.draw(tree, pos, with_labels=False, arrows=True)
+        nx.draw_networkx_labels(tree, pos, labels=labels)
+        plt.savefig(fpath)
+
     # TODO: Create computational metadata
