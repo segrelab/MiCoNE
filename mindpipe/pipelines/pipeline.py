@@ -109,14 +109,20 @@ class Pipeline(collections.Sequence):
             p for p in process_string.strip().replace("\n", " ").split(" ") if p
         ]
         graph = nx.DiGraph()
+        # NOTE: We do not support forking in the first process
         process_stack = [processes[0]]
         delimiters = {"(", ")", "|"}
         for process in processes[1:]:
-            print(process)
             if process not in delimiters:
                 parent = process_stack.pop()
-                graph.add_edge(parent, process)
-                print(parent, process)
+                if process in graph.nodes:
+                    graph.node[process]["count"] += 1
+                    count = graph.node[process]["count"]
+                    new_process = f"{process}.{count}"
+                    graph.add_edge(parent, new_process)
+                else:
+                    graph.add_edge(parent, process)
+                    graph.node[process]["count"] = 1
                 process_stack.append(process)
             elif process == "(":
                 process_stack.append(process_stack[-1])
@@ -125,6 +131,10 @@ class Pipeline(collections.Sequence):
                 process_stack.append(process_stack[-1])
             elif process == ")":
                 process_stack.pop()
+        if not nx.is_directed_acyclic_graph(graph):
+            raise ValueError(
+                "The processes do not form a directed acyclic graph. Please check the order"
+            )
         return graph
 
     def _parse_settings(self, settings_file: str, **kwargs) -> dict:
