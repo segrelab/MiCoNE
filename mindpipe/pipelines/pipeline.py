@@ -52,8 +52,9 @@ class Pipeline(collections.Sequence):
             The execution environment for the pipeline
         base_dir : pathlib.Path
             The absolute path to the base input file directory
-        processes : List[Process]
-            The list of `Process` in the pipeline
+        process_tree : nx.DiGraph
+            The process tree for the pipeline
+            Every node has a "process" attribute which contains the `Process` class
     """
 
     _req_keys = {"title", "order", "output_location"}
@@ -81,14 +82,14 @@ class Pipeline(collections.Sequence):
         title = kwargs.get("title")
         order = kwargs.get("order")
         output_location = kwargs.get("output_location")
-        self._process_tree = self._parse_process_tree(
+        self.process_tree = self._parse_process_tree(
             order if order else user_settings["order"]
         )
         self.title = title if title else user_settings["title"]
         self.output_location = (
             output_location if output_location else user_settings["output_location"]
         )
-        self.processes = self._create_processes(user_settings)
+        self._create_processes(user_settings)
 
     @staticmethod
     def _parse_process_tree(process_string: str) -> nx.Graph:
@@ -160,29 +161,44 @@ class Pipeline(collections.Sequence):
                 )
         return settings
 
-    def _create_processes(self, settings):
-        process_list: List[Process] = []
-        process_namelist = self._process_tree
-        for process_name in process_namelist:
+    def _create_processes(self, settings: dict) -> None:
+        """
+            Create `Process` instances and add them to the process_tree
+
+            Parameters
+            ----------
+            settings : dict
+                The dictionary of verified user settings
+        """
+        # Create processes for each node
+        tree = self.process_tree
+        for node_name in tree.nodes:
+            process_name = node_name.rstrip(".1234567890")
             level_1, level_2, level_3 = process_name.split(".")
+            default_process_data = self.config.params_set[process_name]
             user_process_data = settings[level_1][level_2][level_3]
-            process_data = self.config.params_set[process_name]
-            process_data.merge(user_process_data)
-            process_list.append(Process(process_data, self.profile, resume=self.resume))
-        process_list[0].update_location(str(self.base_dir), "input")
-        process_list[0].update_location(self.output_location, "output")
-        for i, current_process in enumerate(process_list[1:]):
-            current_process.update_location(str(self.base_dir), "input")
-            for previous_process in reversed(process_list[: i + 1]):
-                current_process.attach_to(previous_process)
-            current_process.update_location(self.output_location, "output")
-        return process_list
+            default_process_data.merge(user_process_data)
+            tree.node[node_name]["process"] = Process(
+                default_process_data, self.profile, resume=self.resume
+            )
+        # Get the process for the root node and update locations
+        root_node = next(nx.topological_sort(tree))
+        root_node_process = tree.node[root_node]["process"]
+        root_node_process.update_location(str(self.base_dir), "input")
+        root_node_process.update_location(self.output_location, "output")
+        # Attach outputs of parent node to inputs of child node
+        for prev_process_name, curr_process_name in nx.bfs_edges(tree, root_node):
+            curr_process = tree.node[curr_process_name]["process"]
+            prev_process = tree.node[prev_process_name]["process"]
+            curr_process.update_location(str(self.base_dir), "input")
+            curr_process.attach_to(prev_process)
+            curr_process.update_location(self.output_location, "output")
 
     def __iter__(self) -> Iterator:
-        return iter(self.processes)
+        return iter(self.process_tree.nodes)
 
     def __len__(self) -> int:
-        return len(self.processes)
+        return len(self.process_tree.nodes)
 
     def __getitem__(self, key: str) -> Process:
         for process in self:
@@ -210,7 +226,10 @@ class Pipeline(collections.Sequence):
             Iterator[Process]
                 Iterator over each process currently being executed
        """
-        for process in self.processes:
+        root_node = next(nx.topological_sort(self.process_tree))
+        processes = nx.bfs_tree(self.process_tree, root_node)
+        for process_name in processes:
+            process = self.process_tree.node[process_name]["process"]
             loc = pathlib.Path(self.output_location)  # / process.params.output_location
             if self.resume and process.io_exist:
                 yield process
