@@ -18,6 +18,8 @@ schematics = "*"
 click = "*"
 halo = "*"
 loguru = "*"
+matplotlib = "*"
+pygraphviz = "*"
 
 [dev-packages]
 bumpversion = "*"
