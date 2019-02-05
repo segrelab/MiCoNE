@@ -26,7 +26,7 @@
   [[tax_assignment.assign.naive_bayes.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "naive_bayes/**/otu_table.biom"
+    location = "**/otu_table.biom"
 
 [tax_assignment.assign.blast]
   env = "mindpipe-qiime2"
@@ -51,7 +51,7 @@
   [[tax_assignment.assign.blast.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "blast/**/otu_table.biom"
+    location = "**/otu_table.biom"
 
 
 ## Phylogeny

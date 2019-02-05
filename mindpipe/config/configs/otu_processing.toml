@@ -16,7 +16,7 @@
   [[otu_processing.filter.abundance.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "filter/abundance/**/*_filtered.biom"
+    location = "**/*_filtered.biom"
 
 [otu_processing.filter.group]
   env = "mindpipe"
@@ -30,11 +30,11 @@
   [[otu_processing.filter.group.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "filter/group/**/*.biom"
+    location = "**/*.biom"
   [[otu_processing.filter.group.output]]
     datatype = "children_map"
     format = ["json"]
-    location = "filter/group/**/*_children.json"
+    location = "**/*_children.json"
 
 [otu_processing.filter.partition]
   env = "mindpipe"
@@ -47,7 +47,7 @@
   [[otu_processing.filter.partition.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "filter/partition/**/*.biom"
+    location = "**/*.biom"
 
 
 ## Transform
@@ -83,14 +83,14 @@
   [[otu_processing.export.biom2tsv.output]]
     datatype = "otu_table"
     format = ["tsv"]
-    location = "biom2tsv/*_otu.tsv"
+    location = "*_otu.tsv"
   [[otu_processing.export.biom2tsv.output]]
     datatype = "observation_metadata"
     format = ["csv"]
-    location = "biom2tsv/*_obs_metadata.csv"
+    location = "*_obs_metadata.csv"
   [[otu_processing.export.biom2tsv.output]]
     datatype = "sample_metadata"
     format = ["csv"]
-    location = "biom2tsv/*_sample_metadata.tsv"
+    location = "*_sample_metadata.tsv"
   [[otu_processing.export.biom2tsv.parameters]]
     process = "biom2tsv"

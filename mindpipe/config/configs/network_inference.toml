@@ -11,11 +11,11 @@
   [[network_inference.correlation.sparcc.output]]
     datatype = "interaction_table"
     format = ["tsv"]
-    location = "sparcc/*_corr.tsv"
+    location = "*_corr.tsv"
   [[network_inference.correlation.sparcc.output]]
     datatype = "pvalue_table"
     format = ["tsv"]
-    location = "sparcc/*_pval.tsv"
+    location = "*_pval.tsv"
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 50
@@ -36,7 +36,7 @@
 
 [network_inference.network.make_network]
   env = "mindpipe"
-  output_location = "network"
+  output_location = "make_network"
   [[network_inference.network.make_network.input]]
     datatype = "interaction_table"
     format = ["tsv"]
@@ -60,4 +60,4 @@
   [[network_inference.network.make_network.output]]
     datatype = "network"
     format = ["json"]
-    location = "make_network/*_network.json"
+    location = "*_network.json"
