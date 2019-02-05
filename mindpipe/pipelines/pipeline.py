@@ -234,6 +234,8 @@ class Pipeline(collections.Sequence):
        """
         root_node = next(nx.topological_sort(self.process_tree))
         processes = nx.bfs_tree(self.process_tree, root_node)
+        tree_diag = self.output_location + "/DAG.pdf"
+        self.draw_process_tree(tree_diag)
         for process_name in processes:
             process = self.process_tree.node[process_name]["process"]
             loc = pathlib.Path(self.output_location)  # / process.params.output_location
