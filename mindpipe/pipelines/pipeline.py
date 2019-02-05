@@ -173,7 +173,13 @@ class Pipeline(collections.Sequence):
         # Create processes for each node
         tree = self.process_tree
         for node_name in tree.nodes:
-            process_name = node_name.rstrip(".1234567890")
+            suffixes = [f".{i}" for i in range(10)]
+            for suffix in suffixes:
+                if node_name.endswith(suffix):
+                    process_name = node_name.rsplit(suffix, 1)[0]
+                    break
+            else:
+                process_name = node_name
             level_1, level_2, level_3 = process_name.split(".")
             default_process_data = self.config.params_set[process_name]
             user_process_data = settings[level_1][level_2][level_3]
