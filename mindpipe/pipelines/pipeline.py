@@ -259,8 +259,12 @@ class Pipeline(collections.Sequence):
         nodes = list(self.process_tree.nodes)
         labels = {n: n.split(".", 2)[-1] for n in nodes}
         pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="dot")
-        nx.draw(tree, pos, with_labels=False, arrows=True)
-        nx.draw_networkx_labels(tree, pos, labels=labels)
+        nx.draw_networkx_nodes(tree, pos, node_size=500, alpha=0.8)
+        nx.draw_networkx_edges(tree, pos, width=1.0, arrows=True)
+        text = nx.draw_networkx_labels(tree, pos, labels=labels, font_size=8)
+        for _, t in text.items():
+            t.set_rotation(30)
+        plt.axis("off")
         plt.savefig(fpath)
 
     # TODO: Create computational metadata
