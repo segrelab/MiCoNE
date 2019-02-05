@@ -88,6 +88,7 @@ class Params(collections.Hashable):
     _req_keys = {"output_location", "input", "output", "parameters"}
 
     def __init__(self, data: Tuple[str, Dict[str, Any]]) -> None:
+        self._data = data
         if len(data) != 2:
             raise ValueError(f"Invalid process data: {data}")
         key, value = data
@@ -253,7 +254,10 @@ class Params(collections.Hashable):
             item_subset = {k: item.get(k) for k in IO._fields}
             loc: Optional[str] = item_subset.get("location")
             loc = self._replace_envvar(loc)
-            item_subset["location"] = pathlib.Path(loc) if loc else None
+            if category == "output":
+                item_subset["location"] = self.output_location / loc if loc else None
+            else:
+                item_subset["location"] = pathlib.Path(loc) if loc else None
             io_tuples.add(IO(**item_subset))
         return io_tuples
 
@@ -287,6 +291,23 @@ class Params(collections.Hashable):
         )
         io_list.remove(element)
         io_list.add(new_element)
+
+    def update_output_location(self, location: str) -> None:
+        """
+            Update the output location of the Params instance
+            Also update the outputs of the process accordingly
+
+            Parameters
+            ----------
+            location : str
+                The new output location
+        """
+        for output_ in self.output:
+            name = output_.datatype
+            old_location = str(output_.location)
+            old_output_location = str(self.output_location)
+            new_location = old_location.replace(old_output_location, location)
+            self.update_location(name, new_location, "output")
 
     def verify_io(self) -> None:
         """

@@ -26,6 +26,9 @@ class Process(collections.Hashable):
             The parameters for a particular process
         profile : {'local', 'sge'}
             The execution environment
+        output_location : str, optional
+            The output  directory for the process
+            Default value is None
         script_name : str, optional
             The name of the process script template
             Default is 'process.nf'
@@ -63,12 +66,13 @@ class Process(collections.Hashable):
         self,
         params: Params,
         profile: str,
+        output_location: Optional[str] = None,
         script_name: str = "process.nf",
         config_name: str = "process.config",
         process_dir_name: str = "processes",
         resume: Optional[bool] = False,
     ) -> None:
-        self.params = params
+        self.params = params.copy()
         self.name = self.params.name
         self.profile = profile
         self.resume = resume
@@ -77,7 +81,11 @@ class Process(collections.Hashable):
         config_file = self.params.root / config_name
         self.script = ScriptTemplate(script_file, process_dir)
         self.config = ConfigTemplate(config_file)
-        self._output_location = self.params.output_location
+        if output_location:
+            self._output_location = pathlib.Path(output_location)
+            self.params.update_output_location(output_location)
+        else:
+            self._output_location = self.params.output_location
         self.env = self.params.env
 
     def __hash__(self) -> int:

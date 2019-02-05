@@ -185,7 +185,10 @@ class Pipeline(collections.Sequence):
             user_process_data = settings[level_1][level_2][level_3]
             default_process_data.merge(user_process_data)
             tree.node[node_name]["process"] = Process(
-                default_process_data, self.profile, resume=self.resume
+                default_process_data,
+                self.profile,
+                output_location=node_name,
+                resume=self.resume,
             )
         # Get the process for the root node and update locations
         root_node = next(nx.topological_sort(tree))
