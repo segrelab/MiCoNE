@@ -110,6 +110,9 @@ class Pipeline(collections.Sequence):
             p for p in process_string.strip().replace("\n", " ").split(" ") if p
         ]
         graph = nx.DiGraph()
+        if len(processes) == 1:
+            graph.add_node(processes[0])
+            return graph
         # NOTE: We do not support forking in the first process
         process_stack = [processes[0]]
         delimiters = {"(", ")", "|"}
