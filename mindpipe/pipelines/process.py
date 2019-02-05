@@ -322,19 +322,30 @@ class Process(collections.Hashable):
         else:
             return self.cmd.status
 
-    @property
-    def io_exist(self) -> bool:
+    def _check_files(self, category: str) -> bool:
         """
-            Return True if the expected input and output of the process already exist
-            Useful when resuming a pipeline execution
+            Return True if files in the category are present o/w False
+
+            Parameters
+            ----------
+            category: {'input', 'output'}
+                Specifies whether the data is input or output information
 
             Returns
             -------
             bool
-                True if the expected input and output of the process already exist
+                True if the expected files exist
         """
         mult_pattern = re.compile(".*{(.*)}.*")
-        for io in chain(self.params.input, self.params.output):
+        if category == "input":
+            io_object = self.params.input
+        elif category == "output":
+            io_object = self.params.output
+        else:
+            raise ValueError(
+                f"Invalid category: {category}. Can either be 'input' or 'output'"
+            )
+        for io in io_object:
             loc = io.location
             if loc is None:
                 return False
@@ -355,3 +366,18 @@ class Process(collections.Hashable):
             elif not loc.exists():
                 return False
         return True
+
+    @property
+    def io_exist(self) -> bool:
+        """
+            Return True if the expected input and output of the process already exist
+            Useful when resuming a pipeline execution
+
+            Returns
+            -------
+            bool
+                True if the expected input and output of the process already exist
+        """
+        input_exists = self._check_files("input")
+        output_exists = self._check_files("output")
+        return input_exists and output_exists
