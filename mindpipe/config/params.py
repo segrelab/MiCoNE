@@ -395,6 +395,12 @@ class Params(collections.Hashable):
                     pass
         return None
 
+    def copy(self) -> "Params":
+        """ Return a copy of the `Param` instance """
+        import copy
+
+        return Params(copy.deepcopy(self._data))
+
 
 class ParamsSet(collections.Set):
     """
