@@ -88,7 +88,6 @@ class Params(collections.Hashable):
     _req_keys = {"output_location", "input", "output", "parameters"}
 
     def __init__(self, data: Tuple[str, Dict[str, Any]]) -> None:
-        self._data = data
         if len(data) != 2:
             raise ValueError(f"Invalid process data: {data}")
         key, value = data
@@ -415,12 +414,6 @@ class Params(collections.Hashable):
                 except KeyError:
                     pass
         return None
-
-    def copy(self) -> "Params":
-        """ Return a copy of the `Param` instance """
-        import copy
-
-        return Params(copy.deepcopy(self._data))
 
 
 class ParamsSet(collections.Set):
