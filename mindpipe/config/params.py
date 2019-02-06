@@ -66,7 +66,7 @@ class Params(collections.Hashable):
 
         Parameters
         ----------
-        data : Dict[str, Any]
+        data : Tuple[str, Dict[str, Any]]
             The information about the parameters for a particular process
 
         Attributes
