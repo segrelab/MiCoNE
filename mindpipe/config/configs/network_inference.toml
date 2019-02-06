@@ -4,7 +4,7 @@
 
 [network_inference.correlation.sparcc]
   env = "mindpipe-sparcc"
-  output_location = "network_inference/sparcc"
+  root_dir = "network_inference/sparcc"
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
     format = ["biom"]
@@ -36,7 +36,7 @@
 
 [network_inference.network.make_network]
   env = "mindpipe"
-  output_location = "make_network"
+  root_dir = "make_network"
   [[network_inference.network.make_network.input]]
     datatype = "interaction_table"
     format = ["tsv"]

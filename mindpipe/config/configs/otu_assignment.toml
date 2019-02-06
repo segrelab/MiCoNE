@@ -4,7 +4,7 @@
 
 [otu_assignment.sequence_processing.join_reads]
   env = "mindpipe-qiime1"
-  output_location = "joined_reads"
+  root_dir = "joined_reads"
   [[otu_assignment.sequence_processing.join_reads.input]]
     datatype = "sequence_16s"
     format = ["fastq", "fastq.gz"]
@@ -28,7 +28,7 @@
 
 [otu_assignment.sequence_processing.demultiplex_illumina]
   env = "mindpipe-qiime2"
-  output_location = "demultiplex"
+  root_dir = "demultiplex"
   [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
     datatype = "sequence_16s"
     format = ["fastq", "fastq.gz"]
@@ -53,7 +53,7 @@
 
 [otu_assignment.sequence_processing.demultiplex_454]
   env = "mindpipe-qiime1"
-  output_location = "demultiplex"
+  root_dir = "demultiplex"
   [[otu_assignment.sequence_processing.demultiplex_454.input]]
     datatype = "sequence_16s"
     format = ["fasta"]
@@ -78,7 +78,7 @@
 
 [otu_assignment.sequence_processing.trim_filter_fixed]
   env = "mindpipe-qiime2"
-  output_location = "trimmed"
+  root_dir = "trimmed"
   [[otu_assignment.sequence_processing.trim_filter_fixed.input]]
     datatype = "sequence_16s"
     format = ["fastq.gz"]
@@ -104,7 +104,7 @@
 
 [otu_assignment.chimera_checking.uchime]
   env = "mindpipe-qiime2"
-  output_location = "chimera_checking"
+  root_dir = "chimera_checking"
   [[otu_assignment.chimera_checking.uchime.input]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
@@ -124,7 +124,7 @@
 
 [otu_assignment.chimera_checking.remove_bimera]
   env = "mindpipe-dada2"
-  output_location = "chimera_checking"
+  root_dir = "chimera_checking"
   [[otu_assignment.chimera_checking.remove_bimera.input]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
@@ -149,7 +149,7 @@
 
 [otu_assignment.denoise_cluster.de_novo]
   env = "mindpipe-qiime1"
-  output_location = "de_novo"
+  root_dir = "de_novo"
   [[otu_assignment.denoise_cluster.de_novo.input]]
     datatype = "sequence_16s"
     format = ["fastq.gz", "fastq"]
@@ -171,7 +171,7 @@
 
 [otu_assignment.denoise_cluster.closed_reference]
   env = "mindpipe-qiime1"
-  output_location = "closed_reference"
+  root_dir = "closed_reference"
   [[otu_assignment.denoise_cluster.closed_reference.input]]
     datatype = "sequence_16s"
     format = ["fastq.gz", "fastq"]
@@ -194,7 +194,7 @@
 
 [otu_assignment.denoise_cluster.open_reference]
   env = "mindpipe-qiime1"
-  output_location = "open_reference"
+  root_dir = "open_reference"
   [[otu_assignment.denoise_cluster.open_reference.input]]
     datatype = "sequence_16s"
     format = ["fastq.gz", "fastq"]
@@ -218,7 +218,7 @@
 
 [otu_assignment.denoise_cluster.dada2]
   env = "mindpipe-dada2"
-  output_location = "dada2"
+  root_dir = "dada2"
   [[otu_assignment.denoise_cluster.dada2.input]]
     datatype = "sequence_16s"
     format = ["fastq.gz", "fastq"]
@@ -240,7 +240,7 @@
 
 [otu_assignment.denoise_cluster.deblur]
   env = "mindpipe-qiime2"
-  output_location = "deblur"
+  root_dir = "deblur"
   [[otu_assignment.denoise_cluster.deblur.input]]
     datatype = "sequence_16s"
     format = ["fastq.gz", "fastq"]

@@ -4,7 +4,7 @@
 
 [otu_processing.filter.abundance]
   env = "mindpipe"
-  output_location = "filter/abundance"
+  root_dir = "filter/abundance"
   [[otu_processing.filter.abundance.input]]
     datatype = "otu_table"
     format = ["biom"]
@@ -20,7 +20,7 @@
 
 [otu_processing.filter.group]
   env = "mindpipe"
-  output_location = "filter/group"
+  root_dir = "filter/group"
   [[otu_processing.filter.group.input]]
     datatype = "otu_table"
     format = ["biom"]
@@ -38,7 +38,7 @@
 
 [otu_processing.filter.partition]
   env = "mindpipe"
-  output_location = "filter/partition"
+  root_dir = "filter/partition"
   [[otu_processing.filter.partition.input]]
     datatype = "otu_table"
     format = ["biom"]
@@ -54,7 +54,7 @@
 
 [otu_processing.transform.normalize]
   env = "mindpipe"
-  output_location = "transform/normalize"
+  root_dir = "transform/normalize"
   [[otu_processing.transform.normalize.input]]
     datatype = "otu_table"
     format = ["biom"]
@@ -76,7 +76,7 @@
 
 [otu_processing.export.biom2tsv]
   env = "mindpipe"
-  output_location = "export/biom2tsv"
+  root_dir = "export/biom2tsv"
   [[otu_processing.export.biom2tsv.input]]
     datatype = "otu_table"
     format = ["biom"]

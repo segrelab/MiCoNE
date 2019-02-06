@@ -4,7 +4,7 @@
 
 [tax_assignment.assign.naive_bayes]
   env = "mindpipe-qiime2"
-  output_location = "naive_bayes"
+  root_dir = "naive_bayes"
   [[tax_assignment.assign.naive_bayes.input]]
     datatype = "otu_table"
     format = ["biom"]
@@ -30,7 +30,7 @@
 
 [tax_assignment.assign.blast]
   env = "mindpipe-qiime2"
-  output_location = "blast"
+  root_dir = "blast"
   [[tax_assignment.assign.blast.input]]
     datatype = "otu_table"
     format = ["biom"]
