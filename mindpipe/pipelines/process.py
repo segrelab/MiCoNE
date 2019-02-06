@@ -3,7 +3,7 @@
 """
 
 import collections
-from itertools import chain
+from copy import deepcopy
 import pathlib
 import re
 import shutil
@@ -72,7 +72,7 @@ class Process(collections.Hashable):
         process_dir_name: str = "processes",
         resume: Optional[bool] = False,
     ) -> None:
-        self.params = params.copy()
+        self.params = deepcopy(params)
         self.name = self.params.name
         self.profile = profile
         self.resume = resume
