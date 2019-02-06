@@ -73,7 +73,7 @@ class Params(collections.Hashable):
         ----------
         name : str
             Process name
-        env : pathlib.Path
+        env : Optional[pathlib.Path]
             Location of the virtual environment for the process
         output_location : pathlib.Path
             Directory relative to main output directory where results of the process are to be saved
@@ -120,7 +120,7 @@ class Params(collections.Hashable):
                     f"The directory for the environment: {value['env']} doesn't exist. "
                     f"Please run mindpipe init --env {value['env']}"
                 )
-            self.env = env_loc
+            self.env: Optional[pathlib.Path] = env_loc
         else:
             self.env = None
         self.output_location = pathlib.Path(value["output_location"])
