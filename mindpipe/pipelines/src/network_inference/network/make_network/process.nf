@@ -41,7 +41,7 @@ chnl_correlation
 
 process make_network {
     tag "$id"
-    publishDir "${output_dir}/make_network"
+    publishDir "${output_dir}"
 
     input:
     set val(id), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file) from chnl_input

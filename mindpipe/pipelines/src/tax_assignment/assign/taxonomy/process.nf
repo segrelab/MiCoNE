@@ -21,7 +21,7 @@ Channel
 // Processes
 process taxonomy_assignment {
     tag "taxonomy_assignment"
-    publishDir  "${output_dir}/taxonomy_assignment"
+    publishDir  "${output_dir}"
 
     input:
     file repseq_artifact from repseq_artifact_chnl

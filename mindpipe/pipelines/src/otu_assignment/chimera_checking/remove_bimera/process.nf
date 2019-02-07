@@ -55,7 +55,7 @@ process remove_chimeras {
 // Step3: Rehash the sequence ids
 process hashing {
     tag "${id}"
-    publishDir "${output_dir}/chimera_checking/${id}"
+    publishDir "${output_dir}/${id}"
     input:
     set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs) from chnl_biomseq
     output:

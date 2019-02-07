@@ -3,7 +3,7 @@
 // Processes
 process get_visualization {
     tag "visualization"
-    publishDir "${output_dir}/dada2/visualization"
+    publishDir "${output_dir}"
 
     input:
     file sequence_artifact from sequence_artifact_viz
@@ -17,7 +17,7 @@ process get_visualization {
 
 process quality_analysis {
     tag "quality_analysis"
-    publishDir "${output_dir}/quality_analysis"
+    publishDir "${output_dir}"
 
     input:
     val filetype from filetype_quality

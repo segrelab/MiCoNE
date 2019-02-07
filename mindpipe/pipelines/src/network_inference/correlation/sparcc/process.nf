@@ -30,7 +30,7 @@ process biom2tsv {
 
 process compute_correlations {
     tag "${id}"
-    publishDir "${output_dir}/sparcc"
+    publishDir "${output_dir}"
 
     input:
     set val(id), file(otu_file) from chnl_otudata_corr
@@ -84,7 +84,7 @@ chnl_bootstraps
 
 process calculate_pvalues {
     tag "${id}"
-    publishDir "${output_dir}/sparcc"
+    publishDir "${output_dir}"
 
     input:
     set val(id), file(boot_file), file(corr_file), file(otu_file) from pval_input_chnl

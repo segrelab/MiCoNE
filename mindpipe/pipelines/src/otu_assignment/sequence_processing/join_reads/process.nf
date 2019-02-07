@@ -34,7 +34,7 @@ chnl_sequences
 // Step1: Join reads
 process  join_reads {
     tag "${id}"
-    publishDir "${output_dir}/joined_reads/${id}", saveAs: { filename -> filename.split("/")[1] }
+    publishDir "${output_dir}/${id}", saveAs: { filename -> filename.split("/")[1] }
     input:
     set val(id), val(sequence_files), file(barcode_file) from chnl_sequence_join
     output:

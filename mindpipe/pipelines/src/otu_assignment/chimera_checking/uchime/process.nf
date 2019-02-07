@@ -54,7 +54,7 @@ process remove_chimeras {
 // Step3: Export files
 process export_files {
     tag "${id}"
-    publishDir "${output_dir}/chimera_checking/${id}"
+    publishDir "${output_dir}/${id}"
     input:
     set val(id), file(otutable_nonchimeric), file(repseqs_nonchimeric) from chnl_nonchimeric
     output:

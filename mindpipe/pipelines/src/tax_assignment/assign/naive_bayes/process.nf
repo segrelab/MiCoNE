@@ -55,7 +55,7 @@ chnl_rep_seqs
 // Step2: Assign taxonomy using the classifier
 process assign_taxonomy {
     tag "${id}"
-    publishDir "${output_dir}/naive_bayes/${id}"
+    publishDir "${output_dir}/${id}"
     input:
     set val(id), file(rep_seqs), file(classifier) from chnl_repseqs_classifier
     output:
@@ -72,7 +72,7 @@ chnl_otu_table
 // Step3: Attach the observation and sample metadata to the OTU table
 process add_md2biom {
     tag "${id}"
-    publishDir "${output_dir}/naive_bayes/${id}", saveAs: { "otu_table.biom" }
+    publishDir "${output_dir}/${id}", saveAs: { "otu_table.biom" }
     input:
     set val(id), file(otu_table_file), file(tax_assignment), file(sample_metadata_file) from chnl_otu_md
     output:

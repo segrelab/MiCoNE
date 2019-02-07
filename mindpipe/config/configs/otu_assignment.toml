@@ -104,7 +104,7 @@
 
 [otu_assignment.chimera_checking.uchime]
   env = "mindpipe-qiime2"
-  root_dir = "chimera_checking"
+  root_dir = "uchime"
   [[otu_assignment.chimera_checking.uchime.input]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]
@@ -124,7 +124,7 @@
 
 [otu_assignment.chimera_checking.remove_bimera]
   env = "mindpipe-dada2"
-  root_dir = "chimera_checking"
+  root_dir = "remove_bimera"
   [[otu_assignment.chimera_checking.remove_bimera.input]]
     datatype = "sequence_16s_representative"
     format = ["fasta"]

@@ -22,7 +22,7 @@ Channel
 // Processes
 process filter {
     tag "${id}"
-    publishDir "${output_dir}/filter/abundance/${id}"
+    publishDir "${output_dir}/${id}"
     input:
     set val(id), file(otu_file) from chnl_otudata
     output:

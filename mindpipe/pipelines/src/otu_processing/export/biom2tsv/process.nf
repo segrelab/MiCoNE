@@ -12,7 +12,7 @@ Channel
 
 process biom2tsv {
     tag "$id"
-    publishDir "${output_dir}/biom2tsv"
+    publishDir "${output_dir}"
 
     input:
     set val(id), file(otu_file) from chnl_otu

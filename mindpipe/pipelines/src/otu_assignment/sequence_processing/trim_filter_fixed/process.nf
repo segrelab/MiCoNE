@@ -52,7 +52,7 @@ process import_sequences {
 // 2. Obtain sampled quality profiles via demux viz
 process export_visualization {
     tag "${id}"
-    publishDir "${output_dir}/trimmed/${id}/quality_summary", saveAs: { filename -> filename.split("/")[1] }
+    publishDir "${output_dir}/${id}/quality_summary", saveAs: { filename -> filename.split("/")[1] }
     input:
     set val(id), file(sequence_artifact) from chnl_seqartifact_viz
     output:
@@ -65,7 +65,7 @@ process export_visualization {
 // a. quality and b. sequence retainment
 process quality_analysis {
     tag "${id}"
-    publishDir "${output_dir}/trimmed/${id}/quality_summary"
+    publishDir "${output_dir}/${id}/quality_summary"
     input:
     set val(id), file(qual_summary) from chnl_qualsummary_analysis
     output:
@@ -83,7 +83,7 @@ chnl_seqs_trim
 // 4. Trimming the sequences using cutadapt
 process trimming {
     tag "${id}"
-    publishDir "${output_dir}/trimmed/${id}", saveAs: { filename -> filename.split("/")[1] }
+    publishDir "${output_dir}/${id}", saveAs: { filename -> filename.split("/")[1] }
     input:
     set val(id), file(sequence_files), file(manifest_file), file(trim_cmd) from chnl_trim
     output:

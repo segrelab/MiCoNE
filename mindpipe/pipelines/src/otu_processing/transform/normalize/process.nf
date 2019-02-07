@@ -18,7 +18,7 @@ Channel
 
 process normalize {
     tag "$id"
-    publishDir "${output_dir}/normalize"
+    publishDir "${output_dir}"
 
     input:
     set val(id), file(otu_file) from chnl_otudata

@@ -47,7 +47,7 @@ process fastq2fasta {
 // Step2: Closed reference OTU picking
 process pick_closed_reference_otus {
     tag "${id}"
-    publishDir "${output_dir}/closed_reference/${id}"
+    publishDir "${output_dir}/${id}"
     input:
     set val(id), file(fasta_file) from chnl_fasta_closedref
     output:

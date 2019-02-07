@@ -46,7 +46,7 @@ process fastq2fasta {
 // Step2: de_novo OTU picking
 process pick_de_novo_otus {
     tag "${id}"
-    publishDir "${output_dir}/de_novo/${id}"
+    publishDir "${output_dir}/${id}"
     input:
     set val(id), file(fasta_file) from chnl_fasta_de_novo
     output:
