@@ -201,16 +201,6 @@ class Pipeline(collections.Sequence):
                 root_dir=root_dir,
                 resume=self.resume,
             )
-        # Get the process for the root node and update locations
-        root_node = next(nx.topological_sort(tree))
-        root_node_process = tree.node[root_node]["process"]
-        root_node_process.update_location(str(self.base_dir), "input")
-        # Attach outputs of parent node to inputs of child node
-        for prev_process_name, curr_process_name in nx.bfs_edges(tree, root_node):
-            curr_process = tree.node[curr_process_name]["process"]
-            prev_process = tree.node[prev_process_name]["process"]
-            curr_process.update_location(str(self.base_dir), "input")
-            curr_process.attach_to(prev_process)
 
     def __iter__(self) -> Iterator:
         return iter(self.process_tree.nodes)
@@ -244,8 +234,22 @@ class Pipeline(collections.Sequence):
             Iterator[Process]
                 Iterator over each process currently being executed
        """
-        root_node = next(nx.topological_sort(self.process_tree))
-        processes = nx.bfs_tree(self.process_tree, root_node)
+        # Get the process for the root node and update locations
+        tree = self.process_tree
+        root_node = next(nx.topological_sort(tree))
+        root_node_process = tree.node[root_node]["process"]
+        root_node_process.update_location(str(self.base_dir), "input")
+        root_path = self.output_location / root_node_process.params.root_dir
+        root_node_process.update_location(str(root_path), "output")
+        # Attach outputs of parent node to inputs of child node
+        for prev_process_name, curr_process_name in nx.bfs_edges(tree, root_node):
+            curr_process = tree.node[curr_process_name]["process"]
+            prev_process = tree.node[prev_process_name]["process"]
+            curr_process.update_location(str(self.base_dir), "input")
+            root_path = self.output_location / curr_process.params.root_dir
+            curr_process.update_location(str(root_path), "output")
+            curr_process.attach_to(prev_process)
+        processes = nx.bfs_tree(tree, root_node)
         tree_diag = self.output_location + "/DAG.pdf"
         self.draw_process_tree(tree_diag)
         for process_name in processes:
