@@ -176,10 +176,12 @@ class Pipeline(collections.Sequence):
         # Create processes for each node
         tree = self.process_tree
         for node_name in tree.nodes:
+            suffix_flag = ""
             suffixes = [f".{i}" for i in range(10)]
             for suffix in suffixes:
                 if node_name.endswith(suffix):
                     process_name = node_name.rsplit(suffix, 1)[0]
+                    suffix_flag = suffix
                     break
             else:
                 process_name = node_name
@@ -187,7 +189,10 @@ class Pipeline(collections.Sequence):
             default_process_data = self.config.params_set[process_name]
             user_process_data = settings[level_1][level_2][level_3]
             default_process_data.merge(user_process_data)
-            root_dir = node_name.split(".", 2)[-1]
+            if suffix_flag:
+                root_dir = str(default_process_data.root_dir) + suffix_flag
+            else:
+                root_dir = str(default_process_data.root_dir)
             tree.node[node_name]["process"] = Process(
                 default_process_data,
                 self.profile,
