@@ -187,25 +187,24 @@ class Pipeline(collections.Sequence):
             default_process_data = self.config.params_set[process_name]
             user_process_data = settings[level_1][level_2][level_3]
             default_process_data.merge(user_process_data)
-            output_location = node_name.rsplit(".", 1)[-1]
+            root_dir = node_name.split(".", 2)[-1]
             tree.node[node_name]["process"] = Process(
                 default_process_data,
                 self.profile,
-                output_location=output_location,
+                str(self.output_location),
+                root_dir=root_dir,
                 resume=self.resume,
             )
         # Get the process for the root node and update locations
         root_node = next(nx.topological_sort(tree))
         root_node_process = tree.node[root_node]["process"]
         root_node_process.update_location(str(self.base_dir), "input")
-        root_node_process.update_location(self.output_location, "output")
         # Attach outputs of parent node to inputs of child node
         for prev_process_name, curr_process_name in nx.bfs_edges(tree, root_node):
             curr_process = tree.node[curr_process_name]["process"]
             prev_process = tree.node[prev_process_name]["process"]
             curr_process.update_location(str(self.base_dir), "input")
             curr_process.attach_to(prev_process)
-            curr_process.update_location(self.output_location, "output")
 
     def __iter__(self) -> Iterator:
         return iter(self.process_tree.nodes)

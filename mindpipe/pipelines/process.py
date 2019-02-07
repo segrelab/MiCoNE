@@ -7,7 +7,7 @@ from copy import deepcopy
 import pathlib
 import re
 import shutil
-from typing import Optional
+from typing import Any, Dict, Optional
 from warnings import warn
 
 from .command import Command
@@ -26,8 +26,10 @@ class Process(collections.Hashable):
             The parameters for a particular process
         profile : {'local', 'sge'}
             The execution environment
-        output_location : str, optional
-            The output  directory for the process
+        output_location : str
+            The absolute path to the base input file directory
+        root_dir : str, optional
+            The root directory for the results of the current process
             Default value is None
         script_name : str, optional
             The name of the process script template
@@ -66,7 +68,8 @@ class Process(collections.Hashable):
         self,
         params: Params,
         profile: str,
-        output_location: Optional[str] = None,
+        output_location: str,
+        root_dir: Optional[str] = None,
         script_name: str = "process.nf",
         config_name: str = "process.config",
         process_dir_name: str = "processes",
@@ -76,16 +79,14 @@ class Process(collections.Hashable):
         self.name = self.params.name
         self.profile = profile
         self.resume = resume
+        self.output_location = pathlib.Path(output_location)
         script_file = self.params.root / script_name
         process_dir = self.params.root / process_dir_name
         config_file = self.params.root / config_name
         self.script = ScriptTemplate(script_file, process_dir)
         self.config = ConfigTemplate(config_file)
-        if output_location:
-            self._output_location = pathlib.Path(output_location)
-            self.params.update_output_location(output_location)
-        else:
-            self._output_location = self.params.output_location
+        if root_dir:
+            self.params.root_dir = pathlib.Path(root_dir)
         self.env = self.params.env
 
     def __hash__(self) -> int:
@@ -110,25 +111,23 @@ class Process(collections.Hashable):
                 This directory will be also be used to store the results of the process
         """
         if output_dir:
-            self._output_location = pathlib.Path(output_dir)
-            self.params.output_location = pathlib.Path(output_dir)
-        self.update_location(str(self._output_location), category="output")
-        if not self._output_location.is_absolute():
-            raise FileNotFoundError(
-                f"{self._output_location} must be an absolute path and must exist"
-            )
-        self._output_location.mkdir(exist_ok=True, parents=True)
+            self.output_location = pathlib.Path(output_dir)
+        root_path = self.output_location / self.params.root_dir
+        self.update_location(str(root_path), category="output")
+        if not self.output_location.is_absolute():
+            raise FileNotFoundError(f"{self.output_location} must be an absolute path")
+        self.output_location.mkdir(exist_ok=True, parents=True)
         script = self.script.render()
-        script_file = self._output_location / f"{self.name}.nf"
+        script_file = self.output_location / f"{self.name}.nf"
         LOG.logger.success(f"Building script: {script_file}")
         with open(script_file, "w") as fid:
             fid.write(script)
-        config = self.config.render(self.params.dict, resource_config=True)
-        config_file = self._output_location / f"{self.name}.config"
+        config = self.config.render(self.dict, resource_config=True)
+        config_file = self.output_location / f"{self.name}.config"
         LOG.logger.success(f"Building config: {config_file}")
         with open(config_file, "w") as fid:
             fid.write(config)
-        work_dir = self._output_location / "work"
+        work_dir = self.output_location / "work"
         if work_dir.exists():
             warning_msg = "Work directory already exists (could be from another run)"
             LOG.logger.warning(warning_msg)
@@ -146,10 +145,10 @@ class Process(collections.Hashable):
             Command
                 The `Command` instance for the process
         """
-        script_path = self._output_location / f"{self.name}.nf"
-        config_path = self._output_location / f"{self.name}.config"
-        log_path = self._output_location / f"{self.name}.log"
-        work_dir = self._output_location / "work"
+        script_path = self.output_location / f"{self.name}.nf"
+        config_path = self.output_location / f"{self.name}.config"
+        log_path = self.output_location / f"{self.name}.log"
+        work_dir = self.output_location / "work"
         if (
             not script_path.exists()
             or not config_path.exists()
@@ -222,17 +221,14 @@ class Process(collections.Hashable):
         )
         LOG.logger.warning(warning_msg)
         warn(warning_msg)
-        if (
-            not self._output_location.is_absolute()
-            or not self._output_location.exists()
-        ):
+        if not self.output_location.is_absolute() or not self.output_location.exists():
             raise FileNotFoundError(
-                f"{self._output_location} does not exist or is not an absolute path"
+                f"{self.output_location} does not exist or is not an absolute path"
             )
-        script_path = self._output_location / f"{self.name}.nf"
-        config_path = self._output_location / f"{self.name}.config"
-        log_path = self._output_location / f"{self.name}.log"
-        work_dir = self._output_location / "work"
+        script_path = self.output_location / f"{self.name}.nf"
+        config_path = self.output_location / f"{self.name}.config"
+        log_path = self.output_location / f"{self.name}.log"
+        work_dir = self.output_location / "work"
         if scope == "all":
             shutil.rmtree(work_dir)
             script_path.unlink()
@@ -381,3 +377,63 @@ class Process(collections.Hashable):
         input_exists = self._check_files("input")
         output_exists = self._check_files("output")
         return input_exists and output_exists
+
+    def verify_io(self) -> None:
+        """
+            Verify whether the Input and Output elements have been assigned and are valid
+        """
+        mult_pattern = re.compile(".*{(.*)}.*")
+        if not self.output_location.is_absolute():
+            raise ValueError("The output location must be absolute")
+        for elem in self.params.input:
+            if elem.location is None:
+                raise ValueError(f"Input: {elem} has not been assigned a location yet")
+            elif "*" in str(elem.location):
+                str_loc = str(elem.location)
+                mult_match = re.match(mult_pattern, str_loc)
+                if mult_match:
+                    str_loc_list = []
+                    for pattern in mult_match.group(1).split(","):
+                        str_loc_list.append(re.sub(r"{.*}", pattern, str_loc))
+                else:
+                    str_loc_list = [str_loc]
+                for str_loc in str_loc_list:
+                    ind = str_loc.find("*")
+                    files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
+                    if len(files) == 0:
+                        raise FileNotFoundError(
+                            f"Unable to locate input files at {elem.location}"
+                        )
+            elif not elem.location.exists():
+                raise FileNotFoundError(
+                    f"Unable to locate input file at {elem.location}"
+                )
+        for elem in self.params.output:
+            if elem.location is None:
+                raise ValueError(f"Output: {elem} has not been assigned a location yet")
+            elif not elem.location.is_absolute():
+                raise ValueError("Not all the output objects have absolute paths")
+
+    @property
+    def dict(self) -> Dict[str, Any]:
+        """
+            Return data as a dictionary
+
+            Returns
+            -------
+            Dict[str, Any]
+                The data stored return as a dictionary
+        """
+        self.verify_io()
+        data: Dict[str, Any] = dict()
+        data["input"] = {
+            elem.datatype: str(elem.location) for elem in self.params.input
+        }
+        data["output"] = {
+            elem.datatype: str(elem.location) for elem in self.params.output
+        }
+        data["output_dir"] = self.output_location / self.params.root_dir
+        data["env"] = self.env
+        for process_params in self.params.parameters:
+            data[process_params.process] = process_params.params
+        return data

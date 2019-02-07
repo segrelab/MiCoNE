@@ -75,7 +75,7 @@ class Params(collections.Hashable):
             Process name
         env : Optional[pathlib.Path]
             Location of the virtual environment for the process
-        output_location : pathlib.Path
+        root_dir : pathlib.Path
             Directory relative to main output directory where results of the process are to be saved
         input : Set[Input]
             The list of inputs of the process
@@ -85,7 +85,7 @@ class Params(collections.Hashable):
             The list of parameters of the process
     """
 
-    _req_keys = {"output_location", "input", "output", "parameters"}
+    _req_keys = {"root_dir", "input", "output", "parameters"}
 
     def __init__(self, data: Tuple[str, Dict[str, Any]]) -> None:
         if len(data) != 2:
@@ -122,7 +122,7 @@ class Params(collections.Hashable):
             self.env: Optional[pathlib.Path] = env_loc
         else:
             self.env = None
-        self.output_location = pathlib.Path(value["output_location"])
+        self.root_dir = pathlib.Path(value["root_dir"])
         self.input = self._process_io(value["input"], "input")
         self.output = self._process_io(value["output"], "output")
         if not isinstance(value["parameters"], list):
@@ -253,10 +253,7 @@ class Params(collections.Hashable):
             item_subset = {k: item.get(k) for k in IO._fields}
             loc: Optional[str] = item_subset.get("location")
             loc = self._replace_envvar(loc)
-            if category == "output":
-                item_subset["location"] = self.output_location / loc if loc else None
-            else:
-                item_subset["location"] = pathlib.Path(loc) if loc else None
+            item_subset["location"] = pathlib.Path(loc) if loc else None
             io_tuples.add(IO(**item_subset))
         return io_tuples
 
@@ -290,79 +287,6 @@ class Params(collections.Hashable):
         )
         io_list.remove(element)
         io_list.add(new_element)
-
-    def update_output_location(self, location: str) -> None:
-        """
-            Update the output location of the Params instance
-            Also update the outputs of the process accordingly
-
-            Parameters
-            ----------
-            location : str
-                The new output location
-        """
-        for output_ in self.output:
-            name = output_.datatype
-            old_location = str(output_.location)
-            old_output_location = str(self.output_location)
-            new_location = old_location.replace(old_output_location, location)
-            self.update_location(name, new_location, "output")
-
-    def verify_io(self) -> None:
-        """
-            Verify whether the Input and Output elements have been assigned and are valid
-        """
-        mult_pattern = re.compile(".*{(.*)}.*")
-        if not self.output_location.is_absolute():
-            raise ValueError("The output location must be absolute")
-        for elem in self.input:
-            if elem.location is None:
-                raise ValueError(f"Input: {elem} has not been assigned a location yet")
-            elif "*" in str(elem.location):
-                str_loc = str(elem.location)
-                mult_match = re.match(mult_pattern, str_loc)
-                if mult_match:
-                    str_loc_list = []
-                    for pattern in mult_match.group(1).split(","):
-                        str_loc_list.append(re.sub(r"{.*}", pattern, str_loc))
-                else:
-                    str_loc_list = [str_loc]
-                for str_loc in str_loc_list:
-                    ind = str_loc.find("*")
-                    files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
-                    if len(files) == 0:
-                        raise FileNotFoundError(
-                            f"Unable to locate input files at {elem.location}"
-                        )
-            elif not elem.location.exists():
-                raise FileNotFoundError(
-                    f"Unable to locate input file at {elem.location}"
-                )
-        for elem in self.output:
-            if elem.location is None:
-                raise ValueError(f"Output: {elem} has not been assigned a location yet")
-            elif not elem.location.is_absolute():
-                raise ValueError("Not all the output objects have absolute paths")
-
-    @property
-    def dict(self) -> Dict[str, Any]:
-        """
-            Return data as a dictionary
-
-            Returns
-            -------
-            Dict[str, Any]
-                The data stored return as a dictionary
-        """
-        self.verify_io()
-        data: Dict[str, Any] = dict()
-        data["input"] = {elem.datatype: str(elem.location) for elem in self.input}
-        data["output"] = {elem.datatype: str(elem.location) for elem in self.output}
-        data["output_dir"] = self.output_location
-        data["env"] = self.env
-        for process_params in self.parameters:
-            data[process_params.process] = process_params.params
-        return data
 
     def merge(self, user_settings: Dict[str, Any]) -> None:
         """
