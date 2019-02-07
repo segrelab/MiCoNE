@@ -124,10 +124,11 @@ class Pipeline(collections.Sequence):
                     count = graph.node[process]["count"]
                     new_process = f"{process}.{count}"
                     graph.add_edge(parent, new_process)
+                    process_stack.append(new_process)
                 else:
                     graph.add_edge(parent, process)
                     graph.node[process]["count"] = 1
-                process_stack.append(process)
+                    process_stack.append(process)
             elif process == "(":
                 process_stack.append(process_stack[-1])
             elif process == "|":
@@ -177,7 +178,7 @@ class Pipeline(collections.Sequence):
         tree = self.process_tree
         for node_name in tree.nodes:
             suffix_flag = ""
-            suffixes = [f".{i}" for i in range(10)]
+            suffixes = [f".{i}" for i in range(len(tree.nodes))]
             for suffix in suffixes:
                 if node_name.endswith(suffix):
                     process_name = node_name.rsplit(suffix, 1)[0]
