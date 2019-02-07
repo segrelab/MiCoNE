@@ -8,8 +8,8 @@ def output_dir = file(params.output_dir)
 
 
 // Parameters
-def reference_sequences = file(params.reference_sequences)
-def tax_map = file(params.tax_map)
+def reference_sequences = params.reference_sequences
+def tax_map = params.tax_map
 def classifier = params.classifier
 def ncpus = params.ncpus
 def confidence = params.confidence
