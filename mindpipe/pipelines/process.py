@@ -310,18 +310,11 @@ class Process(collections.Hashable):
                 One of {'success', 'failure', 'in progress', 'not started'}
         """
         if self.cmd.status == "success":
-            for output in self.params.output:
-                if "*" in str(output.location):
-                    str_loc = str(output.location)
-                    ind = str_loc.find("*")
-                    files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
-                    if files:
-                        return "success"
-                elif output.location.exists():
-                    return "success"
+            output_status = self._check_files("output")
+            if output_status:
+                return "success"
             return "failure"
-        else:
-            return self.cmd.status
+        return self.cmd.status
 
     def _check_files(self, category: str) -> bool:
         """
