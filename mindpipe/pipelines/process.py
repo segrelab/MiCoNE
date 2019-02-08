@@ -28,6 +28,9 @@ class Process(collections.Hashable):
             The execution environment
         output_location : str
             The absolute path to the base input file directory
+        id : str, optional
+            The unique id given to the process in the process tree
+            Default value is None, in this case process name is used as id
         root_dir : str, optional
             The root directory for the results of the current process
             Default value is None
@@ -46,6 +49,8 @@ class Process(collections.Hashable):
 
         Attributes
         ----------
+        id : str
+            The unique id given to the process in the process tree
         name : str
             The name of the process
         params : Params
@@ -69,6 +74,7 @@ class Process(collections.Hashable):
         params: Params,
         profile: str,
         output_location: str,
+        id: Optional[str] = None,
         root_dir: Optional[str] = None,
         script_name: str = "process.nf",
         config_name: str = "process.config",
@@ -79,6 +85,7 @@ class Process(collections.Hashable):
         self.name = self.params.name
         self.profile = profile
         self.resume = resume
+        self.id = id if id else self.name
         self.output_location = pathlib.Path(output_location)
         script_file = self.params.root / script_name
         process_dir = self.params.root / process_dir_name
@@ -90,13 +97,13 @@ class Process(collections.Hashable):
         self.env = self.params.env
 
     def __hash__(self) -> int:
-        return hash(self.name)
+        return hash(self.id)
 
     def __repr__(self) -> str:
-        return f'<Process name={self.name} cmd="{self.cmd}">'
+        return f'<Process name={self.id} cmd="{self.cmd}">'
 
     def __str__(self) -> str:
-        return self.name
+        return self.id
 
     # TODO: Add profile and resource configuration setup also
     def build(self, output_dir: Optional[str] = None) -> None:
@@ -118,12 +125,12 @@ class Process(collections.Hashable):
             raise FileNotFoundError(f"{self.output_location} must be an absolute path")
         self.output_location.mkdir(exist_ok=True, parents=True)
         script = self.script.render()
-        script_file = self.output_location / f"{self.name}.nf"
+        script_file = self.output_location / f"{self.id}.nf"
         LOG.logger.success(f"Building script: {script_file}")
         with open(script_file, "w") as fid:
             fid.write(script)
         config = self.config.render(self.dict, resource_config=True)
-        config_file = self.output_location / f"{self.name}.config"
+        config_file = self.output_location / f"{self.id}.config"
         LOG.logger.success(f"Building config: {config_file}")
         with open(config_file, "w") as fid:
             fid.write(config)
@@ -145,9 +152,9 @@ class Process(collections.Hashable):
             Command
                 The `Command` instance for the process
         """
-        script_path = self.output_location / f"{self.name}.nf"
-        config_path = self.output_location / f"{self.name}.config"
-        log_path = self.output_location / f"{self.name}.log"
+        script_path = self.output_location / f"{self.id}.nf"
+        config_path = self.output_location / f"{self.id}.config"
+        log_path = self.output_location / f"{self.id}.log"
         work_dir = self.output_location / "work"
         if (
             not script_path.exists()
@@ -189,7 +196,7 @@ class Process(collections.Hashable):
     def log(self) -> None:
         """ Logs the stdout and stderr of the process to the log_file """
         LOG.logger.info(
-            f"Running process: {self.name} with profile {self.profile} and env {self.env}"
+            f"Running process: {self.id} with profile {self.profile} and env {self.env}"
         )
         self.cmd.log()
 
@@ -225,9 +232,9 @@ class Process(collections.Hashable):
             raise FileNotFoundError(
                 f"{self.output_location} does not exist or is not an absolute path"
             )
-        script_path = self.output_location / f"{self.name}.nf"
-        config_path = self.output_location / f"{self.name}.config"
-        log_path = self.output_location / f"{self.name}.log"
+        script_path = self.output_location / f"{self.id}.nf"
+        config_path = self.output_location / f"{self.id}.config"
+        log_path = self.output_location / f"{self.id}.log"
         work_dir = self.output_location / "work"
         if scope == "all":
             shutil.rmtree(work_dir)
@@ -250,7 +257,7 @@ class Process(collections.Hashable):
             previous : Process
                 The `Process` instance to attach the current instance to
         """
-        LOG.logger.info(f"Attaching IO of {previous.name} to {self.name}")
+        LOG.logger.info(f"Attaching IO of {previous.name} to {self.id}")
         self.params.attach_to(previous.params)
 
     def update_location(self, location: str, category: str) -> None:
@@ -272,9 +279,7 @@ class Process(collections.Hashable):
                 path = pathlib.Path(str_path)
             else:
                 raise ValueError("location must be an absolute path")
-        LOG.logger.info(
-            f"Updating location of {category}s of {self.name} to {location}"
-        )
+        LOG.logger.info(f"Updating location of {category}s of {self.id} to {location}")
         if category == "input":
             for input_ in self.params.input:
                 in_location = input_.location
