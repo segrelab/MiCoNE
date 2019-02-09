@@ -114,7 +114,7 @@ class Pipeline(collections.Sequence):
             graph.add_node(processes[0])
             return graph
         # NOTE: We do not support forking in the first process
-        process_stack = [processes[0]]
+        process_stack = collections.deque([processes[0]])
         delimiters = {"(", ")", "|"}
         for process in processes[1:]:
             if process not in delimiters:
