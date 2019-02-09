@@ -156,16 +156,6 @@ class Process(collections.Hashable):
         config_path = self.output_location / f"{self.id}.config"
         log_path = self.output_location / f"{self.id}.log"
         work_dir = self.output_location / "work"
-        if (
-            not script_path.exists()
-            or not config_path.exists()
-            or not work_dir.exists()
-        ):
-            warning_msg = (
-                "The process has not been built yet. Please run `build` before `run`"
-            )
-            LOG.logger.warning(warning_msg)
-            warn(warning_msg)
         cmd = (
             f"nextflow -C {config_path} -log {log_path} run {script_path} -w {work_dir} "
             f"-profile {self.profile}"
@@ -190,6 +180,19 @@ class Process(collections.Hashable):
                 It has `cmd`, `out`, `pid` and other facilities
         """
         # TODO: This step also needs to fill in the profiles and resources templates
+        script_path = self.output_location / f"{self.id}.nf"
+        config_path = self.output_location / f"{self.id}.config"
+        work_dir = self.output_location / "work"
+        if (
+            not script_path.exists()
+            or not config_path.exists()
+            or not work_dir.exists()
+        ):
+            warning_msg = (
+                "The process has not been built yet. Please run `build` before `run`"
+            )
+            LOG.logger.warning(warning_msg)
+            warn(warning_msg)
         self.cmd.run()
         return self.cmd
 
