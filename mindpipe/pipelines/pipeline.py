@@ -286,4 +286,22 @@ class Pipeline(collections.Sequence):
         plt.axis("off")
         plt.savefig(fpath)
 
+    @property
+    def status(self) -> Dict[str, str]:
+        """
+            Returns the status of every process in the pipeline
+
+            Returns
+            -------
+            Dict[str, str]
+                A dictionary containing key=process.id and value=process.status
+        """
+        tree = self.process_tree
+        root_node = next(nx.topological_sort(tree))
+        status_dict: Dict[str, str] = {}
+        for process_name in nx.bfs_tree(tree, root_node):
+            process = tree.node[process_name]["process"]
+            status_dict[process_name] = process.status
+        return status_dict
+
     # TODO: Create computational metadata
