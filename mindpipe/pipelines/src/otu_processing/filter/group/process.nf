@@ -8,7 +8,7 @@ def tax_levels = params.tax_levels
 Channel
     .fromPath(otu_table)
     .ifEmpty {exit 1, "Otu files not found"}
-    .map { tuple(it.baseName, it) }
+    .map { tuple(it.getParent(), it) }
     .set { chnl_otudata }
 
 process group {
