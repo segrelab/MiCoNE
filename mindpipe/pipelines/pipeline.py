@@ -58,6 +58,7 @@ class Pipeline(collections.Sequence):
     """
 
     _req_keys = {"title", "order", "output_location"}
+    process_queue: Optional[Deque[Process]] = None
 
     def __init__(
         self,
@@ -253,14 +254,20 @@ class Pipeline(collections.Sequence):
         processes = nx.bfs_tree(tree, root_node)
         tree_diag = self.output_location + "/DAG.pdf"
         self.draw_process_tree(tree_diag)
-        for process_name in processes:
+        self.process_queue = collections.deque([], parallel_procs)
+        for process_name in nx.bfs_tree(tree, root_node):
             process = self.process_tree.node[process_name]["process"]
             loc = pathlib.Path(self.output_location)  # / process.params.output_location
             if self.resume and process.io_exist:
                 yield process
             else:
+                if len(self.process_queue) >= self.process_queue.maxlen:
+                    raise RuntimeError(
+                        f"Number of parallel processes executed has exceeded {parallel_procs}"
+                    )
                 process.build(str(loc))
                 process.run()
+                self.process_queue.append(process)
                 yield process
 
     def draw_process_tree(self, fpath: str) -> None:
