@@ -11,7 +11,7 @@ def bootstraps = params.bootstraps
 Channel
     .fromPath(otudata)
     .ifEmpty {exit 1, "Otu files not found"}
-    .map { tuple(it.getParent().baseName, it) }
+    .map { tuple((it.getParent().baseName + '_' + it.baseName), it) }
     .set { chnl_otudata_biom }
 
 process biom2tsv {
@@ -30,7 +30,7 @@ process biom2tsv {
 
 process compute_correlations {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}"
 
     input:
     set val(id), file(otu_file) from chnl_otudata_corr
@@ -84,7 +84,7 @@ chnl_bootstraps
 
 process calculate_pvalues {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}"
 
     input:
     set val(id), file(boot_file), file(corr_file), file(otu_file) from pval_input_chnl

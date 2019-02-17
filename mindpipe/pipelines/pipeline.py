@@ -252,14 +252,17 @@ class Pipeline(collections.Sequence):
         root_path = self.output_location / root_node_process.params.root_dir
         root_node_process.update_location(str(root_path), "output")
         # Attach outputs of parent node to inputs of child node
-        for prev_process_name, curr_process_name in nx.bfs_edges(tree, root_node):
+        for curr_process_name in nx.bfs_tree(tree, root_node):
             curr_process = tree.node[curr_process_name]["process"]
-            prev_process = tree.node[prev_process_name]["process"]
             curr_process.update_location(str(self.base_dir), "input")
             root_path = self.output_location / curr_process.params.root_dir
             curr_process.update_location(str(root_path), "output")
-            curr_process.attach_to(prev_process)
-        processes = nx.bfs_tree(tree, root_node)
+            predecessors: List[str] = list(tree.predecessors(curr_process_name))
+            while predecessors:
+                prev_process_name = predecessors[0]
+                prev_process = tree.node[prev_process_name]["process"]
+                curr_process.attach_to(prev_process)
+                predecessors = list(tree.predecessors(prev_process_name))
         tree_diag = self.output_location + "/DAG.pdf"
         self.draw_process_tree(tree_diag)
         self.process_queue = collections.deque([], parallel_procs)
