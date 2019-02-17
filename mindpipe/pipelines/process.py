@@ -310,13 +310,15 @@ class Process(collections.Hashable):
             Returns
             -------
             str
-                One of {'success', 'failure', 'in progress', 'not started'}
+                One of {'success', 'resumed', 'failure', 'in progress', 'not started'}
         """
         if self.cmd.status == "success":
             output_status = self._check_files("output")
             if output_status:
                 return "success"
             return "failure"
+        if self.io_exist:
+            return "resumed"
         return self.cmd.status
 
     def _check_files(self, category: str) -> bool:
