@@ -11,17 +11,22 @@ def bootstraps = params.bootstraps
 Channel
     .fromPath(otudata)
     .ifEmpty {exit 1, "Otu files not found"}
-    .map { tuple((it.getParent().baseName + '_' + it.baseName), it) }
+    .map { tuple(
+        (it.getParent().baseName + '_' + it.baseName),
+        it.getParent().baseName,
+        it.baseName,
+        it
+    ) }
     .set { chnl_otudata_biom }
 
 process biom2tsv {
     tag "$id"
 
     input:
-    set val(id), file(otu_file) from chnl_otudata_biom
+    set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_biom
 
     output:
-    set val(id), file('*.tsv') into chnl_otudata_corr, chnl_otudata_resamp, chnl_otudata_pval
+    set val(id), val(dataset), val(level), file('*.tsv') into chnl_otudata_corr, chnl_otudata_resamp, chnl_otudata_pval
 
     script:
     {{ biom2tsv }}
@@ -30,10 +35,10 @@ process biom2tsv {
 
 process compute_correlations {
     tag "${id}"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}/${dataset}"
 
     input:
-    set val(id), file(otu_file) from chnl_otudata_corr
+    set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_corr
 
     output:
     set val(id), file('*_corr.tsv') into corr_pval
@@ -46,7 +51,7 @@ process resampling {
     tag "${id}"
 
     input:
-    set val(id), file(otu_file) from chnl_otudata_resamp
+    set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_resamp
 
     output:
     set val(id), file('*.tsv') into resamplings
@@ -84,10 +89,10 @@ chnl_bootstraps
 
 process calculate_pvalues {
     tag "${id}"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}/${dataset}"
 
     input:
-    set val(id), file(boot_file), file(corr_file), file(otu_file) from pval_input_chnl
+    set val(id), file(boot_file), file(corr_file), val(dataset), val(level), file(otu_file) from pval_input_chnl
 
     output:
     set val(id), file('*_pval.tsv') into pval
