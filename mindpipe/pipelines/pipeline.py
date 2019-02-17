@@ -369,9 +369,6 @@ class Pipeline(collections.Sequence):
                 dependent_processes = set(
                     chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
                 )
-                print(dependent_processes)
-                # FIXME: The queue is not being updated properly
-                # Also not executing things in parallel
                 while next_process in dependent_processes:
                     _update_queue()
                     time.sleep(poll_rate)
@@ -380,7 +377,6 @@ class Pipeline(collections.Sequence):
                             list(tree[p.id]) for p in self.process_queue
                         )
                     )
-                    print(dependent_processes)
         return self._updated_processes
 
     # TODO: Create computational metadata
