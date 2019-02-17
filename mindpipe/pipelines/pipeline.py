@@ -3,8 +3,10 @@
 """
 
 import collections
+from itertools import chain
 import pathlib
-from typing import Iterator, List, Optional
+import time
+from typing import Deque, Dict, Iterator, List, Optional
 
 import networkx as nx
 import toml
@@ -226,10 +228,16 @@ class Pipeline(collections.Sequence):
     def __str__(self) -> str:
         return self.title
 
-    def run(self) -> Iterator[Process]:
+    def run(self, parallel_procs: int = 4) -> Iterator[Process]:
         """
             Starts the execution of the pipeline
             Returns an iterator over the processes being executed
+
+            Parameters
+            ----------
+            parallel_procs : int
+                The maximum number of processes allowed to run in parallel
+                Default value is 4
 
             Returns
             -------
@@ -310,5 +318,66 @@ class Pipeline(collections.Sequence):
             process = tree.node[process_name]["process"]
             status_dict[process_name] = process.status
         return status_dict
+
+    def wait(self, poll_rate: int = 5) -> List[Process]:
+        """
+            Pauses pipeline execution if process_queue is full
+
+            Parameters:
+            -----------
+            poll_rate : int, optional
+                The numbers of seconds to sleep before polling processes for status
+                Default value is 5 seconds
+
+            Returns:
+            --------
+            List[Process]
+                The list of processes that just finished execution
+        """
+        not_started_processes: List[str] = []
+        self._updated_processes: List[Process] = []
+        tree = self.process_tree
+        root_node = next(nx.topological_sort(tree))
+        process_order = list(nx.bfs_tree(tree, root_node))
+
+        def _update_queue():
+            running_processes: List[str] = []
+            for process_id, process_status in self.status.items():
+                if process_status == "in progress":
+                    running_processes.append(process_id)
+            for process in self.process_queue:
+                if process.id not in running_processes:
+                    self._updated_processes.append(process)
+            for process in self._updated_processes:
+                self.process_queue.remove(process)
+
+        if self.process_queue:
+            if len(self.process_queue) >= self.process_queue.maxlen:
+                while not self._updated_processes:
+                    _update_queue()
+                    time.sleep(poll_rate)
+            else:
+                for process_id, process_status in self.status.items():
+                    if process_status == "not started":
+                        not_started_processes.append(process_id)
+                next_process = next(
+                    pid for pid in process_order if pid in not_started_processes
+                )
+                dependent_processes = set(
+                    chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
+                )
+                print(dependent_processes)
+                # FIXME: The queue is not being updated properly
+                # Also not executing things in parallel
+                while next_process in dependent_processes:
+                    _update_queue()
+                    time.sleep(poll_rate)
+                    dependent_processes = set(
+                        chain.from_iterable(
+                            list(tree[p.id]) for p in self.process_queue
+                        )
+                    )
+                    print(dependent_processes)
+        return self._updated_processes
 
     # TODO: Create computational metadata
