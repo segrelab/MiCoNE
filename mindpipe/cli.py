@@ -105,16 +105,20 @@ def run(ctx, profile, config, output_location, base_dir, resume):
     try:
         for process in pipeline.run():
             spinner.start()
-            spinner.text = f"Executing {process} process"
+            process_list = " and ".join(
+                [proc.id.split(".", 2)[-1] for proc in pipeline.process_queue]
+            )
+            spinner.text = f"Executing {process_list}"
             if resume and process.io_exist:
                 spinner.succeed(f"Resumed {process}")
             else:
-                process.wait()
-                process.log()
-                if process.status == "success":
-                    spinner.succeed(f"Finished executing {process}")
-                else:
-                    spinner.fail(f"Failed to execute {process}")
+                updated_processes = pipeline.wait()
+                for proc in updated_processes:
+                    proc.log()
+                    if proc.status == "success":
+                        spinner.succeed(f"Finished executing {proc}")
+                    else:
+                        spinner.fail(f"Failed to execute {proc}")
     finally:
         LOG.cleanup()
 
