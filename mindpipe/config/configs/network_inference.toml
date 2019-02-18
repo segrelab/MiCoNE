@@ -36,7 +36,7 @@
 
 [network_inference.network.make_network]
   env = "mindpipe"
-  root_dir = "make_network"
+  root_dir = "network_inference/make_network"
   [[network_inference.network.make_network.input]]
     datatype = "interaction_table"
     format = ["tsv"]
@@ -60,4 +60,4 @@
   [[network_inference.network.make_network.output]]
     datatype = "network"
     format = ["json"]
-    location = "*_network.json"
+    location = "**/*_network.json"

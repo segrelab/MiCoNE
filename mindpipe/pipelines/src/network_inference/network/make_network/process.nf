@@ -11,26 +11,40 @@ def output_dir = file(params.output_dir)
 Channel
     .fromPath(correlations)
     .ifEmpty {exit 1, "Correlation files not found"}
-    .map { tuple(it.baseName.split("_corr")[0], it) }
+    .map { tuple(
+        (it.getParent().baseName + '_' + it.baseName.split("_corr")[0]),
+        it.getParent().baseName,
+        it.baseName.split("_corr")[0],
+        it
+    ) }
     .set { chnl_correlation }
 
 Channel
     .fromPath(pvalues)
     .ifEmpty {exit 1, "Pvalue files not found"}
-    .map { tuple(it.baseName.split("_pval")[0], it) }
+    .map { tuple(
+        (it.getParent().baseName + '_' + it.baseName.split("_pval")[0]),
+        it
+    ) }
     .set { chnl_pvalue }
 
 
 Channel
     .fromPath(obs_metadata)
     .ifEmpty {exit 1, "Observation metadata files not found"}
-    .map { tuple(it.baseName.split("_obs_metadata")[0], it) }
+    .map { tuple(
+        (it.getParent().baseName + '_' + it.baseName.split("_obs_metadata")[0]),
+        it
+    ) }
     .set { chnl_obs_metadata }
 
 Channel
     .fromPath(children_map)
     .ifEmpty {exit 1, "Childrendata files not found"}
-    .map { tuple(it.baseName.split("_children")[0], it) }
+    .map { tuple(
+        (it.getParent().baseName + '_' + it.baseName.split("_children")[0]),
+        it
+    ) }
     .set { chnl_children_map }
 
 chnl_correlation
@@ -41,10 +55,10 @@ chnl_correlation
 
 process make_network {
     tag "$id"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}/${dataset}"
 
     input:
-    set val(id), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file) from chnl_input
+    set val(id), val(dataset), val(level), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file) from chnl_input
 
     output:
     set val(id), file('*_network.json') into chnl_output
