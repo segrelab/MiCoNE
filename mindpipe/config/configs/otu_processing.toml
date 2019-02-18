@@ -69,7 +69,7 @@
   [[otu_processing.transform.normalize.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "*.biom"
+    location = "**/*.biom"
 
 
 ## Export
@@ -83,14 +83,14 @@
   [[otu_processing.export.biom2tsv.output]]
     datatype = "otu_table"
     format = ["tsv"]
-    location = "*_otu.tsv"
+    location = "**/*_otu.tsv"
   [[otu_processing.export.biom2tsv.output]]
     datatype = "observation_metadata"
     format = ["csv"]
-    location = "*_obs_metadata.csv"
+    location = "**/*_obs_metadata.csv"
   [[otu_processing.export.biom2tsv.output]]
     datatype = "sample_metadata"
     format = ["csv"]
-    location = "*_sample_metadata.tsv"
+    location = "**/*_sample_metadata.tsv"
   [[otu_processing.export.biom2tsv.parameters]]
     process = "biom2tsv"

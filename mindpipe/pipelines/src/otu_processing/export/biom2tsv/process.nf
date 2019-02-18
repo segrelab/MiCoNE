@@ -7,15 +7,20 @@ def otudata = params.otudata
 Channel
     .fromPath(otudata)
     .ifEmpty {exit 1, "Otu files not found"}
-    .map { tuple(it.baseName, it) }
+    .map { tuple(
+        (it.getParent().baseName + '_' + it.baseName),
+        it.getParent().baseName,
+        it.baseName,
+        it
+    ) }
     .set { chnl_otu }
 
 process biom2tsv {
     tag "$id"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}/${dataset}"
 
     input:
-    set val(id), file(otu_file) from chnl_otu
+    set val(id), val(dataset), val(level), file(otu_file) from chnl_otu
 
     output:
     set val(id), file("*_otu.tsv") into new_otu_table
