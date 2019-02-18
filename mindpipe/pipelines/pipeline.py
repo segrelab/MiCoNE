@@ -363,9 +363,12 @@ class Pipeline(collections.Sequence):
                 for process_id, process_status in self.status.items():
                     if process_status == "not started":
                         not_started_processes.append(process_id)
-                next_process = next(
-                    pid for pid in process_order if pid in not_started_processes
-                )
+                try:
+                    next_process = next(
+                        pid for pid in process_order if pid in not_started_processes
+                    )
+                except StopIteration:
+                    return []
                 dependent_processes = set(
                     chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
                 )
