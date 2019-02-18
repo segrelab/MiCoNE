@@ -296,7 +296,9 @@ class Network:
             nodes.append(
                 {
                     "id": node,
-                    "lineage": str(sup_lineage),
+                    "lineage": sup_lineage.to_str(
+                        style="gg", level=sup_lineage.name[0]
+                    ),
                     "name": sup_lineage.name[1],
                     "taxid": sup_lineage.taxid[1],
                     "taxlevel": sup_lineage.name[0],
