@@ -2,6 +2,8 @@
 
 set -e
 
+export TMPDIR=\$PWD
+
 # import reads
 qiime tools import \
     --type 'FeatureData[Sequence]' \
