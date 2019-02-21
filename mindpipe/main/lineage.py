@@ -250,3 +250,34 @@ class Lineage(BaseLineage):
         taxid = taxid_list[0]
         rank = self._fields[min(query.index(taxa), len(self._fields) - 1)]
         return rank, taxid
+
+    @classmethod
+    def from_taxid(cls, taxid: int) -> "Lineage":
+        """
+            Create `Lineage` instance from taxid
+
+            Parameters
+            ----------
+            taxid : int
+                A valid NCBI taxonomy id
+
+            Returns
+            -------
+            "Lineage"
+                Instance of the `Lineage` class
+        """
+        lineage_taxids = NCBI.get_lineage(taxid)
+        lineage_names = NCBI.get_taxid_translator(lineage_taxids)
+        lineage_ranks = {
+            v.capitalize(): k for k, v in NCBI.get_rank(lineage_taxids).items()
+        }
+        if "Superkingdom" in lineage_ranks:
+            lineage_ranks["Kingdom"] = lineage_ranks["Superkingdom"]
+            del lineage_ranks["Superkingdom"]
+        taxa: Dict[str, str] = {}
+        for field in cls._fields:
+            if field in lineage_ranks:
+                taxa[field] = lineage_names[lineage_ranks[field]]
+            else:
+                break
+        return cls(**taxa)
