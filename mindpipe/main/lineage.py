@@ -237,6 +237,7 @@ class Lineage(BaseLineage):
         # species level
         query[-2] = query[-3] + " " + query[-2].split(" ")[0].strip()
         taxid_dict = NCBI.get_name_translator(query)
+        taxid_list = [12908]
         for taxa in reversed(query):
             if taxa != "" and taxa in taxid_dict:
                 taxid_list = taxid_dict[taxa]
