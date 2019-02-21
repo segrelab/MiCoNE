@@ -119,19 +119,18 @@ class Pipeline(collections.Sequence):
         # NOTE: We do not support forking in the first process
         process_stack = collections.deque([processes[0]])
         delimiters = {"(", ")", "|"}
+        count_dict: Dict[str, int] = {}
         for process in processes[1:]:
             if process not in delimiters:
                 parent = process_stack.pop()
-                if process in graph.nodes:
-                    graph.node[process]["count"] += 1
-                    count = graph.node[process]["count"]
-                    new_process = f"{process}.{count}"
-                    graph.add_edge(parent, new_process)
-                    process_stack.append(new_process)
+                if process in count_dict:
+                    count_dict[process] += 1
                 else:
-                    graph.add_edge(parent, process)
-                    graph.node[process]["count"] = 1
-                    process_stack.append(process)
+                    count_dict[process] = 1
+                count = count_dict[process]
+                new_process = f"{process}.{count}"
+                graph.add_edge(parent, new_process)
+                process_stack.append(new_process)
             elif process == "(":
                 process_stack.append(process_stack[-1])
             elif process == "|":
