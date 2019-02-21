@@ -263,8 +263,7 @@ class Pipeline(collections.Sequence):
                 prev_process = tree.node[prev_process_name]["process"]
                 curr_process.attach_to(prev_process)
                 predecessors = list(tree.predecessors(prev_process_name))
-        tree_diag = self.output_location + "/DAG.pdf"
-        self.draw_process_tree(tree_diag)
+        self.draw_process_tree(self.output_location)
         self.process_queue = collections.deque([], parallel_procs)
         for process_name in nx.bfs_tree(tree, root_node):
             process = self.process_tree.node[process_name]["process"]
@@ -288,11 +287,13 @@ class Pipeline(collections.Sequence):
             Parameters
             ----------
             fpath: str
-                The file path where the DAG chart should be saved
+                The folder path where the DAG chart should be saved
         """
         import matplotlib.pyplot as plt
 
         tree = self.process_tree
+        diagram = pathlib.Path(fpath) / "DAG.pdf"
+        gml = pathlib.Path(fpath) / "DAG.gml"
         nodes = list(self.process_tree.nodes)
         labels = {n: n.split(".", 2)[-1] for n in nodes}
         pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="dot")
@@ -302,7 +303,8 @@ class Pipeline(collections.Sequence):
         for _, t in text.items():
             t.set_rotation(30)
         plt.axis("off")
-        plt.savefig(fpath)
+        plt.savefig(diagram)
+        nx.write_gml(tree, gml)
 
     @property
     def status(self) -> Dict[str, str]:
