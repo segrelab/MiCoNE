@@ -66,7 +66,13 @@ class Lineage(BaseLineage):
             str
                 Normalized taxonomy name
         """
-        return tax.strip().strip("[]")
+        return (
+            tax.strip()
+            .replace("[", "")
+            .replace("]", "")
+            .replace("'", "")
+            .replace("=", "")
+        )
 
     def __sub__(self, other: "Lineage") -> "Lineage":
         """
