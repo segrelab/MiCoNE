@@ -12,7 +12,7 @@ import networkx as nx
 import toml
 
 from ..config import Config
-from .process import Process
+from .process import Process, stringizer
 
 
 class Pipeline(collections.Sequence):
@@ -304,7 +304,7 @@ class Pipeline(collections.Sequence):
             t.set_rotation(30)
         plt.axis("off")
         plt.savefig(diagram)
-        nx.write_gml(tree, gml)
+        nx.write_gml(tree, gml, stringizer=stringizer)
 
     @property
     def status(self) -> Dict[str, str]:

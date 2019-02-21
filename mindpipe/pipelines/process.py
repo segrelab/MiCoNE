@@ -440,3 +440,20 @@ class Process(collections.Hashable):
         for process_params in self.params.parameters:
             data[process_params.process] = process_params.params
         return data
+
+
+def stringizer(process: Process) -> str:
+    """
+        Convert process to string for storage in GML file
+
+        Parameters
+        ----------
+        process : Process
+            The process instance to be converted to string
+
+        Returns
+        -------
+        str
+            Stringized process
+    """
+    return str(process)
