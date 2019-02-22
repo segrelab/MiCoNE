@@ -113,11 +113,12 @@ class Pipeline(collections.Sequence):
             p for p in process_string.strip().replace("\n", " ").split(" ") if p
         ]
         graph = nx.DiGraph()
+        root_node_name = processes[0] + ".1"
         if len(processes) == 1:
-            graph.add_node(processes[0])
+            graph.add_node(root_node_name)
             return graph
         # NOTE: We do not support forking in the first process
-        process_stack = collections.deque([processes[0]])
+        process_stack = collections.deque([root_node_name])
         delimiters = {"(", ")", "|"}
         count_dict: Dict[str, int] = {}
         for process in processes[1:]:
