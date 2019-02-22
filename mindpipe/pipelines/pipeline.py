@@ -189,9 +189,13 @@ class Pipeline(collections.Sequence):
                     break
             else:
                 process_name = node_name
-            level_1, level_2, level_3 = process_name.split(".")
+            level_1, level_2, level_3, *param = process_name.split(".")
+            if param:
+                user_process_data = settings[level_1][level_2][level_3][param[0]]
+                process_name = f"{level_1}.{level_2}.{level_3}"
+            else:
+                user_process_data = settings[level_1][level_2][level_3]
             default_process_data = self.config.params_set[process_name]
-            user_process_data = settings[level_1][level_2][level_3]
             default_process_data.merge(user_process_data)
             if suffix_flag:
                 root_dir = str(default_process_data.root_dir) + suffix_flag
