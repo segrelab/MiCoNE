@@ -405,11 +405,11 @@ class Process(collections.Hashable):
                     files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
                     if len(files) == 0:
                         raise FileNotFoundError(
-                            f"Unable to locate input files at {elem.location}"
+                            f"Unable to locate input files at {elem.location} for process.id: {self.id}"
                         )
             elif not elem.location.exists():
                 raise FileNotFoundError(
-                    f"Unable to locate input file at {elem.location}"
+                    f"Unable to locate input file at {elem.location} for process.id: {self.id}"
                 )
         for elem in self.params.output:
             if elem.location is None:
