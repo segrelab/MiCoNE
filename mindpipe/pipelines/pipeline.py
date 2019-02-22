@@ -369,7 +369,10 @@ class Pipeline(collections.Sequence):
                         pid for pid in process_order if pid in not_started_processes
                     )
                 except StopIteration:
-                    return []
+                    while not self._updated_processes:
+                        _update_queue()
+                        time.sleep(poll_rate)
+                    return self._updated_processes
                 dependent_processes = set(
                     chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
                 )
