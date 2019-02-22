@@ -16,7 +16,7 @@
   [[otu_processing.filter.abundance.output]]
     datatype = "otu_table"
     format = ["biom"]
-    location = "**/*_filtered.biom"
+    location = "**/*.biom"
 
 [otu_processing.filter.group]
   env = "mindpipe"

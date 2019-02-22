@@ -15,14 +15,14 @@ def abundance_thres = params.abundance_thres
 Channel
     .fromPath(otu_table)
     .ifEmpty { exit 1, "Otu files not found" }
-    .map { tuple(it.baseName,  it) }
+    .map { tuple(it.getParent().baseName,  it) }
     .set { chnl_otudata }
 
 
 // Processes
 process filter {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", saveAs: { filename -> filename.replaceAll("_filtered", "") }
     input:
     set val(id), file(otu_file) from chnl_otudata
     output:
