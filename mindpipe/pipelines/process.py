@@ -390,7 +390,9 @@ class Process(collections.Hashable):
             raise ValueError("The output location must be absolute")
         for elem in self.params.input:
             if elem.location is None:
-                raise ValueError(f"Input: {elem} has not been assigned a location yet")
+                raise ValueError(
+                    f"Input: {elem} has not been assigned a location yet for process.id: {self.id}"
+                )
             elif "*" in str(elem.location):
                 str_loc = str(elem.location)
                 mult_match = re.match(mult_pattern, str_loc)
@@ -413,9 +415,13 @@ class Process(collections.Hashable):
                 )
         for elem in self.params.output:
             if elem.location is None:
-                raise ValueError(f"Output: {elem} has not been assigned a location yet")
+                raise ValueError(
+                    f"Output: {elem} has not been assigned a location yet for process.id: {self.id}"
+                )
             elif not elem.location.is_absolute():
-                raise ValueError("Not all the output objects have absolute paths")
+                raise ValueError(
+                    "Not all the output objects have absolute paths for process.id: {self.id}"
+                )
 
     @property
     def dict(self) -> Dict[str, Any]:
