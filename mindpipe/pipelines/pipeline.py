@@ -227,14 +227,14 @@ class Pipeline(collections.Sequence):
     def __str__(self) -> str:
         return self.title
 
-    def run(self, parallel_procs: int = 4) -> Iterator[Process]:
+    def run(self, max_procs: int = 4) -> Iterator[Process]:
         """
             Starts the execution of the pipeline
             Returns an iterator over the processes being executed
 
             Parameters
             ----------
-            parallel_procs : int
+            max_procs : int
                 The maximum number of processes allowed to run in parallel
                 Default value is 4
 
@@ -263,7 +263,7 @@ class Pipeline(collections.Sequence):
                 curr_process.attach_to(prev_process)
                 predecessors = list(tree.predecessors(prev_process_name))
         self.draw_process_tree(self.output_location)
-        self.process_queue = collections.deque([], parallel_procs)
+        self.process_queue = collections.deque([], max_procs)
         for process_name in nx.bfs_tree(tree, root_node):
             process = self.process_tree.node[process_name]["process"]
             loc = pathlib.Path(self.output_location)  # / process.params.output_location
@@ -272,7 +272,7 @@ class Pipeline(collections.Sequence):
             else:
                 if len(self.process_queue) >= self.process_queue.maxlen:
                     raise RuntimeError(
-                        f"Number of parallel processes executed has exceeded {parallel_procs}"
+                        f"Number of parallel processes executed has exceeded {max_procs}"
                     )
                 process.build(str(loc))
                 process.run()

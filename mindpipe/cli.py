@@ -89,12 +89,19 @@ def init(ctx, env):
     help="The location of base directory for input files",
 )
 @click.option(
+    "--max_procs",
+    "-m",
+    type=click.INT,
+    default=4,
+    help="Maximum number of processes allowed to run in parallel",
+)
+@click.option(
     "--resume",
     is_flag=True,
     help="The flag to determine whether a previous execution is resumed",
 )
 @click.pass_context
-def run(ctx, profile, config, output_location, base_dir, resume):
+def run(ctx, profile, config, output_location, base_dir, max_procs, resume):
     """ Run the pipeline """
     spinner = ctx.obj["SPINNER"]
     pipeline = Pipeline(
@@ -103,7 +110,7 @@ def run(ctx, profile, config, output_location, base_dir, resume):
     spinner.start()
     spinner.text = "Starting pipeline execution"
     try:
-        for process in pipeline.run():
+        for process in pipeline.run(max_procs=max_procs):
             spinner.start()
             process_list = " and ".join(
                 [proc.id.split(".", 2)[-1] for proc in pipeline.process_queue]
