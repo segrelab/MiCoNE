@@ -111,21 +111,22 @@ def run(ctx, profile, config, output_location, base_dir, max_procs, resume):
     spinner.text = "Starting pipeline execution"
     try:
         for process in pipeline.run(max_procs=max_procs):
-            spinner.start()
             process_list = " and ".join(
                 [proc.id.split(".", 2)[-1] for proc in pipeline.process_queue]
             )
-            spinner.text = f"Executing {process_list}"
             if resume and process.io_exist:
+                spinner.start()
+                spinner.text = f"Executing {process_list}"
                 spinner.succeed(f"Resumed {process}")
-            else:
-                updated_processes = pipeline.wait()
-                for proc in updated_processes:
-                    proc.log()
-                    if proc.status == "success":
-                        spinner.succeed(f"Finished executing {proc}")
-                    else:
-                        spinner.fail(f"Failed to execute {proc}")
+            spinner.start()
+            spinner.text = f"Executing {process_list}"
+            updated_processes = pipeline.wait()
+            for proc in updated_processes:
+                proc.log()
+                if proc.status == "success":
+                    spinner.succeed(f"Finished executing {proc}")
+                else:
+                    spinner.fail(f"Failed to execute {proc}")
     finally:
         LOG.cleanup()
 
