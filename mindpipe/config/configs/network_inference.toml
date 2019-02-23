@@ -1,5 +1,38 @@
 # Pipelines for the network_inference module
 
+## Bootstrap
+
+[network_inference.bootstrap.resample]
+  env = "mindpipe-sparcc"
+  root_dir = "network_inference/bootstrap/resample"
+  [[network_inference.bootstrap.resample.input]]
+    datatype = "otu_table"
+    format = ["tsv"]
+  [[network_inference.bootstrap.resample.parameters]]
+    process = "resample"
+    bootstraps = 1000
+  [[network_inference.bootstrap.resample.output]]
+    datatype = "otu_table"
+    format = ["tsv"]
+    location = "**/*.tsv"
+
+[network_inference.bootstrap.pvalue]
+  env = "mindpipe-sparcc"
+  root_dir = "network_inference/bootstrap/pvalue"
+  [[network_inference.bootstrap.pvalue.input]]
+    datatype = "otu_table"
+    format = ["tsv"]
+  [[network_inference.bootstrap.pvalue.input]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+  [[network_inference.bootstrap.pvalue.parameters]]
+    process = "calculate_pvalues"
+  [[network_inference.bootstrap.pvalue.output]]
+    datatype = "pvalue_table"
+    format = ["tsv"]
+    location = "**/*_pval.tsv"
+
+
 ## Correlation
 
 [network_inference.correlation.sparcc]
@@ -7,20 +40,15 @@
   root_dir = "network_inference/sparcc"
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
-    format = ["biom"]
-  [[network_inference.correlation.sparcc.output]]
-    datatype = "interaction_table"
     format = ["tsv"]
-    location = "**/*_corr.tsv"
-  [[network_inference.correlation.sparcc.output]]
-    datatype = "pvalue_table"
-    format = ["tsv"]
-    location = "**/*_pval.tsv"
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 50
-    bootstraps = 1000
     threads = 1
+  [[network_inference.correlation.sparcc.output]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+    location = "**/*.tsv"
 
 
 ## Direct
