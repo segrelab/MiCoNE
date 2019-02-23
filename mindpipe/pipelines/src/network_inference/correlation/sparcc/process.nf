@@ -4,100 +4,34 @@
 def otudata = params.otudata
 def output_dir = file(params.output_dir)
 
+
 // Parameters
 def iterations = params.iterations
-def bootstraps = params.bootstraps
+
+
+// Channels
 
 Channel
     .fromPath(otudata)
     .ifEmpty {exit 1, "Otu files not found"}
     .map { tuple(
-        (it.getParent().baseName + '_' + it.baseName),
+        (it.getParent().getParent().baseName + '_' + it.getParent().baseName + '_' + it.baseName),
+        it.getParent().getParent().baseName,
         it.getParent().baseName,
-        it.baseName,
         it
     ) }
-    .set { chnl_otudata_biom }
-
-process biom2tsv {
-    tag "$id"
-
-    input:
-    set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_biom
-
-    output:
-    set val(id), val(dataset), val(level), file('*.tsv') into chnl_otudata_corr, chnl_otudata_resamp, chnl_otudata_pval
-
-    script:
-    {{ biom2tsv }}
-}
+    .set { chnl_otudata_tsv }
 
 
-process compute_correlations {
+// Processes
+
+process sparcc {
     tag "${id}"
-    publishDir "${output_dir}/${dataset}"
-
+    publishDir "${output_dir}/${dataset}/${level}"
     input:
-    set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_corr
-
+    set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_tsv
     output:
-    set val(id), file('*_corr.tsv') into corr_pval
-
+    set val(id), file('*_corr.tsv') into chnl_corr
     script:
-    {{ compute_correlations }}
-}
-
-process resampling {
-    tag "${id}"
-
-    input:
-    set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_resamp
-
-    output:
-    set val(id), file('*.tsv') into resamplings
-
-    script:
-    {{ resampling }}
-}
-
-// TODO: Maybe instead of this we can use GNU parallel to run in parallel in single job
-resamplings
-    .map { id, resamp ->
-            resamp.collect { resampid -> [id, resampid] }
-    }
-    .flatMap {it}
-    .set { resamplings_bootstrap_corrs }
-
-process bootstrapping {
-    tag "${id}|${resample.baseName}"
-
-    input:
-    set val(id), file(resample) from resamplings_bootstrap_corrs
-
-    output:
-    set val(id), file('*_corr.boot') into chnl_bootstraps
-
-    script:
-    {{ bootstrapping }}
-}
-
-chnl_bootstraps
-    .groupTuple()
-    .join(corr_pval, by: 0)
-    .join(chnl_otudata_pval, by: 0)
-    .set { pval_input_chnl }
-
-process calculate_pvalues {
-    tag "${id}"
-    publishDir "${output_dir}/${dataset}"
-
-    input:
-    set val(id), file(boot_file), file(corr_file), val(dataset), val(level), file(otu_file) from pval_input_chnl
-
-    output:
-    set val(id), file('*_pval.tsv') into pval
-
-    script:
-    // def bstrap = bootstraps?.find{it}.baseName.split('_')?.find{it} + "_level_#.boot"
-    {{ calculate_pvalues }}
+    {{ sparcc }}
 }
