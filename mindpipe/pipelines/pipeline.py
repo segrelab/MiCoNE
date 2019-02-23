@@ -181,7 +181,7 @@ class Pipeline(collections.Sequence):
         tree = self.process_tree
         for node_name in tree.nodes:
             suffix_flag = ""
-            suffixes = [f".{i}" for i in range(len(tree.nodes))]
+            suffixes = [f".{i}" for i in range(1, len(tree.nodes) + 1)]
             for suffix in suffixes:
                 if node_name.endswith(suffix):
                     process_name = node_name.rsplit(suffix, 1)[0]
