@@ -5,3 +5,11 @@ fastspar --iterations $iterations --yes \
     --correlation ${otu_file.baseName.split("_otu")[0]}_corr.tsv \
     --covariance ${otu_file.baseName.split("_otu")[0]}_cov.tsv \
     --threads ${threads}
+
+for f in *_corr.tsv; do
+    mv -- "\$f" "\${f%.tsv}.boot"
+done
+
+for f in *_cov.tsv; do
+    mv -- "\$f" "\${f%.tsv}.boot"
+done
