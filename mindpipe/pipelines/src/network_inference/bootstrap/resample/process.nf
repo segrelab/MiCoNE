@@ -18,7 +18,7 @@ Channel
     .map { tuple(
         (it.getParent().baseName + '_' + it.baseName),
         it.getParent().baseName,
-        it.baseName,
+        it.baseName.split("_otu")[0],
         it
     ) }
     .set { chnl_otudata_tsv }
