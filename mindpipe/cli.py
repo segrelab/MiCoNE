@@ -124,7 +124,7 @@ def run(ctx, profile, config, output_location, base_dir, max_procs, resume):
             for proc in updated_processes:
                 proc.log()
                 if proc.status == "success":
-                    spinner.succeed(f"Finished executing {proc}")
+                    spinner.succeed(f"Completed {proc}")
                 else:
                     spinner.fail(f"Failed to execute {proc}")
     finally:
