@@ -7,6 +7,7 @@ def output_dir = file(params.output_dir)
 
 // Parameters
 def iterations = params.iterations
+def threads = params.threads
 
 
 // Channels
