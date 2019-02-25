@@ -13,9 +13,9 @@
     bootstraps = 1000
     threads = 1
   [[network_inference.bootstrap.resample.output]]
-    datatype = "otu_table"
-    format = ["tsv"]
-    location = "**/*.tsv"
+    datatype = "otu_bootstrap"
+    format = ["boot"]
+    location = "**/*.boot"
 
 [network_inference.bootstrap.pvalue]
   env = "mindpipe-sparcc"
@@ -26,6 +26,9 @@
   [[network_inference.bootstrap.pvalue.input]]
     datatype = "interaction_table"
     format = ["tsv"]
+  [[network_inference.bootstrap.pvalue.input]]
+    datatype = "corr_bootstrap"
+    format = ["boot"]
   [[network_inference.bootstrap.pvalue.parameters]]
     process = "calculate_pvalues"
     threads = 1
@@ -43,6 +46,9 @@
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
     format = ["tsv"]
+  [[network_inference.correlation.sparcc.input]]
+    datatype = "otu_bootstrap"
+    format = ["boot"]
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 50
@@ -50,6 +56,10 @@
   [[network_inference.correlation.sparcc.output]]
     datatype = "interaction_table"
     format = ["tsv"]
+    location = "**/*_corr.tsv"
+  [[network_inference.correlation.sparcc.output]]
+    datatype = "corr_bootstrap"
+    format = ["boot"]
     location = "**/*_corr.tsv"
 
 

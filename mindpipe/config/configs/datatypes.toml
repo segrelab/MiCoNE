@@ -53,3 +53,9 @@
 [sequence_16s_representative]
   desc = "Representative 16S rDNA sequences"
   format = ["fasta"]
+[otu_bootstrap]
+  desc = "Bootstrap of OTU table"
+  format = ["boot"]
+[corr_bootstrap]
+  desc = "Correlation of the bootstrapped OTU table"
+  format = ["boot"]
