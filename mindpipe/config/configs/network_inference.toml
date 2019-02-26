@@ -60,7 +60,7 @@
   [[network_inference.correlation.sparcc.output]]
     datatype = "interaction_bootstrap"
     format = ["boot"]
-    location = "**/*_corr.tsv"
+    location = "**/*_corr.boot"
 
 
 ## Direct
