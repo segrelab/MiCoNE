@@ -85,7 +85,7 @@ class Environments:
         if env is None:
             post_scripts = list(ENV_DIR.glob("**/post_install.sh"))
         else:
-            env = env.strip("mindpipe-")
+            env = env.lstrip("mindpipe-")
             post_scripts = list(ENV_DIR.glob(f"**/{env}/post_install.sh"))
         for script in post_scripts:
             cmd_str = f"bash {script}"
