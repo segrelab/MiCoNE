@@ -1,15 +1,19 @@
 # User configuration file for spacc pipeline
 title = "User run settings for sparcc-network pipeline"
 
-order = ["network_inference.correlation.sparcc"]
+order = "network_inference.correlation.sparcc"
 
-output_location = "/home/dileep/Documents/results"
+output_location = "/home/dileep/Documents/results/sparcc"
 
 [network_inference.correlation.sparcc]
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
-    format = ["biom"]
-    location = "correlations/good/deblur/deblur.biom"
+    format = ["tsv"]
+    location = "otus/tsv/good/fmt/otu.tsv"
+  [[network_inference.correlation.sparcc.input]]
+    datatype = "otu_bootstrap"
+    format = ["boot"]
+    location = "/home/dileep/Documents/results/resample/network_inference/bootstrap/resample.1/fmt/otu/*.boot"
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 5

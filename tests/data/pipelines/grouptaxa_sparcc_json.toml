@@ -1,8 +1,15 @@
 title = "A example pipeline for testing"
 
-order = ["otu_processing.filter.group", "network_inference.correlation.sparcc", "otu_processing.export.biom2tsv", "network_inference.network.make_network"]
+order = """
+  otu_processing.filter.group
+  otu_processing.export.biom2tsv
+  network_inference.bootstrap.resample
+  network_inference.correlation.sparcc
+  network_inference.bootstrap.pvalue
+  network_inference.network.make_network
+"""
 
-output_location = "~/Documents/results"
+output_location = "/home/dileep/Documents/results/sparcc_network"
 
 [otu_processing.filter.group]
   [[otu_processing.filter.group.input]]
@@ -13,13 +20,19 @@ output_location = "~/Documents/results"
     process = "group"
     tax_levels = "['Family', 'Genus', 'Species']"
 
+[otu_processing.export.biom2tsv]
+
+[network_inference.bootstrap.resample]
+  [[network_inference.bootstrap.resample.parameters]]
+    process = "resample"
+    bootstraps = 10
+
 [network_inference.correlation.sparcc]
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 5
-    bootstraps = 10
 
-[otu_processing.export.biom2tsv]
+[network_inference.bootstrap.pvalue]
 
 [network_inference.network.make_network]
   [[network_inference.network.make_network.input]]

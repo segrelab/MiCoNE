@@ -1,9 +1,9 @@
 # User configuration file for closed reference clustering pipeline
 title = "User run setttings for closed_reference pipeline"
 
-order = ["otu_assignment.denoise_cluster.closed_reference"]
+order = "otu_assignment.denoise_cluster.closed_reference"
 
-output_location = "/home/dileep/Documents/results"
+output_location = "/home/dileep/Documents/results/closed_reference"
 
 [otu_assignment.denoise_cluster.closed_reference]
   [[otu_assignment.denoise_cluster.closed_reference.input]]
