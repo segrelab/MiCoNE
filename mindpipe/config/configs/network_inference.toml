@@ -27,7 +27,7 @@
     datatype = "interaction_table"
     format = ["tsv"]
   [[network_inference.bootstrap.pvalue.input]]
-    datatype = "corr_bootstrap"
+    datatype = "interaction_bootstrap"
     format = ["boot"]
   [[network_inference.bootstrap.pvalue.parameters]]
     process = "calculate_pvalues"
@@ -58,7 +58,7 @@
     format = ["tsv"]
     location = "**/*_corr.tsv"
   [[network_inference.correlation.sparcc.output]]
-    datatype = "corr_bootstrap"
+    datatype = "interaction_bootstrap"
     format = ["boot"]
     location = "**/*_corr.tsv"
 

@@ -56,6 +56,6 @@
 [otu_bootstrap]
   desc = "Bootstrap of OTU table"
   format = ["boot"]
-[corr_bootstrap]
+[interaction_bootstrap]
   desc = "Correlation of the bootstrapped OTU table"
   format = ["boot"]
