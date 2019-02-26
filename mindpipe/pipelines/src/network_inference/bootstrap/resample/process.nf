@@ -16,7 +16,7 @@ Channel
     .fromPath(otudata)
     .ifEmpty {exit 1, "Otu files not found"}
     .map { tuple(
-        (it.getParent().baseName + '_' + it.baseName),
+        (it.getParent().baseName + '_' + it.baseName.split("_otu")[0]),
         it.getParent().baseName,
         it.baseName.split("_otu")[0],
         it
