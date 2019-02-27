@@ -8,4 +8,4 @@ export TAR=$(which tar)
 
 R -e 'library(devtools); install_github("zdk123/SpiecEasi")'
 
-conda install r-huge=1.2.7 --yes
+conda install -c conda-forge r-huge=1.2.7 --yes
