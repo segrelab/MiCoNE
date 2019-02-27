@@ -54,4 +54,4 @@ spieceasi.corr <- run_spieceasi(
     nlambda=nlambda,
     lambda.min.ratio=lambda.min.ratio
 )
-write.table(spieceasi.corr, file=corr_file, sep="\\t", quote=FALSE)
+write.table(spieceasi.corr, file=corr_file, sep="\\t", quote=FALSE, col.names=NA)
