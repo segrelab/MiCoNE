@@ -7,7 +7,7 @@ def correlation_bootstrap = params.interaction_bootstrap
 def output_dir = file(params.output_dir)
 
 // Parameters
-def threads = params.threads
+def ncpus = params.ncpus
 
 
 // Channels

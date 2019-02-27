@@ -7,7 +7,7 @@ def output_dir = file(params.output_dir)
 
 // Parameters
 def bootstraps = params.bootstraps
-def threads = params.threads
+def ncpus = params.ncpus
 
 
 // Channels

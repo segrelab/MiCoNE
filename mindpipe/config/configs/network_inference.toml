@@ -11,7 +11,7 @@
   [[network_inference.bootstrap.resample.parameters]]
     process = "resample"
     bootstraps = 1000
-    threads = 1
+    ncpus = 1
   [[network_inference.bootstrap.resample.output]]
     datatype = "otu_bootstrap"
     format = ["boot"]
@@ -31,7 +31,7 @@
     format = ["boot"]
   [[network_inference.bootstrap.pvalue.parameters]]
     process = "calculate_pvalues"
-    threads = 1
+    ncpus = 1
   [[network_inference.bootstrap.pvalue.output]]
     datatype = "pvalue_table"
     format = ["tsv"]
@@ -52,7 +52,7 @@
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 50
-    threads = 1
+    ncpus = 1
   [[network_inference.correlation.sparcc.output]]
     datatype = "interaction_table"
     format = ["tsv"]

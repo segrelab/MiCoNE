@@ -10,4 +10,4 @@ fastspar_pvalues --otu_table $otu_file \
     --prefix corr_bootstraps/${level}_boot \
     --permutations \$BOOTSTRAPS \
     --outfile ${level}_pval.tsv \
-    --threads ${threads}
+    --threads ${ncpus}
