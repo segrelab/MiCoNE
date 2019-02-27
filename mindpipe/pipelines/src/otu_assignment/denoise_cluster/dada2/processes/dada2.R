@@ -30,4 +30,4 @@ if(big.data) {
 seq.table <- makeSequenceTable(reads.dada)
 rownames(seq.table) <- sample.names
 
-write.table(t(seq.table), file="seq_table.tsv", col.names=NA, sep="\t")
+write.table(t(seq.table), file="seq_table.tsv", col.names=NA, sep="\\t")
