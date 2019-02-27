@@ -51,11 +51,11 @@ process sparcc_otu {
 
 process sparcc_boot {
     tag "${id}"
-    publishDir "${output_dir}/${dataset}/${level}"
+    publishDir "${output_dir}/${dataset}/${level}", saveAs: { fname -> fname.split('.tsv')[0] + '.boot' }
     input:
     set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_boot
     output:
-    set val(id), file('*_corr.boot') into chnl_corr_boot
+    set val(id), file('*_corr.tsv') into chnl_corr_boot
     script:
-    {{ sparcc_boot }}
+    {{ sparcc }}
 }
