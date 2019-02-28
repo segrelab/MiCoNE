@@ -627,7 +627,7 @@ class Network:
         elist_type.validate(elist)
         index = list(set([*elist["source"], *elist["target"]]))
         mat_shape = len(index), len(index)
-        interactions = pd.DataFrame(
+        dense_interactions = pd.DataFrame(
             data=np.zeros(mat_shape), index=index, columns=index
         )
         pvalue_flag = True if "pvalue" in elist.columns else False
@@ -637,9 +637,9 @@ class Network:
             pvalues = None
         for entry in elist.to_dict("records"):
             source, target, weight = entry["source"], entry["target"], entry["weight"]
-            interactions.at[source, target] = weight
+            dense_interactions.at[source, target] = weight
             if not directed:
-                interactions.loc[target, source] = weight
+                dense_interactions.loc[target, source] = weight
             if pvalue_flag:
                 pvalues.at[source, target] = entry["pvalue"]
                 if not directed:
@@ -664,6 +664,7 @@ class Network:
         else:
             children_map = None
         pvalue_correction = None  # To prevent re-correction of pvalues
+        interactions = dense_interactions.to_sparse(fill_value=0.0)
         network = cls(
             interactions,
             metadata,
