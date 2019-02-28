@@ -38,9 +38,7 @@ class NetworkGroup(Collection):
     def __init__(self, networks: List[Network]) -> None:
         self.nodeid_map: Dict[int, Dict[str, str]] = dict()
         self._networks = networks
-        self.nodes, self.links, self.filtered_links, self.contexts = self._combine_networks(
-            networks
-        )
+        self.nodes, self.links, self.contexts = self._combine_networks(networks)
 
     def __contains__(self, key) -> bool:
         if key in range(len(self)):
@@ -96,9 +94,7 @@ class NetworkGroup(Collection):
                 )
         return links
 
-    def _combine_networks(
-        self, networks: List[Network]
-    ) -> Tuple[DType, DType, DType, DType]:
+    def _combine_networks(self, networks: List[Network]) -> Tuple[DType, DType, DType]:
         """
             Combine networks into a network group
 
@@ -115,18 +111,31 @@ class NetworkGroup(Collection):
         """
         nodes_dict = dict()
         links_dict = dict()
-        filtered_links_dict = dict()
         contexts = []
         for cid, network in enumerate(networks):
             nodes_dict[cid] = network.nodes
             links_dict[cid] = network.links
-            filtered_links_dict[cid] = network.filtered_links
             context = network.metadata
             contexts.append(context)
         merged_nodes = self._combine_nodes(nodes_dict)
         merged_links = self._combine_links(links_dict)
+        return merged_nodes, merged_links, contexts
+
+    @property
+    def filtered_links(self) -> DType:
+        """
+            The links of the networks after applying filtering
+
+            Returns
+            -------
+            List[Dict[str, Any]]
+                The list of links in the network after applying a threshold
+        """
+        filtered_links_dict = dict()
+        for cid, network in enumerate(self._networks):
+            filtered_links_dict[cid] = network.filtered_links
         merged_filtered_links = self._combine_links(filtered_links_dict)
-        return merged_nodes, merged_links, merged_filtered_links, contexts
+        return merged_filtered_links
 
     def json(self, threshold: bool = True) -> str:
         """ Network group as a JSON string """
