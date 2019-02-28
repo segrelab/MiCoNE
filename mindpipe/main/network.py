@@ -487,42 +487,52 @@ class Network:
             fid.write(self.json(threshold=threshold))
 
     @classmethod
-    def load_json(cls, fpath: str) -> "Network":
+    def load_json(
+        cls, fpath: Optional[str] = None, raw_data: Optional[dict] = None
+    ) -> "Network":
         """
             Create a `Network` object from a network `JSON` file
+            Either fpath or raw_data must be specified
 
             Parameters
             ----------
-            fpath : str
+            fpath : str, optional
                 The path to the network `JSON` file
+            raw_data : dict, optional
+                The raw data stored in the network `JSON` file
 
             Returns
             -------
             Network
                 The instance of the `Network` class
         """
-        with open(fpath, "r") as fid:
-            raw_data = json.load(fid)
+        if not raw_data or not fpath:
+            raise ValueError("Either fpath or raw_data must be specified")
+        if not raw_data:
+            with open(fpath, "r") as fid:
+                data = json.load(fid)
+        else:
+            data = raw_data
         # Validation
-        nodes_model = NodesModel({"nodes": raw_data["nodes"]}, strict=False)
+        nodes_model = NodesModel({"nodes": data["nodes"]}, strict=False)
         nodes_model.validate()
-        links_model = LinksModel({"links": raw_data["links"]}, strict=False)
+        links_model = LinksModel({"links": data["links"]}, strict=False)
         links_model.validate()
         non_meta_keys = ["nodes", "links"]
-        metadata = {k: v for k, v in raw_data.items() if k not in non_meta_keys}
+        metadata = {k: v for k, v in data.items() if k not in non_meta_keys}
         networkmetadata_model = NetworkmetadataModel(metadata, strict=False)
         networkmetadata_model.validate()
         # Variable assignment
-        cmetadata = raw_data["computational_metadata"]
-        interaction_type = raw_data["interaction_type"]
+        cmetadata = data["computational_metadata"]
+        interaction_type = data["interaction_type"]
         interaction_threshold = cmetadata["interaction_threshold"]
         pvalue_threshold = cmetadata["pvalue_threshold"]
         pvalue_correction = None
-        directed = True if raw_data["directionality"] == "directed" else False
+        directed = True if data["directionality"] == "directed" else False
         index: List[str] = []
         lineages: List[dict] = []
         children_map: Dict[str, List[str]] = {}
-        for node in raw_data["nodes"]:
+        for node in data["nodes"]:
             index.append(node["id"])
             lineage = Lineage.from_str(node["lineage"]).to_dict("Species")
             children_map[node["id"]] = node["children"]
@@ -536,12 +546,12 @@ class Network:
         dense_interactions = pd.DataFrame(
             data=np.zeros(mat_shape), index=index, columns=index
         )
-        pvalue_flag = True if raw_data["links"][0]["pvalue"] is not None else False
+        pvalue_flag = True if data["links"][0]["pvalue"] is not None else False
         if pvalue_flag:
             pvalues = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
         else:
             pvalues = None
-        for link in raw_data["links"]:
+        for link in data["links"]:
             source, target = link["source"], link["target"]
             dense_interactions.at[source, target] = link["weight"]
             if not directed:
