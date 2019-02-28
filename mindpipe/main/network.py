@@ -2,7 +2,6 @@
     Module that defines the `Network` object and methods to read, write and manipulate it
 """
 
-from itertools import product
 import json
 from typing import Any, Dict, List, Optional, Set, FrozenSet, Tuple
 
@@ -33,8 +32,8 @@ class Network:
 
         Parameters
         ----------
-        interactions : pd.DataFrame
-            The `DataFrame` containing the matrix of interactions
+        interactions : pd.SparseDataFrame
+            The `SparseDataFrame` containing the matrix of interactions
         metadata : dict
             The metadata for the whole network (general and experiment)
             Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
@@ -88,7 +87,7 @@ class Network:
 
     def __init__(
         self,
-        interactions: pd.DataFrame,
+        interactions: pd.SparseDataFrame,
         metadata: dict,
         cmetadata: dict,
         obs_metadata: pd.DataFrame,
@@ -231,7 +230,7 @@ class Network:
 
     @staticmethod
     def _create_network(
-        interactions: pd.DataFrame,
+        interactions: pd.SparseDataFrame,
         pvalues: Optional[pd.DataFrame],
         obs_metadata: pd.DataFrame,
         emetadata: dict,
@@ -246,8 +245,8 @@ class Network:
 
             Parameters
             ----------
-            interactions : pd.DataFrame
-                The `DataFrame` containing the matrix of interactions
+            interactions : pd.SparseDataFrame
+                The `SparseDataFrame` containing the matrix of interactions
             pvalues : Optional[pd.DataFrame]
                 The `DataFrame` containing the *corrected* pvalues
             obs_metadata : pd.DataFrame
@@ -308,18 +307,21 @@ class Network:
             )
         link_set: Set[FrozenSet[str]] = set()
         links: List[Dict[str, Any]] = []
-        for source, target in product(interactions.index, interactions.columns):
+        stack = interactions.stack()
+        for nnz_ind in stack.nonzero()[0]:
+            source, target = stack.index[nnz_ind]
             if source == target:
                 continue
             if not directed and frozenset([source, target]) in link_set:
                 continue
-            weight = interactions.loc[source, target]
-            pvalue = pvalues.loc[source, target] if pvalues is not None else None
+            weight = interactions.at[source, target]
+            pvalue = pvalues.at[source, target] if pvalues is not None else None
             links.append(
                 {"source": source, "target": target, "weight": weight, "pvalue": pvalue}
             )
             if not directed:
                 link_set.add(frozenset([source, target]))
+        # TODO: validate=True
         nodes_model = NodesModel({"nodes": nodes}, strict=False)
         nodes_model.validate()
         links_model = LinksModel({"links": links}, strict=False)
@@ -405,7 +407,9 @@ class Network:
             Network
                 The instance of the `Network` class
         """
-        interactions = pd.read_table(interaction_file, index_col=0)
+        interactions = pd.read_table(interaction_file, index_col=0).to_sparse(
+            fill_value=0.0
+        )
         with open(meta_file, "r") as fid:
             metadata = json.load(fid)
         with open(cmeta_file, "r") as fid:
@@ -529,7 +533,7 @@ class Network:
                 lineages.append(lineage)
         obs_metadata = pd.DataFrame(lineages, index=index)
         mat_shape = (len(index), len(index))
-        interactions = pd.DataFrame(
+        dense_interactions = pd.DataFrame(
             data=np.zeros(mat_shape), index=index, columns=index
         )
         pvalue_flag = True if raw_data["links"][0]["pvalue"] is not None else False
@@ -539,13 +543,14 @@ class Network:
             pvalues = None
         for link in raw_data["links"]:
             source, target = link["source"], link["target"]
-            interactions.loc[source, target] = link["weight"]
+            dense_interactions.at[source, target] = link["weight"]
             if not directed:
-                interactions.loc[target, source] = link["weight"]
+                dense_interactions.loc[target, source] = link["weight"]
             if pvalue_flag:
-                pvalues.loc[source, target] = link["pvalue"]
+                pvalues.at[source, target] = link["pvalue"]
                 if not directed:
                     pvalues.loc[target, source] = link["pvalue"]
+        interactions = dense_interactions.to_sparse(fill_value=0.0)
         network = cls(
             interactions,
             metadata,
@@ -632,11 +637,11 @@ class Network:
             pvalues = None
         for entry in elist.to_dict("records"):
             source, target, weight = entry["source"], entry["target"], entry["weight"]
-            interactions.loc[source, target] = weight
+            interactions.at[source, target] = weight
             if not directed:
                 interactions.loc[target, source] = weight
             if pvalue_flag:
-                pvalues.loc[source, target] = entry["pvalue"]
+                pvalues.at[source, target] = entry["pvalue"]
                 if not directed:
                     pvalues.loc[target, source] = entry["pvalue"]
         with open(meta_file, "r") as fid:
