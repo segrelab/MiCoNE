@@ -51,6 +51,12 @@ class NetworkGroup(Collection):
     def __iter__(self) -> Iterator:
         return iter(self._networks)
 
+    def __repr__(self) -> str:
+        n_nodes = len(self.nodes)
+        n_links = len(self.links)
+        n_contexts = len(self.contexts)
+        return f"<NetworkGroup contexts={n_contexts} nodes={n_nodes} links={n_links}>"
+
     def _combine_nodes(self, all_nodes: Dict[int, DType]) -> DType:
         """ Combine nodes of individual networks into a single list """
         nodes: DType = []
