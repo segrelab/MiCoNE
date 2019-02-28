@@ -506,9 +506,9 @@ class Network:
             Network
                 The instance of the `Network` class
         """
-        if not raw_data or not fpath:
+        if not raw_data and not fpath:
             raise ValueError("Either fpath or raw_data must be specified")
-        if not raw_data:
+        if not raw_data and fpath:
             with open(fpath, "r") as fid:
                 data = json.load(fid)
         else:
