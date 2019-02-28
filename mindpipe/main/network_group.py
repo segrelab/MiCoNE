@@ -38,7 +38,17 @@ class NetworkGroup(Collection):
     def __init__(self, networks: List[Network]) -> None:
         self.nodeid_map: Dict[int, Dict[str, str]] = dict()
         self._networks = networks
-        self.nodes, self.links, self.contexts = self._combine_networks(networks)
+        if len(networks) > 1:
+            self.nodes, self.links, self.contexts = self._combine_networks(networks)
+        elif len(networks) == 1:
+            network = networks[0]
+            self.nodes = network.nodes
+            self.links = network.links
+            self.contexts = [network.metadata]
+        else:
+            raise ValueError(
+                "The networks parameter must be a list of one or more networks"
+            )
 
     def __contains__(self, key) -> bool:
         if key in range(len(self)):
@@ -138,9 +148,13 @@ class NetworkGroup(Collection):
                 The list of links in the network after applying a threshold
         """
         filtered_links_dict = dict()
-        for cid, network in enumerate(self._networks):
-            filtered_links_dict[cid] = network.filtered_links
-        merged_filtered_links = self._combine_links(filtered_links_dict)
+        if len(self.contexts) > 1:
+            for cid, network in enumerate(self._networks):
+                filtered_links_dict[cid] = network.filtered_links
+            merged_filtered_links = self._combine_links(filtered_links_dict)
+        else:
+            network = self._networks[0]
+            merged_filtered_links = network.filtered_links
         return merged_filtered_links
 
     def json(self, threshold: bool = True) -> str:
