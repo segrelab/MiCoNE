@@ -2,12 +2,13 @@
     Module that defines the `Network` object and methods to read, write and manipulate it
 """
 
-import json
-from typing import Any, Dict, List, Optional, Set, FrozenSet, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from warnings import warn
 
 import networkx as nx
 import numpy as np
 import pandas as pd
+import simplejson
 from statsmodels.stats.multitest import multipletests
 
 from . import Lineage
@@ -23,7 +24,9 @@ from ..validation import (
     NetworkmetadataModel,
     ElistType,
 )
-from ..utils import JsonEncoder
+
+
+LinkDType = Tuple[str, str, Dict[str, float]]
 
 
 class Network:
@@ -32,8 +35,11 @@ class Network:
 
         Parameters
         ----------
-        interactions : pd.SparseDataFrame
-            The `SparseDataFrame` containing the matrix of interactions
+        nodes : List[str]
+            The list of nodes in the network
+        links : List[LinkDType]
+            The list of links in the network
+            Each link is a dict and must contain: 'source', 'target', 'weight', 'pvalue' as keys
         metadata : dict
             The metadata for the whole network (general and experiment)
             Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
@@ -44,8 +50,6 @@ class Network:
         obs_metadata : pd.DataFrame
             The `DataFrame` containing taxonomy information for the nodes of the network
             If this contains an 'Abundance' column then it is incorporated into the network
-        pvalues : pd.DataFrame, optional
-            The `DataFrame` containing the matrix of pvalues
         children_map : dict, optional
             The dictionary that contains the mapping {obs_id => [children]}
         interaction_type : str, optional
@@ -69,29 +73,27 @@ class Network:
 
         Attributes
         ----------
+        graph : Union[nx.MultiGraph, nx.MultiDiGraph]
+            The networkx graph representation of the network
         nodes : List[Dict[str, Any]]
             The list of nodes in the network and their corresponding properties
         links : List[Dict[str, Any]]
             The list of links in the network and their corresponding properties
-        filtered_links : List[Dict[str, Any]]
-            The list of links in the network after applying thresholds
         metadata : Dict[str, Any]
             The metadata for the network
-        graph : nx.Graph
-            The networkx graph representation of the network
 
         Examples
         --------
-        >>> network = Network.load()
+        >>> network = Network.load_data()
     """
 
     def __init__(
         self,
-        interactions: pd.SparseDataFrame,
+        nodes: List[str],
+        links: List[LinkDType],
         metadata: dict,
         cmetadata: dict,
         obs_metadata: pd.DataFrame,
-        pvalues: Optional[pd.DataFrame] = None,
         children_map: Optional[dict] = None,
         interaction_type: str = "correlation",
         interaction_threshold: float = 0.3,
@@ -99,6 +101,8 @@ class Network:
         pvalue_correction: Optional[str] = "fdr_bh",
         directed: bool = False,
     ) -> None:
+        self.interaction_threshold = interaction_threshold
+        self.pvalue_threshold = pvalue_threshold
         obsmeta_validator = ObsmetaType()
         obsmeta_validator.validate(obs_metadata)
         metadata_model = MetadataModel(metadata, strict=False)
@@ -106,42 +110,42 @@ class Network:
         if children_map:
             children_validator = ChildrenmapType()
             children_validator.validate(children_map)
-        if interaction_type == "correlation":
-            interaction_validator = CorrelationmatrixType()
+        pvalues = np.array([link[2]["pvalue"] for link in links])
+        if pvalue_correction:
+            corrected_pvalues = self._correct_pvalues(
+                pvalues, pvalue_correction, pvalue_threshold
+            )
         else:
-            interaction_validator = InteractionmatrixType(symm=not directed)
-        interaction_validator.validate(interactions)
-        if pvalues is not None:
-            self._verify_integrity(interactions, pvalues)
-            pvalue_validator = PvaluematrixType(symm=directed)
-            pvalue_validator.validate(pvalues)
-            if pvalue_correction:
-                corrected_pvalues = self._correct_pvalues(
-                    pvalues, pvalue_correction, pvalue_threshold
-                )
-            else:
-                corrected_pvalues = pvalues
-            if "pvalue_threshold" not in cmetadata:
-                cmetadata["pvalue_threshold"] = pvalue_threshold
-            if "pvalue_correction" not in cmetadata:
-                cmetadata["pvalue_correction"] = pvalue_correction
-        else:
-            corrected_pvalues = None
+            corrected_pvalues = pvalues
+        corrected_links: List[LinkDType] = []
+        for i, link in enumerate(links):
+            source, target = link[0], link[1]
+            corrected_links.append(
+                (source, target, {**link[2], "pvalue": corrected_pvalues[i]})
+            )
+        if "pvalue_threshold" not in cmetadata:
+            cmetadata["pvalue_threshold"] = pvalue_threshold
+        if "pvalue_correction" not in cmetadata:
+            cmetadata["pvalue_correction"] = pvalue_correction
         if "interaction_threshold" not in cmetadata:
             cmetadata["interaction_threshold"] = interaction_threshold
-        self.nodes, self.links, self.metadata = self._create_network(
-            interactions,
-            corrected_pvalues,
-            obs_metadata,
+        self.graph = self._create_graph(
+            nodes,
+            corrected_links,
             metadata,
             cmetadata,
+            obs_metadata,
             children_map,
             interaction_type,
             directed,
         )
-        self.interaction_threshold = interaction_threshold
-        self.pvalue_threshold = pvalue_threshold
-        self._pvalue_flag = True if pvalues is not None else False
+        # TODO: option to set validate=True
+        nodes_model = NodesModel({"nodes": self.nodes}, strict=False)
+        nodes_model.validate()
+        links_model = LinksModel({"links": self.links}, strict=False)
+        links_model.validate()
+        networkmetadata_model = NetworkmetadataModel(self.metadata, strict=False)
+        networkmetadata_model.validate()
 
     def __repr__(self) -> str:
         n_nodes = len(self.nodes)
@@ -193,7 +197,7 @@ class Network:
         return methods
 
     def _correct_pvalues(
-        self, pvalues: pd.DataFrame, method: str, pvalue_threshold: float
+        self, pvalues: np.array, method: str, pvalue_threshold: float
     ) -> pd.DataFrame:
         """
             Correct pvalues using 'method'
@@ -217,56 +221,49 @@ class Network:
             raise ValueError(
                 f"Method {method} not supported. Must be one of {self.pcorr_methods}"
             )
-        flat_pvalues = pvalues.values.flatten()
-        reject, pvals_correct, *_ = multipletests(
-            flat_pvalues, alpha=pvalue_threshold, method=method
+        _, pvals_correct, *_ = multipletests(
+            pvalues, alpha=pvalue_threshold, method=method
         )
-        pval_correct_df = pd.DataFrame(
-            data=pvals_correct.reshape(pvalues.shape),
-            index=pvalues.index,
-            columns=pvalues.columns,
-        ).to_sparse()
-        return pval_correct_df
+        return pvals_correct
 
     @staticmethod
-    def _create_network(
-        interactions: pd.SparseDataFrame,
-        pvalues: Optional[pd.DataFrame],
-        obs_metadata: pd.DataFrame,
+    def _create_graph(
+        nodes: List[str],
+        links: List[LinkDType],
         emetadata: dict,
         cmetadata: dict,
+        obs_metadata: pd.DataFrame,
         children_map: Optional[dict],
         interaction_type: str,
         directed: bool,
-    ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
+    ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
         """
             Create network from interaction matrix, pvalue matrix, metadata dictionary,
             lineage table and children mapping
 
             Parameters
             ----------
-            interactions : pd.SparseDataFrame
-                The `SparseDataFrame` containing the matrix of interactions
-            pvalues : Optional[pd.DataFrame]
-                The `DataFrame` containing the *corrected* pvalues
-            obs_metadata : pd.DataFrame
-                The `DataFrame` containing taxonomy information for the nodes of the network
+            nodes : List[str]
+                The list of nodes in the network
+            links : List[LinkDType]
+                The list of links in the network
             emetadata : dict
                 The dictionary of general and experimental metadata
             cmetadata : dict
                 The dictionary of computational metadata
+            obs_metadata : pd.DataFrame
+                The `DataFrame` containing taxonomy information for the nodes of the network
             children_map : dict
                 The dictionary that contains the mapping {obs_id => [children]}
             interaction_type : str
                 The type of interaction encoded by the edges of the network
-                The
             directed : bool
                 Flag to determine whether the network is directed or not
 
             Returns
             -------
-            Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]
-                Nodes, Links, Metadata
+            Union[nx.MultiGraph, nx.MultiDiGraph]
+                The networkx graph of the network
         """
         directionality = "directed" if directed else "undirected"
         metadata = {
@@ -275,15 +272,23 @@ class Network:
             "interaction_type": interaction_type,
             "directionality": directionality,
         }
-        nodes: List[Dict[str, Any]] = []
+        if directed:
+            graph = nx.MultiDiGraph(**metadata)
+        else:
+            graph = nx.MultiGraph(**metadata)
         abundance_flag = "Abundance" in obs_metadata.columns
-        for node in interactions.index:
+        for node in nodes:
             if abundance_flag:
                 lineage = Lineage(**obs_metadata.drop("Abundance").loc[node].to_dict())
                 abundance = obs_metadata.loc[node].Abundance
             else:
                 if node not in obs_metadata.index:
                     lineage = Lineage(Kingdom="Bacteria")
+                    warn(
+                        UserWarning(
+                            f"{node} not found in obs_metadata. Assigning lineage as Bacteria"
+                        )
+                    )
                 else:
                     lineage = Lineage(**obs_metadata.loc[node].to_dict())
                 abundance = None
@@ -292,62 +297,77 @@ class Network:
             else:
                 children = []
             sup_lineage = lineage.get_superset(lineage.taxid[0])
-            nodes.append(
-                {
-                    "id": node,
-                    "lineage": sup_lineage.to_str(
-                        style="gg", level=sup_lineage.name[0]
-                    ),
-                    "name": sup_lineage.name[1],
-                    "taxid": sup_lineage.taxid[1],
-                    "taxlevel": sup_lineage.name[0],
-                    "abundance": abundance,
-                    "children": children,
-                }
+            graph.add_node(
+                node,
+                id=node,
+                lineage=sup_lineage.to_str(style="gg", level=sup_lineage.name[0]),
+                name=sup_lineage.name[1],
+                taxid=sup_lineage.taxid[1],
+                taxlevel=sup_lineage.name[0],
+                abundance=abundance,
+                children=children,
             )
-        link_set: Set[FrozenSet[str]] = set()
-        links: List[Dict[str, Any]] = []
-        stack = interactions.stack()
-        for nnz_ind in stack.nonzero()[0]:
-            source, target = stack.index[nnz_ind]
+        for link in links:
+            source, target = link[0], link[1]
+            # NOTE: Self-loops are not allowed
             if source == target:
                 continue
-            if not directed and frozenset([source, target]) in link_set:
-                continue
-            weight = interactions.at[source, target]
-            pvalue = pvalues.at[source, target] if pvalues is not None else None
-            links.append(
-                {"source": source, "target": target, "weight": weight, "pvalue": pvalue}
+            weight, pvalue = link[2]["weight"], link[2]["pvalue"]
+            graph.add_edge(
+                source,
+                target,
+                source=source,
+                target=target,
+                weight=weight,
+                pvalue=pvalue,
             )
-            if not directed:
-                link_set.add(frozenset([source, target]))
-        # TODO: validate=True
-        nodes_model = NodesModel({"nodes": nodes}, strict=False)
-        nodes_model.validate()
-        links_model = LinksModel({"links": links}, strict=False)
-        links_model.validate()
-        networkmetadata_model = NetworkmetadataModel(metadata, strict=False)
-        networkmetadata_model.validate()
-        return nodes, links, metadata
+        return graph
 
     @property
-    def filtered_links(self) -> List[Dict[str, Any]]:
+    def nodes(self) -> List[Dict[str, Any]]:
+        """ The list of nodes in the network and their corresponding properties """
+        return [data for _, data in self.graph.nodes(data=True)]
+
+    @property
+    def links(self) -> List[Dict[str, Any]]:
+        """ The list of links in the network and their corresponding properties """
+        return [data for _, _, data in self.graph.edges(data=True)]
+
+    @property
+    def metadata(self) -> Dict[str, Any]:
+        """ The metadata for the network """
+        return self.graph.graph
+
+    def filter_links(
+        self, pvalue_filter: bool, interaction_filter: bool
+    ) -> List[Dict[str, Any]]:
         """
             The links of the network after applying filtering
+
+            Parameters
+            ----------
+            pvalue_filter : bool
+                If True will use `pvalue_threshold` for filtering
+            interaction_filter : bool
+                If True will use `interaction_threshold` for filtering
 
             Returns
             -------
             List[Dict[str, Any]]
-                The list of links in the network after applying a threshold
+                The list of links in the network after applying thresholds
         """
         interaction_threshold = abs(self.interaction_threshold)
-        interaction_filter = lambda x: abs(x["weight"]) >= interaction_threshold
-        pvalue_filter = lambda x: x["pvalue"] <= self.pvalue_threshold
-        if self._pvalue_flag:
-            filter_fun = lambda x: interaction_filter(x) and pvalue_filter(x)
+        interaction_func = lambda x: abs(x["weight"]) >= interaction_threshold
+        pvalue_func = lambda x: x["pvalue"] <= self.pvalue_threshold
+        if pvalue_filter and interaction_filter:
+            filter_func = lambda x: interaction_func(x) and pvalue_func(x)
+        elif interaction_filter:
+            filter_func = interaction_func
+        elif pvalue_filter:
+            filter_func = pvalue_func
         else:
-            filter_fun = interaction_filter
-        links_thres = list(filter(filter_fun, self.links))
+            return self.links
+        links_thres = list(filter(filter_func, self.links))
         return links_thres
 
     @classmethod
@@ -407,13 +427,46 @@ class Network:
             Network
                 The instance of the `Network` class
         """
-        interactions = pd.read_table(interaction_file, index_col=0).to_sparse(
-            fill_value=0.0
-        )
+        # Load and validate interaction matrix
+        interactions = pd.read_table(interaction_file, index_col=0)
+        if interaction_type == "correlation":
+            interaction_validator = CorrelationmatrixType()
+        else:
+            interaction_validator = InteractionmatrixType(symm=not directed)
+        interaction_validator.validate(interactions)
+        # Load and validate pvalue matrix
+        if pvalue_file is not None:
+            pvalues = pd.read_table(pvalue_file, index_col=0)
+            cls._verify_integrity(interactions, pvalues)
+            pvalue_validator = PvaluematrixType(symm=directed)
+            pvalue_validator.validate(pvalues)
+        else:
+            pvalues = None
+        # If undirected convert to upper triangular matrix
+        if directed:
+            interaction_mat = interactions.values
+        else:
+            interaction_mat = np.triu(interactions.values)
+        row_inds, col_inds = interaction_mat.nonzero()
+        # Calculate nodes and links
+        nodes = list(interactions.index)
+        links: List[LinkDType] = []
+        for rind, cind in zip(row_inds, col_inds):
+            links.append(
+                (
+                    interactions.index[rind],
+                    interactions.columns[cind],
+                    {
+                        "weight": interactions.at[rind, cind],
+                        "pvalue": pvalues.at[rind, cind] if pvalues else np.nan,
+                    },
+                )
+            )
+        # Load metadata
         with open(meta_file, "r") as fid:
-            metadata = json.load(fid)
+            metadata = simplejson.load(fid)
         with open(cmeta_file, "r") as fid:
-            cmetadata = json.load(fid)
+            cmetadata = simplejson.load(fid)
         if pvalue_file:
             extra_compdata = {
                 "interaction_threshold": interaction_threshold,
@@ -424,21 +477,17 @@ class Network:
             extra_compdata = {"interaction_threshold": interaction_threshold}
         cmetadata = {**cmetadata, **extra_compdata}
         obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
-        if pvalue_file is not None:
-            pvalues = pd.read_table(pvalue_file, index_col=0)
-        else:
-            pvalues = None
         if children_file is not None:
             with open(children_file, "r") as fid:
-                children_map = json.load(fid)
+                children_map = simplejson.load(fid)
         else:
             children_map = None
         network = cls(
-            interactions,
+            nodes,
+            links,
             metadata,
             cmetadata,
             obs_metadata,
-            pvalues,
             children_map,
             interaction_type,
             interaction_threshold,
@@ -448,31 +497,39 @@ class Network:
         )
         return network
 
-    @property
-    def graph(self) -> nx.Graph:
-        """ Networkx representation of the network """
-        if self.metadata["directionality"] == "directed":
-            graph = nx.DiGraph(**self.metadata)
-        else:
-            graph = nx.Graph(**self.metadata)
-        for node in self.nodes:
-            graph.add_node(node["id"], **node)
-        for link in self.links:
-            graph.add_edge(link["source"], link["target"], **link)
-        return graph
+    def json(
+        self, pvalue_filter: bool = False, interaction_filter: bool = False
+    ) -> str:
+        """
+            Returns the network as a `JSON` string
 
-    def json(self, threshold: bool = True) -> str:
-        """ Network as a JSON string """
+            Parameters
+            ----------
+            pvalue_filter : bool
+                If True will use `pvalue_threshold` for filtering
+                Default  value is False
+            interaction_filter : bool
+                If True will use `interaction_threshold` for filtering
+                Default  value is False
+
+            Returns
+            -------
+            str
+                The `JSON` string representation of the network
+        """
         nodes = {"nodes": self.nodes}
-        if threshold:
-            links = {"links": self.filtered_links}
-        else:
-            links = {"links": self.links}
+        links = {
+            "links": self.filter_links(
+                pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+            )
+        }
         metadata = self.metadata
         network = {**metadata, **nodes, **links}
-        return json.dumps(network, indent=2, sort_keys=True, cls=JsonEncoder)
+        return simplejson.dumps(network, indent=2, sort_keys=True, ignore_nan=True)
 
-    def write(self, fpath: str, threshold: bool = True) -> None:
+    def write(
+        self, fpath: str, pvalue_filter: bool = False, interaction_filter: bool = False
+    ) -> None:
         """
             Write network to file as JSON
 
@@ -480,11 +537,19 @@ class Network:
             ----------
             fpath : str
                 The path to the `JSON` file
-            threshold : bool, optional
-                True if threshold needs to applied to links before writing to file
+            pvalue_filter : bool
+                If True will use `pvalue_threshold` for filtering
+                Default  value is False
+            interaction_filter : bool
+                If True will use `interaction_threshold` for filtering
+                Default  value is False
         """
         with open(fpath, "w") as fid:
-            fid.write(self.json(threshold=threshold))
+            fid.write(
+                self.json(
+                    pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+                )
+            )
 
     @classmethod
     def load_json(
@@ -510,7 +575,7 @@ class Network:
             raise ValueError("Either fpath or raw_data must be specified")
         if not raw_data and fpath:
             with open(fpath, "r") as fid:
-                data = json.load(fid)
+                data = simplejson.load(fid)
         else:
             data = raw_data
         # Validation
@@ -529,44 +594,31 @@ class Network:
         pvalue_threshold = cmetadata["pvalue_threshold"]
         pvalue_correction = None
         directed = True if data["directionality"] == "directed" else False
-        index: List[str] = []
+        nodes: List[str] = []
+        links: List[LinkDType] = []
         lineages: List[dict] = []
         children_map: Dict[str, List[str]] = {}
         for node in data["nodes"]:
-            index.append(node["id"])
+            nodes.append(node["id"])
             lineage = Lineage.from_str(node["lineage"]).to_dict("Species")
             children_map[node["id"]] = node["children"]
-            abundance = node.get("abundance")
+            abundance = node.get("abundance", np.nan)
             if abundance is not None:
                 lineages.append({**lineage, **dict(abundance=abundance)})
             else:
                 lineages.append(lineage)
-        obs_metadata = pd.DataFrame(lineages, index=index)
-        mat_shape = (len(index), len(index))
-        dense_interactions = pd.DataFrame(
-            data=np.zeros(mat_shape), index=index, columns=index
-        )
-        pvalue_flag = True if data["links"][0]["pvalue"] is not None else False
-        if pvalue_flag:
-            pvalues = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
-        else:
-            pvalues = None
+        obs_metadata = pd.DataFrame(lineages, index=nodes)
         for link in data["links"]:
             source, target = link["source"], link["target"]
-            dense_interactions.at[source, target] = link["weight"]
-            if not directed:
-                dense_interactions.loc[target, source] = link["weight"]
-            if pvalue_flag:
-                pvalues.at[source, target] = link["pvalue"]
-                if not directed:
-                    pvalues.loc[target, source] = link["pvalue"]
-        interactions = dense_interactions.to_sparse(fill_value=0.0)
+            links.append(
+                (source, target, {"weight": link["weight"], "pvalue": link["pvalue"]})
+            )
         network = cls(
-            interactions,
+            nodes,
+            links,
             metadata,
             cmetadata,
             obs_metadata,
-            pvalues,
             children_map,
             interaction_type,
             interaction_threshold,
@@ -635,29 +687,25 @@ class Network:
         elist = pd.read_csv(elist_file, na_filter=False)
         elist_type = ElistType()
         elist_type.validate(elist)
-        index = list(set([*elist["source"], *elist["target"]]))
-        mat_shape = len(index), len(index)
-        dense_interactions = pd.DataFrame(
-            data=np.zeros(mat_shape), index=index, columns=index
-        )
+        nodes = list(set([*elist["source"], *elist["target"]]))
+        links: List[LinkDType] = []
         pvalue_flag = True if "pvalue" in elist.columns else False
-        if pvalue_flag:
-            pvalues = pd.DataFrame(data=np.zeros(mat_shape), index=index, columns=index)
-        else:
-            pvalues = None
         for entry in elist.to_dict("records"):
             source, target, weight = entry["source"], entry["target"], entry["weight"]
-            dense_interactions.at[source, target] = weight
-            if not directed:
-                dense_interactions.loc[target, source] = weight
-            if pvalue_flag:
-                pvalues.at[source, target] = entry["pvalue"]
-                if not directed:
-                    pvalues.loc[target, source] = entry["pvalue"]
+            links.append(
+                (
+                    source,
+                    target,
+                    {
+                        "weight": weight,
+                        "pvalue": entry["pvalue"] if pvalue_flag else np.nan,
+                    },
+                )
+            )
         with open(meta_file, "r") as fid:
-            metadata = json.load(fid)
+            metadata = simplejson.load(fid)
         with open(cmeta_file, "r") as fid:
-            cmetadata = json.load(fid)
+            cmetadata = simplejson.load(fid)
         if pvalue_flag:
             extra_compdata = {
                 "interaction_threshold": interaction_threshold,
@@ -670,17 +718,15 @@ class Network:
         obs_metadata = pd.read_csv(obsmeta_file, index_col=0, na_filter=False)
         if children_file is not None:
             with open(children_file, "r") as fid:
-                children_map = json.load(fid)
+                children_map = simplejson.load(fid)
         else:
             children_map = None
-        pvalue_correction = None  # To prevent re-correction of pvalues
-        interactions = dense_interactions.to_sparse(fill_value=0.0)
         network = cls(
-            interactions,
+            nodes,
+            links,
             metadata,
             cmetadata,
             obs_metadata,
-            pvalues,
             children_map,
             interaction_type,
             interaction_threshold,
