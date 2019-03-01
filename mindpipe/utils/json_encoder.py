@@ -15,7 +15,9 @@ class JsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
             return int(obj)
-        if isinstance(obj, np.floating):
+        if isinstance(obj, np.float):
+            if np.isnan(obj):
+                return super().default(None)
             return float(obj)
         if isinstance(obj, np.ndarray):
             return obj.tolist()
