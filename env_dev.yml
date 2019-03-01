@@ -120,6 +120,7 @@ dependencies:
     - ruamel-yaml==0.15.81
     - schematics==2.1.0
     - scipy==1.2.0
+    - simplejson==3.16.0
     - six==1.11.0
     - snowballstemmer==1.2.1
     - sphinx==1.8.2
