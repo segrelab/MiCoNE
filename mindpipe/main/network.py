@@ -26,6 +26,7 @@ from ..validation import (
 )
 
 
+DType = List[Dict[str, Any]]
 LinkDType = Tuple[str, str, Dict[str, float]]
 
 
@@ -75,9 +76,9 @@ class Network:
         ----------
         graph : Union[nx.MultiGraph, nx.MultiDiGraph]
             The networkx graph representation of the network
-        nodes : List[Dict[str, Any]]
+        nodes : DType
             The list of nodes in the network and their corresponding properties
-        links : List[Dict[str, Any]]
+        links : DType
             The list of links in the network and their corresponding properties
         metadata : Dict[str, Any]
             The metadata for the network
@@ -324,12 +325,12 @@ class Network:
         return graph
 
     @property
-    def nodes(self) -> List[Dict[str, Any]]:
+    def nodes(self) -> DType:
         """ The list of nodes in the network and their corresponding properties """
         return [data for _, data in self.graph.nodes(data=True)]
 
     @property
-    def links(self) -> List[Dict[str, Any]]:
+    def links(self) -> DType:
         """ The list of links in the network and their corresponding properties """
         return [data for _, _, data in self.graph.edges(data=True)]
 
@@ -338,9 +339,7 @@ class Network:
         """ The metadata for the network """
         return self.graph.graph
 
-    def filter_links(
-        self, pvalue_filter: bool, interaction_filter: bool
-    ) -> List[Dict[str, Any]]:
+    def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
             The links of the network after applying filtering
 
@@ -353,7 +352,7 @@ class Network:
 
             Returns
             -------
-            List[Dict[str, Any]]
+            DType
                 The list of links in the network after applying thresholds
         """
         interaction_threshold = abs(self.interaction_threshold)
