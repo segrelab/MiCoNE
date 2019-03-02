@@ -183,30 +183,57 @@ class NetworkGroup(Collection):
         merged_filtered_links = self._combine_links(filtered_links_dict)
         return merged_filtered_links
 
-    def json(self, threshold: bool = True) -> str:
-        """ Network group as a JSON string """
+    def json(
+        self, pvalue_filter: bool = False, interaction_filter: bool = False
+    ) -> str:
+        """
+            Returns the network as a `JSON` string
+
+            Parameters
+            ----------
+            pvalue_filter : bool
+                If True will use `pvalue_threshold` for filtering
+                Default  value is False
+            interaction_filter : bool
+                If True will use `interaction_threshold` for filtering
+                Default  value is False
+
+            Returns
+            -------
+            str
+                The `JSON` string representation of the network
+        """
         nodes = self.nodes
-        if threshold:
-            links = self.filtered_links
-        else:
-            links = self.links
+        links = self.filter_links(
+            pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+        )
         contexts = self.contexts
         network = {"contexts": contexts, "nodes": nodes, "links": links}
-        return json.dumps(network, indent=2, sort_keys=True, cls=JsonEncoder)
+        return simplejson.dumps(network, indent=2, sort_keys=True, ignore_nan=True)
 
-    def write(self, fpath: str, threshold: bool = True) -> None:
+    def write(
+        self, fpath: str, pvalue_filter: bool = False, interaction_filter: bool = False
+    ) -> None:
         """
-            Write network group to file as JSON
+            Write network to file as JSON
 
             Parameters
             ----------
             fpath : str
                 The path to the `JSON` file
-            threshold : bool, optional
-                True if threshold needs to applied to links before writing to file
+            pvalue_filter : bool
+                If True will use `pvalue_threshold` for filtering
+                Default  value is False
+            interaction_filter : bool
+                If True will use `interaction_threshold` for filtering
+                Default  value is False
         """
         with open(fpath, "w") as fid:
-            fid.write(self.json(threshold=threshold))
+            fid.write(
+                self.json(
+                    pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+                )
+            )
 
     @classmethod
     def load_json(cls, fpath: str) -> "NetworkGroup":
