@@ -2,7 +2,7 @@
     Module that defines the `Network` object and methods to read, write and manipulate it
 """
 
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from warnings import warn
 
 import networkx as nx
