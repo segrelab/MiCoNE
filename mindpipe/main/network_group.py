@@ -3,11 +3,12 @@
 """
 
 from collections.abc import Collection
-import json
-from typing import Any, Dict, Iterator, List, Tuple
+from typing import Any, Dict, Iterator, List, Union
+
+import networkx as nx
+import simplejson
 
 from .network import Network
-from ..utils import JsonEncoder
 
 DType = List[Dict[str, Any]]
 
@@ -25,12 +26,12 @@ class NetworkGroup(Collection):
 
         Attributes
         ----------
+        graph : Union[nx.MultiGraph, nx.MultiDiGraph]
+            The networkx multi-graph representation of the network
         nodes: DType
             The list of nodes in the network group
         links: DType
             The list of links in the network group
-        filtered_links: DType
-            The list of links in the network group after applying thresholds
         contexts: DType
             The list of all contexts in the network group
     """
@@ -38,17 +39,11 @@ class NetworkGroup(Collection):
     def __init__(self, networks: List[Network]) -> None:
         self.nodeid_map: Dict[int, Dict[str, str]] = dict()
         self._networks = networks
-        if len(networks) > 1:
-            self.nodes, self.links, self.contexts = self._combine_networks(networks)
-        elif len(networks) == 1:
-            network = networks[0]
-            self.nodes = network.nodes
-            self.links = network.links
-            self.contexts = [network.metadata]
-        else:
+        if not networks or [n for n in networks if not isinstance(n, Network)]:
             raise ValueError(
                 "The networks parameter must be a list of one or more networks"
             )
+        self.graph = self._combine_networks(networks)
 
     def __contains__(self, key) -> bool:
         if key in range(len(self)):
@@ -56,7 +51,7 @@ class NetworkGroup(Collection):
         return False
 
     def __len__(self) -> int:
-        return len(self.contexts)
+        return len(self._networks)
 
     def __iter__(self) -> Iterator:
         return iter(self._networks)
@@ -71,6 +66,8 @@ class NetworkGroup(Collection):
         """ Combine nodes of individual networks into a single list """
         nodes: DType = []
         node_hash: Dict[int, int] = dict()  # taxid => nodes.index
+        if len(all_nodes) == 1:
+            return all_nodes[0]
         for cid, network_nodes in all_nodes.items():
             self.nodeid_map[cid] = dict()
             for node in network_nodes:
@@ -93,6 +90,8 @@ class NetworkGroup(Collection):
     def _combine_links(self, all_links: Dict[int, DType]) -> DType:
         """ Combine links of individual networks into a single list """
         links = []
+        if len(all_links) == 1:
+            return all_links[0]
         for cid, network_links in all_links.items():
             for link in network_links:
                 source, target = link["source"], link["target"]
@@ -110,7 +109,9 @@ class NetworkGroup(Collection):
                 )
         return links
 
-    def _combine_networks(self, networks: List[Network]) -> Tuple[DType, DType, DType]:
+    def _combine_networks(
+        self, networks: List[Network]
+    ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
         """
             Combine networks into a network group
 
@@ -118,12 +119,11 @@ class NetworkGroup(Collection):
             ----------
             networks : List[Network]
                 The list of networks to be grouped
-                key = context-id, value = Network
 
             Returns
             -------
-            Tuple[DType, DType, DType, DType]
-                Nodes, Links, Contexts
+            Union[nx.MultiGraph, nx.MultiDiGraph]
+                The networkx graph of the network
         """
         nodes_dict = dict()
         links_dict = dict()
@@ -131,11 +131,33 @@ class NetworkGroup(Collection):
         for cid, network in enumerate(networks):
             nodes_dict[cid] = network.nodes
             links_dict[cid] = network.links
-            context = network.metadata
-            contexts.append(context)
+            contexts.append(network.metadata)
         merged_nodes = self._combine_nodes(nodes_dict)
         merged_links = self._combine_links(links_dict)
-        return merged_nodes, merged_links, contexts
+        if all([n.graph.is_directed() for n in networks]):
+            graph = nx.MultiDiGraph(contexts=contexts)
+        else:
+            graph = nx.MultiGraph(contexts=contexts)
+        for node in merged_nodes:
+            graph.add_node(node["id"], **node)
+        for link in merged_links:
+            graph.add_edge(link["source"], link["target"], **link)
+        return graph
+
+    @property
+    def nodes(self) -> DType:
+        """ The list of nodes in the `NetworkGroup` and their corresponding properties """
+        return [data for _, data in self.graph.nodes(data=True)]
+
+    @property
+    def links(self) -> DType:
+        """ The list of links in the `NetworkGroup` and their corresponding properties """
+        return [data for _, _, data in self.graph.edges(data=True)]
+
+    @property
+    def contexts(self) -> DType:
+        """ The contexts for the group of networks """
+        return [md for md in self.graph.graph]
 
     @property
     def filtered_links(self) -> DType:
