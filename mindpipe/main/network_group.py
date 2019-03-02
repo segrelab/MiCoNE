@@ -91,7 +91,9 @@ class NetworkGroup(Collection):
         """ Combine links of individual networks into a single list """
         links = []
         if len(all_links) == 1:
-            return all_links[0]
+            for link in all_links[0]:
+                links.append({**link, "context_index": 0})
+            return links
         for cid, network_links in all_links.items():
             for link in network_links:
                 source, target = link["source"], link["target"]
