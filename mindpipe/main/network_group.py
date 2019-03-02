@@ -159,24 +159,28 @@ class NetworkGroup(Collection):
         """ The contexts for the group of networks """
         return [md for md in self.graph.graph]
 
-    @property
-    def filtered_links(self) -> DType:
+    def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
             The links of the networks after applying filtering
 
+            Parameters
+            ----------
+            pvalue_filter : bool
+                If True will use `pvalue_threshold` for filtering
+            interaction_filter : bool
+                If True will use `interaction_threshold` for filtering
+
             Returns
             -------
-            List[Dict[str, Any]]
-                The list of links in the network after applying a threshold
+            DType
+                The list of links in the network after applying thresholds
         """
         filtered_links_dict = dict()
-        if len(self.contexts) > 1:
-            for cid, network in enumerate(self._networks):
-                filtered_links_dict[cid] = network.filtered_links
-            merged_filtered_links = self._combine_links(filtered_links_dict)
-        else:
-            network = self._networks[0]
-            merged_filtered_links = network.filtered_links
+        for cid, network in enumerate(self._networks):
+            filtered_links_dict[cid] = network.filter_links(
+                pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+            )
+        merged_filtered_links = self._combine_links(filtered_links_dict)
         return merged_filtered_links
 
     def json(self, threshold: bool = True) -> str:
