@@ -157,7 +157,7 @@ class NetworkGroup(Collection):
     @property
     def contexts(self) -> DType:
         """ The contexts for the group of networks """
-        return [md for md in self.graph.graph]
+        return self.graph.graph["contexts"]
 
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
