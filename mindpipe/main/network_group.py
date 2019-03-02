@@ -182,5 +182,61 @@ class NetworkGroup(Collection):
         with open(fpath, "w") as fid:
             fid.write(self.json(threshold=threshold))
 
-    # TODO:
-    # def load_data: Loads from files or one group file?
+    @classmethod
+    def load_json(cls, fpath: str) -> "NetworkGroup":
+        """
+            Create a `NetworkGroup` object from network `JSON` file
+
+            Parameters
+            ----------
+            fpath : str
+                The path to the network `JSON` file
+
+            Returns
+            -------
+            NetworkGroup
+                The instance of the `NetworkGroup` class
+        """
+        with open(fpath, "r") as fid:
+            raw_data = simplejson.load(fid)
+        n_networks = len(raw_data["contexts"])
+        all_node_dict = {n["id"]: n for n in raw_data["nodes"]}
+        data_dict: Dict[int, dict] = {
+            n: {"nodes": [], "links": [], "metadata": {}} for n in range(n_networks)
+        }
+        unique_name_dict: Dict[int, dict] = {
+            n: {"nodes": set(), "links": set()} for n in range(n_networks)
+        }
+        for cid in range(n_networks):
+            data_dict[cid]["metadata"] = {**raw_data["contexts"][cid]}
+        for link in raw_data["links"]:
+            link_cid = link["context_index"]
+            source = all_node_dict[link["source"]]
+            source_name = link["source"]
+            target = all_node_dict[link["target"]]
+            target_name = link["target"]
+            if (
+                f"{source_name}-{target_name}"
+                not in unique_name_dict[link_cid]["links"]
+            ):
+                data_dict[link_cid]["links"].append(link)
+                unique_name_dict[link_cid]["links"].add(f"{source_name}-{target_name}")
+            else:
+                print("new link", link)
+            if source_name not in unique_name_dict[link_cid]["nodes"]:
+                data_dict[link_cid]["nodes"].append(source)
+                unique_name_dict[link_cid]["nodes"].add(source_name)
+            if target_name not in unique_name_dict[link_cid]["nodes"]:
+                data_dict[link_cid]["nodes"].append(target)
+                unique_name_dict[link_cid]["nodes"].add(target_name)
+        networks: List[Network] = []
+        print("all nodes", len(all_node_dict))
+        print("node_set", len(unique_name_dict[0]["nodes"]))
+        print("link_set", len(unique_name_dict[0]["links"]))
+        for cid in range(n_networks):
+            metadata = data_dict[cid]["metadata"]
+            nodes = data_dict[cid]["nodes"]
+            links = data_dict[cid]["links"]
+            network_raw_data = {**metadata, "nodes": nodes, "links": links}
+            networks.append(Network.load_json(raw_data=network_raw_data))
+        return cls(networks)
