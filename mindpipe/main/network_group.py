@@ -259,9 +259,7 @@ class NetworkGroup(Collection):
         data_dict: Dict[int, dict] = {
             n: {"nodes": [], "links": [], "metadata": {}} for n in range(n_networks)
         }
-        unique_name_dict: Dict[int, dict] = {
-            n: {"nodes": set(), "links": set()} for n in range(n_networks)
-        }
+        unique_node_dict: Dict[int, dict] = {n: set() for n in range(n_networks)}
         for cid in range(n_networks):
             data_dict[cid]["metadata"] = {**raw_data["contexts"][cid]}
         for link in raw_data["links"]:
@@ -270,24 +268,14 @@ class NetworkGroup(Collection):
             source_name = link["source"]
             target = all_node_dict[link["target"]]
             target_name = link["target"]
-            if (
-                f"{source_name}-{target_name}"
-                not in unique_name_dict[link_cid]["links"]
-            ):
-                data_dict[link_cid]["links"].append(link)
-                unique_name_dict[link_cid]["links"].add(f"{source_name}-{target_name}")
-            else:
-                print("new link", link)
-            if source_name not in unique_name_dict[link_cid]["nodes"]:
+            data_dict[link_cid]["links"].append(link)
+            if source_name not in unique_node_dict[link_cid]:
                 data_dict[link_cid]["nodes"].append(source)
-                unique_name_dict[link_cid]["nodes"].add(source_name)
-            if target_name not in unique_name_dict[link_cid]["nodes"]:
+                unique_node_dict[link_cid].add(source_name)
+            if target_name not in unique_node_dict[link_cid]:
                 data_dict[link_cid]["nodes"].append(target)
-                unique_name_dict[link_cid]["nodes"].add(target_name)
+                unique_node_dict[link_cid].add(target_name)
         networks: List[Network] = []
-        print("all nodes", len(all_node_dict))
-        print("node_set", len(unique_name_dict[0]["nodes"]))
-        print("link_set", len(unique_name_dict[0]["links"]))
         for cid in range(n_networks):
             metadata = data_dict[cid]["metadata"]
             nodes = data_dict[cid]["nodes"]
