@@ -43,7 +43,7 @@ class DataType(BaseType):
             raise ValidationError("Invalid data. Abundances must be float64")
 
     def validate_data_range(self, value):
-        df = value.to_dataframe()
+        df = value.to_dataframe(dense=True)
         if df.values.min() < 0:
             raise ValidationError("Invalid data. Abundances cannot be negative")
         if self.norm:
