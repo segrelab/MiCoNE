@@ -197,7 +197,11 @@ class Pipeline(collections.Sequence):
                 user_process_data = settings[level_1][level_2][level_3]
             default_process_data = self.config.params_set[process_name]
             default_process_data.merge(user_process_data)
-            if suffix_flag:
+            if param and suffix_flag:
+                root_dir = (
+                    str(default_process_data.root_dir) + f".{param[0]}" + suffix_flag
+                )
+            elif suffix_flag:
                 root_dir = str(default_process_data.root_dir) + suffix_flag
             else:
                 root_dir = str(default_process_data.root_dir)
