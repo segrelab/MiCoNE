@@ -52,8 +52,20 @@ process pick_open_reference_otus {
     input:
     set val(id), file(fasta_file) from chnl_fasta_openref
     output:
-    set file('otu_table.biom'), file('rep_seqs.fasta'), file('log*.txt') into output_chnl
+    set val(id), file('unhashed_otu_table.biom'), file('unhashed_rep_seqs.fasta'), file('log*.txt') into chnl_closedref_output
     script:
     def parallel_option = ncpus > 1 ? "-a -O ${ncpus}" : ''
     {{ pick_open_reference_otus }}
+}
+
+// Step3: Replace the ids with the hashes of the sequences
+process hashing {
+    tag "${id}"
+    publishDir "${output_dir}/${id}"
+    input:
+    set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs), file(log) from chnl_closedref_output
+    output:
+    set val(id), file('otu_table.biom'), file('rep_seqs.fasta') into chnl_output
+    script:
+    {{ hashing }}
 }
