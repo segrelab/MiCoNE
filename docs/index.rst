@@ -3,11 +3,11 @@ Welcome to Microbial Interaction Database Pipeline's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    readme
    installation
    usage
+   data_import_export
    modules
    contributing
    authors

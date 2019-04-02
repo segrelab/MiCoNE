@@ -11,6 +11,7 @@ Subpackages
     mindpipe.logging
     mindpipe.main
     mindpipe.pipelines
+    mindpipe.setup
     mindpipe.utils
     mindpipe.validation
 
