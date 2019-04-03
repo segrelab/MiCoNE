@@ -1,0 +1,16 @@
+# User configuration file for pearson pipeline
+title = "User run settings for pearson-network pipeline"
+
+order = "network_inference.correlation.pearson"
+
+output_location = "/home/dileep/Documents/results/pearson"
+
+[network_inference.correlation.pearson]
+  [[network_inference.correlation.pearson.input]]
+    datatype = "otu_table"
+    format = ["tsv"]
+    location = "otus/tsv/good/fmt/otu.tsv"
+  [[network_inference.correlation.pearson.input]]
+    datatype = "otu_bootstrap"
+    format = ["boot"]
+    location = "/home/dileep/Documents/results/module_tests/resample/network_inference/bootstrap/resample.1/fmt/otu/*.boot"
