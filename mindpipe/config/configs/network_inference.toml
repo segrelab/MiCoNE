@@ -62,6 +62,25 @@
     format = ["boot"]
     location = "**/*_corr.boot"
 
+[network_inference.correlation.pearson]
+  root_dir = "network_inference/pearson"
+  [[network_inference.correlation.pearson.input]]
+    datatype = "otu_table"
+    format = ["tsv"]
+  [[network_inference.correlation.pearson.input]]
+    datatype = "otu_bootstrap"
+    format = ["boot"]
+  [[network_inference.correlation.pearson.parameters]]
+    process = "pearson"
+  [[network_inference.correlation.pearson.output]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+    location = "**/*_corr.tsv"
+  [[network_inference.correlation.pearson.output]]
+    datatype = "interaction_bootstrap"
+    format = ["boot"]
+    location = "**/*_corr.boot"
+
 
 ## Direct
 
