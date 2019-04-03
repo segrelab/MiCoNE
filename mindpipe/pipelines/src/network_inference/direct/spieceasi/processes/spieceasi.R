@@ -14,7 +14,7 @@ corr_file <- "${otu_file.baseName.split('_otu')[0]}_corr.tsv"
 # NOTE: The data does not have to be normalized
 # Read in the OTU table
 read_otu <- function(otufile) {
-    otu <- read.table(otufile, header=TRUE)
+    otu <- read.table(otufile, header=TRUE, comment.char="", sep="\\t")
     rownames(otu) <- otu[, 1]
     otu <- otu[, 2:ncol(otu)]
     return(otu)
