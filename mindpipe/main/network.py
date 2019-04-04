@@ -475,8 +475,8 @@ class Network:
                     interactions.index[rind],
                     interactions.columns[cind],
                     {
-                        "weight": interactions.at[rind, cind],
-                        "pvalue": pvalues.at[rind, cind] if pvalues else np.nan,
+                        "weight": interactions.iloc[rind, cind],
+                        "pvalue": pvalues.iloc[rind, cind] if pvalue_file else np.nan,
                     },
                 )
             )
