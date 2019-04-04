@@ -23,8 +23,10 @@ def main(
         pvalue_threshold=0.05,
     )
     network_group = NetworkGroup([network])
-    network_group.write(base_name + "_network.json", threshold=True)
-    network_group.write(base_name + "_thres_network.json", threshold=False)
+    network_group.write(base_name + "_network.json")
+    network_group.write(
+        base_name + "_thres_network.json", pvalue_filter=False, interaction_filter=True
+    )
 
 
 if __name__ == "__main__":
