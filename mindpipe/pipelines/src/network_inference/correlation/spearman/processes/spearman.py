@@ -20,7 +20,8 @@ def main(otu_file, output_file):
                 corr_data[i][j] = corr
                 corr_data[j][i] = corr
     corr_table = pd.DataFrame(data=corr_data, index=index, columns=index)
-    corr_table.to_csv(output_file, sep="\\t", index=True)
+    corr_table.fillna(value=1.0, inplace=True)
+    corr_table.to_csv(output_file, sep="\\t", index=True, float_format="%.4f")
 
 
 if __name__ == "__main__":
