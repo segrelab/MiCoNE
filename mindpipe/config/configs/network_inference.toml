@@ -156,6 +156,25 @@
     format = ["boot"]
     location = "**/*_corr.boot"
 
+[network_inference.direct.magma]
+  env = "mindpipe-magma"
+  root_dir = "network_inference/magma"
+  [[network_inference.direct.magma.input]]
+    datatype = "otu_table"
+    format = ["tsv"]
+  [[network_inference.direct.magma.input]]
+    datatype = "otu_bootstrap"
+    format = ["boot"]
+  [[network_inference.direct.magma.parameters]]
+    process = "magma"
+  [[network_inference.direct.magma.output]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+    location = "**/*_corr.tsv"
+  [[network_inference.direct.magma.output]]
+    datatype = "interaction_bootstrap"
+    format = ["boot"]
+    location = "**/*_corr.boot"
 
 
 ## Network
