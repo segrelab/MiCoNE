@@ -28,11 +28,21 @@ Channel
 
 process resample {
     tag "${id}"
-    publishDir "${output_dir}/${dataset}/${level}", saveAs: { filename -> filename.split("/")[-1] }
     input:
     set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_tsv
     output:
-    set val(id), file('bootstraps/*.boot') into chnl_otudata_bootstrap
+    set val(id), val(dataset), val(level), file('bootstraps/*.boot.temp') into chnl_otudata_bootstrap
     script:
     {{ resample }}
+}
+
+process filter {
+    tag "${id}"
+    publishDir "${output_dir}/${dataset}/${level}", saveAs: { filename -> filename.split("/")[-1] }
+    input:
+    set val(id), val(dataset), val(level), file(boot_file) from chnl_otudata_bootstrap
+    output:
+    set val(id), val(dataset), val(level), file('filtered/*.boot') into chnl_bootstrap_filter
+    script:
+    {{ filter }}
 }
