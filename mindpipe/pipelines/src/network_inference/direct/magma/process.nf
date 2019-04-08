@@ -54,4 +54,3 @@ process magma_boot {
     script:
     {{ magma }}
 }
-

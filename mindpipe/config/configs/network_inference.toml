@@ -102,10 +102,6 @@
 
 ## Direct
 
-# [network_inference.direct.daa]
-
-# [network_inference.direct.mldm]
-
 [network_inference.direct.spieceasi]
   env = "mindpipe-spieceasi"
   root_dir = "network_inference/spieceasi"
