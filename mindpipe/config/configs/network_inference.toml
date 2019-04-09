@@ -12,6 +12,7 @@
     process = "resample"
     bootstraps = 1000
     ncpus = 1
+    filter_flag = "True"
   [[network_inference.bootstrap.resample.output]]
     datatype = "otu_bootstrap"
     format = ["boot"]

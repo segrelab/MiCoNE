@@ -8,6 +8,7 @@ def output_dir = file(params.output_dir)
 // Parameters
 def bootstraps = params.bootstraps
 def ncpus = params.ncpus
+def filter_flag = params.filter_flag
 
 
 // Channels
@@ -41,6 +42,8 @@ process filter {
     publishDir "${output_dir}/${dataset}/${level}", saveAs: { filename -> filename.split("/")[-1] }
     input:
     set val(id), val(dataset), val(level), file(boot_file) from chnl_otudata_bootstrap
+    when:
+    filter_flag == 'True'
     output:
     set val(id), val(dataset), val(level), file('filtered/*.boot') into chnl_bootstrap_filter
     script:
