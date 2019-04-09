@@ -183,6 +183,12 @@ class Process(collections.Hashable):
         script_path = self.output_location / f"{self.id}.nf"
         config_path = self.output_location / f"{self.id}.config"
         work_dir = self.output_location / "work"
+        env = self.params.env
+        if not env or not env.exists() or not env.is_dir():
+            raise FileNotFoundError(
+                f"The directory for the environment: {self.params.env_name} doesn't exist. "
+                f"Please run mindpipe init --env {self.params.env_name}"
+            )
         if (
             not script_path.exists()
             or not config_path.exists()

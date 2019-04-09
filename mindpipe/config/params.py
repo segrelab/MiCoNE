@@ -104,6 +104,7 @@ class Params(collections.Hashable):
                 "Please reinstall the package"
             )
         if "env" in value:
+            self.env_name = value["env"]
             process = Popen(
                 ["conda", "info", "-e"], shell=False, stdout=PIPE, stderr=PIPE
             )
@@ -114,11 +115,6 @@ class Params(collections.Hashable):
                 if env.startswith(value["env"]):
                     env_loc = pathlib.Path(env.split(" ")[-1])
                     break
-            if not env_loc or not env_loc.exists() or not env_loc.is_dir():
-                raise FileNotFoundError(
-                    f"The directory for the environment: {value['env']} doesn't exist. "
-                    f"Please run mindpipe init --env {value['env']}"
-                )
             self.env: Optional[pathlib.Path] = env_loc
         else:
             self.env = None
