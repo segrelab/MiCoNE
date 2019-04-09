@@ -259,12 +259,14 @@ class Pipeline(collections.Sequence):
         root_node_process.update_location(str(self.base_dir), "input")
         root_path = self.output_location / root_node_process.params.root_dir
         root_node_process.update_location(str(root_path), "output")
+        tree.node[root_node]["location"] = str(root_path)
         # Attach outputs of parent node to inputs of child node
         for curr_process_name in nx.bfs_tree(tree, root_node):
             curr_process = tree.node[curr_process_name]["process"]
             curr_process.update_location(str(self.base_dir), "input")
             root_path = self.output_location / curr_process.params.root_dir
             curr_process.update_location(str(root_path), "output")
+            tree.node[curr_process_name]["location"] = str(root_path)
             predecessors: List[str] = list(tree.predecessors(curr_process_name))
             while predecessors:
                 prev_process_name = predecessors[0]
