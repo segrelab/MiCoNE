@@ -35,7 +35,7 @@ Channel
 // Step0: Checking validity of the mapping file
 process validate_mapping {
     tag "$id"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}", mode: 'copy', overwrite: true
 
     input:
     file(mapping_file) from mapping_validity_chnl
@@ -64,7 +64,7 @@ sequence_data_chnl
 // Step2: Pass the above list of file-locations as comma-separated strings to `split_libraries.py`
 process demultiplexing_fasta {
     tag "demultiplexing_454"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}", mode: 'copy', overwrite: true
 
     input:
     val(all_data) from combined_data_chnl.toList()

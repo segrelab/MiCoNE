@@ -61,7 +61,7 @@ chnl_repseqs_artifact
 // Step2: Blast representative sequences against the blast database
 process assign_taxonomy {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(repseq_artifact), file(taxmap_artifact), file(refseq_artifact) from chnl_repseqs_reftax
     output:
@@ -78,7 +78,7 @@ chnl_otu_table
 // Step3: Attach the observation and sample metadata to the OTU table
 process add_md2biom {
     tag "${id}"
-    publishDir "${output_dir}/${id}", saveAs: { "otu_table.biom" }
+    publishDir "${output_dir}/${id}", saveAs: { "otu_table.biom" }, mode: 'copy', overwrite: true
     input:
     set val(id), file(otu_table_file), file(tax_assignment), file(sample_metadata_file) from chnl_otu_md
     output:

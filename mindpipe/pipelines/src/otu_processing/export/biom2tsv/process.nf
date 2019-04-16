@@ -17,7 +17,7 @@ Channel
 
 process biom2tsv {
     tag "$id"
-    publishDir "${output_dir}/${dataset}"
+    publishDir "${output_dir}/${dataset}", mode: 'copy', overwrite: true
 
     input:
     set val(id), val(dataset), val(level), file(otu_file) from chnl_otu

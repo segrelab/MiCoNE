@@ -72,7 +72,7 @@ process demultiplex {
 // Step4: Export the sequences and fix the manifest file
 process export_sequences {
     tag "${id}"
-    publishDir "${output_dir}/${id}", saveAs: { filename -> filename.split("/")[1] }
+    publishDir "${output_dir}/${id}", saveAs: { filename -> filename.split("/")[1] }, mode: 'copy', overwrite: true
     input:
     set val(id), file(demux_artifact) from chnl_seqdemux_export
     output:

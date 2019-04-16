@@ -35,7 +35,7 @@ Channel
 
 process pearson_otu {
     tag "${id}"
-    publishDir "${output_dir}/${dataset}"
+    publishDir "${output_dir}/${dataset}", mode: 'copy', overwrite: true
     input:
     set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata
     output:
@@ -46,7 +46,7 @@ process pearson_otu {
 
 process pearson_boot {
     tag "${id}"
-    publishDir "${output_dir}/${dataset}/${level}", saveAs: { fname -> fname.split('.tsv')[0] + '.boot' }
+    publishDir "${output_dir}/${dataset}/${level}", saveAs: { fname -> fname.split('.tsv')[0] + '.boot' }, mode: 'copy', overwrite: true
     input:
     set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata_boot
     output:

@@ -55,7 +55,7 @@ chnl_correlation
 
 process make_network {
     tag "$id"
-    publishDir "${output_dir}/${dataset}"
+    publishDir "${output_dir}/${dataset}", mode: 'copy', overwrite: true
 
     input:
     set val(id), val(dataset), val(level), file(corr_file), file(pval_file), file(obsdata_file), file(childrenmap_file) from chnl_input

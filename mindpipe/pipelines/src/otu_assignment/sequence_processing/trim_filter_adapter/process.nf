@@ -3,7 +3,7 @@
 // Processes
 process get_visualization {
     tag "visualization"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}", mode: 'copy', overwrite: true
 
     input:
     file sequence_artifact from sequence_artifact_viz
@@ -17,7 +17,7 @@ process get_visualization {
 
 process quality_analysis {
     tag "quality_analysis"
-    publishDir "${output_dir}"
+    publishDir "${output_dir}", mode: 'copy', overwrite: true
 
     input:
     val filetype from filetype_quality

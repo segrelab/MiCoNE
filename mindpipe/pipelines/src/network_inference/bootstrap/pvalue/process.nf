@@ -52,7 +52,7 @@ chnl_otudata
 
 process calculate_pvalues {
     tag "${id}"
-    publishDir "${output_dir}/${dataset}"
+    publishDir "${output_dir}/${dataset}", mode: 'copy', overwrite: true
     input:
     set val(id), val(dataset), val(level), file(otu_file), file(corr_file), file(corr_bootstrap) from chnl_input
     output:

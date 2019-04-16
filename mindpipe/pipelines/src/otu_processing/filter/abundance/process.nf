@@ -22,7 +22,7 @@ Channel
 // Processes
 process filter {
     tag "${id}"
-    publishDir "${output_dir}/${id}", saveAs: { filename -> filename.replaceAll("_filtered", "") }
+    publishDir "${output_dir}/${id}", saveAs: { filename -> filename.replaceAll("_filtered", "") }, mode: 'copy', overwrite: true
     input:
     set val(id), file(otu_file) from chnl_otudata
     output:

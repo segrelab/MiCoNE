@@ -37,7 +37,7 @@ chnl_sequences
 // Step1: Denoise using deblur
 process import_sequences {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(sequence_files), file(manifest_file) from chnl_seqcollection
     output:
@@ -49,7 +49,7 @@ process import_sequences {
 // Step2: Replace the ids with hashes of the sequences
 process deblur {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs) from chnl_biomseq_hashing
     output:

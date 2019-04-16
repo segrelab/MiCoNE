@@ -47,7 +47,7 @@ process fastq2fasta {
 // Step2: Closed reference OTU picking
 process pick_closed_reference_otus {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(fasta_file) from chnl_fasta_closedref
     output:
@@ -60,7 +60,7 @@ process pick_closed_reference_otus {
 // Step3: Replace the ids with the hashes of the sequences
 process hashing {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs), file(log) from chnl_closedref_output
     output:

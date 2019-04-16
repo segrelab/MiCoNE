@@ -13,7 +13,7 @@ Channel
 
 process group {
     tag "$id"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(otu_file) from chnl_otudata
     output:

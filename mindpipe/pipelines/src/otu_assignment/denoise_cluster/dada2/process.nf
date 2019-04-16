@@ -36,7 +36,7 @@ chnl_sequences
 // Step1: Denoise using dada2
 process dada2 {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(sequence_files), file(manifest_file) from chnl_seqcollection
     output:
@@ -48,7 +48,7 @@ process dada2 {
 // Step2: Make representative sequences and biom table from sequence table
 process make_biom_repseqs {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(seq_table_file) from chnl_seqtable
     output:
@@ -60,7 +60,7 @@ process make_biom_repseqs {
 // Step3: Replace the ids with hashes of the sequences
 process hashing {
     tag "${id}"
-    publishDir "${output_dir}/${id}"
+    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
     set val(id), file(unhashed_otu_table), file(unhashed_rep_seqs) from chln_biomseq_hashing
     output:
