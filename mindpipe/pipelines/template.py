@@ -122,6 +122,18 @@ class ScriptTemplate(Template):
         return super().render(data)
 
 
+class ResourceTemplate(Template):
+    """ Class for templating nextflow resource files """
+
+    pass
+
+
+class ProfileTemplate(Template):
+    """ Class for templating nextflow profile files """
+
+    pass
+
+
 class ConfigTemplate(Template):
     """
         Class for templating nextflow configuration files
@@ -167,10 +179,10 @@ class ConfigTemplate(Template):
         """
         rendered_config = self._template.render(template_data)
         if resource_config:
-            with open(self._resource_config) as fid:
-                resource = fid.read()
-            with open(self._profile_config) as fid:
-                profile = fid.read()
+            resource_template = ResourceTemplate(self._resource_config)
+            resource = resource_template.render(template_data)
+            profile_template = ProfileTemplate(self._profile_config)
+            profile = profile_template.render(template_data)
         else:
             resource = ""
             profile = ""
