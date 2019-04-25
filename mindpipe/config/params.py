@@ -118,6 +118,7 @@ class Params(collections.Hashable):
             self.env: Optional[pathlib.Path] = env_loc
         else:
             self.env = None
+            self.env_name = "mindpipe"
         self.root_dir = pathlib.Path(value["root_dir"])
         self.input = self._process_io(value["input"], "input")
         self.output = self._process_io(value["output"], "output")
