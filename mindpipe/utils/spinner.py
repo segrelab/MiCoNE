@@ -27,23 +27,34 @@ class Spinner:
 
     def __init__(self, text: str, spinner: str, interactive: bool = True) -> None:
         self.interactive = interactive
-        self.text = text
+        self._text = text
         if self.interactive:
-            self._spinner = Halo(text=self.text, spinner=spinner)
+            self._spinner = Halo(text=self._text, spinner=spinner)
         else:
             self._spinner = None
+
+    @property
+    def text(self) -> str:
+        """ The text in the spinner """
+        return self._text
+
+    @text.setter
+    def text(self, text: str) -> None:
+        self._text = text
+        if self.interactive:
+            self._spinner.text = self._text
+        else:
+            echo(self._text)
 
     def start(self) -> None:
         """ Start the spinner """
         if self.interactive:
             self._spinner.start()
-        else:
-            echo(self.text)
 
     def succeed(self, text: Optional[str] = None) -> None:
         """ Display text on success """
         if text:
-            self.text = text
+            self._text = text
         if self.interactive:
             self._spinner.succeed(self.text)
         else:
@@ -52,7 +63,7 @@ class Spinner:
     def fail(self, text: Optional[str] = None) -> None:
         """ Display text on failure """
         if text:
-            self.text = text
+            self._text = text
         if self.interactive:
             self._spinner.fail(self.text)
         else:
@@ -62,4 +73,4 @@ class Spinner:
         """ Stop the spinner """
         if self.interactive:
             self._spinner.stop()
-        self.text = ""
+        self._text = ""
