@@ -193,7 +193,7 @@ class Process(collections.Hashable):
         env = self.params.env
         if not env or not env.exists() or not env.is_dir():
             raise FileNotFoundError(
-                f"The directory for the environment: {self.params.env_name} doesn't exist. "
+                f"The environment for the process: {self.name} doesn't exist. "
                 f"Please run mindpipe init --env {self.params.env_name}"
             )
         if (
