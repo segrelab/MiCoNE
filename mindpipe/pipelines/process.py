@@ -43,6 +43,9 @@ class Process(collections.Hashable):
         process_dir_name : str, optional
             The name of the process directory where the templates are stored
             Default is 'processes'
+        project : str, optional
+            The project under which to run the pipeline on the 'sge'
+            Default value is None
         resume: bool, optional
             The flag to determine whether a previous execution is resumed
             Default value is False
@@ -57,6 +60,8 @@ class Process(collections.Hashable):
             The core parameters object for the process
         profile : str
             The execution environment for the process
+        project : str
+            The project under which to run the pipeline on the 'sge'
         script : ScriptTemplate
             The process script template
         config : ConfigTemplate
@@ -79,11 +84,13 @@ class Process(collections.Hashable):
         script_name: str = "process.nf",
         config_name: str = "process.config",
         process_dir_name: str = "processes",
+        project: Optional[str] = None,
         resume: Optional[bool] = False,
     ) -> None:
         self.params = deepcopy(params)
         self.name = self.params.name
         self.profile = profile
+        self.project = project
         self.resume = resume
         self.id = id if id else self.name
         self.output_location = pathlib.Path(output_location)
@@ -449,6 +456,7 @@ class Process(collections.Hashable):
         }
         data["output_dir"] = self.output_location / self.params.root_dir
         data["env"] = self.env
+        data["project"] = self.project
         for process_params in self.params.parameters:
             data[process_params.process] = process_params.params
         return data

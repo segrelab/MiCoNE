@@ -37,6 +37,8 @@ class Pipeline(collections.Sequence):
         ----------------
         title : str, optional
             The title of the pipeline
+        project : str, optional
+            The project under which to run the pipeline on the 'sge'
         order : List[str], optional
             The order of the processes in the pipeline
         output_location : str, optional
@@ -46,6 +48,9 @@ class Pipeline(collections.Sequence):
         ----------
         title : str
             The title of the pipeline
+        project : str
+            The project under which to run the pipeline
+            Only relevant if profile is 'sge'
         output_location : str
             The base output location to store all pipeline results
         config : Config
@@ -72,6 +77,8 @@ class Pipeline(collections.Sequence):
     ) -> None:
         self.config = Config()
         self.profile = profile
+        if self.profile == "sge":
+            self._req_keys.add("project")
         self.resume = resume
         if base_dir is None:
             self.base_dir = pathlib.Path.cwd()
@@ -84,11 +91,13 @@ class Pipeline(collections.Sequence):
         user_settings = self._parse_settings(user_settings_file, **kwargs)
         title = kwargs.get("title")
         order = kwargs.get("order")
+        project = kwargs.get("project")
         output_location = kwargs.get("output_location")
         self.process_tree = self._parse_process_tree(
             order if order else user_settings["order"]
         )
         self.title = title if title else user_settings["title"]
+        self.project = project if project else user_settings.get("project")
         self.output_location = (
             output_location if output_location else user_settings["output_location"]
         )
@@ -211,6 +220,7 @@ class Pipeline(collections.Sequence):
                 str(self.output_location),
                 id=node_name,
                 root_dir=root_dir,
+                project=self.project,
                 resume=self.resume,
             )
 
