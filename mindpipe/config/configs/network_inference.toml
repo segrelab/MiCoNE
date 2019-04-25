@@ -64,6 +64,7 @@
     location = "**/*_corr.boot"
 
 [network_inference.correlation.pearson]
+  env = "mindpipe"
   root_dir = "network_inference/pearson"
   [[network_inference.correlation.pearson.input]]
     datatype = "otu_table"
@@ -83,6 +84,7 @@
     location = "**/*_corr.boot"
 
 [network_inference.correlation.spearman]
+  env = "mindpipe"
   root_dir = "network_inference/spearman"
   [[network_inference.correlation.spearman.input]]
     datatype = "otu_table"
