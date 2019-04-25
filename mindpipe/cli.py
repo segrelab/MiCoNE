@@ -31,10 +31,11 @@ def cli(ctx, log):
     "--env",
     "-e",
     default=None,
+    type=str,
     help="The environment to initialize. By default will initialize all",
 )
 @click.pass_context
-def init(ctx, env):
+def init(ctx, env: str):
     """ Initialize the package and environments """
     spinner = ctx.obj["SPINNER"]
     environments = Environments()
@@ -101,7 +102,15 @@ def init(ctx, env):
     help="The flag to determine whether a previous execution is resumed",
 )
 @click.pass_context
-def run(ctx, profile, config, output_location, base_dir, max_procs, resume):
+def run(
+    ctx,
+    profile: str,
+    config: click.Path,
+    output_location: click.Path,
+    base_dir: click.Path,
+    max_procs: int,
+    resume: bool,
+):
     """ Run the pipeline """
     spinner = ctx.obj["SPINNER"]
     pipeline = Pipeline(
