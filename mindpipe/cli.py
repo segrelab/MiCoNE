@@ -3,21 +3,24 @@
 """
 
 import click
-from halo import Halo
 
 from .logging import LOG
 from .pipelines import Pipeline
 from .setup import Environments
+from .utils import Spinner
 
 
 @click.group()
 @click.option(
     "--log", "-l", default=True, type=bool, help="Flag to turn on/off logging"
 )
+@click.option(
+    "--interactive", "-i", default=True, type=bool, help="Flag to turn on/off spinner"
+)
 @click.pass_context
-def cli(ctx, log):
+def cli(ctx, log: bool, interactive: bool):
     """ Main entry point to mindpipe """
-    spinner = Halo(text="Starting up...", spinner="dots")
+    spinner = Spinner(text="Starting up...", spinner="dots", interactive=interactive)
     spinner.start()
     ctx.obj["SPINNER"] = spinner
     spinner.succeed("Successfully initialized mindpipe")
