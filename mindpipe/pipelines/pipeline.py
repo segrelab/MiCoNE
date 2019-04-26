@@ -295,9 +295,9 @@ class Pipeline(collections.Sequence):
                     raise RuntimeError(
                         f"Number of parallel processes executed has exceeded {max_procs}"
                     )
+                self.process_queue.append(process)
                 process.build(str(loc))
                 process.run()
-                self.process_queue.append(process)
                 yield process
 
     def draw_process_tree(self, fpath: str) -> None:
@@ -379,37 +379,35 @@ class Pipeline(collections.Sequence):
                 if process.id not in running_processes:
                     self._updated_processes.append(process)
             for process in self._updated_processes:
-                self.process_queue.remove(process)
+                if process in self.process_queue:
+                    self.process_queue.remove(process)
 
         if self.process_queue:
             if len(self.process_queue) >= self.process_queue.maxlen:
                 while not self._updated_processes:
                     _update_queue()
                     time.sleep(poll_rate)
-            else:
-                for process_id, process_status in self.status.items():
-                    if process_status == "not started":
-                        not_started_processes.append(process_id)
-                try:
-                    next_process = next(
-                        pid for pid in process_order if pid in not_started_processes
-                    )
-                except StopIteration:
-                    while not self._updated_processes:
-                        _update_queue()
-                        time.sleep(poll_rate)
-                    return self._updated_processes
+            for process_id, process_status in self.status.items():
+                if process_status == "not started":
+                    not_started_processes.append(process_id)
+            try:
+                next_process = next(
+                    pid for pid in process_order if pid in not_started_processes
+                )
+            except StopIteration:
+                while not self._updated_processes:
+                    _update_queue()
+                    time.sleep(poll_rate)
+                return self._updated_processes
+            dependent_processes = set(
+                chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
+            )
+            while next_process in dependent_processes:
+                _update_queue()
+                time.sleep(poll_rate)
                 dependent_processes = set(
                     chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
                 )
-                while next_process in dependent_processes:
-                    _update_queue()
-                    time.sleep(poll_rate)
-                    dependent_processes = set(
-                        chain.from_iterable(
-                            list(tree[p.id]) for p in self.process_queue
-                        )
-                    )
         return self._updated_processes
 
     # TODO: Create computational metadata
