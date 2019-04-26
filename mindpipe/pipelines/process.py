@@ -167,8 +167,8 @@ class Process(collections.Hashable):
             f"nextflow -C {config_path} -log {log_path} run {script_path} -w {work_dir} "
             f"-profile {self.profile}"
         )
-        if self.resume:
-            cmd += " -resume"
+        # if self.resume:
+        #     cmd += " -resume"
         if not self._cmd:
             self._cmd = Command(cmd, "local", timeout=100_000)
         else:
