@@ -316,13 +316,18 @@ class Pipeline(collections.Sequence):
         gml = pathlib.Path(fpath) / "DAG.gml"
         nodes = list(self.process_tree.nodes)
         labels = {n: n.split(".", 2)[-1] for n in nodes}
-        pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="dot")
+        if len(nodes) > 50:
+            pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="twopi")
+        else:
+            pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="dot")
         nx.draw_networkx_nodes(tree, pos, node_size=500, alpha=0.8)
         nx.draw_networkx_edges(tree, pos, width=1.0, arrows=True)
         text = nx.draw_networkx_labels(tree, pos, labels=labels, font_size=8)
         for _, t in text.items():
             t.set_rotation(30)
         plt.axis("off")
+        fig = plt.gcf()
+        fig.set_size_inches(30, 20)  # default is 6.4, 4.8
         plt.savefig(diagram)
         nx.write_gml(tree, gml, stringizer=stringizer)
 
