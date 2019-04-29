@@ -3,7 +3,6 @@
 """
 
 import subprocess
-import sys
 from typing import List, Optional
 
 from ..logging import LOG
@@ -24,6 +23,12 @@ class Command:
             If a process exceeds this time then it will be terminated
             Default is 1000
 
+        Other Parameters
+        ----------------
+        project : str, optional
+            The project under which to run the pipeline on the 'sge'
+            Default value is None
+
         Attributes
         ----------
         cmd : str
@@ -31,6 +36,8 @@ class Command:
             This includes the profile and resource specifics
         profile : {'local', 'sge'}
             The execution environment
+        project : str
+            The project under which to run the pipeline on the 'sge'
         output : str
             The 'stdout' of the process
     """
@@ -39,13 +46,17 @@ class Command:
     _stderr: Optional[str] = None
     process: Optional[subprocess.Popen] = None
 
-    def __init__(self, cmd: str, profile: str, timeout: int = 1000) -> None:
-        # TODO: Set up profiles config
+    def __init__(self, cmd: str, profile: str, timeout: int = 1000, **kwargs) -> None:
         self.profile = profile
+        project = kwargs.get("project")
+        if profile == "sge":
+            if project is None:
+                raise ValueError("Project must be supplied if profile is sge")
+        self.project = project if project else "None"
         self._cmd = self._build_cmd(cmd)
         self._timeout = timeout
 
-    def _build_cmd(self, cmd: str) -> str:
+    def _build_cmd(self, cmd: str) -> List[str]:
         """
             Builds the `cmd` for the current Command instance
 
@@ -64,6 +75,8 @@ class Command:
             pass
         elif self.profile == "sge":
             command.append("qsub")
+            command.append("-P")
+            command.append(self.project)
         else:
             raise ValueError("Unsupported profile! Choose either 'local' or 'sge'")
         command.extend(cmd.split(" "))
