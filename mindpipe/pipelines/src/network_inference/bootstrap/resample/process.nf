@@ -42,8 +42,6 @@ process filter {
     publishDir "${output_dir}/${dataset}/${level}", saveAs: { filename -> filename.split("/")[-1] }, mode: 'copy', overwrite: true
     input:
     set val(id), val(dataset), val(level), file(boot_file) from chnl_otudata_bootstrap
-    when:
-    filter_flag == 'True'
     output:
     set val(id), val(dataset), val(level), file('filtered/*.boot') into chnl_bootstrap_filter
     script:
