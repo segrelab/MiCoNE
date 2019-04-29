@@ -12,6 +12,7 @@ import networkx as nx
 import toml
 
 from ..config import Config
+from .command import Command
 from .process import Process, stringizer
 
 
@@ -409,5 +410,49 @@ class Pipeline(collections.Sequence):
                     chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
                 )
         return self._updated_processes
+
+    def clean(self, files: List[str] = ["logs"]) -> None:
+        """
+            Cleans up files from the pipeline run
+            This command irrevesibly deletes content, use with caution
+
+            Parameters
+            ----------
+            files : List[str]
+                The supported files are:
+                - logs: the `nextflow` log files
+                - configs: the `nextflow` config and run scripts
+                - work: the `nextflow` work directory
+                - results: the results of the pipeline process
+        """
+        if "logs" in files:
+            cwd = pathlib.Path()
+            for log in chain(cwd.glob("*.log"), cwd.glob("*.log.*")):
+                cmd = Command(f"rm {log}", "local")
+                cmd.run()
+                cmd.wait()
+                cmd.log()
+        if "configs" in files:
+            for node in self:
+                process = self.process_tree.node[node]["process"]
+                script_file = f"{process.id}.nf"
+                config_file = f"{process.id}.config"
+                cmd = Command(f"rm {script_file} {config_file}", "local")
+                cmd.run()
+                cmd.wait()
+                cmd.log()
+        if "work" in files:
+            cmd = Command("rm -rf work", "local")
+            cmd.run()
+            cmd.wait()
+            cmd.log()
+        if "results" in files:
+            for node in self:
+                process = self.process_tree.node[node]["process"]
+                root_path = process.output_location / process.params.root_dir
+                cmd = Command(f"rm -rf {root_path}", "local")
+                cmd.run()
+                cmd.wait()
+                cmd.log()
 
     # TODO: Create computational metadata
