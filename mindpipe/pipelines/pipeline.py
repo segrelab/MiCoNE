@@ -432,6 +432,10 @@ class Pipeline(collections.Sequence):
                 cmd.run()
                 cmd.wait()
                 cmd.log()
+            cmd = Command("rm -rf .nextflow", "local")
+            cmd.run()
+            cmd.wait()
+            cmd.log()
         if "configs" in files:
             for node in self:
                 process = self.process_tree.node[node]["process"]
