@@ -39,7 +39,12 @@ class Command:
         project : str
             The project under which to run the pipeline on the 'sge'
         output : str
-            The 'stdout' of the process
+            The 'stdout' of the command
+        error : str
+            The 'stderr' of the command
+        status : str
+            The status the the command
+            One of {'success', 'failure', 'in progress', 'not started'}
     """
 
     _stdout: Optional[str] = None
