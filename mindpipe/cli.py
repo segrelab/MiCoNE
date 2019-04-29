@@ -2,6 +2,8 @@
     Console script for mindpipe
 """
 
+from typing import List
+
 import click
 
 from .logging import LOG
@@ -141,6 +143,28 @@ def run(
                     spinner.fail(f"Failed to execute {proc}")
     finally:
         LOG.cleanup()
+
+
+@cli.command()
+@click.option(
+    "--config",
+    "-c",
+    type=click.Path(exists=True),
+    help="The config file that defines the pipeline run",
+)
+@click.option(
+    "--files", "-f", multiple=True, help="Files can be logs, configs, work, results"
+)
+@click.pass_context
+def clean(ctx, config: click.Path, files: List[str]):
+    """ Clean files from the pipeline run """
+    click.confirm(f"Are you sure you want to delete {files}", abort=True)
+    spinner = ctx.obj["SPINNER"]
+    spinner.start()
+    spinner.text = "Cleaning up pipeline files"
+    pipeline = Pipeline(config, "local")
+    pipeline.clean(files)
+    spinner.succeed(f"Completed cleanup")
 
 
 def main():
