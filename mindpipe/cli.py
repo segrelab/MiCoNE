@@ -72,7 +72,7 @@ def init(ctx, env: str):
     "-p",
     default="local",
     type=str,
-    help="The execution profile. Either 'local' or 'qsub'",
+    help="The execution profile. Either 'local' or 'sge'",
 )
 @click.option(
     "--config",
