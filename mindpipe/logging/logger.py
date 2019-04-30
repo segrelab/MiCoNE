@@ -58,7 +58,7 @@ class Log:
         """ Enable logging """
         self.logger.enable("mindpipe")
 
-    def cleanup(self, nfiles: int = 10) -> None:
+    def cleanup(self, nfiles: int = 20) -> None:
         """
             Delete old logs if number > nfiles
 
