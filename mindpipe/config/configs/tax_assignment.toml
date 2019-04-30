@@ -23,6 +23,7 @@
     process = "assign_taxonomy"
     confidence = 0.7
     ncpus = 1
+    mem_per_core = "8G"
   [[tax_assignment.assign.naive_bayes.output]]
     datatype = "otu_table"
     format = ["biom"]
