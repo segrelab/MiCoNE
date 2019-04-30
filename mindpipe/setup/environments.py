@@ -51,7 +51,7 @@ class Environments:
             for config, env_name in zip(self.configs, self.env_names):
                 LOG.logger.info(f"Initializing {env_name} environment")
                 cmd_str = f"conda env create -f {config} -n {env_name}"
-                init_cmd = Command(cmd_str, profile="local")
+                init_cmd = Command(cmd_str, profile="local", timeout=10000)
                 init_cmd.run()
                 yield init_cmd
         elif env in self.env_names:
@@ -60,7 +60,7 @@ class Environments:
             env_name = self.env_names[ind]
             LOG.logger.info(f"Initializing {env_name} environment")
             cmd_str = f"conda env create -f {config} -n {env_name}"
-            init_cmd = Command(cmd_str, profile="local")
+            init_cmd = Command(cmd_str, profile="local", timeout=10000)
             init_cmd.run()
             yield init_cmd
         elif env not in self.env_names:
@@ -90,7 +90,7 @@ class Environments:
         for script in post_scripts:
             cmd_str = f"bash {script}"
             LOG.logger.info(f"Running post_install for {env} environment")
-            post_cmd = Command(cmd_str, profile="local")
+            post_cmd = Command(cmd_str, profile="local", timeout=10000)
             post_cmd.run()
             yield post_cmd
 
@@ -110,5 +110,5 @@ class Environments:
         env_name = self.env_names[ind]
         cmd_str = f"source activate {env_name}"
         LOG.logger.info(f"Loading {env} environment")
-        load_cmd = Command(cmd_str, profile="local")
+        load_cmd = Command(cmd_str, profile="local", timeout=10000)
         load_cmd.run()
