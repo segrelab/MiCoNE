@@ -112,7 +112,6 @@ class Process(collections.Hashable):
     def __str__(self) -> str:
         return self.id
 
-    # TODO: Add profile and resource configuration setup also
     def build(self, output_dir: Optional[str] = None) -> None:
         """
             Builds the pipeline script and the config file at the output_dir
@@ -148,7 +147,6 @@ class Process(collections.Hashable):
         else:
             work_dir.mkdir()
 
-    # TODO: Also add profile and resource configuration scripts to `cmd` and `build`
     @property
     def cmd(self) -> Command:
         """
@@ -186,7 +184,6 @@ class Process(collections.Hashable):
                 The command object
                 It has `cmd`, `out`, `pid` and other facilities
         """
-        # TODO: This step also needs to fill in the profiles and resources templates
         script_path = self.output_location / f"{self.id}.nf"
         config_path = self.output_location / f"{self.id}.config"
         work_dir = self.output_location / "work"
