@@ -6,12 +6,12 @@ Microbial Interaction Database Pipeline
 [![Updates](https://pyup.io/repos/github/dileep-kishore/mindpipe/shield.svg?token=15e74ba4-b27a-4709-99cf-96bcf698e33b)](https://pyup.io/repos/github/dileep-kishore/mindpipe/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-`mindpipe`: the pipeline that powers the Microbial Interaction Network Database.
-
 `mindpipe`, is a flexible and modular pipeline for 16S data analysis. It incorporates various popular, publicly available tools as well as custom Python modules and scripts to facilitate inference of co-occurrence networks from 16S data.
 
 -   Free software: MIT license
 -   Documentation: <https://dileep-kishore.github.io/mindpipe>.
+
+Manuscript in preparation.
 
 Features
 --------
