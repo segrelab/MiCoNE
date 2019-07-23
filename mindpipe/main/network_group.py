@@ -283,3 +283,17 @@ class NetworkGroup(Collection):
             network_raw_data = {**metadata, "nodes": nodes, "links": links}
             networks.append(Network.load_json(raw_data=network_raw_data))
         return cls(networks)
+
+    def combine_pvalues(self, method: str) -> np.array:
+        """
+            Combine pvalues of links in the network group using Empirical Brown's Method
+
+            Parameters
+            ----------
+            method : str
+
+            Returns
+            -------
+            np.array
+        """
+        pass
