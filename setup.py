@@ -33,7 +33,7 @@ requirements = [
     "toml",
 ]
 
-setup_requirements = ["numpy", "pytest-runner"]
+setup_requirements = ["numpy", "Cython", "pytest-runner"]
 
 test_requirements = ["pytest", "pytest-cov"]
 
