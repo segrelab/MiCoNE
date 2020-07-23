@@ -5,3 +5,4 @@ repos:
     - id: black
       language_version: python3
       args: [--py36]
+      exclude: micone/pipelines/src
