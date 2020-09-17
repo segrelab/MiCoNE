@@ -2,8 +2,8 @@ MiCoNE - Microbial Co-occurrence Network Explorer
 =================================================
 
 [![Build Status](https://travis-ci.com/dileep-kishore/mindpipe.svg?token=qCMKydrUTvcJ87J6czex&branch=master)](https://travis-ci.com/dileep-kishore/mindpipe)
-[![CodeFactor](https://www.codefactor.io/repository/github/dileep-kishore/mindpipe/badge)](https://www.codefactor.io/repository/github/dileep-kishore/mindpipe)
-[![Updates](https://pyup.io/repos/github/dileep-kishore/mindpipe/shield.svg?token=15e74ba4-b27a-4709-99cf-96bcf698e33b)](https://pyup.io/repos/github/dileep-kishore/mindpipe/)
+[![CodeFactor](https://www.codefactor.io/repository/github/segrelab/micone/badge)](https://www.codefactor.io/repository/github/segrelab/micone)
+[![Updates](https://pyup.io/repos/github/segrelab/MiCoNE/shield.svg)](https://pyup.io/repos/github/segrelab/MiCoNE/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 `MiCoNE`, is a flexible and modular pipeline for 16S data analysis. It incorporates various popular, publicly available tools as well as custom Python modules and scripts to facilitate inference of co-occurrence networks from 16S data.
