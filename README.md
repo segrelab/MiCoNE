@@ -6,8 +6,6 @@ MiCoNE - Microbial Co-occurrence Network Explorer
 [![Updates](https://pyup.io/repos/github/dileep-kishore/mindpipe/shield.svg?token=15e74ba4-b27a-4709-99cf-96bcf698e33b)](https://pyup.io/repos/github/dileep-kishore/mindpipe/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-:exclamation::exclamation::exclamation: **This package is currently undergoing refactoring and might not work as expected**
-
 `MiCoNE`, is a flexible and modular pipeline for 16S data analysis. It incorporates various popular, publicly available tools as well as custom Python modules and scripts to facilitate inference of co-occurrence networks from 16S data.
 
 -   Free software: MIT license
