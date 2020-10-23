@@ -2,11 +2,11 @@
 Usage
 =====
 
-The ``mindpipe`` pipeline comes with an easy to use CLI. To get a list of supported subcommands you can type:
+The ``micone`` pipeline comes with an easy to use CLI. To get a list of supported subcommands you can type:
 
 .. code-block:: console
 
-    mindpipe --help
+    micone --help
 
 Supported subcommands:
 1. init - Creates ``conda`` environments for various pipeline processes
@@ -19,6 +19,6 @@ Running the pipeline
 
 .. code-block:: console
 
-    mindpipe run -p local -c run.toml -m 4
+    micone run -p local -c run.toml -m 4
 
 This runs the pipeline in the ``local`` machine using ``run.toml`` for the pipeline configuration and with a maximum of ``4`` processes in parallel at a time.

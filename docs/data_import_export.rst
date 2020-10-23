@@ -12,7 +12,7 @@ If you have an interaction matrix stored in a ``tsv`` or ``csv`` format, you can
 
 .. code-block:: python
 
-    from mindpipe import Network, NetworkGroup
+    from micone import Network, NetworkGroup
     network = Network.load_data(
         interaction_file,
         meta_file,
@@ -35,7 +35,7 @@ If you have interaction data stored in the form of an edge list
 
 .. code-block:: python
 
-    from mindpipe import Network. NetworkGroup
+    from micone import Network. NetworkGroup
     network = Network.load_elist(
         elist_file,
         meta_file,

@@ -12,7 +12,7 @@ To install Microbial Interaction Database Pipeline, run this command in your ter
 
 .. code-block:: console
 
-    $ pip install mindpipe
+    $ pip install micone
 
 This is the preferred method to install Microbial Interaction Database Pipeline, as it will always install the most recent stable release.
 
@@ -32,13 +32,13 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/dileep-kishore/mindpipe
+    $ git clone git://github.com/dileep-kishore/micone
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/dileep-kishore/mindpipe/tarball/master
+    $ curl  -OL https://github.com/dileep-kishore/micone/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/dileep-kishore/mindpipe
-.. _tarball: https://github.com/dileep-kishore/mindpipe/tarball/master
+.. _Github repo: https://github.com/dileep-kishore/micone
+.. _tarball: https://github.com/dileep-kishore/micone/tarball/master

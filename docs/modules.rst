@@ -1,7 +1,7 @@
-mindpipe
-========
+micone
+======
 
 .. toctree::
    :maxdepth: 4
 
-   mindpipe
+   micone

@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 numpy = "*"
+cython = "*"
 pandas = "*"
 "jinja2" = "*"
 biom-format = "*"
@@ -38,13 +39,13 @@ codecov = "*"
 travis-sphinx = "*"
 sphinx-rtd-theme = "*"
 python-language-server = "*"
-black = "==19.3b0"
+black = "==19.10b0"
 pre-commit = "*"
-pylint = "==1.9.4"
+pylint = "*"
 mypy = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
 
 [pipenv]
 allow_prereleases = false

@@ -1,4 +1,4 @@
-Welcome to Microbial Interaction Database Pipeline's documentation!
+Welcome to MiCoNE's documentation!
 ======================================
 
 .. toctree::
