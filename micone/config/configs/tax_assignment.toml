@@ -46,7 +46,7 @@
     reference_sequences = ""
     tax_map = ""
     max_accepts = 10
-    perc_identify = 0.8
+    perc_identity = 0.8
     evalue = 0.001
     min_consensus = 0.51
   [[tax_assignment.assign.blast.output]]
