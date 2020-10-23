@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micone.validation.network_schema &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">MiCoNE - Microbial Co-occurrence Network Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_import_export.html">Data Import and Export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">micone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>micone.validation.network_schema</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for micone.validation.network_schema</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Module that defines the schema for interactions, pvalues, networks and their metadata</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">schematics.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">schematics.models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">schematics.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseType</span><span class="p">,</span>
+    <span class="n">DateType</span><span class="p">,</span>
+    <span class="n">DictType</span><span class="p">,</span>
+    <span class="n">FloatType</span><span class="p">,</span>
+    <span class="n">IntType</span><span class="p">,</span>
+    <span class="n">ListType</span><span class="p">,</span>
+    <span class="n">ModelType</span><span class="p">,</span>
+    <span class="n">StringType</span><span class="p">,</span>
+    <span class="n">UnionType</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="InteractionmatrixType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.InteractionmatrixType">[docs]</a><span class="k">class</span> <span class="nc">InteractionmatrixType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        DataType that describes the expected structure of an interaction matrix</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        symm : bool, optional</span>
+<span class="sd">            True if interaction matrix is expected to be symmetric</span>
+<span class="sd">            Default value is False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symm</span> <span class="o">=</span> <span class="n">symm</span>
+
+<div class="viewcode-block" id="InteractionmatrixType.validate_isdataframe"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.InteractionmatrixType.validate_isdataframe">[docs]</a>    <span class="k">def</span> <span class="nf">validate_isdataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the object is a pandas DataFrame &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Interaction matrix must be a `pd.DataFrame` instance&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="InteractionmatrixType.validate_headers"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.InteractionmatrixType.validate_headers">[docs]</a>    <span class="k">def</span> <span class="nf">validate_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the rows and columns are the same &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Interaction matrix must have same number of rows and columns&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">index</span> <span class="o">!=</span> <span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Row and column header of an interaction matrix should match&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="InteractionmatrixType.validate_symmetry"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.InteractionmatrixType.validate_symmetry">[docs]</a>    <span class="k">def</span> <span class="nf">validate_symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the the interaction matrix is symmetric &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symm</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Interaction matrix is not symmetric&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Interaction matrix is not symmetric&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="InteractionmatrixType.validate_data"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.InteractionmatrixType.validate_data">[docs]</a>    <span class="k">def</span> <span class="nf">validate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid data. Interactions must be int or float&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CorrelationmatrixType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.CorrelationmatrixType">[docs]</a><span class="k">class</span> <span class="nc">CorrelationmatrixType</span><span class="p">(</span><span class="n">InteractionmatrixType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataType that describes the expected structure of a correlation matrix &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">symm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CorrelationmatrixType.validate_data_range"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.CorrelationmatrixType.validate_data_range">[docs]</a>    <span class="k">def</span> <span class="nf">validate_data_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Correlation matrix must be bound by -1 and 1&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PvaluematrixType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.PvaluematrixType">[docs]</a><span class="k">class</span> <span class="nc">PvaluematrixType</span><span class="p">(</span><span class="n">InteractionmatrixType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataType that describes the expected structure of a pvalue matrix &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PvaluematrixType.validate_data_range"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.PvaluematrixType.validate_data_range">[docs]</a>    <span class="k">def</span> <span class="nf">validate_data_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Pvalue matrix must be bound by 0 and 1&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PublicationModel"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.PublicationModel">[docs]</a><span class="k">class</span> <span class="nc">PublicationModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Model that describes the expected structure of the publication input &quot;&quot;&quot;</span>
+
+    <span class="n">date</span> <span class="o">=</span> <span class="n">DateType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">ListType</span><span class="p">(</span><span class="n">DictType</span><span class="p">(</span><span class="n">StringType</span><span class="p">),</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pubmed_id</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MetadataModel"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.MetadataModel">[docs]</a><span class="k">class</span> <span class="nc">MetadataModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Model that describes the expected structure of the network metadata input &quot;&quot;&quot;</span>
+
+    <span class="n">host</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">condition</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">experimental_metadata</span> <span class="o">=</span> <span class="n">DictType</span><span class="p">(</span><span class="n">StringType</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">publication</span> <span class="o">=</span> <span class="n">ModelType</span><span class="p">(</span><span class="n">PublicationModel</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChildrenmapType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.ChildrenmapType">[docs]</a><span class="k">class</span> <span class="nc">ChildrenmapType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataType that describes the expected structure of the children map dictionary &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ChildrenmapType.validate_keys"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.ChildrenmapType.validate_keys">[docs]</a>    <span class="k">def</span> <span class="nf">validate_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Children map must have string keys&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChildrenmapType.validate_values"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.ChildrenmapType.validate_values">[docs]</a>    <span class="k">def</span> <span class="nf">validate_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                    <span class="s2">&quot;Children map must have lists of strings as values&quot;</span>
+                <span class="p">)</span>
+            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                        <span class="s2">&quot;Children map must have lists of strings as values&quot;</span>
+                    <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="NodeModel"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.NodeModel">[docs]</a><span class="k">class</span> <span class="nc">NodeModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Model that describes the structure of one node in the network &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lineage</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">taxid</span> <span class="o">=</span> <span class="n">IntType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">taxlevel</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span>
+        <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(Kingdom|Phylum|Class|Order|Family|Genus|Species)&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">abundance</span> <span class="o">=</span> <span class="n">FloatType</span><span class="p">()</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="n">ListType</span><span class="p">(</span><span class="n">StringType</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NodesModel"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.NodesModel">[docs]</a><span class="k">class</span> <span class="nc">NodesModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Model that describes the structure of the nodes in the network &quot;&quot;&quot;</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">ListType</span><span class="p">(</span><span class="n">ModelType</span><span class="p">(</span><span class="n">NodeModel</span><span class="p">),</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinkModel"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.LinkModel">[docs]</a><span class="k">class</span> <span class="nc">LinkModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Model that describes the structure of one link in the network &quot;&quot;&quot;</span>
+
+    <span class="n">pvalue</span> <span class="o">=</span> <span class="n">FloatType</span><span class="p">()</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">FloatType</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LinksModel"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.LinksModel">[docs]</a><span class="k">class</span> <span class="nc">LinksModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Model that describes the structure of one link in the network &quot;&quot;&quot;</span>
+
+    <span class="n">links</span> <span class="o">=</span> <span class="n">ListType</span><span class="p">(</span><span class="n">ModelType</span><span class="p">(</span><span class="n">LinkModel</span><span class="p">),</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NetworkmetadataModel"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.NetworkmetadataModel">[docs]</a><span class="k">class</span> <span class="nc">NetworkmetadataModel</span><span class="p">(</span><span class="n">MetadataModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Model that describes the expected structure of the network metadata &quot;&quot;&quot;</span>
+
+    <span class="n">computational_metadata</span> <span class="o">=</span> <span class="n">DictType</span><span class="p">(</span>
+        <span class="n">UnionType</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">(</span><span class="n">StringType</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">)),</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">directionality</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(undirected|directed)&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">interaction_type</span> <span class="o">=</span> <span class="n">StringType</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ElistType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.ElistType">[docs]</a><span class="k">class</span> <span class="nc">ElistType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataType that describes the expected structure of an edge list &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ElistType.validate_headers_index"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.network_schema.ElistType.validate_headers_index">[docs]</a>    <span class="k">def</span> <span class="nf">validate_headers_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;source&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;source column must be present in the edge list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;target&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;target column must be present in the edge list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;weight&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;weight column must be present in the edge list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">])):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Duplicate entries in source column not allowed&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">])):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Duplicate entries in target column not allowed&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

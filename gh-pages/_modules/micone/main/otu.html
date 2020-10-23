@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micone.main.otu &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">MiCoNE - Microbial Co-occurrence Network Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_import_export.html">Data Import and Export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">micone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>micone.main.otu</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for micone.main.otu</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Module that defines the `Otu` objects and methods to manipulate it</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">biom</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">biom.util</span> <span class="kn">import</span> <span class="n">biom_open</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">..validation</span> <span class="kn">import</span> <span class="n">OtuValidator</span><span class="p">,</span> <span class="n">BiomType</span><span class="p">,</span> <span class="n">SamplemetaType</span><span class="p">,</span> <span class="n">ObsmetaType</span>
+<span class="kn">from</span> <span class="nn">.lineage</span> <span class="kn">import</span> <span class="n">Lineage</span>
+
+
+<span class="n">Filterfun</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span>
+<span class="n">Hashfun</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Hashable</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Otu"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu">[docs]</a><span class="k">class</span> <span class="nc">Otu</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An object that represents the OTU counts table</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        otu_data : Table</span>
+<span class="sd">            `biom.Table` object containing OTU data</span>
+<span class="sd">        sample_metadata : pd.DataFrame, optional</span>
+<span class="sd">            `pd.DataFrame` containing metadata for the samples</span>
+<span class="sd">        obs_metadata : pd.DataFrame,  optional</span>
+<span class="sd">            `pd.DataFrame` containing metadata for the observations (OTUs)</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        otu_data : biom.Table</span>
+<span class="sd">            OTU counts table in the `biom.Table` format</span>
+<span class="sd">        sample_metadata : pd.DataFrame</span>
+<span class="sd">            Metadata for the samples</span>
+<span class="sd">        obs_metadata :  pd.DataFrame</span>
+<span class="sd">            Lineage data for the observations (OTUs)</span>
+<span class="sd">        tax_level : str</span>
+<span class="sd">            The taxonomy level of the current Otu instance</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        All methods that manipulate the Otu object return new objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">otu_data</span><span class="p">:</span> <span class="n">Table</span><span class="p">,</span>
+        <span class="n">sample_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">obs_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">otu_data</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Otu data must be of type `biom.Table`&quot;</span><span class="p">)</span>
+        <span class="n">otu_data_copy</span> <span class="o">=</span> <span class="n">otu_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">sample_metadata</span><span class="p">:</span>
+            <span class="n">samplemeta_type</span> <span class="o">=</span> <span class="n">SamplemetaType</span><span class="p">()</span>
+            <span class="n">samplemeta_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">sample_metadata</span><span class="p">)</span>
+            <span class="n">otu_data_copy</span><span class="o">.</span><span class="n">add_metadata</span><span class="p">(</span>
+                <span class="n">sample_metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">obs_metadata</span><span class="p">:</span>
+            <span class="n">obsmeta_type</span> <span class="o">=</span> <span class="n">ObsmetaType</span><span class="p">()</span>
+            <span class="n">obsmeta_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">obs_metadata</span><span class="p">)</span>
+            <span class="n">otu_data_copy</span><span class="o">.</span><span class="n">add_metadata</span><span class="p">(</span>
+                <span class="n">obs_metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span>
+            <span class="p">)</span>
+        <span class="n">biom_type</span> <span class="o">=</span> <span class="n">BiomType</span><span class="p">()</span>
+        <span class="n">biom_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">otu_data_copy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span> <span class="o">=</span> <span class="n">otu_data_copy</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">n_obs</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Otu </span><span class="si">{</span><span class="n">n_obs</span><span class="si">}</span><span class="s2">obs x </span><span class="si">{</span><span class="n">n_samples</span><span class="si">}</span><span class="s2">samples&gt;&quot;</span>
+
+<div class="viewcode-block" id="Otu.load_data"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.load_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">otu_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">meta_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tax_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;biom&quot;</span><span class="p">,</span>
+        <span class="n">ext</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Otu&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Load data from files into the `Otu` class instance</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            otu_file : str</span>
+<span class="sd">                The path to the `OTU` counts file</span>
+<span class="sd">            meta_file : str, optional</span>
+<span class="sd">                The path to the sample metadata file</span>
+<span class="sd">            tax_file : str, optional</span>
+<span class="sd">                The path to the taxonomy file</span>
+<span class="sd">            dtype : {&#39;biom&#39;, &#39;tsv&#39;}</span>
+<span class="sd">                The type of OTU file that is input</span>
+<span class="sd">            ext : str, optional</span>
+<span class="sd">                The extension of the file if other than supported extensions</span>
+<span class="sd">                Supported extensions:</span>
+<span class="sd">                - &#39;tsv&#39; dtype: &#39;tsv&#39;, &#39;txt&#39;, &#39;counts&#39;</span>
+<span class="sd">                - &#39;biom&#39; dtype: &#39;biom&#39;, &#39;hdf5&#39;</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            Otu</span>
+<span class="sd">                An instance of the `Otu` class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">otu_validator</span> <span class="o">=</span> <span class="n">OtuValidator</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">)</span>
+        <span class="n">otu_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">otu_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">otu_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">meta_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">meta_file</span><span class="p">)</span> <span class="k">if</span> <span class="n">meta_file</span> <span class="k">else</span> <span class="n">meta_file</span>
+            <span class="n">tax_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tax_file</span><span class="p">)</span> <span class="k">if</span> <span class="n">tax_file</span> <span class="k">else</span> <span class="n">tax_file</span>
+            <span class="n">otu_data</span> <span class="o">=</span> <span class="n">otu_validator</span><span class="o">.</span><span class="n">load_validate</span><span class="p">(</span><span class="n">otu_path</span><span class="p">,</span> <span class="n">meta_path</span><span class="p">,</span> <span class="n">tax_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Missing input files&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">otu_data</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sample_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Metadata for the samples</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">metadata_to_dataframe</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">obs_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Lineage data for the observations (OTUs)</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">metadata_to_dataframe</span><span class="p">(</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
+        <span class="n">n_tax_levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">lineage</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Lineage</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span>
+        <span class="c1"># Unknown ordering if observation metadata contains extra columns</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">lineage</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">df</span>
+        <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">lineage</span><span class="p">[:</span><span class="n">n_tax_levels</span><span class="p">]]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tax_level</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the taxonomy level of the Otu instance</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            str</span>
+<span class="sd">                The lowest taxonomy defined in the Otu instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_tax_levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_metadata</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Lineage</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">n_tax_levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Otu.filter"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filterfun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;observation&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Otu&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Filter Otu instance based on ids or func</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            ids : Iterable[str], optional</span>
+<span class="sd">                An iterable of ids to keep.</span>
+<span class="sd">                If ids are not supplied then func must be supplied</span>
+<span class="sd">            func : Callable[[np.ndarray, str, dict], bool], optional</span>
+<span class="sd">                A function that takes in (values, id_, md) and returns a bool</span>
+<span class="sd">                If func is not supplied then ids must be supplied</span>
+<span class="sd">                If both ids and func are supplied then ids are used</span>
+<span class="sd">            axis : {&#39;sample&#39;, &#39;observation&#39;}, optional</span>
+<span class="sd">                The axis along which to filter the Otu instance</span>
+<span class="sd">                Default value is &#39;observation&#39;</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            Otu</span>
+<span class="sd">                Filtered Otu instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ids</span><span class="p">:</span>
+            <span class="n">otu_filtered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">func</span><span class="p">:</span>
+            <span class="n">otu_filtered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Either ids or func must be supplied&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Otu</span><span class="p">(</span><span class="n">otu_filtered</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Otu.normalize"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;norm&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Otu&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Normalize the OTU table along the provided axis</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            axis : {&#39;sample&#39;, &#39;observation&#39;}, optional</span>
+<span class="sd">                Axis along which to normalize the OTU table</span>
+<span class="sd">                Default is &#39;sample&#39;</span>
+<span class="sd">            method: {&#39;norm&#39;, &#39;rarefy&#39;, &#39;css&#39;}</span>
+<span class="sd">                Normalization method to use</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            Otu</span>
+<span class="sd">                Otu instance which is normalized along the given axis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span>
+            <span class="n">norm_otu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;rarefy&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;This method is not implemented yet&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;css&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;This method is not implemented yet&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid method. Supported methods are {&#39;norm&#39;, &#39;rarefy&#39;, &#39;css&#39;}&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Otu</span><span class="p">(</span><span class="n">norm_otu</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Otu.is_norm"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.is_norm">[docs]</a>    <span class="k">def</span> <span class="nf">is_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns true if the Otu instance has been normalized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;sample&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;observation&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Axis must of either {&#39;sample&#39; or &#39;observation&#39;}&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Otu.rm_sparse_samples"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.rm_sparse_samples">[docs]</a>    <span class="k">def</span> <span class="nf">rm_sparse_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count_thres</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Otu&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Remove samples with read counts less than `count_thres`</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            count_thres : int, optional</span>
+<span class="sd">                Counts threshold below which samples are rejected</span>
+<span class="sd">                Default value is 500</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            Otu</span>
+<span class="sd">                Otu instance with low count samples removed</span>
+
+<span class="sd">            Raises</span>
+<span class="sd">            ------</span>
+<span class="sd">            ValueError</span>
+<span class="sd">                If Otu instance is normalized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_norm</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Otu instance is normalized and hence will not work with this method&quot;</span>
+            <span class="p">)</span>
+        <span class="n">filt_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="n">count_thres</span>
+        <span class="n">new_otu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">filt_fun</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Otu</span><span class="p">(</span><span class="n">new_otu</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Otu.rm_sparse_obs"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.rm_sparse_obs">[docs]</a>    <span class="k">def</span> <span class="nf">rm_sparse_obs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">prevalence_thres</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">abundance_thres</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Otu&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Remove observations with prevalence &lt; `prevalence_thres` and abundance &lt; `abundance_thres`</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            prevalence_thres : float</span>
+<span class="sd">                Minimum fraction of samples the observation must be present in in order to be accepted</span>
+<span class="sd">            abundance_thres : float</span>
+<span class="sd">                Minimum observation count fraction in a sample needed in order to be accepted</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            Otu</span>
+<span class="sd">                Otu instance with bad observations removed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filt_fun</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="n">prevalence_thres</span>
+        <span class="p">)</span>
+        <span class="n">otu_dense_obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">filt_fun</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">otu_df</span> <span class="o">=</span> <span class="n">otu_dense_obs</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+        <span class="n">otu_rel_abund</span> <span class="o">=</span> <span class="p">(</span><span class="n">otu_df</span> <span class="o">/</span> <span class="n">otu_df</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_dense</span><span class="p">()</span>
+        <span class="n">ind_above_thres</span> <span class="o">=</span> <span class="n">otu_rel_abund</span><span class="o">.</span><span class="n">index</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">otu_rel_abund</span> <span class="o">&gt;</span> <span class="n">abundance_thres</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">new_otu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">ind_above_thres</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">ind_below_thres</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="s2">&quot;observation&quot;</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">ind_above_thres</span><span class="p">)</span>
+        <span class="n">otu_sparse_obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">ind_below_thres</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">new_row</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+            <span class="n">otu_sparse_obs</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">),</span>
+            <span class="p">[</span><span class="s2">&quot;otu_merged&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">tax_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tax_level</span>
+        <span class="n">new_row</span><span class="o">.</span><span class="n">add_metadata</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;otu_merged&quot;</span><span class="p">:</span> <span class="n">Lineage</span><span class="p">(</span><span class="s2">&quot;Unclassified&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">tax_level</span><span class="p">)},</span>
+            <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">final_otu</span> <span class="o">=</span> <span class="n">new_otu</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_row</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Otu</span><span class="p">(</span><span class="n">final_otu</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Otu.partition"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.partition">[docs]</a>    <span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Hashfun</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;Otu&quot;</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Partition the Otu instance based on the func and axis</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            axis : str</span>
+<span class="sd">                The axis on which to partition</span>
+<span class="sd">            func : Callable[[str, dict], Hashable]</span>
+<span class="sd">                The function that takes in (id, metadata) and returns a hashable</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            Iterable[Tuple[str, Otu]]</span>
+<span class="sd">                An iterable of tuples - (&#39;label&#39;, Otu)</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            -----</span>
+<span class="sd">            1. To group by lineage &quot;level&quot; use:</span>
+<span class="sd">                func = lambda id_, md: Lineage(**md).get_superset(level)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;observation&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_norm</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot partition sample normalized Otu instance on observation&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;sample&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_norm</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot partition observation normalized Otu instance on sample&quot;</span>
+            <span class="p">)</span>
+        <span class="n">partitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">label</span><span class="p">,</span> <span class="n">Otu</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Otu.collapse_taxa"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.collapse_taxa">[docs]</a>    <span class="k">def</span> <span class="nf">collapse_taxa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;Otu&quot;</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Collapse Otu instance based on taxa</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            level : str</span>
+<span class="sd">                The tax level of the collapsed table</span>
+<span class="sd">                This will also be used as the prefix for the unique ids</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            Tuple[Otu, dict]</span>
+<span class="sd">                Collapsed Otu instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Lineage</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;level must be one of </span><span class="si">{</span><span class="n">Lineage</span><span class="o">.</span><span class="n">_fields</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">cfunc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">id_</span><span class="p">,</span> <span class="n">md</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">Lineage</span><span class="p">(</span><span class="o">**</span><span class="n">md</span><span class="p">)</span><span class="o">.</span><span class="n">get_superset</span><span class="p">(</span><span class="n">level</span><span class="p">))</span>
+        <span class="n">otu_collapse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">collapse</span><span class="p">(</span>
+            <span class="n">cfunc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_collapsed_metadata</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">curr_ids</span> <span class="o">=</span> <span class="n">otu_collapse</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
+        <span class="n">children_group_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">i</span><span class="p">[</span><span class="s2">&quot;collapsed_ids&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">otu_collapse</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">children_groups</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">curr_ids</span><span class="p">,</span> <span class="n">children_group_list</span><span class="p">))</span>
+        <span class="n">otu_collapse</span><span class="o">.</span><span class="n">del_metadata</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
+        <span class="n">afunc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+            <span class="n">Lineage</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span><span class="o">.</span><span class="n">get_superset</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">obs_collapse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_metadata</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">afunc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">gfunc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">Lineage</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()))</span>
+        <span class="n">obs_collapse</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">obs_collapse</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">gfunc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">obs_collapse</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">otu_collapse</span><span class="o">.</span><span class="n">add_metadata</span><span class="p">(</span>
+            <span class="n">obs_collapse</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span>
+        <span class="p">)</span>
+        <span class="n">obs_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+            <span class="n">otu_collapse</span><span class="o">.</span><span class="n">metadata_to_dataframe</span><span class="p">(</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">unq_id_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">curr_ids</span><span class="p">)}</span>
+        <span class="n">obs_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">unq_id_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]]</span>  <span class="c1"># get ordered unique ids</span>
+        <span class="n">children_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">unq_id_map</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">children_groups</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">otu_collapse</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span>
+        <span class="n">observation_metadata</span> <span class="o">=</span> <span class="n">otu_collapse</span><span class="o">.</span><span class="n">metadata_to_dataframe</span><span class="p">(</span>
+            <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+        <span class="n">sample_metadata</span> <span class="o">=</span> <span class="n">otu_collapse</span><span class="o">.</span><span class="n">metadata_to_dataframe</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span>
+        <span class="p">)</span>
+        <span class="n">new_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+            <span class="n">otu_collapse</span><span class="o">.</span><span class="n">matrix_data</span><span class="p">,</span>
+            <span class="n">obs_ids</span><span class="p">,</span>
+            <span class="n">sample_ids</span><span class="p">,</span>
+            <span class="n">observation_metadata</span><span class="o">=</span><span class="n">observation_metadata</span><span class="p">,</span>
+            <span class="n">sample_metadata</span><span class="o">=</span><span class="n">sample_metadata</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Otu</span><span class="p">(</span><span class="n">new_table</span><span class="p">),</span> <span class="n">children_dict</span></div>
+
+<div class="viewcode-block" id="Otu.write"><a class="viewcode-back" href="../../../micone.main.html#micone.main.otu.Otu.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fol_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;biom&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Write Otu instance object to required file_type</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            base_name : str</span>
+<span class="sd">                The base name without extension to be used for the files</span>
+<span class="sd">            fol_path : str, optional</span>
+<span class="sd">                The folder where the files are to be written</span>
+<span class="sd">                Default is current directory</span>
+<span class="sd">            file_type : {&#39;tsv&#39;, &#39;biom&#39;}, optional</span>
+<span class="sd">                The type of file data is to be written to</span>
+<span class="sd">                Default is &#39;biom&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">fol_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">folder</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;biom&quot;</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s2">&quot;.biom&quot;</span>
+            <span class="n">fpath</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="n">fname</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">biom_open</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span> <span class="s2">&quot;Constructed using mindpipe&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;tsv&quot;</span><span class="p">:</span>
+            <span class="n">otu_name</span> <span class="o">=</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s2">&quot;_otu.tsv&quot;</span>
+            <span class="n">otu_path</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">otu_name</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">otu_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
+                <span class="c1"># NOTE: delete header comment from output</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otu_data</span><span class="o">.</span><span class="n">to_tsv</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">fid</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">sample_metadata_name</span> <span class="o">=</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s2">&quot;_sample_metadata.tsv&quot;</span>
+            <span class="n">sample_metadata_path</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">sample_metadata_name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sample_metadata</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">sample_metadata_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">obs_metadata_name</span> <span class="o">=</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s2">&quot;_obs_metadata.csv&quot;</span>
+            <span class="n">obs_metadata_path</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">obs_metadata_name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">obs_metadata</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">obs_metadata_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Supported file types are &#39;tsv&#39; and &#39;biom&#39;&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

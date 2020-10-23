@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Import and Export &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="micone" href="modules.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">MiCoNE - Microbial Co-occurrence Network Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Import and Export</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#importing-a-network-from-a-table">1. Importing a network from a Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#importing-a-network-from-an-edge-list">2. Importing a network from an edge list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exporting-your-network-object-into-json-file">3. Exporting your Network object into JSON file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">micone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Data Import and Export</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/data_import_export.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="data-import-and-export">
+<h1>Data Import and Export<a class="headerlink" href="#data-import-and-export" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="importing-a-network-from-a-table">
+<h2>1. Importing a network from a Table<a class="headerlink" href="#importing-a-network-from-a-table" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>If you have an interaction matrix stored in a <code class="docutils literal notranslate"><span class="pre">tsv</span></code> or <code class="docutils literal notranslate"><span class="pre">csv</span></code> format, you can load it into a <code class="docutils literal notranslate"><span class="pre">Network</span></code> object. Additionally we require:</dt><dd><ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">obsmeta_file</span></code> - A <code class="docutils literal notranslate"><span class="pre">csv</span></code> file containing the taxonomy information for the microbes that are a part of the matrix</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meta_file</span></code> - A <code class="docutils literal notranslate"><span class="pre">json</span></code> file containing the experimental metadata for the network</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmeta_file</span></code> - A <code class="docutils literal notranslate"><span class="pre">json</span></code> file containing the details about the computational processing done on the data</p></li>
+</ol>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">micone</span> <span class="kn">import</span> <span class="n">Network</span><span class="p">,</span> <span class="n">NetworkGroup</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
+    <span class="n">interaction_file</span><span class="p">,</span>
+    <span class="n">meta_file</span><span class="p">,</span>
+    <span class="n">cmeta_file</span><span class="p">,</span>
+    <span class="n">obsmeta_file</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">network_group</span> <span class="o">=</span> <span class="n">NetworkGroup</span><span class="p">([</span><span class="n">network</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Additionally, you can specify the matrix of pvalues and thesholds if any to be applied to the data</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>The indices of the <code class="docutils literal notranslate"><span class="pre">interaction_file</span></code> and <code class="docutils literal notranslate"><span class="pre">obsmeta_file</span></code> must match</p></li>
+<li><p>The order of indicies of <code class="docutils literal notranslate"><span class="pre">interaction_file</span></code> and <code class="docutils literal notranslate"><span class="pre">pvalue_file</span></code> must match</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="importing-a-network-from-an-edge-list">
+<h2>2. Importing a network from an edge list<a class="headerlink" href="#importing-a-network-from-an-edge-list" title="Permalink to this headline">¶</a></h2>
+<p>If you have interaction data stored in the form of an edge list</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">micone</span> <span class="kn">import</span> <span class="n">Network</span><span class="o">.</span> <span class="n">NetworkGroup</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">load_elist</span><span class="p">(</span>
+    <span class="n">elist_file</span><span class="p">,</span>
+    <span class="n">meta_file</span><span class="p">,</span>
+    <span class="n">cmeta_file</span><span class="p">,</span>
+    <span class="n">obsmeta_file</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">network_group</span> <span class="o">=</span> <span class="n">NetworkGroup</span><span class="p">([</span><span class="n">network</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>The headers of the <code class="docutils literal notranslate"><span class="pre">elist_file</span></code> must contain “source”, “target”, “weight”</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="exporting-your-network-object-into-json-file">
+<h2>3. Exporting your Network object into JSON file<a class="headerlink" href="#exporting-your-network-object-into-json-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network_group</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;network.json&quot;</span><span class="p">,</span> <span class="n">pvalue_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interaction_filter</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This <code class="docutils literal notranslate"><span class="pre">JSON</span></code> file is compatible with the <code class="docutils literal notranslate"><span class="pre">MIND</span></code> database and can be uploaded and visualized directly on the website.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="micone" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

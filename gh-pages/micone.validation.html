@@ -1,0 +1,2113 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micone.validation package &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="micone.utils package" href="micone.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">MiCoNE - Microbial Co-occurrence Network Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_import_export.html">Data Import and Export</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">micone</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="micone.html">micone package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="micone.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="micone.config.html">micone.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.conversion.html">micone.conversion package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.logging.html">micone.logging package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.main.html">micone.main package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.pipelines.html">micone.pipelines package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.setup.html">micone.setup package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.utils.html">micone.utils package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">micone.validation package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#micone-cli-module">micone.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#module-micone.mindpipe">micone.mindpipe module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#module-micone">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">micone</a> &raquo;</li>
+        
+          <li><a href="micone.html">micone package</a> &raquo;</li>
+        
+      <li>micone.validation package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/micone.validation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="micone-validation-package">
+<h1>micone.validation package<a class="headerlink" href="#micone-validation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-micone.validation.network_schema">
+<span id="micone-validation-network-schema-module"></span><h2>micone.validation.network_schema module<a class="headerlink" href="#module-micone.validation.network_schema" title="Permalink to this headline">¶</a></h2>
+<p>Module that defines the schema for interactions, pvalues, networks and their metadata</p>
+<dl class="py class">
+<dt id="micone.validation.network_schema.ChildrenmapType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">ChildrenmapType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">required</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">Undefined</span></em>, <em class="sig-param"><span class="n">serialized_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choices</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">validators</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_from</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">export_level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">serialize_when_none</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">messages</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#ChildrenmapType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.ChildrenmapType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure of the children map dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 67%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.ChildrenmapType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.network_schema.ChildrenmapType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.ChildrenmapType.validate_keys">
+<code class="sig-name descname">validate_keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#ChildrenmapType.validate_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.ChildrenmapType.validate_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.ChildrenmapType.validate_values">
+<code class="sig-name descname">validate_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#ChildrenmapType.validate_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.ChildrenmapType.validate_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.CorrelationmatrixType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">CorrelationmatrixType</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#CorrelationmatrixType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.CorrelationmatrixType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#micone.validation.network_schema.InteractionmatrixType" title="micone.validation.network_schema.InteractionmatrixType"><code class="xref py py-class docutils literal notranslate"><span class="pre">micone.validation.network_schema.InteractionmatrixType</span></code></a></p>
+<p>DataType that describes the expected structure of a correlation matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_headers</span></code>(value)</p></td>
+<td><p>Check whether the rows and columns are the same</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_isdataframe</span></code>(value)</p></td>
+<td><p>Check whether the object is a pandas DataFrame</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_symmetry</span></code>(value)</p></td>
+<td><p>Check whether the the interaction matrix is symmetric</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 70%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_data</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_data_range</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.CorrelationmatrixType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.network_schema.CorrelationmatrixType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.CorrelationmatrixType.validate_data_range">
+<code class="sig-name descname">validate_data_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#CorrelationmatrixType.validate_data_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.CorrelationmatrixType.validate_data_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.ElistType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">ElistType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">required</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">Undefined</span></em>, <em class="sig-param"><span class="n">serialized_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choices</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">validators</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_from</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">export_level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">serialize_when_none</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">messages</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#ElistType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.ElistType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure of an edge list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 72%" />
+<col style="width: 28%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_headers_index</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.ElistType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.network_schema.ElistType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.ElistType.validate_headers_index">
+<code class="sig-name descname">validate_headers_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#ElistType.validate_headers_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.ElistType.validate_headers_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.InteractionmatrixType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">InteractionmatrixType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symm</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#InteractionmatrixType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.InteractionmatrixType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure of an interaction matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>symm</strong><span class="classifier">bool, optional</span></dt><dd><p>True if interaction matrix is expected to be symmetric
+Default value is False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.InteractionmatrixType.validate_headers" title="micone.validation.network_schema.InteractionmatrixType.validate_headers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_headers</span></code></a>(value)</p></td>
+<td><p>Check whether the rows and columns are the same</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.InteractionmatrixType.validate_isdataframe" title="micone.validation.network_schema.InteractionmatrixType.validate_isdataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_isdataframe</span></code></a>(value)</p></td>
+<td><p>Check whether the object is a pandas DataFrame</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.InteractionmatrixType.validate_symmetry" title="micone.validation.network_schema.InteractionmatrixType.validate_symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_symmetry</span></code></a>(value)</p></td>
+<td><p>Check whether the the interaction matrix is symmetric</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 67%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_data</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.InteractionmatrixType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.network_schema.InteractionmatrixType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.InteractionmatrixType.validate_data">
+<code class="sig-name descname">validate_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#InteractionmatrixType.validate_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.InteractionmatrixType.validate_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.InteractionmatrixType.validate_headers">
+<code class="sig-name descname">validate_headers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#InteractionmatrixType.validate_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.InteractionmatrixType.validate_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the rows and columns are the same</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.InteractionmatrixType.validate_isdataframe">
+<code class="sig-name descname">validate_isdataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#InteractionmatrixType.validate_isdataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.InteractionmatrixType.validate_isdataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object is a pandas DataFrame</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.InteractionmatrixType.validate_symmetry">
+<code class="sig-name descname">validate_symmetry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#InteractionmatrixType.validate_symmetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.InteractionmatrixType.validate_symmetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the the interaction matrix is symmetric</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.LinkModel">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">LinkModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trusted_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_mapping</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">partial</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">app_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#LinkModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.LinkModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.deprecated.patch_models.&lt;locals&gt;.Model</span></code></p>
+<p>Model that describes the structure of one link in the network</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atoms</span></code>()</p></td>
+<td><p>Iterator for the atomic components of a model definition and relevant data that creates a 3-tuple of the field’s name, its type instance and its value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_object</span></code>([context, overrides])</p></td>
+<td><p>Get a mock object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code>(raw_data[, recursive])</p></td>
+<td><p>Converts and imports the raw data into an existing model instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.LinkModel.pvalue" title="micone.validation.network_schema.LinkModel.pvalue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pvalue</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.LinkModel.source" title="micone.validation.network_schema.LinkModel.source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.LinkModel.target" title="micone.validation.network_schema.LinkModel.target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>([partial, convert, app_data])</p></td>
+<td><p>Validates the state of the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.LinkModel.weight" title="micone.validation.network_schema.LinkModel.weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weight</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 38%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>items</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>serialize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_native</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_primitive</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.LinkModel.pvalue">
+<code class="sig-name descname">pvalue</code><em class="property"> = &lt;FloatType() instance on LinkModel as 'pvalue'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.LinkModel.pvalue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.LinkModel.source">
+<code class="sig-name descname">source</code><em class="property"> = &lt;StringType() instance on LinkModel as 'source'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.LinkModel.source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.LinkModel.target">
+<code class="sig-name descname">target</code><em class="property"> = &lt;StringType() instance on LinkModel as 'target'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.LinkModel.target" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.LinkModel.weight">
+<code class="sig-name descname">weight</code><em class="property"> = &lt;FloatType() instance on LinkModel as 'weight'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.LinkModel.weight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.LinksModel">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">LinksModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trusted_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_mapping</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">partial</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">app_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#LinksModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.LinksModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.deprecated.patch_models.&lt;locals&gt;.Model</span></code></p>
+<p>Model that describes the structure of one link in the network</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atoms</span></code>()</p></td>
+<td><p>Iterator for the atomic components of a model definition and relevant data that creates a 3-tuple of the field’s name, its type instance and its value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_object</span></code>([context, overrides])</p></td>
+<td><p>Get a mock object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code>(raw_data[, recursive])</p></td>
+<td><p>Converts and imports the raw data into an existing model instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.LinksModel.links" title="micone.validation.network_schema.LinksModel.links"><code class="xref py py-obj docutils literal notranslate"><span class="pre">links</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>([partial, convert, app_data])</p></td>
+<td><p>Validates the state of the model.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 38%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>items</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>serialize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_native</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_primitive</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.LinksModel.links">
+<code class="sig-name descname">links</code><em class="property"> = &lt;ListType(ModelType) instance on LinksModel as 'links'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.LinksModel.links" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.MetadataModel">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">MetadataModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trusted_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_mapping</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">partial</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">app_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#MetadataModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.MetadataModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.deprecated.patch_models.&lt;locals&gt;.Model</span></code></p>
+<p>Model that describes the expected structure of the network metadata input</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atoms</span></code>()</p></td>
+<td><p>Iterator for the atomic components of a model definition and relevant data that creates a 3-tuple of the field’s name, its type instance and its value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.MetadataModel.condition" title="micone.validation.network_schema.MetadataModel.condition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">condition</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.MetadataModel.description" title="micone.validation.network_schema.MetadataModel.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.MetadataModel.experimental_metadata" title="micone.validation.network_schema.MetadataModel.experimental_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">experimental_metadata</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_object</span></code>([context, overrides])</p></td>
+<td><p>Get a mock object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.MetadataModel.host" title="micone.validation.network_schema.MetadataModel.host"><code class="xref py py-obj docutils literal notranslate"><span class="pre">host</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code>(raw_data[, recursive])</p></td>
+<td><p>Converts and imports the raw data into an existing model instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.MetadataModel.location" title="micone.validation.network_schema.MetadataModel.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.MetadataModel.publication" title="micone.validation.network_schema.MetadataModel.publication"><code class="xref py py-obj docutils literal notranslate"><span class="pre">publication</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>([partial, convert, app_data])</p></td>
+<td><p>Validates the state of the model.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 38%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>items</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>serialize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_native</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_primitive</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.MetadataModel.condition">
+<code class="sig-name descname">condition</code><em class="property"> = &lt;StringType() instance on MetadataModel as 'condition'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.MetadataModel.condition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.MetadataModel.description">
+<code class="sig-name descname">description</code><em class="property"> = &lt;StringType() instance on MetadataModel as 'description'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.MetadataModel.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.MetadataModel.experimental_metadata">
+<code class="sig-name descname">experimental_metadata</code><em class="property"> = &lt;DictType(StringType) instance on MetadataModel as 'experimental_metadata'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.MetadataModel.experimental_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.MetadataModel.host">
+<code class="sig-name descname">host</code><em class="property"> = &lt;StringType() instance on MetadataModel as 'host'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.MetadataModel.host" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.MetadataModel.location">
+<code class="sig-name descname">location</code><em class="property"> = &lt;StringType() instance on MetadataModel as 'location'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.MetadataModel.location" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.MetadataModel.publication">
+<code class="sig-name descname">publication</code><em class="property"> = &lt;ModelType(PublicationModel) instance on MetadataModel as 'publication'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.MetadataModel.publication" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.NetworkmetadataModel">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">NetworkmetadataModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trusted_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_mapping</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">partial</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">app_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#NetworkmetadataModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#micone.validation.network_schema.MetadataModel" title="micone.validation.network_schema.MetadataModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">micone.validation.network_schema.MetadataModel</span></code></a></p>
+<p>Model that describes the expected structure of the network metadata</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atoms</span></code>()</p></td>
+<td><p>Iterator for the atomic components of a model definition and relevant data that creates a 3-tuple of the field’s name, its type instance and its value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.computational_metadata" title="micone.validation.network_schema.NetworkmetadataModel.computational_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">computational_metadata</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.condition" title="micone.validation.network_schema.NetworkmetadataModel.condition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">condition</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.description" title="micone.validation.network_schema.NetworkmetadataModel.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.directionality" title="micone.validation.network_schema.NetworkmetadataModel.directionality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">directionality</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.experimental_metadata" title="micone.validation.network_schema.NetworkmetadataModel.experimental_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">experimental_metadata</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_object</span></code>([context, overrides])</p></td>
+<td><p>Get a mock object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.host" title="micone.validation.network_schema.NetworkmetadataModel.host"><code class="xref py py-obj docutils literal notranslate"><span class="pre">host</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code>(raw_data[, recursive])</p></td>
+<td><p>Converts and imports the raw data into an existing model instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.interaction_type" title="micone.validation.network_schema.NetworkmetadataModel.interaction_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interaction_type</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.location" title="micone.validation.network_schema.NetworkmetadataModel.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NetworkmetadataModel.publication" title="micone.validation.network_schema.NetworkmetadataModel.publication"><code class="xref py py-obj docutils literal notranslate"><span class="pre">publication</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>([partial, convert, app_data])</p></td>
+<td><p>Validates the state of the model.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 38%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>items</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>serialize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_native</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_primitive</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.computational_metadata">
+<code class="sig-name descname">computational_metadata</code><em class="property"> = &lt;DictType(UnionType) instance on NetworkmetadataModel as 'computational_metadata'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.computational_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.condition">
+<code class="sig-name descname">condition</code><em class="property"> = &lt;StringType() instance on NetworkmetadataModel as 'condition'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.condition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.description">
+<code class="sig-name descname">description</code><em class="property"> = &lt;StringType() instance on NetworkmetadataModel as 'description'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.directionality">
+<code class="sig-name descname">directionality</code><em class="property"> = &lt;StringType() instance on NetworkmetadataModel as 'directionality'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.directionality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.experimental_metadata">
+<code class="sig-name descname">experimental_metadata</code><em class="property"> = &lt;DictType(StringType) instance on NetworkmetadataModel as 'experimental_metadata'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.experimental_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.host">
+<code class="sig-name descname">host</code><em class="property"> = &lt;StringType() instance on NetworkmetadataModel as 'host'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.host" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.interaction_type">
+<code class="sig-name descname">interaction_type</code><em class="property"> = &lt;StringType() instance on NetworkmetadataModel as 'interaction_type'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.interaction_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.location">
+<code class="sig-name descname">location</code><em class="property"> = &lt;StringType() instance on NetworkmetadataModel as 'location'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.location" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NetworkmetadataModel.publication">
+<code class="sig-name descname">publication</code><em class="property"> = &lt;ModelType(PublicationModel) instance on NetworkmetadataModel as 'publication'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NetworkmetadataModel.publication" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.NodeModel">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">NodeModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trusted_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_mapping</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">partial</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">app_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#NodeModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.NodeModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.deprecated.patch_models.&lt;locals&gt;.Model</span></code></p>
+<p>Model that describes the structure of one node in the network</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodeModel.abundance" title="micone.validation.network_schema.NodeModel.abundance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abundance</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atoms</span></code>()</p></td>
+<td><p>Iterator for the atomic components of a model definition and relevant data that creates a 3-tuple of the field’s name, its type instance and its value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodeModel.children" title="micone.validation.network_schema.NodeModel.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_object</span></code>([context, overrides])</p></td>
+<td><p>Get a mock object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodeModel.id" title="micone.validation.network_schema.NodeModel.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code>(raw_data[, recursive])</p></td>
+<td><p>Converts and imports the raw data into an existing model instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodeModel.lineage" title="micone.validation.network_schema.NodeModel.lineage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lineage</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodeModel.name" title="micone.validation.network_schema.NodeModel.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodeModel.taxid" title="micone.validation.network_schema.NodeModel.taxid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taxid</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodeModel.taxlevel" title="micone.validation.network_schema.NodeModel.taxlevel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taxlevel</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>([partial, convert, app_data])</p></td>
+<td><p>Validates the state of the model.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 38%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>items</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>serialize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_native</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_primitive</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodeModel.abundance">
+<code class="sig-name descname">abundance</code><em class="property"> = &lt;FloatType() instance on NodeModel as 'abundance'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodeModel.abundance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodeModel.children">
+<code class="sig-name descname">children</code><em class="property"> = &lt;ListType(StringType) instance on NodeModel as 'children'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodeModel.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodeModel.id">
+<code class="sig-name descname">id</code><em class="property"> = &lt;StringType() instance on NodeModel as 'id'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodeModel.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodeModel.lineage">
+<code class="sig-name descname">lineage</code><em class="property"> = &lt;StringType() instance on NodeModel as 'lineage'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodeModel.lineage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodeModel.name">
+<code class="sig-name descname">name</code><em class="property"> = &lt;StringType() instance on NodeModel as 'name'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodeModel.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodeModel.taxid">
+<code class="sig-name descname">taxid</code><em class="property"> = &lt;IntType() instance on NodeModel as 'taxid'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodeModel.taxid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodeModel.taxlevel">
+<code class="sig-name descname">taxlevel</code><em class="property"> = &lt;StringType() instance on NodeModel as 'taxlevel'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodeModel.taxlevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.NodesModel">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">NodesModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trusted_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_mapping</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">partial</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">app_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#NodesModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.NodesModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.deprecated.patch_models.&lt;locals&gt;.Model</span></code></p>
+<p>Model that describes the structure of the nodes in the network</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atoms</span></code>()</p></td>
+<td><p>Iterator for the atomic components of a model definition and relevant data that creates a 3-tuple of the field’s name, its type instance and its value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_object</span></code>([context, overrides])</p></td>
+<td><p>Get a mock object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code>(raw_data[, recursive])</p></td>
+<td><p>Converts and imports the raw data into an existing model instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.NodesModel.nodes" title="micone.validation.network_schema.NodesModel.nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>([partial, convert, app_data])</p></td>
+<td><p>Validates the state of the model.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 38%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>items</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>serialize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_native</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_primitive</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.NodesModel.nodes">
+<code class="sig-name descname">nodes</code><em class="property"> = &lt;ListType(ModelType) instance on NodesModel as 'nodes'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.NodesModel.nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.PublicationModel">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">PublicationModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trusted_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_mapping</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">partial</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">app_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#PublicationModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.PublicationModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.deprecated.patch_models.&lt;locals&gt;.Model</span></code></p>
+<p>Model that describes the expected structure of the publication input</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">atoms</span></code>()</p></td>
+<td><p>Iterator for the atomic components of a model definition and relevant data that creates a 3-tuple of the field’s name, its type instance and its value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.PublicationModel.authors" title="micone.validation.network_schema.PublicationModel.authors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">authors</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.network_schema.PublicationModel.date" title="micone.validation.network_schema.PublicationModel.date"><code class="xref py py-obj docutils literal notranslate"><span class="pre">date</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_object</span></code>([context, overrides])</p></td>
+<td><p>Get a mock object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code>(raw_data[, recursive])</p></td>
+<td><p>Converts and imports the raw data into an existing model instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.network_schema.PublicationModel.pubmed_id" title="micone.validation.network_schema.PublicationModel.pubmed_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pubmed_id</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>([partial, convert, app_data])</p></td>
+<td><p>Validates the state of the model.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 38%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>items</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>serialize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_native</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_primitive</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>values</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.PublicationModel.authors">
+<code class="sig-name descname">authors</code><em class="property"> = &lt;ListType(DictType) instance on PublicationModel as 'authors'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.PublicationModel.authors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.PublicationModel.date">
+<code class="sig-name descname">date</code><em class="property"> = &lt;DateType() instance on PublicationModel as 'date'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.PublicationModel.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.PublicationModel.pubmed_id">
+<code class="sig-name descname">pubmed_id</code><em class="property"> = &lt;StringType() instance on PublicationModel as 'pubmed_id'&gt;</em><a class="headerlink" href="#micone.validation.network_schema.PublicationModel.pubmed_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.network_schema.PvaluematrixType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.network_schema.</code><code class="sig-name descname">PvaluematrixType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symm</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#PvaluematrixType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.PvaluematrixType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#micone.validation.network_schema.InteractionmatrixType" title="micone.validation.network_schema.InteractionmatrixType"><code class="xref py py-class docutils literal notranslate"><span class="pre">micone.validation.network_schema.InteractionmatrixType</span></code></a></p>
+<p>DataType that describes the expected structure of a pvalue matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_headers</span></code>(value)</p></td>
+<td><p>Check whether the rows and columns are the same</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_isdataframe</span></code>(value)</p></td>
+<td><p>Check whether the object is a pandas DataFrame</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_symmetry</span></code>(value)</p></td>
+<td><p>Check whether the the interaction matrix is symmetric</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 70%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_data</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_data_range</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.network_schema.PvaluematrixType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.network_schema.PvaluematrixType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.network_schema.PvaluematrixType.validate_data_range">
+<code class="sig-name descname">validate_data_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/network_schema.html#PvaluematrixType.validate_data_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.network_schema.PvaluematrixType.validate_data_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-micone.validation.otu_schema">
+<span id="micone-validation-otu-schema-module"></span><h2>micone.validation.otu_schema module<a class="headerlink" href="#module-micone.validation.otu_schema" title="Permalink to this headline">¶</a></h2>
+<p>Module that defines the schema for a valid OTU table</p>
+<dl class="py class">
+<dt id="micone.validation.otu_schema.BiomType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.otu_schema.</code><code class="sig-name descname">BiomType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">norm</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#BiomType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.BiomType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure and format for the <cite>biom.Table</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>norm</strong><span class="classifier">bool, optional</span></dt><dd><p>True if abundances are normalized
+Default value is False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.otu_schema.BiomType.validate_data" title="micone.validation.otu_schema.BiomType.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>(value)</p></td>
+<td><p>Check whether the data in the Table is valid</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.otu_schema.BiomType.validate_index" title="micone.validation.otu_schema.BiomType.validate_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_index</span></code></a>(value)</p></td>
+<td><p>Check whether the indices in the Table are valid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.otu_schema.BiomType.validate_istable" title="micone.validation.otu_schema.BiomType.validate_istable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_istable</span></code></a>(value)</p></td>
+<td><p>Check whether the object is a <cite>biom.Table</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.otu_schema.BiomType.validate_obs_metadata" title="micone.validation.otu_schema.BiomType.validate_obs_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_obs_metadata</span></code></a>(value)</p></td>
+<td><p>Check whether the observation metadata in the Table is valid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.otu_schema.BiomType.validate_sample_metadata" title="micone.validation.otu_schema.BiomType.validate_sample_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_sample_metadata</span></code></a>(value)</p></td>
+<td><p>Check whether the sample metadata in the Table is valid</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.validation.otu_schema.BiomType.validate_samples" title="micone.validation.otu_schema.BiomType.validate_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_samples</span></code></a>(value)</p></td>
+<td><p>Check whether the samples (columns) of the Table are valid</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 67%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.otu_schema.BiomType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.otu_schema.BiomType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.BiomType.validate_data">
+<code class="sig-name descname">validate_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#BiomType.validate_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.BiomType.validate_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the data in the Table is valid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.BiomType.validate_index">
+<code class="sig-name descname">validate_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#BiomType.validate_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.BiomType.validate_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the indices in the Table are valid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.BiomType.validate_istable">
+<code class="sig-name descname">validate_istable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#BiomType.validate_istable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.BiomType.validate_istable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object is a <cite>biom.Table</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.BiomType.validate_obs_metadata">
+<code class="sig-name descname">validate_obs_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#BiomType.validate_obs_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.BiomType.validate_obs_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the observation metadata in the Table is valid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.BiomType.validate_sample_metadata">
+<code class="sig-name descname">validate_sample_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#BiomType.validate_sample_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.BiomType.validate_sample_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the sample metadata in the Table is valid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.BiomType.validate_samples">
+<code class="sig-name descname">validate_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#BiomType.validate_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.BiomType.validate_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the samples (columns) of the Table are valid</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.otu_schema.DataType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.otu_schema.</code><code class="sig-name descname">DataType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">norm</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#DataType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.DataType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>” DataType that describes the expected structure and format for abundance values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 71%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_data_npfloat</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_data_range</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.otu_schema.DataType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.otu_schema.DataType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.DataType.validate_data_npfloat">
+<code class="sig-name descname">validate_data_npfloat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#DataType.validate_data_npfloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.DataType.validate_data_npfloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.DataType.validate_data_range">
+<code class="sig-name descname">validate_data_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#DataType.validate_data_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.DataType.validate_data_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.otu_schema.HeaderType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.otu_schema.</code><code class="sig-name descname">HeaderType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">required</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">Undefined</span></em>, <em class="sig-param"><span class="n">serialized_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choices</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">validators</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_from</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">export_level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">serialize_when_none</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">messages</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#HeaderType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.HeaderType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure and format for the sample headers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.otu_schema.HeaderType.validate_header" title="micone.validation.otu_schema.HeaderType.validate_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_header</span></code></a>(value)</p></td>
+<td><p>Check whether the header is valid</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 67%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.otu_schema.HeaderType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.otu_schema.HeaderType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.HeaderType.validate_header">
+<code class="sig-name descname">validate_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#HeaderType.validate_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.HeaderType.validate_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the header is valid</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.otu_schema.IndexType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.otu_schema.</code><code class="sig-name descname">IndexType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">required</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">Undefined</span></em>, <em class="sig-param"><span class="n">serialized_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choices</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">validators</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_from</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">export_level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">serialize_when_none</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">messages</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#IndexType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.IndexType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure and format for the OTU indices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 71%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_index_str</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_index_unique</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.otu_schema.IndexType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.otu_schema.IndexType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.IndexType.validate_index_str">
+<code class="sig-name descname">validate_index_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#IndexType.validate_index_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.IndexType.validate_index_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.IndexType.validate_index_unique">
+<code class="sig-name descname">validate_index_unique</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#IndexType.validate_index_unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.IndexType.validate_index_unique" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.otu_schema.ObsmetaType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.otu_schema.</code><code class="sig-name descname">ObsmetaType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">required</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">Undefined</span></em>, <em class="sig-param"><span class="n">serialized_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choices</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">validators</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_from</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">export_level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">serialize_when_none</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">messages</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#ObsmetaType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.ObsmetaType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure and format for the observation metadata</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 74%" />
+<col style="width: 26%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_index</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_obsmeta_data</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_obsmeta_headers</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.otu_schema.ObsmetaType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.otu_schema.ObsmetaType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.ObsmetaType.validate_index">
+<code class="sig-name descname">validate_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#ObsmetaType.validate_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.ObsmetaType.validate_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.ObsmetaType.validate_obsmeta_data">
+<code class="sig-name descname">validate_obsmeta_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#ObsmetaType.validate_obsmeta_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.ObsmetaType.validate_obsmeta_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.ObsmetaType.validate_obsmeta_headers">
+<code class="sig-name descname">validate_obsmeta_headers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#ObsmetaType.validate_obsmeta_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.ObsmetaType.validate_obsmeta_headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="micone.validation.otu_schema.SamplemetaType">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.otu_schema.</code><code class="sig-name descname">SamplemetaType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">required</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">Undefined</span></em>, <em class="sig-param"><span class="n">serialized_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choices</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">validators</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deserialize_from</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">export_level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">serialize_when_none</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">messages</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#SamplemetaType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.SamplemetaType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">schematics.types.base.BaseType</span></code></p>
+<p>DataType that describes the expected structure and format for the sample metadata</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>default</strong></dt><dd></dd>
+<dt><strong>native_type</strong></dt><dd></dd>
+<dt><strong>primitive_type</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(value[, context])</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_native</span></code>(value[, context])</p></td>
+<td><p>Convert untrusted data to a richer Python construct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_primitive</span></code>(value[, context])</p></td>
+<td><p>Convert internal data to a value safe to serialize.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>(value[, context])</p></td>
+<td><p>Validate the field and return a converted value or raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> with a list of errors raised by the validation chain.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 76%" />
+<col style="width: 24%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>check_required</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>convert</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>export</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_export_level</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_input_keys</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>mock</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pre_setattr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_choices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_samplemeta_columns</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>validate_samplemeta_index</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate_structure</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="micone.validation.otu_schema.SamplemetaType.MESSAGES">
+<code class="sig-name descname">MESSAGES</code><em class="property"> = {'choices': &lt;schematics.translator.LazyText object&gt;, 'required': &lt;schematics.translator.LazyText object&gt;}</em><a class="headerlink" href="#micone.validation.otu_schema.SamplemetaType.MESSAGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.SamplemetaType.validate_samplemeta_columns">
+<code class="sig-name descname">validate_samplemeta_columns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#SamplemetaType.validate_samplemeta_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.SamplemetaType.validate_samplemeta_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.SamplemetaType.validate_samplemeta_index">
+<code class="sig-name descname">validate_samplemeta_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#SamplemetaType.validate_samplemeta_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.SamplemetaType.validate_samplemeta_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_schema.SamplemetaType.validate_structure">
+<code class="sig-name descname">validate_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_schema.html#SamplemetaType.validate_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_schema.SamplemetaType.validate_structure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-micone.validation.otu_validator">
+<span id="micone-validation-otu-validator-module"></span><h2>micone.validation.otu_validator module<a class="headerlink" href="#module-micone.validation.otu_validator" title="Permalink to this headline">¶</a></h2>
+<p>Module that deals with the validation of an OTU table</p>
+<dl class="py class">
+<dt id="micone.validation.otu_validator.OtuValidator">
+<em class="property">class </em><code class="sig-prename descclassname">micone.validation.otu_validator.</code><code class="sig-name descname">OtuValidator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ext</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/validation/otu_validator.html#OtuValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_validator.OtuValidator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Validates input <cite>OTU</cite> table file and returns the <cite>Otu</cite> instance of the file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dtype</strong><span class="classifier">{‘biom’, ‘tsv’}</span></dt><dd><p>The type of OtuValidator instance to be created</p>
+</dd>
+<dt><strong>ext</strong><span class="classifier">str, optional</span></dt><dd><p>The extension of the file if other than supported extensions
+Supported extensions:
+‘tsv’ dtype: ‘tsv’, ‘txt’, ‘counts’
+‘biom’ dtype: ‘biom’, ‘hdf5’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValidationError</dt><dd><p>If any of the files do not conform to the schema outlines in <cite>otu_schema</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>We assume that the extension dictates the filetype</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#micone.validation.otu_validator.OtuValidator.configuration" title="micone.validation.otu_validator.OtuValidator.configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configuration</span></code></a><span class="classifier">Dict[str, Any]</span></dt><dd><p>Dictionary showing the current configuration of the instance</p>
+</dd>
+<dt><strong>validator</strong><span class="classifier">BiomType</span></dt><dd><p>The schmatics validator instance</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.validation.otu_validator.OtuValidator.load_validate" title="micone.validation.otu_validator.OtuValidator.load_validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_validate</span></code></a>(otu_file[, meta_file, tax_file])</p></td>
+<td><p>Load the data and validate</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="micone.validation.otu_validator.OtuValidator.configuration">
+<em class="property">property </em><code class="sig-name descname">configuration</code><a class="headerlink" href="#micone.validation.otu_validator.OtuValidator.configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary showing the current configuration of the instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Dict[str, Union[str, List[str]]]</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.validation.otu_validator.OtuValidator.load_validate">
+<code class="sig-name descname">load_validate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">otu_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">meta_file</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pathlib.Path<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tax_file</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pathlib.Path<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; biom.table.Table<a class="reference internal" href="_modules/micone/validation/otu_validator.html#OtuValidator.load_validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.validation.otu_validator.OtuValidator.load_validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the data and validate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>otu_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the <cite>OTU</cite> counts table</p>
+</dd>
+<dt><strong>meta_file</strong><span class="classifier">pathlib.Path, optional</span></dt><dd><p>The path to the sample metadata file
+This argument is required if <cite>dtype</cite> is ‘tsv’</p>
+</dd>
+<dt><strong>tax_file</strong><span class="classifier">pathlib.Path, optional</span></dt><dd><p>The path to the taxonomy file
+This argument is required if <cite>dtype</cite> is ‘tsv’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Table</dt><dd><p><cite>biom.Table</cite> containing all the data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-micone.validation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-micone.validation" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="micone.utils.html" class="btn btn-neutral float-left" title="micone.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

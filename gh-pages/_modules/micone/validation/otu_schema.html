@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micone.validation.otu_schema &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">MiCoNE - Microbial Co-occurrence Network Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_import_export.html">Data Import and Export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">micone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>micone.validation.otu_schema</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for micone.validation.otu_schema</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Module that defines the schema for a valid OTU table</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">biom</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">schematics.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">schematics.types</span> <span class="kn">import</span> <span class="n">BaseType</span>
+
+
+<div class="viewcode-block" id="HeaderType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.HeaderType">[docs]</a><span class="k">class</span> <span class="nc">HeaderType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        DataType that describes the expected structure and format for the sample headers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HeaderType.validate_header"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.HeaderType.validate_header">[docs]</a>    <span class="k">def</span> <span class="nf">validate_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the header is valid &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid header. All samples must be strings&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="IndexType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.IndexType">[docs]</a><span class="k">class</span> <span class="nc">IndexType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataType that describes the expected structure and format for the OTU indices &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IndexType.validate_index_str"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.IndexType.validate_index_str">[docs]</a>    <span class="k">def</span> <span class="nf">validate_index_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid index. All indices must be strings&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IndexType.validate_index_unique"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.IndexType.validate_index_unique">[docs]</a>    <span class="k">def</span> <span class="nf">validate_index_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid index. All indices must be unqiue&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DataType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.DataType">[docs]</a><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot; DataType that describes the expected structure and format for abundance values &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">norm</span>
+
+<div class="viewcode-block" id="DataType.validate_data_npfloat"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.DataType.validate_data_npfloat">[docs]</a>    <span class="k">def</span> <span class="nf">validate_data_npfloat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;float64&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid data. Abundances must be float64&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataType.validate_data_range"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.DataType.validate_data_range">[docs]</a>    <span class="k">def</span> <span class="nf">validate_data_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">dense</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid data. Abundances cannot be negative&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid data. Abundances are not normalized&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid data. Abundances are not normalized&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SamplemetaType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.SamplemetaType">[docs]</a><span class="k">class</span> <span class="nc">SamplemetaType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataType that describes the expected structure and format for the sample metadata &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SamplemetaType.validate_samplemeta_columns"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.SamplemetaType.validate_samplemeta_columns">[docs]</a>    <span class="k">def</span> <span class="nf">validate_samplemeta_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid columns in sample metdata&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SamplemetaType.validate_samplemeta_index"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.SamplemetaType.validate_samplemeta_index">[docs]</a>    <span class="k">def</span> <span class="nf">validate_samplemeta_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">index</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid index in sample metadata. All indices must be unqiue&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SamplemetaType.validate_structure"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.SamplemetaType.validate_structure">[docs]</a>    <span class="k">def</span> <span class="nf">validate_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid index. All indices must be strings&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid sample metadata structure. Possibly incorrect header&quot;</span>
+            <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ObsmetaType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.ObsmetaType">[docs]</a><span class="k">class</span> <span class="nc">ObsmetaType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataType that describes the expected structure and format for the observation metadata &quot;&quot;&quot;</span>
+
+    <span class="n">_req_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Kingdom&quot;</span><span class="p">,</span> <span class="s2">&quot;Phylum&quot;</span><span class="p">,</span> <span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="s2">&quot;Order&quot;</span><span class="p">,</span> <span class="s2">&quot;Family&quot;</span><span class="p">,</span> <span class="s2">&quot;Genus&quot;</span><span class="p">,</span> <span class="s2">&quot;Species&quot;</span><span class="p">]</span>
+    <span class="n">_extra_key</span> <span class="o">=</span> <span class="s2">&quot;Confidence&quot;</span>
+
+<div class="viewcode-block" id="ObsmetaType.validate_index"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.ObsmetaType.validate_index">[docs]</a>    <span class="k">def</span> <span class="nf">validate_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Invalid index. All indices must be strings&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ObsmetaType.validate_obsmeta_headers"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.ObsmetaType.validate_obsmeta_headers">[docs]</a>    <span class="k">def</span> <span class="nf">validate_obsmeta_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_req_keys</span> <span class="ow">and</span> <span class="n">col</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_key</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Invalid observation metadata. Unknown attribute </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> present&quot;</span>
+                <span class="p">)</span>
+        <span class="c1"># Check if keys are in order</span>
+        <span class="c1"># i.e. if genus is present everything above that level is present</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_req_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_req_keys</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ind</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Invalid observation metadata. Required attribute </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> not present&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span></div>
+
+<div class="viewcode-block" id="ObsmetaType.validate_obsmeta_data"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.ObsmetaType.validate_obsmeta_data">[docs]</a>    <span class="k">def</span> <span class="nf">validate_obsmeta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_key</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">confidence</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_extra_key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">confidence</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+                <span class="n">cond1</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">confidence</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+                <span class="n">cond2</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">confidence</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cond1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cond2</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                        <span class="s2">&quot;Invalid observation metadata. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_extra_key</span><span class="si">}</span><span class="s2"> must have a value between 0 and 1&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                    <span class="s2">&quot;Invalid observation metadata. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_extra_key</span><span class="si">}</span><span class="s2"> column must be of type float&quot;</span>
+                <span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extra_key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">filt_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;Species&quot;</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">filt_data</span><span class="p">[</span>
+                    <span class="o">~</span><span class="n">filt_data</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[a-zA-Z0-9-._ ]+(?&lt;! )$&quot;</span><span class="p">)</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+                <span class="c1"># if query:</span>
+                <span class="c1">#     raise ValidationError(</span>
+                <span class="c1">#         &quot;Invalid observation metadata. &quot;</span>
+                <span class="c1">#         f&quot;Taxonomy names are not standard: {query} is not allowed in {level}&quot;</span>
+                <span class="c1">#     )</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">filt_data</span><span class="p">[</span>
+                    <span class="o">~</span><span class="n">filt_data</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[a-zA-Z0-9-._ ]+(?&lt;! )$&quot;</span><span class="p">)</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">any</span><span class="p">()</span></div></div>
+                <span class="c1"># if query:</span>
+                <span class="c1">#     raise ValidationError(</span>
+                <span class="c1">#         &quot;Invalid observation metadata. &quot;</span>
+                <span class="c1">#         f&quot;Taxonomy names are not standard: {query} is not allowed in {level}&quot;</span>
+                <span class="c1">#     )</span>
+
+
+<div class="viewcode-block" id="BiomType"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.BiomType">[docs]</a><span class="k">class</span> <span class="nc">BiomType</span><span class="p">(</span><span class="n">BaseType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        DataType that describes the expected structure and format for the `biom.Table`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        norm : bool, optional</span>
+<span class="sd">            True if abundances are normalized</span>
+<span class="sd">            Default value is False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">norm</span>
+
+<div class="viewcode-block" id="BiomType.validate_istable"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.BiomType.validate_istable">[docs]</a>    <span class="k">def</span> <span class="nf">validate_istable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the object is a `biom.Table` &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Object must be a `biom.Table` instance&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BiomType.validate_samples"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.BiomType.validate_samples">[docs]</a>    <span class="k">def</span> <span class="nf">validate_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the samples (columns) of the Table are valid &quot;&quot;&quot;</span>
+        <span class="n">header_type</span> <span class="o">=</span> <span class="n">HeaderType</span><span class="p">()</span>
+        <span class="n">header_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BiomType.validate_index"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.BiomType.validate_index">[docs]</a>    <span class="k">def</span> <span class="nf">validate_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the indices in the Table are valid &quot;&quot;&quot;</span>
+        <span class="n">index_type</span> <span class="o">=</span> <span class="n">IndexType</span><span class="p">()</span>
+        <span class="n">index_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BiomType.validate_data"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.BiomType.validate_data">[docs]</a>    <span class="k">def</span> <span class="nf">validate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the data in the Table is valid &quot;&quot;&quot;</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">DataType</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">)</span>
+        <span class="n">data_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BiomType.validate_sample_metadata"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.BiomType.validate_sample_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">validate_sample_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the sample metadata in the Table is valid &quot;&quot;&quot;</span>
+        <span class="n">samplemeta_type</span> <span class="o">=</span> <span class="n">SamplemetaType</span><span class="p">()</span>
+        <span class="n">sample_metadata</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">metadata_to_dataframe</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span>
+        <span class="n">samplemeta_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">sample_metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BiomType.validate_obs_metadata"><a class="viewcode-back" href="../../../micone.validation.html#micone.validation.otu_schema.BiomType.validate_obs_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">validate_obs_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check whether the observation metadata in the Table is valid &quot;&quot;&quot;</span>
+        <span class="n">obsmeta_type</span> <span class="o">=</span> <span class="n">ObsmetaType</span><span class="p">()</span>
+        <span class="n">obs_metadata</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">metadata_to_dataframe</span><span class="p">(</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
+        <span class="n">obsmeta_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">obs_metadata</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

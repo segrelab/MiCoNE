@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micone.pipelines package &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="micone.setup package" href="micone.setup.html" />
+    <link rel="prev" title="micone.main package" href="micone.main.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">MiCoNE - Microbial Co-occurrence Network Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_import_export.html">Data Import and Export</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">micone</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="micone.html">micone package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="micone.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="micone.config.html">micone.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.conversion.html">micone.conversion package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.logging.html">micone.logging package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.main.html">micone.main package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">micone.pipelines package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.setup.html">micone.setup package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.utils.html">micone.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.validation.html">micone.validation package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#micone-cli-module">micone.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#module-micone.mindpipe">micone.mindpipe module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#module-micone">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">micone</a> &raquo;</li>
+        
+          <li><a href="micone.html">micone package</a> &raquo;</li>
+        
+      <li>micone.pipelines package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/micone.pipelines.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="micone-pipelines-package">
+<h1>micone.pipelines package<a class="headerlink" href="#micone-pipelines-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-micone.pipelines.command">
+<span id="micone-pipelines-command-module"></span><h2>micone.pipelines.command module<a class="headerlink" href="#module-micone.pipelines.command" title="Permalink to this headline">¶</a></h2>
+<p>Module that handles the execution of subprocesses and parsing of their outputs</p>
+<dl class="py class">
+<dt id="micone.pipelines.command.Command">
+<em class="property">class </em><code class="sig-prename descclassname">micone.pipelines.command.</code><code class="sig-name descname">Command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">profile</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micone/pipelines/command.html#Command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.pipelines.command.Command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that wraps functionality for running subprocesses and jobs on the cluster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cmd</strong><span class="classifier">str</span></dt><dd><p>The command to be executed</p>
+</dd>
+<dt><strong>profile</strong><span class="classifier">{‘local’, ‘sge’}</span></dt><dd><p>The execution environment</p>
+</dd>
+<dt><strong>timeout</strong><span class="classifier">int, optional</span></dt><dd><p>The time limit for the command
+If a process exceeds this time then it will be terminated
+Default is 1000</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Other Parameters</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>project</strong><span class="classifier">str, optional</span></dt><dd><p>The project under which to run the pipeline on the ‘sge’
+Default value is None</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#micone.pipelines.command.Command.cmd" title="micone.pipelines.command.Command.cmd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cmd</span></code></a><span class="classifier">str</span></dt><dd><p>The command that will be executed</p>
+</dd>
+<dt><strong>profile</strong><span class="classifier">{‘local’, ‘sge’}</span></dt><dd><p>The execution environment</p>
+</dd>
+<dt><strong>project</strong><span class="classifier">str</span></dt><dd><p>The project under which to run the pipeline on the ‘sge’</p>
+</dd>
+<dt><a class="reference internal" href="#micone.pipelines.command.Command.output" title="micone.pipelines.command.Command.output"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output</span></code></a><span class="classifier">str</span></dt><dd><p>Returns the output generated during execution of the command</p>
+</dd>
+<dt><a class="reference internal" href="#micone.pipelines.command.Command.error" title="micone.pipelines.command.Command.error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span></code></a><span class="classifier">str</span></dt><dd><p>Returns the error generated during execution of the command</p>
+</dd>
+<dt><a class="reference internal" href="#micone.pipelines.command.Command.status" title="micone.pipelines.command.Command.status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status</span></code></a><span class="classifier">str</span></dt><dd><p>Return the status of the command execution</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.pipelines.command.Command.log" title="micone.pipelines.command.Command.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a>()</p></td>
+<td><p>Logs the stdout and stderr of the command execution to the log_file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.pipelines.command.Command.proc_cmd_sync" title="micone.pipelines.command.Command.proc_cmd_sync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">proc_cmd_sync</span></code></a>()</p></td>
+<td><p>Check whether the Command instance and subprocess.Popen process are in sync</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.pipelines.command.Command.run" title="micone.pipelines.command.Command.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>([cwd])</p></td>
+<td><p>Executes the command with the correct profile and resources</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#micone.pipelines.command.Command.update" title="micone.pipelines.command.Command.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(cmd)</p></td>
+<td><p>Update the <cite>cmd</cite> of the current Command instance</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#micone.pipelines.command.Command.wait" title="micone.pipelines.command.Command.wait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait</span></code></a>()</p></td>
+<td><p>Wait for the process to complete or terminate</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.cmd">
+<em class="property">property </em><code class="sig-name descname">cmd</code><a class="headerlink" href="#micone.pipelines.command.Command.cmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command that will be executed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.error">
+<em class="property">property </em><code class="sig-name descname">error</code><a class="headerlink" href="#micone.pipelines.command.Command.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the error generated during execution of the command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.log">
+<code class="sig-name descname">log</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/micone/pipelines/command.html#Command.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.pipelines.command.Command.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs the stdout and stderr of the command execution to the log_file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.output">
+<em class="property">property </em><code class="sig-name descname">output</code><a class="headerlink" href="#micone.pipelines.command.Command.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the output generated during execution of the command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.proc_cmd_sync">
+<code class="sig-name descname">proc_cmd_sync</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/micone/pipelines/command.html#Command.proc_cmd_sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.pipelines.command.Command.proc_cmd_sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the Command instance and subprocess.Popen process are in sync</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool</dt><dd><p>True if both the <cite>cmd</cite> and <cite>process</cite> are the same</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="micone.pipelines.command.Command.process">
+<code class="sig-name descname">process</code><em class="property">: Optional<span class="p">[</span>subprocess.Popen<span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#micone.pipelines.command.Command.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cwd</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; subprocess.Popen<a class="reference internal" href="_modules/micone/pipelines/command.html#Command.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.pipelines.command.Command.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the command with the correct profile and resources</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cwd</strong><span class="classifier">str, optional</span></dt><dd><p>The directory in which the command is to be run
+Default is None which uses the current working directory</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int</dt><dd><p>The exit status of the command</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.status">
+<em class="property">property </em><code class="sig-name descname">status</code><a class="headerlink" href="#micone.pipelines.command.Command.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the status of the command execution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>str</dt><dd><p>One of {‘success’, ‘failure’, ‘in progress’, ‘not started’}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/micone/pipelines/command.html#Command.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.pipelines.command.Command.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the <cite>cmd</cite> of the current Command instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cmd</strong><span class="classifier">str</span></dt><dd><p>The new command to be executed</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="micone.pipelines.command.Command.wait">
+<code class="sig-name descname">wait</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/micone/pipelines/command.html#Command.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.pipelines.command.Command.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the process to complete or terminate</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="micone-pipelines-helpers-module">
+<h2>micone.pipelines.helpers module<a class="headerlink" href="#micone-pipelines-helpers-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="micone-pipelines-pipeline-module">
+<h2>micone.pipelines.pipeline module<a class="headerlink" href="#micone-pipelines-pipeline-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="micone-pipelines-process-module">
+<h2>micone.pipelines.process module<a class="headerlink" href="#micone-pipelines-process-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="micone-pipelines-template-module">
+<h2>micone.pipelines.template module<a class="headerlink" href="#micone-pipelines-template-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="micone.setup.html" class="btn btn-neutral float-right" title="micone.setup package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="micone.main.html" class="btn btn-neutral float-left" title="micone.main package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

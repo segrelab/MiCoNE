@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micone.conversion package &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="micone.logging package" href="micone.logging.html" />
+    <link rel="prev" title="micone.config package" href="micone.config.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">MiCoNE - Microbial Co-occurrence Network Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_import_export.html">Data Import and Export</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">micone</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="micone.html">micone package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="micone.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="micone.config.html">micone.config package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">micone.conversion package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.logging.html">micone.logging package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.main.html">micone.main package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.pipelines.html">micone.pipelines package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.setup.html">micone.setup package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.utils.html">micone.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="micone.validation.html">micone.validation package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#micone-cli-module">micone.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#module-micone.mindpipe">micone.mindpipe module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="micone.html#module-micone">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">micone</a> &raquo;</li>
+        
+          <li><a href="micone.html">micone package</a> &raquo;</li>
+        
+      <li>micone.conversion package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/micone.conversion.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="micone-conversion-package">
+<h1>micone.conversion package<a class="headerlink" href="#micone-conversion-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-micone.conversion.network_converter">
+<span id="micone-conversion-network-converter-module"></span><h2>micone.conversion.network_converter module<a class="headerlink" href="#module-micone.conversion.network_converter" title="Permalink to this headline">¶</a></h2>
+<p>Module containing methods that convert networks into various formats</p>
+<dl class="py function">
+<dt id="micone.conversion.network_converter.json_to_elist">
+<code class="sig-prename descclassname">micone.conversion.network_converter.</code><code class="sig-name descname">json_to_elist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">out_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/micone/conversion/network_converter.html#json_to_elist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.conversion.network_converter.json_to_elist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Network file from json to elist format
+Note that only the edge attributes can be converted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>in_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the json formatted network file</p>
+</dd>
+<dt><strong>out_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the elist formatted network file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-micone.conversion.otu_converter">
+<span id="micone-conversion-otu-converter-module"></span><h2>micone.conversion.otu_converter module<a class="headerlink" href="#module-micone.conversion.otu_converter" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-micone.conversion.taxmetadata_converter">
+<span id="micone-conversion-taxmetadata-converter-module"></span><h2>micone.conversion.taxmetadata_converter module<a class="headerlink" href="#module-micone.conversion.taxmetadata_converter" title="Permalink to this headline">¶</a></h2>
+<p>Module containing methods that convert taxonomy metadata into various formats</p>
+<dl class="py function">
+<dt id="micone.conversion.taxmetadata_converter.default_to_qiime2">
+<code class="sig-prename descclassname">micone.conversion.taxmetadata_converter.</code><code class="sig-name descname">default_to_qiime2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">out_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/micone/conversion/taxmetadata_converter.html#default_to_qiime2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.conversion.taxmetadata_converter.default_to_qiime2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Taxonomy metadata file from default format to qiime2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>in_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the default format input file</p>
+</dd>
+<dt><strong>out_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the qiime2 formatted output file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="micone.conversion.taxmetadata_converter.qiime1_to_default">
+<code class="sig-prename descclassname">micone.conversion.taxmetadata_converter.</code><code class="sig-name descname">qiime1_to_default</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">out_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/micone/conversion/taxmetadata_converter.html#qiime1_to_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.conversion.taxmetadata_converter.qiime1_to_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Taxonomy metadata file from qiime1 to default format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>in_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the qiime1 formatted input file</p>
+</dd>
+<dt><strong>out_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the default format output file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="micone.conversion.taxmetadata_converter.qiime2_to_default">
+<code class="sig-prename descclassname">micone.conversion.taxmetadata_converter.</code><code class="sig-name descname">qiime2_to_default</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">out_file</span><span class="p">:</span> <span class="n">pathlib.Path</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/micone/conversion/taxmetadata_converter.html#qiime2_to_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micone.conversion.taxmetadata_converter.qiime2_to_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Taxonomy metadata file from qiime2 to default format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>in_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the qiime2 formatted input file</p>
+</dd>
+<dt><strong>out_file</strong><span class="classifier">pathlib.Path</span></dt><dd><p>The path to the default format output file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-micone.conversion">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-micone.conversion" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="micone.logging.html" class="btn btn-neutral float-right" title="micone.logging package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="micone.config.html" class="btn btn-neutral float-left" title="micone.config package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

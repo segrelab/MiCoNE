@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MiCoNE - Microbial Co-occurrence Network Explorer &mdash; Microbial Co-occurrence Network Explorer 0.5.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to MiCoNE’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Microbial Co-occurrence Network Explorer
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MiCoNE - Microbial Co-occurrence Network Explorer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_import_export.html">Data Import and Export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">micone</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Microbial Co-occurrence Network Explorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>MiCoNE - Microbial Co-occurrence Network Explorer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="micone-microbial-co-occurrence-network-explorer">
+<h1>MiCoNE - Microbial Co-occurrence Network Explorer<a class="headerlink" href="#micone-microbial-co-occurrence-network-explorer" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://travis-ci.com/dileep-kishore/mindpipe"><img alt="Build Status" src="https://travis-ci.com/dileep-kishore/mindpipe.svg?token=qCMKydrUTvcJ87J6czex&amp;branch=master" /></a> <a class="reference external" href="https://www.codefactor.io/repository/github/segrelab/micone"><img alt="CodeFactor" src="https://www.codefactor.io/repository/github/segrelab/micone/badge" /></a> <a class="reference external" href="https://pyup.io/repos/github/segrelab/MiCoNE/"><img alt="Updates" src="https://pyup.io/repos/github/segrelab/MiCoNE/shield.svg" /></a> <a class="reference external" href="https://github.com/ambv/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
+<p><code class="docutils literal notranslate"><span class="pre">MiCoNE</span></code>, is a flexible and modular pipeline for 16S data analysis. It
+incorporates various popular, publicly available tools as well as custom
+Python modules and scripts to facilitate inference of co-occurrence
+networks from 16S data.</p>
+<ul class="simple">
+<li><p>Free software: MIT license</p></li>
+<li><p>Documentation: <a class="reference external" href="https://segrelab.github.io/MiCoNE">https://segrelab.github.io/MiCoNE</a>.</p></li>
+</ul>
+<p>Manuscript in preparation.</p>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Plug and play architecture: allows easy additions and removal of new
+tools</p></li>
+<li><p>Flexible and portable: allows running the pipeline on local machine,
+compute cluster or the cloud with minimal configuration change. Uses
+the <a class="reference external" href="www.nextflow.io">nextflow</a> under the hood</p></li>
+<li><p>Parallelization: automatic parallelization both within and across
+samples</p></li>
+<li><p>Ease of use: available as <code class="docutils literal notranslate"><span class="pre">conda</span></code> package as well as a <code class="docutils literal notranslate"><span class="pre">docker</span></code>
+container</p></li>
+</ul>
+</div>
+<div class="section" id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default">
+<img alt="pipeline" src="_images/pipeline.png" />
+</div>
+<p>It supports the conversion of raw 16S sequence data or counts matrices
+into co-occurrence networks through multiple methods. Each process in
+the pipeline supports alternate tools for performing the same task,
+users can use the configuration file to change these values.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">MiCoNE</span></code> pipelines comes with an easy to use CLI. To get a list of
+subcommands you can type:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>micone --help
+</pre></div>
+</div>
+<p>Supported subcommands: 1. <code class="docutils literal notranslate"><span class="pre">init</span></code> - Creates <code class="docutils literal notranslate"><span class="pre">conda</span></code> environments for
+various pipeline processes 2. <code class="docutils literal notranslate"><span class="pre">run</span></code> - The main subcommand that runs
+the pipeline 3. <code class="docutils literal notranslate"><span class="pre">clean</span></code> - Cleans temporary data, log files and other
+extraneous files</p>
+<p>To run the pipeline:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>micone run -p <span class="nb">local</span> -c run.toml -m <span class="m">4</span>
+</pre></div>
+</div>
+<p>This runs the pipeline in the <code class="docutils literal notranslate"><span class="pre">local</span></code> machine using <code class="docutils literal notranslate"><span class="pre">run.toml</span></code> for
+the pipeline configuration and with a maximum of 4 processes in parallel
+at a time.</p>
+</div>
+<div class="section" id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
+<p>This package was created with
+<a class="reference external" href="https://github.com/audreyr/cookiecutter">Cookiecutter</a> and the
+<a class="reference external" href="https://github.com/audreyr/cookiecutter-pypackage">audreyr/cookiecutter-pypackage</a>
+project template.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to MiCoNE’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Dileep Kishore
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
