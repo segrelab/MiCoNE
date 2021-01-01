@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 from schematics.exceptions import DataError, ValidationError
 
-from mindpipe.validation import (
+from micone.validation import (
     BiomType,
     ObsmetaType,
     CorrelationmatrixType,

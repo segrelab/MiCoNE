@@ -5,8 +5,8 @@
 import pandas as pd
 import pytest
 
-from mindpipe.conversion import TAX_CONVERTERS
-from mindpipe.validation.otu_schema import ObsmetaType
+from micone.conversion import TAX_CONVERTERS
+from micone.validation.otu_schema import ObsmetaType
 
 
 @pytest.mark.usefixtures("tax_conversion_data", "tmpdir")

@@ -4,7 +4,7 @@
 
 import pytest
 
-from mindpipe.main import Lineage
+from micone.main import Lineage
 
 
 @pytest.mark.usefixtures("lineage_data")

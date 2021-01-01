@@ -8,7 +8,7 @@ import networkx as nx
 import pandas as pd
 import pytest
 
-from mindpipe.main import Network
+from micone.main import Network
 
 
 @pytest.mark.usefixtures("correlation_data", "correlation_files", "network_elist_files")

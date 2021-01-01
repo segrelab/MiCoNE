@@ -2,7 +2,7 @@
 
 set -e
 
-source activate mindpipe-magma
+source activate micone-magma
 
 export TAR=$(which tar)
 

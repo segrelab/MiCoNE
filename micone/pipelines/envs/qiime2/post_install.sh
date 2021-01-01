@@ -2,6 +2,6 @@
 
 set -e
 
-source activate mindpipe-qiime2
+source activate micone-qiime2
 
 pip install biopython

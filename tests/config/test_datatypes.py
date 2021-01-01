@@ -4,8 +4,8 @@
 
 import pytest
 
-from mindpipe.config import DataTypes
-from mindpipe.config.datatypes import DataType
+from micone.config import DataTypes
+from micone.config.datatypes import DataType
 
 
 @pytest.mark.usefixtures("pipeline_settings")

@@ -20,7 +20,7 @@ Added
 - ``Pipeline`` class defines the pipeline and methods to run the pipeline
 - ``Environments`` class that creates, lists and loads conda environments
 - Logging functionality
-- CLI interface for mindpipe
+- CLI interface for micone
 
 
 0.4.2 (2018-10-08)
@@ -196,8 +196,8 @@ Added
 - First release and initial commits
 
 
-.. _[0.2.3]: https://github.com/dileep-kishore/mindpipe/compare/v0.2.2...v0.2.3
-.. _[0.2.2]: https://github.com/dileep-kishore/mindpipe/compare/v0.2.1...v0.2.2
-.. _[0.2.1]: https://github.com/dileep-kishore/mindpipe/compare/v0.2.0...v0.2.1
-.. _[0.2.0]: https://github.com/dileep-kishore/mindpipe/compare/v0.1.0...v0.2.0
+.. _[0.2.3]: https://github.com/dileep-kishore/micone/compare/v0.2.2...v0.2.3
+.. _[0.2.2]: https://github.com/dileep-kishore/micone/compare/v0.2.1...v0.2.2
+.. _[0.2.1]: https://github.com/dileep-kishore/micone/compare/v0.2.0...v0.2.1
+.. _[0.2.0]: https://github.com/dileep-kishore/micone/compare/v0.1.0...v0.2.0
 

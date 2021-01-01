@@ -4,7 +4,7 @@
 
 import pytest
 
-from mindpipe.pipelines import ConfigTemplate, ScriptTemplate
+from micone.pipelines import ConfigTemplate, ScriptTemplate
 
 
 @pytest.mark.usefixtures("config_template_files", "script_template_files")

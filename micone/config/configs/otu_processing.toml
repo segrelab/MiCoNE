@@ -3,7 +3,7 @@
 ## filter
 
 [otu_processing.filter.abundance]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "filter/abundance"
   [[otu_processing.filter.abundance.input]]
     datatype = "otu_table"
@@ -19,7 +19,7 @@
     location = "**/*.biom"
 
 [otu_processing.filter.group]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "filter/group"
   [[otu_processing.filter.group.input]]
     datatype = "otu_table"
@@ -37,7 +37,7 @@
     location = "**/*_children.json"
 
 [otu_processing.filter.partition]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "filter/partition"
   [[otu_processing.filter.partition.input]]
     datatype = "otu_table"
@@ -53,7 +53,7 @@
 ## Transform
 
 [otu_processing.transform.normalize]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "transform/normalize"
   [[otu_processing.transform.normalize.input]]
     datatype = "otu_table"
@@ -75,7 +75,7 @@
 ## Export
 
 [otu_processing.export.biom2tsv]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "export/biom2tsv"
   [[otu_processing.export.biom2tsv.input]]
     datatype = "otu_table"

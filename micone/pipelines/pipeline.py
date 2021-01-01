@@ -18,51 +18,51 @@ from .process import Process, stringizer
 
 class Pipeline(collections.Sequence):
     """
-        Class that defines the pipeline and contains methods to run the pipeline
+    Class that defines the pipeline and contains methods to run the pipeline
 
-        Parameters
-        ----------
-        user_settings_file : str
-            The user created settings file that describes the pipeline
-        profile : {'local', 'sge'}
-            The execution environment
-        base_dir : str, optional
-            The absolute location of the base directory for the input files
-            This needs to be supplied if the input files location in the settings are relative
-            If None, then current working directory is used
-        resume : bool, optional
-            The flag to determine whether a previous execution is resumed
-            Default value is False
+    Parameters
+    ----------
+    user_settings_file : str
+        The user created settings file that describes the pipeline
+    profile : {'local', 'sge'}
+        The execution environment
+    base_dir : str, optional
+        The absolute location of the base directory for the input files
+        This needs to be supplied if the input files location in the settings are relative
+        If None, then current working directory is used
+    resume : bool, optional
+        The flag to determine whether a previous execution is resumed
+        Default value is False
 
-        Other Parameters
-        ----------------
-        title : str, optional
-            The title of the pipeline
-        project : str, optional
-            The project under which to run the pipeline on the 'sge'
-        order : List[str], optional
-            The order of the processes in the pipeline
-        output_location : str, optional
-            The base output location to store all pipeline results
+    Other Parameters
+    ----------------
+    title : str, optional
+        The title of the pipeline
+    project : str, optional
+        The project under which to run the pipeline on the 'sge'
+    order : List[str], optional
+        The order of the processes in the pipeline
+    output_location : str, optional
+        The base output location to store all pipeline results
 
-        Attributes
-        ----------
-        title : str
-            The title of the pipeline
-        project : str
-            The project under which to run the pipeline
-            Only relevant if profile is 'sge'
-        output_location : str
-            The base output location to store all pipeline results
-        config : Config
-            The configuration object for the `mindpipe` pipelines
-        profile : str
-            The execution environment for the pipeline
-        base_dir : pathlib.Path
-            The absolute path to the base input file directory
-        process_tree : nx.DiGraph
-            The process tree for the pipeline
-            Every node has a "process" attribute which contains the `Process` class
+    Attributes
+    ----------
+    title : str
+        The title of the pipeline
+    project : str
+        The project under which to run the pipeline
+        Only relevant if profile is 'sge'
+    output_location : str
+        The base output location to store all pipeline results
+    config : Config
+        The configuration object for the `micone` pipelines
+    profile : str
+        The execution environment for the pipeline
+    base_dir : pathlib.Path
+        The absolute path to the base input file directory
+    process_tree : nx.DiGraph
+        The process tree for the pipeline
+        Every node has a "process" attribute which contains the `Process` class
     """
 
     _req_keys = {"title", "order", "output_location"}
@@ -107,17 +107,17 @@ class Pipeline(collections.Sequence):
     @staticmethod
     def _parse_process_tree(process_string: str) -> nx.Graph:
         """
-            Parses the process string and creates a process tree from it
+        Parses the process string and creates a process tree from it
 
-            Parameters
-            ----------
-            process_string : str
-                The string that represents the process tree
+        Parameters
+        ----------
+        process_string : str
+            The string that represents the process tree
 
-            Returns
-            -------
-            nx.Graph
-                A nx.Graph representing the process tree
+        Returns
+        -------
+        nx.Graph
+            A nx.Graph representing the process tree
         """
         processes = [
             p for p in process_string.strip().replace("\n", " ").split(" ") if p
@@ -157,17 +157,17 @@ class Pipeline(collections.Sequence):
 
     def _parse_settings(self, settings_file: str, **kwargs) -> dict:
         """
-            Parses the user created settings file
+        Parses the user created settings file
 
-            Parameters
-            ----------
-            settings_file : str
-                The user defined settings file that describes the pipeline
+        Parameters
+        ----------
+        settings_file : str
+            The user defined settings file that describes the pipeline
 
-            Returns
-            -------
-            dict
-                The dictionary of verified user settings
+        Returns
+        -------
+        dict
+            The dictionary of verified user settings
         """
         with open(settings_file, "r") as fid:
             settings = toml.load(fid)
@@ -180,12 +180,12 @@ class Pipeline(collections.Sequence):
 
     def _create_processes(self, settings: dict) -> None:
         """
-            Create `Process` instances and add them to the process_tree
+        Create `Process` instances and add them to the process_tree
 
-            Parameters
-            ----------
-            settings : dict
-                The dictionary of verified user settings
+        Parameters
+        ----------
+        settings : dict
+            The dictionary of verified user settings
         """
         # Create processes for each node
         tree = self.process_tree
@@ -249,20 +249,20 @@ class Pipeline(collections.Sequence):
 
     def run(self, max_procs: int = 4) -> Iterator[Process]:
         """
-            Starts the execution of the pipeline
-            Returns an iterator over the processes being executed
+        Starts the execution of the pipeline
+        Returns an iterator over the processes being executed
 
-            Parameters
-            ----------
-            max_procs : int
-                The maximum number of processes allowed to run in parallel
-                Default value is 4
+        Parameters
+        ----------
+        max_procs : int
+            The maximum number of processes allowed to run in parallel
+            Default value is 4
 
-            Returns
-            -------
-            Iterator[Process]
-                Iterator over each process currently being executed
-       """
+        Returns
+        -------
+        Iterator[Process]
+            Iterator over each process currently being executed
+        """
         # Get the process for the root node and update locations
         tree = self.process_tree
         root_node = next(nx.topological_sort(tree))
@@ -303,12 +303,12 @@ class Pipeline(collections.Sequence):
 
     def draw_process_tree(self, fpath: str) -> None:
         """
-            Draw the DAG chart of the process tree
+        Draw the DAG chart of the process tree
 
-            Parameters
-            ----------
-            fpath: str
-                The folder path where the DAG chart should be saved
+        Parameters
+        ----------
+        fpath: str
+            The folder path where the DAG chart should be saved
         """
         import matplotlib.pyplot as plt
 
@@ -335,12 +335,12 @@ class Pipeline(collections.Sequence):
     @property
     def status(self) -> Dict[str, str]:
         """
-            Returns the status of every process in the pipeline
+        Returns the status of every process in the pipeline
 
-            Returns
-            -------
-            Dict[str, str]
-                A dictionary containing key=process.id and value=process.status
+        Returns
+        -------
+        Dict[str, str]
+            A dictionary containing key=process.id and value=process.status
         """
         tree = self.process_tree
         root_node = next(nx.topological_sort(tree))
@@ -352,18 +352,18 @@ class Pipeline(collections.Sequence):
 
     def wait(self, poll_rate: int = 5) -> List[Process]:
         """
-            Pauses pipeline execution if process_queue is full
+        Pauses pipeline execution if process_queue is full
 
-            Parameters:
-            -----------
-            poll_rate : int, optional
-                The numbers of seconds to sleep before polling processes for status
-                Default value is 5 seconds
+        Parameters:
+        -----------
+        poll_rate : int, optional
+            The numbers of seconds to sleep before polling processes for status
+            Default value is 5 seconds
 
-            Returns:
-            --------
-            List[Process]
-                The list of processes that just finished execution
+        Returns:
+        --------
+        List[Process]
+            The list of processes that just finished execution
         """
         not_started_processes: List[str] = []
         self._updated_processes: List[Process] = []
@@ -413,17 +413,17 @@ class Pipeline(collections.Sequence):
 
     def clean(self, files: List[str] = ["logs"]) -> None:
         """
-            Cleans up files from the pipeline run
-            This command irrevesibly deletes content, use with caution
+        Cleans up files from the pipeline run
+        This command irrevesibly deletes content, use with caution
 
-            Parameters
-            ----------
-            files : List[str]
-                The supported files are:
-                - logs: the `nextflow` log files
-                - configs: the `nextflow` config and run scripts
-                - work: the `nextflow` work directory
-                - results: the results of the pipeline process
+        Parameters
+        ----------
+        files : List[str]
+            The supported files are:
+            - logs: the `nextflow` log files
+            - configs: the `nextflow` config and run scripts
+            - work: the `nextflow` work directory
+            - results: the results of the pipeline process
         """
         if "logs" in files:
             cwd = pathlib.Path()

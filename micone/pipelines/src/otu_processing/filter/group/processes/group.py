@@ -5,7 +5,7 @@
 import json
 from typing import List, Iterable, Tuple
 
-from mindpipe import Otu, Lineage
+from micone import Otu, Lineage
 
 
 # Group the otu_data on all the tax_levels

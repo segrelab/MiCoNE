@@ -14,38 +14,38 @@ ENV_DIR = pathlib.Path(__file__).parent.parent / "pipelines/envs"
 
 class Environments:
     """
-        A class that creates, lists and loads conda environments
+    A class that creates, lists and loads conda environments
 
-        Parameters
-        ----------
+    Parameters
+    ----------
 
-        Attributes
-        ----------
-        configs : List[pathlib.Path]
-            The list of locations of the environment config files
-        env_names : List[str]
-            The list of names of environments
+    Attributes
+    ----------
+    configs : List[pathlib.Path]
+        The list of locations of the environment config files
+    env_names : List[str]
+        The list of names of environments
     """
 
     def __init__(self) -> None:
         self.configs = list(ENV_DIR.glob("**/env.yml"))
-        self.env_names = [f"mindpipe-{c.parent.stem}" for c in self.configs]
+        self.env_names = [f"micone-{c.parent.stem}" for c in self.configs]
 
     def init(self, env: Optional[str] = None) -> Iterable[Command]:
         """
-            Initialize the requested conda environment
+        Initialize the requested conda environment
 
-            Parameters
-            ----------
-            env : Optional[str]
-                The name of the conda environment to initialize
-                If None then all the listed conda environments will be initialized
-                Default value is None
+        Parameters
+        ----------
+        env : Optional[str]
+            The name of the conda environment to initialize
+            If None then all the listed conda environments will be initialized
+            Default value is None
 
-            Yields
-            ------
-            Command
-                The currently running initialization command
+        Yields
+        ------
+        Command
+            The currently running initialization command
         """
         if env is None:
             for config, env_name in zip(self.configs, self.env_names):
@@ -68,24 +68,24 @@ class Environments:
 
     def post_install(self, env: Optional[str] = None) -> Iterable[Command]:
         """
-            Run any post installation scripts for environment setup
+        Run any post installation scripts for environment setup
 
-            Parameters
-            ----------
-            env : Optional[str]
-                The name of the conda environment to setup
-                If None then all the listed conda environments will be initialized
-                Default value is None
+        Parameters
+        ----------
+        env : Optional[str]
+            The name of the conda environment to setup
+            If None then all the listed conda environments will be initialized
+            Default value is None
 
-            Yields
-            ------
-            Command
-                The currently running post_install command
+        Yields
+        ------
+        Command
+            The currently running post_install command
         """
         if env is None:
             post_scripts = list(ENV_DIR.glob("**/post_install.sh"))
         else:
-            env = env.split("mindpipe-")[-1]
+            env = env.split("micone-")[-1]
             post_scripts = list(ENV_DIR.glob(f"**/{env}/post_install.sh"))
         for script in post_scripts:
             cmd_str = f"bash {script}"
@@ -96,12 +96,12 @@ class Environments:
 
     def load(self, env: str) -> None:
         """
-            Load the requested conda environment
+        Load the requested conda environment
 
-            Parameters
-            ----------
-            env : str
-                The name of the conda environment to load
+        Parameters
+        ----------
+        env : str
+            The name of the conda environment to load
 
         """
         if env not in self.env_names:

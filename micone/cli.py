@@ -1,5 +1,5 @@
 """
-    Console script for mindpipe
+    Console script for micone
 """
 
 from typing import List
@@ -21,11 +21,11 @@ from .utils import Spinner
 )
 @click.pass_context
 def cli(ctx, log: bool, interactive: bool):
-    """ Main entry point to mindpipe """
+    """ Main entry point to micone """
     spinner = Spinner(text="Starting up...", spinner="dots", interactive=interactive)
     spinner.start()
     ctx.obj["SPINNER"] = spinner
-    spinner.succeed("Successfully initialized mindpipe")
+    spinner.succeed("Successfully initialized micone")
     if log:
         LOG.enable()
         click.secho(f"Log file is at {LOG.path}")

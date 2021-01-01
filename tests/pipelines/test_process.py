@@ -7,9 +7,9 @@ import os
 
 import pytest
 
-from mindpipe.config import ParamsSet
-from mindpipe.pipelines import Process
-from mindpipe.config.params import Input
+from micone.config import ParamsSet
+from micone.pipelines import Process
+from micone.config.params import Input
 
 
 def setup_internal(

@@ -62,27 +62,27 @@ IOType = Union[Input, Output]
 
 class Params(collections.Hashable):
     """
-        The class for parsing and storing the parameters of a process
+    The class for parsing and storing the parameters of a process
 
-        Parameters
-        ----------
-        data : Tuple[str, Dict[str, Any]]
-            The information about the parameters for a particular process
+    Parameters
+    ----------
+    data : Tuple[str, Dict[str, Any]]
+        The information about the parameters for a particular process
 
-        Attributes
-        ----------
-        name : str
-            Process name
-        env : Optional[pathlib.Path]
-            Location of the virtual environment for the process
-        root_dir : pathlib.Path
-            Directory relative to main output directory where results of the process are to be saved
-        input : Set[Input]
-            The list of inputs of the process
-        output : Set[Output]
-            The list of outputs of the process
-        parameters : Set[Dict[str, Any]]
-            The list of parameters of the process
+    Attributes
+    ----------
+    name : str
+        Process name
+    env : Optional[pathlib.Path]
+        Location of the virtual environment for the process
+    root_dir : pathlib.Path
+        Directory relative to main output directory where results of the process are to be saved
+    input : Set[Input]
+        The list of inputs of the process
+    output : Set[Output]
+        The list of outputs of the process
+    parameters : Set[Dict[str, Any]]
+        The list of parameters of the process
     """
 
     _req_keys = {"root_dir", "input", "output", "parameters"}
@@ -118,7 +118,7 @@ class Params(collections.Hashable):
             self.env: Optional[pathlib.Path] = env_loc
         else:
             self.env = None
-            self.env_name = "mindpipe"
+            self.env_name = "micone"
         self.root_dir = pathlib.Path(value["root_dir"])
         self.input = self._process_io(value["input"], "input")
         self.output = self._process_io(value["output"], "output")
@@ -150,19 +150,19 @@ class Params(collections.Hashable):
 
     def get(self, name: str, category: str) -> Union[Input, Output, Parameters]:
         """
-            Get Input, Output or Parameter element using its name
+        Get Input, Output or Parameter element using its name
 
-            Parameters
-            ----------
-            name : str
-                The name of the IO element or parameter to be retrieved
-            category: {'input', 'output', 'parameters'}
-                Specifies whether the data is input, output or parameter information
+        Parameters
+        ----------
+        name : str
+            The name of the IO element or parameter to be retrieved
+        category: {'input', 'output', 'parameters'}
+            Specifies whether the data is input, output or parameter information
 
-            Returns
-            -------
-            Union[Input, Output, Parameters]
-                The Input, Output or Parameter element
+        Returns
+        -------
+        Union[Input, Output, Parameters]
+            The Input, Output or Parameter element
         """
         if category == "input":
             query_set = self.input
@@ -184,19 +184,19 @@ class Params(collections.Hashable):
 
     def _replace_envvar(self, item: Any) -> str:
         """
-            Replace the environment variable in the "item" with it's value
+        Replace the environment variable in the "item" with it's value
 
-            Parameters
-            ----------
-            item : Any
-                The item which contains the environment variable
-                Replacement is only done if item is a string
-                Otherwise the item is returned as is
+        Parameters
+        ----------
+        item : Any
+            The item which contains the environment variable
+            Replacement is only done if item is a string
+            Otherwise the item is returned as is
 
-            Returns
-            -------
-            Any
-                The item where the env variable is replaced by it's value
+        Returns
+        -------
+        Any
+            The item where the env variable is replaced by it's value
         """
         if isinstance(item, str):
             pattern = re.compile(r"\$\{(.*?)\}")
@@ -216,19 +216,19 @@ class Params(collections.Hashable):
         self, data: List[Dict[str, Union[str, List[str]]]], category: str
     ) -> Set[IOType]:
         """
-            Process the input information
+        Process the input information
 
-            Parameters
-            ----------
-            data : List[Dict[str, Union[str, List[str]]]]
-                The input/output information
-            category: {'input', 'output'}
-                Specifies whether the data is input or output information
+        Parameters
+        ----------
+        data : List[Dict[str, Union[str, List[str]]]]
+            The input/output information
+        category: {'input', 'output'}
+            Specifies whether the data is input or output information
 
-            Returns
-            -------
-            List[IOType]
-                Processed input/output information
+        Returns
+        -------
+        List[IOType]
+            Processed input/output information
         """
         if category == "input":
             IO = Input
@@ -256,16 +256,16 @@ class Params(collections.Hashable):
 
     def update_location(self, name: str, location: str, category: str) -> None:
         """
-            Update the location of an Input or Output element
+        Update the location of an Input or Output element
 
-            Parameters
-            ----------
-            name : str
-                The name of the IO element whose location is to be updated
-            location : str
-                The location of the IO element
-            category: {'input', 'output'}
-                Specifies whether the data is input or output information
+        Parameters
+        ----------
+        name : str
+            The name of the IO element whose location is to be updated
+        location : str
+            The location of the IO element
+        category: {'input', 'output'}
+            Specifies whether the data is input or output information
         """
         element: Union[Input, Output] = self.get(name, category=category)
         IO: Union[Type[Input], Type[Output]]
@@ -287,12 +287,12 @@ class Params(collections.Hashable):
 
     def merge(self, user_settings: Dict[str, Any]) -> None:
         """
-            Merge user_settings into the current Params instance
+        Merge user_settings into the current Params instance
 
-            Parameters
-            ----------
-            user_settings: Dict[str, Any]
-                User defined settings for the current process
+        Parameters
+        ----------
+        user_settings: Dict[str, Any]
+            User defined settings for the current process
         """
         for curr_input in user_settings.get("input", []):
             io_item: Input = self.get(curr_input["datatype"], category="input")
@@ -318,12 +318,12 @@ class Params(collections.Hashable):
 
     def attach_to(self, previous: "Params") -> None:
         """
-            Update inputs of current `Param` instance using outputs of previous
+        Update inputs of current `Param` instance using outputs of previous
 
-            Parameters
-            ----------
-            previous : Params
-                The `Param` instance to attach current instance to
+        Parameters
+        ----------
+        previous : Params
+            The `Param` instance to attach current instance to
         """
         for input_ in self.input:
             if not input_.location:
@@ -339,17 +339,17 @@ class Params(collections.Hashable):
 
 class ParamsSet(collections.Set):
     """
-        The set of all supported pipeline processes
+    The set of all supported pipeline processes
 
-        Parameters
-        ----------
-        data : Dict[str, Any]
-            A dictionary containing information about the pipeline processes
+    Parameters
+    ----------
+    data : Dict[str, Any]
+        A dictionary containing information about the pipeline processes
 
-        Attributes
-        ----------
-        processes : Set[Params]
-            The set of parameters for all the pipeline processes
+    Attributes
+    ----------
+    processes : Set[Params]
+        The set of parameters for all the pipeline processes
     """
 
     def __init__(self, data: Dict[str, Any]) -> None:

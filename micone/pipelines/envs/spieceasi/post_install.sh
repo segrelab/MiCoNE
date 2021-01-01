@@ -2,7 +2,7 @@
 
 set -e
 
-source activate mindpipe-spieceasi
+source activate micone-spieceasi
 
 export TAR=$(which tar)
 

@@ -3,7 +3,7 @@
 ## Sequence processing
 
 [otu_assignment.sequence_processing.join_reads]
-  env = "mindpipe-qiime1"
+  env = "micone-qiime1"
   root_dir = "joined_reads"
   [[otu_assignment.sequence_processing.join_reads.input]]
     datatype = "sequence_16s"
@@ -27,7 +27,7 @@
 # [otu_assignment.sequence_processing.join_reads_demux]
 
 [otu_assignment.sequence_processing.demultiplex_illumina]
-  env = "mindpipe-qiime2"
+  env = "micone-qiime2"
   root_dir = "demultiplex"
   [[otu_assignment.sequence_processing.demultiplex_illumina.input]]
     datatype = "sequence_16s"
@@ -52,7 +52,7 @@
     location = "**/MANIFEST"
 
 [otu_assignment.sequence_processing.demultiplex_454]
-  env = "mindpipe-qiime1"
+  env = "micone-qiime1"
   root_dir = "demultiplex"
   [[otu_assignment.sequence_processing.demultiplex_454.input]]
     datatype = "sequence_16s"
@@ -77,7 +77,7 @@
       # tail_adapter = ""
 
 [otu_assignment.sequence_processing.trim_filter_fixed]
-  env = "mindpipe-qiime2"
+  env = "micone-qiime2"
   root_dir = "trimmed"
   [[otu_assignment.sequence_processing.trim_filter_fixed.input]]
     datatype = "sequence_16s"
@@ -103,7 +103,7 @@
     location = "**/MANIFEST"
 
 [otu_assignment.chimera_checking.uchime]
-  env = "mindpipe-qiime2"
+  env = "micone-qiime2"
   root_dir = "uchime"
   [[otu_assignment.chimera_checking.uchime.input]]
     datatype = "sequence_16s_representative"
@@ -123,7 +123,7 @@
     location = "**/*.biom"
 
 [otu_assignment.chimera_checking.remove_bimera]
-  env = "mindpipe-dada2"
+  env = "micone-dada2"
   root_dir = "remove_bimera"
   [[otu_assignment.chimera_checking.remove_bimera.input]]
     datatype = "sequence_16s_representative"
@@ -148,7 +148,7 @@
 ## Denosing and clustering
 
 [otu_assignment.denoise_cluster.de_novo]
-  env = "mindpipe-qiime1"
+  env = "micone-qiime1"
   root_dir = "de_novo"
   [[otu_assignment.denoise_cluster.de_novo.input]]
     datatype = "sequence_16s"
@@ -170,7 +170,7 @@
     location = "**/rep_seqs.fasta"
 
 [otu_assignment.denoise_cluster.closed_reference]
-  env = "mindpipe-qiime1"
+  env = "micone-qiime1"
   root_dir = "closed_reference"
   [[otu_assignment.denoise_cluster.closed_reference.input]]
     datatype = "sequence_16s"
@@ -193,7 +193,7 @@
     location = "**/rep_seqs.fasta"
 
 [otu_assignment.denoise_cluster.open_reference]
-  env = "mindpipe-qiime1"
+  env = "micone-qiime1"
   root_dir = "open_reference"
   [[otu_assignment.denoise_cluster.open_reference.input]]
     datatype = "sequence_16s"
@@ -217,7 +217,7 @@
     location = "**/rep_seqs.fasta"
 
 [otu_assignment.denoise_cluster.dada2]
-  env = "mindpipe-dada2"
+  env = "micone-dada2"
   root_dir = "dada2"
   [[otu_assignment.denoise_cluster.dada2.input]]
     datatype = "sequence_16s"
@@ -239,7 +239,7 @@
     location = "**/rep_seqs.fasta"
 
 [otu_assignment.denoise_cluster.deblur]
-  env = "mindpipe-qiime2"
+  env = "micone-qiime2"
   root_dir = "deblur"
   [[otu_assignment.denoise_cluster.deblur.input]]
     datatype = "sequence_16s"

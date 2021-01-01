@@ -4,7 +4,7 @@
 
 import os
 
-from mindpipe import Otu
+from micone import Otu
 
 
 def main(otu_file, count_thres, prevalence_thres, abundance_thres):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from mindpipe import Otu
+from micone import Otu
 
 
 def main(

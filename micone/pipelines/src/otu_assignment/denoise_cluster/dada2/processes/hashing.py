@@ -19,7 +19,7 @@ def hash_otu_table(unhashed_otu_table, output_file):
     df.index = seq_ids
     new_table = Table(df.values, list(df.index), list(df.columns))
     with biom_open(output_file, "w") as fid:
-        new_table.to_hdf5(fid, "Constructed by mindpipe in dada2 pipeline")
+        new_table.to_hdf5(fid, "Constructed by micone in dada2 pipeline")
     return seq_ids
 
 

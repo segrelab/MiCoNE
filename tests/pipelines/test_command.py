@@ -6,8 +6,8 @@ import os
 
 import pytest
 
-from mindpipe.pipelines import Command
-from mindpipe.logging import LOG
+from micone.pipelines import Command
+from micone.logging import LOG
 
 
 class TestCommand:

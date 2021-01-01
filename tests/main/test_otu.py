@@ -5,7 +5,7 @@
 import numpy as np
 import pytest
 
-from mindpipe.main import Otu, Lineage
+from micone.main import Otu, Lineage
 
 
 @pytest.mark.usefixtures("biom_data", "biom_files", "tsv_files", "stool_biom")

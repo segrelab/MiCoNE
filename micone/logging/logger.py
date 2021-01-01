@@ -8,35 +8,35 @@ import string
 
 from loguru import logger
 
-TMP_FOL = pathlib.Path("/tmp/mindpipe")
+TMP_FOL = pathlib.Path("/tmp/micone")
 TMP_FOL.mkdir(exist_ok=True)
 
 
 class Log:
     """
-        Class that handles the logging
-        Wrapper around `loguru.logger`
+    Class that handles the logging
+    Wrapper around `loguru.logger`
 
-        Parameters
-        ----------
-        folder : pathlib.Path
-            Path to the folder containing the log files
-            The folder must already exist
-        format_str : str
-            Format string for the log file
-            "timestamp | level | message"
-        disable : bool
-            Flag to disable logging at the start
-            Default value is True
+    Parameters
+    ----------
+    folder : pathlib.Path
+        Path to the folder containing the log files
+        The folder must already exist
+    format_str : str
+        Format string for the log file
+        "timestamp | level | message"
+    disable : bool
+        Flag to disable logging at the start
+        Default value is True
 
-        Attributes
-        ----------
-        path : pathlib.Path
-            The path to the log file
-        config : dict
-            The dictionary used to configure the `loguru.logger`
-        logger : loguru.logger
-            The main logging object
+    Attributes
+    ----------
+    path : pathlib.Path
+        The path to the log file
+    config : dict
+        The dictionary used to configure the `loguru.logger`
+    logger : loguru.logger
+        The main logging object
     """
 
     def __init__(
@@ -52,21 +52,21 @@ class Log:
         logger.configure(**self.config)
         self.logger = logger
         if disable:
-            self.logger.disable("mindpipe")
+            self.logger.disable("micone")
 
     def enable(self) -> None:
         """ Enable logging """
-        self.logger.enable("mindpipe")
+        self.logger.enable("micone")
 
     def cleanup(self, nfiles: int = 20) -> None:
         """
-            Delete old logs if number > nfiles
+        Delete old logs if number > nfiles
 
-            Parameters
-            ----------
-            nfiles : int
-                The threshold for number of log files beyond which the older ones are deleted
-                Default value is 10
+        Parameters
+        ----------
+        nfiles : int
+            The threshold for number of log files beyond which the older ones are deleted
+            Default value is 10
         """
         log_files = list(self._folder.glob("*.log"))
         log_files_srtd = sorted(

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from mindpipe import Otu
+from micone import Otu
 
 
 def main(biom_file, base_name):

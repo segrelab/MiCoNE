@@ -70,8 +70,8 @@ This package was created with
 `audreyr/cookiecutter-pypackage <https://github.com/audreyr/cookiecutter-pypackage>`__
 project template.
 
-.. |Build Status| image:: https://travis-ci.com/dileep-kishore/mindpipe.svg?token=qCMKydrUTvcJ87J6czex&branch=master
-   :target: https://travis-ci.com/dileep-kishore/mindpipe
+.. |Build Status| image:: https://travis-ci.com/dileep-kishore/micone.svg?token=qCMKydrUTvcJ87J6czex&branch=master
+   :target: https://travis-ci.com/dileep-kishore/micone
 .. |CodeFactor| image:: https://www.codefactor.io/repository/github/segrelab/micone/badge
    :target: https://www.codefactor.io/repository/github/segrelab/micone
 .. |Updates| image:: https://pyup.io/repos/github/segrelab/MiCoNE/shield.svg

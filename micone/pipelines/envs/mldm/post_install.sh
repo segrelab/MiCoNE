@@ -9,7 +9,7 @@ mkdir "$FOLDER"
 wget -O "$FOLDER/mldm.tar.gz" --quiet "$URL"
 export MLDM_ZIP="$FOLDER/mldm.tar.gz"
 
-source activate mindpipe-mldm
+source activate micone-mldm
 
 R -e 'install.packages(c("lbfgs", "QUIC", "RcppEigen"), repos="http://archive.linux.duke.edu/cran/")'
 R -e 'install.packages(Sys.getenv("MLDM_ZIP"), repos=NULL, type="source")'

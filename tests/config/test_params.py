@@ -6,8 +6,8 @@ import pathlib
 
 import pytest
 
-from mindpipe.config import ParamsSet
-from mindpipe.config.params import Params
+from micone.config import ParamsSet
+from micone.config.params import Params
 
 
 @pytest.mark.usefixtures("pipeline_settings", "example_pipelines")
@@ -18,7 +18,7 @@ class TestParamsSet:
         internal_raw = pipeline_settings["otu_processing"]
         assert ParamsSet(internal_raw)
         wrong_format = {
-            "env": "mindpipe",
+            "env": "micone",
             "output_location": "split_otu_table",
             "input": [{"datatype": "sequence_16s", "format": ["fasta"]}],
             "output": [

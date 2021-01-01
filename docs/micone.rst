@@ -27,10 +27,10 @@ micone.cli module
    :undoc-members:
    :show-inheritance:
 
-micone.mindpipe module
+micone.micone module
 ----------------------
 
-.. automodule:: micone.mindpipe
+.. automodule:: micone.micone
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,4 +1,4 @@
-name: mindpipe-test
+name: micone-test
 channels:
   - bioconda
   - conda-forge

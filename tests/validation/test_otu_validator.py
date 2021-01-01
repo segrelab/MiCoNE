@@ -5,7 +5,7 @@
 import pytest
 from schematics.exceptions import ValidationError
 
-from mindpipe.validation import OtuValidator
+from micone.validation import OtuValidator
 
 
 @pytest.mark.usefixtures("biom_files", "tsv_files")

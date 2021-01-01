@@ -5,7 +5,7 @@
 import pytest
 import toml
 
-from mindpipe.config import Config
+from micone.config import Config
 
 
 @pytest.mark.usefixtures("pipeline_settings")

@@ -3,7 +3,7 @@
 ## Bootstrap
 
 [network_inference.bootstrap.resample]
-  env = "mindpipe-sparcc"
+  env = "micone-sparcc"
   root_dir = "network_inference/bootstrap/resample"
   [[network_inference.bootstrap.resample.input]]
     datatype = "otu_table"
@@ -19,7 +19,7 @@
     location = "**/*.boot"
 
 [network_inference.bootstrap.pvalue]
-  env = "mindpipe-sparcc"
+  env = "micone-sparcc"
   root_dir = "network_inference/bootstrap/pvalue"
   [[network_inference.bootstrap.pvalue.input]]
     datatype = "otu_table"
@@ -42,7 +42,7 @@
 ## Correlation
 
 [network_inference.correlation.sparcc]
-  env = "mindpipe-sparcc"
+  env = "micone-sparcc"
   root_dir = "network_inference/sparcc"
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_table"
@@ -64,7 +64,7 @@
     location = "**/*_corr.boot"
 
 [network_inference.correlation.pearson]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "network_inference/pearson"
   [[network_inference.correlation.pearson.input]]
     datatype = "otu_table"
@@ -84,7 +84,7 @@
     location = "**/*_corr.boot"
 
 [network_inference.correlation.spearman]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "network_inference/spearman"
   [[network_inference.correlation.spearman.input]]
     datatype = "otu_table"
@@ -106,7 +106,7 @@
 ## Direct
 
 [network_inference.direct.spieceasi]
-  env = "mindpipe-spieceasi"
+  env = "micone-spieceasi"
   root_dir = "network_inference/spieceasi"
   [[network_inference.direct.spieceasi.input]]
     datatype = "otu_table"
@@ -131,7 +131,7 @@
     location = "**/*_corr.boot"
 
 [network_inference.direct.mldm]
-  env = "mindpipe-mldm"
+  env = "micone-mldm"
   root_dir = "network_inference/mldm"
   [[network_inference.direct.mldm.input]]
     datatype = "otu_table"
@@ -156,7 +156,7 @@
     location = "**/*_corr.boot"
 
 [network_inference.direct.magma]
-  env = "mindpipe-magma"
+  env = "micone-magma"
   root_dir = "network_inference/magma"
   [[network_inference.direct.magma.input]]
     datatype = "otu_table"
@@ -179,7 +179,7 @@
 ## Network
 
 [network_inference.network.make_network]
-  env = "mindpipe"
+  env = "micone"
   root_dir = "network_inference/make_network"
   [[network_inference.network.make_network.input]]
     datatype = "interaction_table"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from mindpipe import Network, NetworkGroup
+from micone import Network, NetworkGroup
 
 
 def main(

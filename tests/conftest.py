@@ -10,7 +10,7 @@ import pandas as pd
 import pytest
 import toml
 
-from mindpipe.logging import LOG
+from micone.logging import LOG
 
 LOG.enable()
 print(f"Log file is at {LOG.path}")
@@ -18,8 +18,8 @@ print(f"Log file is at {LOG.path}")
 
 BASEDIR = pathlib.Path.cwd()
 TEST_DATADIR = BASEDIR / "tests/data"
-SETTINGS_DIR = BASEDIR / "mindpipe/config/configs"
-PIPELINE_DIR = BASEDIR / "mindpipe/pipelines/src"
+SETTINGS_DIR = BASEDIR / "micone/config/configs"
+PIPELINE_DIR = BASEDIR / "micone/pipelines/src"
 
 
 @pytest.fixture(scope="module")

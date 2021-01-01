@@ -3,7 +3,7 @@
 ## Taxonomy mapping
 
 [tax_assignment.assign.naive_bayes]
-  env = "mindpipe-qiime2"
+  env = "micone-qiime2"
   root_dir = "naive_bayes"
   [[tax_assignment.assign.naive_bayes.input]]
     datatype = "otu_table"
@@ -30,7 +30,7 @@
     location = "**/otu_table.biom"
 
 [tax_assignment.assign.blast]
-  env = "mindpipe-qiime2"
+  env = "micone-qiime2"
   root_dir = "blast"
   [[tax_assignment.assign.blast.input]]
     datatype = "otu_table"

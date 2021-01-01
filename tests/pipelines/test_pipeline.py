@@ -6,7 +6,7 @@ import pathlib
 
 import pytest
 
-from mindpipe.pipelines import Pipeline
+from micone.pipelines import Pipeline
 
 
 @pytest.mark.usefixtures("example_pipelines")

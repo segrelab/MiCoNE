@@ -18,58 +18,58 @@ from ..logging import LOG
 
 class Process(collections.Hashable):
     """
-        Class for executing a pipeline process
+    Class for executing a pipeline process
 
-        Parameters
-        ----------
-        params : Params
-            The parameters for a particular process
-        profile : {'local', 'sge'}
-            The execution environment
-        output_location : str
-            The absolute path to the base input file directory
-        id : str, optional
-            The unique id given to the process in the process tree
-            Default value is None, in this case process name is used as id
-        root_dir : str, optional
-            The root directory for the results of the current process
-            Default value is None
-        script_name : str, optional
-            The name of the process script template
-            Default is 'process.nf'
-        config_name : str, optional
-            The name of the process configuration template
-            Default is 'process.config'
-        process_dir_name : str, optional
-            The name of the process directory where the templates are stored
-            Default is 'processes'
-        project : str, optional
-            The project under which to run the pipeline on the 'sge'
-            Default value is None
-        resume: bool, optional
-            The flag to determine whether a previous execution is resumed
-            Default value is False
+    Parameters
+    ----------
+    params : Params
+        The parameters for a particular process
+    profile : {'local', 'sge'}
+        The execution environment
+    output_location : str
+        The absolute path to the base input file directory
+    id : str, optional
+        The unique id given to the process in the process tree
+        Default value is None, in this case process name is used as id
+    root_dir : str, optional
+        The root directory for the results of the current process
+        Default value is None
+    script_name : str, optional
+        The name of the process script template
+        Default is 'process.nf'
+    config_name : str, optional
+        The name of the process configuration template
+        Default is 'process.config'
+    process_dir_name : str, optional
+        The name of the process directory where the templates are stored
+        Default is 'processes'
+    project : str, optional
+        The project under which to run the pipeline on the 'sge'
+        Default value is None
+    resume: bool, optional
+        The flag to determine whether a previous execution is resumed
+        Default value is False
 
-        Attributes
-        ----------
-        id : str
-            The unique id given to the process in the process tree
-        name : str
-            The name of the process
-        params : Params
-            The core parameters object for the process
-        profile : str
-            The execution environment for the process
-        project : str
-            The project under which to run the pipeline on the 'sge'
-        script : ScriptTemplate
-            The process script template
-        config : ConfigTemplate
-            The process configuration template
-        cmd : Command
-            The `Command` instance that will be executing for running the process
-        env : pathlib.Path
-            The location of the virtual environment
+    Attributes
+    ----------
+    id : str
+        The unique id given to the process in the process tree
+    name : str
+        The name of the process
+    params : Params
+        The core parameters object for the process
+    profile : str
+        The execution environment for the process
+    project : str
+        The project under which to run the pipeline on the 'sge'
+    script : ScriptTemplate
+        The process script template
+    config : ConfigTemplate
+        The process configuration template
+    cmd : Command
+        The `Command` instance that will be executing for running the process
+    env : pathlib.Path
+        The location of the virtual environment
     """
 
     _cmd: Optional[Command] = None
@@ -114,14 +114,14 @@ class Process(collections.Hashable):
 
     def build(self, output_dir: Optional[str] = None) -> None:
         """
-            Builds the pipeline script and the config file at the output_dir
-            Updates the output_location for all the results
+        Builds the pipeline script and the config file at the output_dir
+        Updates the output_location for all the results
 
-            Parameters
-            ----------
-            output_dir : str, optional
-                The directory where the scripts and config files are to be built
-                This directory will be also be used to store the results of the process
+        Parameters
+        ----------
+        output_dir : str, optional
+            The directory where the scripts and config files are to be built
+            This directory will be also be used to store the results of the process
         """
         if output_dir:
             self.output_location = pathlib.Path(output_dir)
@@ -150,12 +150,12 @@ class Process(collections.Hashable):
     @property
     def cmd(self) -> Command:
         """
-            The `Command` instance that will be used for executing the proces
+        The `Command` instance that will be used for executing the proces
 
-            Returns
-            -------
-            Command
-                The `Command` instance for the process
+        Returns
+        -------
+        Command
+            The `Command` instance for the process
         """
         script_path = self.output_location / f"{self.id}.nf"
         config_path = self.output_location / f"{self.id}.config"
@@ -175,14 +175,14 @@ class Process(collections.Hashable):
 
     def run(self) -> Command:
         """
-            Starts the execution of the process and returns the Command instance
-            This could produce unexpected results if run before `build`
+        Starts the execution of the process and returns the Command instance
+        This could produce unexpected results if run before `build`
 
-            Returns
-            -------
-            Command
-                The command object
-                It has `cmd`, `out`, `pid` and other facilities
+        Returns
+        -------
+        Command
+            The command object
+            It has `cmd`, `out`, `pid` and other facilities
         """
         script_path = self.output_location / f"{self.id}.nf"
         config_path = self.output_location / f"{self.id}.config"
@@ -191,7 +191,7 @@ class Process(collections.Hashable):
         if not env or not env.exists() or not env.is_dir():
             raise FileNotFoundError(
                 f"The environment for the process: {self.name} doesn't exist. "
-                f"Please run mindpipe init --env {self.params.env_name}"
+                f"Please run micone init --env {self.params.env_name}"
             )
         if (
             not script_path.exists()
@@ -229,12 +229,12 @@ class Process(collections.Hashable):
 
     def clean(self, scope: str) -> None:
         """
-            Cleans out the requested scope
+        Cleans out the requested scope
 
-            Parameters
-            ----------
-            scope : {'all', 'work_dir'}
-                The scope to be cleaned
+        Parameters
+        ----------
+        scope : {'all', 'work_dir'}
+            The scope to be cleaned
         """
         warning_msg = (
             "You are about to delete files and folders which is in irreversible process"
@@ -263,27 +263,27 @@ class Process(collections.Hashable):
 
     def attach_to(self, previous: "Process") -> None:
         """
-            Update inputs of current `Process` instance using outputs of previous
+        Update inputs of current `Process` instance using outputs of previous
 
-            Parameters
-            ----------
-            previous : Process
-                The `Process` instance to attach the current instance to
+        Parameters
+        ----------
+        previous : Process
+            The `Process` instance to attach the current instance to
         """
         LOG.logger.info(f"Attaching IO of {previous.name} to {self.id}")
         self.params.attach_to(previous.params)
 
     def update_location(self, location: str, category: str) -> None:
         """
-            Update the location of all Input and Output elements
-            Useful for an intermediate process
+        Update the location of all Input and Output elements
+        Useful for an intermediate process
 
-            Parameters
-            ----------
-            location : str
-                The location of the IO element
-            category : {'input', 'output'}
-                Specifies whether the data is input or output information
+        Parameters
+        ----------
+        location : str
+            The location of the IO element
+        category : {'input', 'output'}
+            Specifies whether the data is input or output information
         """
         path = pathlib.Path(location)
         if not path.is_absolute():
@@ -315,12 +315,12 @@ class Process(collections.Hashable):
     @property
     def status(self) -> str:
         """
-            Return the status of the current process
+        Return the status of the current process
 
-            Returns
-            -------
-            str
-                One of {'success', 'resumed', 'failure', 'in progress', 'not started'}
+        Returns
+        -------
+        str
+            One of {'success', 'resumed', 'failure', 'in progress', 'not started'}
         """
         if self.cmd.status == "success":
             output_status = self._check_files("output")
@@ -333,17 +333,17 @@ class Process(collections.Hashable):
 
     def _check_files(self, category: str) -> bool:
         """
-            Return True if files in the category are present o/w False
+        Return True if files in the category are present o/w False
 
-            Parameters
-            ----------
-            category: {'input', 'output'}
-                Specifies whether the data is input or output information
+        Parameters
+        ----------
+        category: {'input', 'output'}
+            Specifies whether the data is input or output information
 
-            Returns
-            -------
-            bool
-                True if the expected files exist
+        Returns
+        -------
+        bool
+            True if the expected files exist
         """
         mult_pattern = re.compile(".*{(.*)}.*")
         if category == "input":
@@ -379,13 +379,13 @@ class Process(collections.Hashable):
     @property
     def io_exist(self) -> bool:
         """
-            Return True if the expected input and output of the process already exist
-            Useful when resuming a pipeline execution
+        Return True if the expected input and output of the process already exist
+        Useful when resuming a pipeline execution
 
-            Returns
-            -------
-            bool
-                True if the expected input and output of the process already exist
+        Returns
+        -------
+        bool
+            True if the expected input and output of the process already exist
         """
         input_exists = self._check_files("input")
         output_exists = self._check_files("output")
@@ -393,7 +393,7 @@ class Process(collections.Hashable):
 
     def verify_io(self) -> None:
         """
-            Verify whether the Input and Output elements have been assigned and are valid
+        Verify whether the Input and Output elements have been assigned and are valid
         """
         mult_pattern = re.compile(".*{(.*)}.*")
         if not self.output_location.is_absolute():
@@ -436,12 +436,12 @@ class Process(collections.Hashable):
     @property
     def dict(self) -> Dict[str, Any]:
         """
-            Return data as a dictionary
+        Return data as a dictionary
 
-            Returns
-            -------
-            Dict[str, Any]
-                The data stored return as a dictionary
+        Returns
+        -------
+        Dict[str, Any]
+            The data stored return as a dictionary
         """
         self.verify_io()
         data: Dict[str, Any] = dict()
@@ -461,16 +461,16 @@ class Process(collections.Hashable):
 
 def stringizer(process: Process) -> str:
     """
-        Convert process to string for storage in GML file
+    Convert process to string for storage in GML file
 
-        Parameters
-        ----------
-        process : Process
-            The process instance to be converted to string
+    Parameters
+    ----------
+    process : Process
+        The process instance to be converted to string
 
-        Returns
-        -------
-        str
-            Stringized process
+    Returns
+    -------
+    str
+        Stringized process
     """
     return str(process)

@@ -21,31 +21,31 @@ Hashfun = Callable[[str, dict], Hashable]
 
 class Otu:
     """
-        An object that represents the OTU counts table
+    An object that represents the OTU counts table
 
-        Parameters
-        ----------
-        otu_data : Table
-            `biom.Table` object containing OTU data
-        sample_metadata : pd.DataFrame, optional
-            `pd.DataFrame` containing metadata for the samples
-        obs_metadata : pd.DataFrame,  optional
-            `pd.DataFrame` containing metadata for the observations (OTUs)
+    Parameters
+    ----------
+    otu_data : Table
+        `biom.Table` object containing OTU data
+    sample_metadata : pd.DataFrame, optional
+        `pd.DataFrame` containing metadata for the samples
+    obs_metadata : pd.DataFrame,  optional
+        `pd.DataFrame` containing metadata for the observations (OTUs)
 
-        Attributes
-        ----------
-        otu_data : biom.Table
-            OTU counts table in the `biom.Table` format
-        sample_metadata : pd.DataFrame
-            Metadata for the samples
-        obs_metadata :  pd.DataFrame
-            Lineage data for the observations (OTUs)
-        tax_level : str
-            The taxonomy level of the current Otu instance
+    Attributes
+    ----------
+    otu_data : biom.Table
+        OTU counts table in the `biom.Table` format
+    sample_metadata : pd.DataFrame
+        Metadata for the samples
+    obs_metadata :  pd.DataFrame
+        Lineage data for the observations (OTUs)
+    tax_level : str
+        The taxonomy level of the current Otu instance
 
-        Notes
-        -----
-        All methods that manipulate the Otu object return new objects
+    Notes
+    -----
+    All methods that manipulate the Otu object return new objects
     """
 
     def __init__(
@@ -87,28 +87,28 @@ class Otu:
         ext: Optional[str] = None,
     ) -> "Otu":
         """
-            Load data from files into the `Otu` class instance
+        Load data from files into the `Otu` class instance
 
-            Parameters
-            ----------
-            otu_file : str
-                The path to the `OTU` counts file
-            meta_file : str, optional
-                The path to the sample metadata file
-            tax_file : str, optional
-                The path to the taxonomy file
-            dtype : {'biom', 'tsv'}
-                The type of OTU file that is input
-            ext : str, optional
-                The extension of the file if other than supported extensions
-                Supported extensions:
-                - 'tsv' dtype: 'tsv', 'txt', 'counts'
-                - 'biom' dtype: 'biom', 'hdf5'
+        Parameters
+        ----------
+        otu_file : str
+            The path to the `OTU` counts file
+        meta_file : str, optional
+            The path to the sample metadata file
+        tax_file : str, optional
+            The path to the taxonomy file
+        dtype : {'biom', 'tsv'}
+            The type of OTU file that is input
+        ext : str, optional
+            The extension of the file if other than supported extensions
+            Supported extensions:
+            - 'tsv' dtype: 'tsv', 'txt', 'counts'
+            - 'biom' dtype: 'biom', 'hdf5'
 
-            Returns
-            -------
-            Otu
-                An instance of the `Otu` class
+        Returns
+        -------
+        Otu
+            An instance of the `Otu` class
         """
         otu_validator = OtuValidator(dtype=dtype, ext=ext)
         otu_path = pathlib.Path(otu_file)
@@ -123,22 +123,22 @@ class Otu:
     @property
     def sample_metadata(self) -> pd.DataFrame:
         """
-            Metadata for the samples
+        Metadata for the samples
 
-            Returns
-            -------
-            pd.DataFrame
+        Returns
+        -------
+        pd.DataFrame
         """
         return self.otu_data.metadata_to_dataframe("sample")
 
     @property
     def obs_metadata(self) -> pd.DataFrame:
         """
-            Lineage data for the observations (OTUs)
+        Lineage data for the observations (OTUs)
 
-            Returns
-            -------
-            pd.DataFrame
+        Returns
+        -------
+        pd.DataFrame
         """
         df = self.otu_data.metadata_to_dataframe("observation")
         n_tax_levels = len(df.columns)
@@ -151,12 +151,12 @@ class Otu:
     @property
     def tax_level(self) -> str:
         """
-            Returns the taxonomy level of the Otu instance
+        Returns the taxonomy level of the Otu instance
 
-            Returns
-            -------
-            str
-                The lowest taxonomy defined in the Otu instance
+        Returns
+        -------
+        str
+            The lowest taxonomy defined in the Otu instance
         """
         n_tax_levels = len(self.obs_metadata.columns)
         return Lineage._fields[n_tax_levels - 1]
@@ -168,25 +168,25 @@ class Otu:
         axis: str = "observation",
     ) -> "Otu":
         """
-            Filter Otu instance based on ids or func
+        Filter Otu instance based on ids or func
 
-            Parameters
-            ----------
-            ids : Iterable[str], optional
-                An iterable of ids to keep.
-                If ids are not supplied then func must be supplied
-            func : Callable[[np.ndarray, str, dict], bool], optional
-                A function that takes in (values, id_, md) and returns a bool
-                If func is not supplied then ids must be supplied
-                If both ids and func are supplied then ids are used
-            axis : {'sample', 'observation'}, optional
-                The axis along which to filter the Otu instance
-                Default value is 'observation'
+        Parameters
+        ----------
+        ids : Iterable[str], optional
+            An iterable of ids to keep.
+            If ids are not supplied then func must be supplied
+        func : Callable[[np.ndarray, str, dict], bool], optional
+            A function that takes in (values, id_, md) and returns a bool
+            If func is not supplied then ids must be supplied
+            If both ids and func are supplied then ids are used
+        axis : {'sample', 'observation'}, optional
+            The axis along which to filter the Otu instance
+            Default value is 'observation'
 
-            Returns
-            -------
-            Otu
-                Filtered Otu instance
+        Returns
+        -------
+        Otu
+            Filtered Otu instance
         """
         if ids:
             otu_filtered = self.otu_data.filter(ids, inplace=False, axis=axis)
@@ -198,20 +198,20 @@ class Otu:
 
     def normalize(self, axis: str = "sample", method: str = "norm") -> "Otu":
         """
-            Normalize the OTU table along the provided axis
+        Normalize the OTU table along the provided axis
 
-            Parameters
-            ----------
-            axis : {'sample', 'observation'}, optional
-                Axis along which to normalize the OTU table
-                Default is 'sample'
-            method: {'norm', 'rarefy', 'css'}
-                Normalization method to use
+        Parameters
+        ----------
+        axis : {'sample', 'observation'}, optional
+            Axis along which to normalize the OTU table
+            Default is 'sample'
+        method: {'norm', 'rarefy', 'css'}
+            Normalization method to use
 
-            Returns
-            -------
-            Otu
-                Otu instance which is normalized along the given axis
+        Returns
+        -------
+        Otu
+            Otu instance which is normalized along the given axis
         """
         if method == "norm":
             norm_otu = self.otu_data.norm(axis=axis, inplace=False)
@@ -227,7 +227,7 @@ class Otu:
 
     def is_norm(self, axis: str = "sample") -> bool:
         """
-            Returns true if the Otu instance has been normalized
+        Returns true if the Otu instance has been normalized
         """
         df = self.otu_data.to_dataframe()
         if axis == "sample":
@@ -238,23 +238,23 @@ class Otu:
 
     def rm_sparse_samples(self, count_thres: int = 500) -> "Otu":
         """
-            Remove samples with read counts less than `count_thres`
+        Remove samples with read counts less than `count_thres`
 
-            Parameters
-            ----------
-            count_thres : int, optional
-                Counts threshold below which samples are rejected
-                Default value is 500
+        Parameters
+        ----------
+        count_thres : int, optional
+            Counts threshold below which samples are rejected
+            Default value is 500
 
-            Returns
-            -------
-            Otu
-                Otu instance with low count samples removed
+        Returns
+        -------
+        Otu
+            Otu instance with low count samples removed
 
-            Raises
-            ------
-            ValueError
-                If Otu instance is normalized
+        Raises
+        ------
+        ValueError
+            If Otu instance is normalized
         """
         if self.is_norm():
             raise ValueError(
@@ -268,19 +268,19 @@ class Otu:
         self, prevalence_thres: float = 0.05, abundance_thres: float = 0.01
     ) -> "Otu":
         """
-            Remove observations with prevalence < `prevalence_thres` and abundance < `abundance_thres`
+        Remove observations with prevalence < `prevalence_thres` and abundance < `abundance_thres`
 
-            Parameters
-            ----------
-            prevalence_thres : float
-                Minimum fraction of samples the observation must be present in in order to be accepted
-            abundance_thres : float
-                Minimum observation count fraction in a sample needed in order to be accepted
+        Parameters
+        ----------
+        prevalence_thres : float
+            Minimum fraction of samples the observation must be present in in order to be accepted
+        abundance_thres : float
+            Minimum observation count fraction in a sample needed in order to be accepted
 
-            Returns
-            -------
-            Otu
-                Otu instance with bad observations removed
+        Returns
+        -------
+        Otu
+            Otu instance with bad observations removed
         """
         filt_fun = (
             lambda val, *_: (val.astype(int).astype(bool).mean()) >= prevalence_thres
@@ -315,24 +315,24 @@ class Otu:
 
     def partition(self, axis: str, func: Hashfun) -> Iterable[Tuple[str, "Otu"]]:
         """
-            Partition the Otu instance based on the func and axis
+        Partition the Otu instance based on the func and axis
 
-            Parameters
-            ----------
-            axis : str
-                The axis on which to partition
-            func : Callable[[str, dict], Hashable]
-                The function that takes in (id, metadata) and returns a hashable
+        Parameters
+        ----------
+        axis : str
+            The axis on which to partition
+        func : Callable[[str, dict], Hashable]
+            The function that takes in (id, metadata) and returns a hashable
 
-            Returns
-            -------
-            Iterable[Tuple[str, Otu]]
-                An iterable of tuples - ('label', Otu)
+        Returns
+        -------
+        Iterable[Tuple[str, Otu]]
+            An iterable of tuples - ('label', Otu)
 
-            Notes
-            -----
-            1. To group by lineage "level" use:
-                func = lambda id_, md: Lineage(**md).get_superset(level)
+        Notes
+        -----
+        1. To group by lineage "level" use:
+            func = lambda id_, md: Lineage(**md).get_superset(level)
         """
         if axis == "observation" and self.is_norm(axis="sample"):
             raise ValueError(
@@ -348,18 +348,18 @@ class Otu:
 
     def collapse_taxa(self, level: str) -> Tuple["Otu", Dict[str, List[str]]]:
         """
-            Collapse Otu instance based on taxa
+        Collapse Otu instance based on taxa
 
-            Parameters
-            ----------
-            level : str
-                The tax level of the collapsed table
-                This will also be used as the prefix for the unique ids
+        Parameters
+        ----------
+        level : str
+            The tax level of the collapsed table
+            This will also be used as the prefix for the unique ids
 
-            Returns
-            -------
-            Tuple[Otu, dict]
-                Collapsed Otu instance
+        Returns
+        -------
+        Tuple[Otu, dict]
+            Collapsed Otu instance
         """
         if level not in Lineage._fields:
             raise ValueError(f"level must be one of {Lineage._fields}")
@@ -409,18 +409,18 @@ class Otu:
         self, base_name: str, fol_path: str = "", file_type: str = "biom"
     ) -> None:
         """
-            Write Otu instance object to required file_type
+        Write Otu instance object to required file_type
 
-            Parameters
-            ----------
-            base_name : str
-                The base name without extension to be used for the files
-            fol_path : str, optional
-                The folder where the files are to be written
-                Default is current directory
-            file_type : {'tsv', 'biom'}, optional
-                The type of file data is to be written to
-                Default is 'biom'
+        Parameters
+        ----------
+        base_name : str
+            The base name without extension to be used for the files
+        fol_path : str, optional
+            The folder where the files are to be written
+            Default is current directory
+        file_type : {'tsv', 'biom'}, optional
+            The type of file data is to be written to
+            Default is 'biom'
         """
         folder = pathlib.Path(fol_path)
         if not folder.exists():
@@ -429,7 +429,7 @@ class Otu:
             fname = base_name + ".biom"
             fpath = str(folder / fname)
             with biom_open(fpath, "w") as fid:
-                self.otu_data.to_hdf5(fid, "Constructed using mindpipe")
+                self.otu_data.to_hdf5(fid, "Constructed using micone")
         elif file_type == "tsv":
             otu_name = base_name + "_otu.tsv"
             otu_path = folder / otu_name

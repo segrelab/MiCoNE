@@ -16,7 +16,7 @@ def make_repseqs(seqs, output_file):
 def make_biom(seq_table, output_file):
     new_table = Table(seq_table.values, list(seq_table.index), list(seq_table.columns))
     with biom_open(output_file, "w") as fid:
-        new_table.to_hdf5(fid, "Constructucted by mindpipe in dada2 pipeline")
+        new_table.to_hdf5(fid, "Constructucted by micone in dada2 pipeline")
 
 
 def main(seqtable_file):
