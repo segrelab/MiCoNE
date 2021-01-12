@@ -32,62 +32,62 @@ LinkDType = Tuple[str, str, Dict[str, float]]
 
 class Network:
     """
-        Class that represents a network object
+    Class that represents a network object
 
-        Parameters
-        ----------
-        nodes : List[str]
-            The list of nodes in the network
-        links : List[LinkDType]
-            The list of links in the network
-            Each link is a dict and must contain: 'source', 'target', 'weight', 'pvalue' as keys
-        metadata : dict
-            The metadata for the whole network (general and experiment)
-            Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
-            'description', 'date', 'authors
-        cmetadata : dict
-            The computational metadata for the whole network
-            Must contain information as to how the network was generated
-        obs_metadata : pd.DataFrame
-            The `DataFrame` containing taxonomy information for the nodes of the network
-            If this contains an 'Abundance' column then it is incorporated into the network
-        children_map : dict, optional
-            The dictionary that contains the mapping {obs_id => [children]}
-        interaction_type : str, optional
-            The type of interaction encoded by the edges of the network
-            Default value is correlation
-        interaction_threshold : float, optional
-            The value to which the interactions (absolute value) are to be thresholded
-            To disable thresholding based on interaction value then pass in 0.0
-            Default value is 0.3
-        pvalue_threshold : float, optional
-            This is the `alpha` value for pvalue cutoff
-            Default value is 0.05
-        pvalue_correction : str, optional
-            The method to use for multiple hypothesis correction
-            Default value is 'fdr_bh'
-            Set to None to turn off multiple hypothesis correction
-            Use `Network.pcorr_methods` to get the list of supported methods
-        directed : bool, optional
-            True if network is directed
-            Default value is False
+    Parameters
+    ----------
+    nodes : List[str]
+        The list of nodes in the network
+    links : List[LinkDType]
+        The list of links in the network
+        Each link is a dict and must contain: 'source', 'target', 'weight', 'pvalue' as keys
+    metadata : dict
+        The metadata for the whole network (general and experiment)
+        Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
+        'description', 'date', 'authors
+    cmetadata : dict
+        The computational metadata for the whole network
+        Must contain information as to how the network was generated
+    obs_metadata : pd.DataFrame
+        The `DataFrame` containing taxonomy information for the nodes of the network
+        If this contains an 'Abundance' column then it is incorporated into the network
+    children_map : dict, optional
+        The dictionary that contains the mapping {obs_id => [children]}
+    interaction_type : str, optional
+        The type of interaction encoded by the edges of the network
+        Default value is correlation
+    interaction_threshold : float, optional
+        The value to which the interactions (absolute value) are to be thresholded
+        To disable thresholding based on interaction value then pass in 0.0
+        Default value is 0.3
+    pvalue_threshold : float, optional
+        This is the `alpha` value for pvalue cutoff
+        Default value is 0.05
+    pvalue_correction : str, optional
+        The method to use for multiple hypothesis correction
+        Default value is 'fdr_bh'
+        Set to None to turn off multiple hypothesis correction
+        Use `Network.pcorr_methods` to get the list of supported methods
+    directed : bool, optional
+        True if network is directed
+        Default value is False
 
-        Attributes
-        ----------
-        graph : Union[nx.MultiGraph, nx.MultiDiGraph]
-            The networkx multi-graph representation of the network
-        simple_graph : Union[nx.Graph, nx.DiGraph]
-            The networkx simple-graph representation of the network
-        nodes : DType
-            The list of nodes in the network and their corresponding properties
-        links : DType
-            The list of links in the network and their corresponding properties
-        metadata : Dict[str, Any]
-            The metadata for the network
+    Attributes
+    ----------
+    graph : Union[nx.MultiGraph, nx.MultiDiGraph]
+        The networkx multi-graph representation of the network
+    simple_graph : Union[nx.Graph, nx.DiGraph]
+        The networkx simple-graph representation of the network
+    nodes : DType
+        The list of nodes in the network and their corresponding properties
+    links : DType
+        The list of links in the network and their corresponding properties
+    metadata : Dict[str, Any]
+        The metadata for the network
 
-        Examples
-        --------
-        >>> network = Network.load_data()
+    Examples
+    --------
+    >>> network = Network.load_data()
     """
 
     def __init__(
@@ -164,14 +164,14 @@ class Network:
     @staticmethod
     def _verify_integrity(interactions: pd.DataFrame, pvalues: pd.DataFrame) -> None:
         """
-            Verify whether the interactions and pvalue matrices match
+        Verify whether the interactions and pvalue matrices match
 
-            Parameters
-            ----------
-            interactions : pd.DataFrame
-                The `DataFrame` containing the interaction matrix
-            pvalues : pd.DataFrame
-                The `DataFrame` containing the pvalue matrix
+        Parameters
+        ----------
+        interactions : pd.DataFrame
+            The `DataFrame` containing the interaction matrix
+        pvalues : pd.DataFrame
+            The `DataFrame` containing the pvalue matrix
         """
         if any(interactions.index != pvalues.index) or any(
             interactions.columns != pvalues.columns
@@ -183,7 +183,7 @@ class Network:
     @property
     def pcorr_methods(self) -> List[str]:
         """
-            Returns list supported pvalue correction methods
+        Returns list supported pvalue correction methods
         """
         methods = [
             "bonferroni",
@@ -203,22 +203,22 @@ class Network:
         self, pvalues: np.array, method: str, pvalue_threshold: float
     ) -> pd.DataFrame:
         """
-            Correct pvalues using 'method'
+        Correct pvalues using 'method'
 
-            Parameters
-            ----------
-            pvalues : pd.DataFrame
-                Raw uncorrected pvalues
-            method : str
-                Method to be used to correct the pvalues.
-                Use `Network.pcorr_methods` to get the list of supported methods
-            pvalue_threshold : float
-                The value of alpha (FWER) to be used for the correction
+        Parameters
+        ----------
+        pvalues : pd.DataFrame
+            Raw uncorrected pvalues
+        method : str
+            Method to be used to correct the pvalues.
+            Use `Network.pcorr_methods` to get the list of supported methods
+        pvalue_threshold : float
+            The value of alpha (FWER) to be used for the correction
 
-            Returns
-            -------
-            pd.DataFrame
-                DataFrame containing corrected pvalues
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame containing corrected pvalues
         """
         if method not in self.pcorr_methods:
             raise ValueError(
@@ -241,32 +241,32 @@ class Network:
         directed: bool,
     ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
         """
-            Create network from interaction matrix, pvalue matrix, metadata dictionary,
-            lineage table and children mapping
+        Create network from interaction matrix, pvalue matrix, metadata dictionary,
+        lineage table and children mapping
 
-            Parameters
-            ----------
-            nodes : List[str]
-                The list of nodes in the network
-            links : List[LinkDType]
-                The list of links in the network
-            emetadata : dict
-                The dictionary of general and experimental metadata
-            cmetadata : dict
-                The dictionary of computational metadata
-            obs_metadata : pd.DataFrame
-                The `DataFrame` containing taxonomy information for the nodes of the network
-            children_map : dict
-                The dictionary that contains the mapping {obs_id => [children]}
-            interaction_type : str
-                The type of interaction encoded by the edges of the network
-            directed : bool
-                Flag to determine whether the network is directed or not
+        Parameters
+        ----------
+        nodes : List[str]
+            The list of nodes in the network
+        links : List[LinkDType]
+            The list of links in the network
+        emetadata : dict
+            The dictionary of general and experimental metadata
+        cmetadata : dict
+            The dictionary of computational metadata
+        obs_metadata : pd.DataFrame
+            The `DataFrame` containing taxonomy information for the nodes of the network
+        children_map : dict
+            The dictionary that contains the mapping {obs_id => [children]}
+        interaction_type : str
+            The type of interaction encoded by the edges of the network
+        directed : bool
+            Flag to determine whether the network is directed or not
 
-            Returns
-            -------
-            Union[nx.MultiGraph, nx.MultiDiGraph]
-                The networkx graph of the network
+        Returns
+        -------
+        Union[nx.MultiGraph, nx.MultiDiGraph]
+            The networkx graph of the network
         """
         directionality = "directed" if directed else "undirected"
         metadata = {
@@ -358,21 +358,47 @@ class Network:
                 simple_graph.add_edge(source, target, **data)
         return simple_graph
 
+    def get_adjacency_table(self, key: str) -> pd.DataFrame:
+        """
+        Returns the adjacency table representation for the requested `key`
+        This method does not support `MultiGraph`
+
+        Parameters
+        ----------
+        key : str
+            The `edge` property to be used to construct the table
+
+        Returns
+        -------
+        pd.DataFrame:
+            The adjacency table
+        """
+        ids = list(self.nodes)
+        size = len(ids)
+        adj_table = pd.DataFrame(data=np.zeros(size, 2), index=ids, columns=ids)
+        graph = self.simple_graph
+        for row_id, col_id in zip(ids, ids):
+            if graph.has_edge(row_id, col_id):
+                adj_table[row_id][col_id] = graph.get_edge_data(row_id, col_id)[key]
+            else:
+                adj_table[row_id][col_id] = 0.0
+        return adj_table
+
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
-            The links of the network after applying filtering
+        The links of the network after applying filtering
 
-            Parameters
-            ----------
-            pvalue_filter : bool
-                If True will use `pvalue_threshold` for filtering
-            interaction_filter : bool
-                If True will use `interaction_threshold` for filtering
+        Parameters
+        ----------
+        pvalue_filter : bool
+            If True will use `pvalue_threshold` for filtering
+        interaction_filter : bool
+            If True will use `interaction_threshold` for filtering
 
-            Returns
-            -------
-            DType
-                The list of links in the network after applying thresholds
+        Returns
+        -------
+        DType
+            The list of links in the network after applying thresholds
         """
         interaction_threshold = abs(self.interaction_threshold)
         interaction_func = lambda x: abs(x["weight"]) >= interaction_threshold
@@ -404,46 +430,46 @@ class Network:
         directed: bool = False,
     ) -> "Network":
         """
-            Create a `Network` object from files (interaction tables and other metadata)
+        Create a `Network` object from files (interaction tables and other metadata)
 
-            Parameters
-            ----------
-            interaction_file : str
-                The `tsv` file containing the matrix of interactions
-            meta_file : str
-                The `json` file containing the metadata for the whole network (general and experiment)
-            cmeta_file : str
-                The `json` file containings the computational metadata for the whole network
-            obsmeta_file : str
-                The `csv` file containing taxonomy information for the nodes of the network
-            pvalue_file : str, optional
-                The `tsv` file containing the matrix of pvalues
-                Default is None
-            children_file : str, optional
-                The `json` file containing the mapping between observations and their children
-            interaction_type : str, optional
-                The type of interaction encoded by the edges of the network
-                Default value is correlation
-            interaction_threshold : float, optional
-                The value to which the interactions (absolute value) are to be thresholded
-                To disable thresholding based on interaction value then pass in 0.0
-                Default value is 0.3
-            pvalue_threshold : float, optional
-                This is the `alpha` value for pvalue cutoff
-                Default value is 0.05
-            pvalue_correction : str, optional
-                The method to use for multiple hypothesis correction
-                Default value is 'fdr_bh'
-                Set to None to turn off multiple hypothesis correction
-                Use `Network.pcorr_methods` to get the list of supported methods
-            directed : bool
-                True if network is directed
-                Default value is False
+        Parameters
+        ----------
+        interaction_file : str
+            The `tsv` file containing the matrix of interactions
+        meta_file : str
+            The `json` file containing the metadata for the whole network (general and experiment)
+        cmeta_file : str
+            The `json` file containings the computational metadata for the whole network
+        obsmeta_file : str
+            The `csv` file containing taxonomy information for the nodes of the network
+        pvalue_file : str, optional
+            The `tsv` file containing the matrix of pvalues
+            Default is None
+        children_file : str, optional
+            The `json` file containing the mapping between observations and their children
+        interaction_type : str, optional
+            The type of interaction encoded by the edges of the network
+            Default value is correlation
+        interaction_threshold : float, optional
+            The value to which the interactions (absolute value) are to be thresholded
+            To disable thresholding based on interaction value then pass in 0.0
+            Default value is 0.3
+        pvalue_threshold : float, optional
+            This is the `alpha` value for pvalue cutoff
+            Default value is 0.05
+        pvalue_correction : str, optional
+            The method to use for multiple hypothesis correction
+            Default value is 'fdr_bh'
+            Set to None to turn off multiple hypothesis correction
+            Use `Network.pcorr_methods` to get the list of supported methods
+        directed : bool
+            True if network is directed
+            Default value is False
 
-            Returns
-            -------
-            Network
-                The instance of the `Network` class
+        Returns
+        -------
+        Network
+            The instance of the `Network` class
         """
         # Load and validate interaction matrix
         interactions = pd.read_table(interaction_file, index_col=0)
@@ -519,21 +545,21 @@ class Network:
         self, pvalue_filter: bool = False, interaction_filter: bool = False
     ) -> str:
         """
-            Returns the network as a `JSON` string
+        Returns the network as a `JSON` string
 
-            Parameters
-            ----------
-            pvalue_filter : bool
-                If True will use `pvalue_threshold` for filtering
-                Default  value is False
-            interaction_filter : bool
-                If True will use `interaction_threshold` for filtering
-                Default  value is False
+        Parameters
+        ----------
+        pvalue_filter : bool
+            If True will use `pvalue_threshold` for filtering
+            Default  value is False
+        interaction_filter : bool
+            If True will use `interaction_threshold` for filtering
+            Default  value is False
 
-            Returns
-            -------
-            str
-                The `JSON` string representation of the network
+        Returns
+        -------
+        str
+            The `JSON` string representation of the network
         """
         nodes = {"nodes": self.nodes}
         links = {
@@ -549,18 +575,18 @@ class Network:
         self, fpath: str, pvalue_filter: bool = False, interaction_filter: bool = False
     ) -> None:
         """
-            Write network to file as JSON
+        Write network to file as JSON
 
-            Parameters
-            ----------
-            fpath : str
-                The path to the `JSON` file
-            pvalue_filter : bool
-                If True will use `pvalue_threshold` for filtering
-                Default  value is False
-            interaction_filter : bool
-                If True will use `interaction_threshold` for filtering
-                Default  value is False
+        Parameters
+        ----------
+        fpath : str
+            The path to the `JSON` file
+        pvalue_filter : bool
+            If True will use `pvalue_threshold` for filtering
+            Default  value is False
+        interaction_filter : bool
+            If True will use `interaction_threshold` for filtering
+            Default  value is False
         """
         with open(fpath, "w") as fid:
             fid.write(
@@ -574,20 +600,20 @@ class Network:
         cls, fpath: Optional[str] = None, raw_data: Optional[dict] = None
     ) -> "Network":
         """
-            Create a `Network` object from a network `JSON` file
-            Either fpath or raw_data must be specified
+        Create a `Network` object from a network `JSON` file
+        Either fpath or raw_data must be specified
 
-            Parameters
-            ----------
-            fpath : str, optional
-                The path to the network `JSON` file
-            raw_data : dict, optional
-                The raw data stored in the network `JSON` file
+        Parameters
+        ----------
+        fpath : str, optional
+            The path to the network `JSON` file
+        raw_data : dict, optional
+            The raw data stored in the network `JSON` file
 
-            Returns
-            -------
-            Network
-                The instance of the `Network` class
+        Returns
+        -------
+        Network
+            The instance of the `Network` class
         """
         if not raw_data and not fpath:
             raise ValueError("Either fpath or raw_data must be specified")
@@ -661,46 +687,46 @@ class Network:
         directed: bool = False,
     ) -> "Network":
         """
-            Create `Network` instance from an edge list and associated metadata
+        Create `Network` instance from an edge list and associated metadata
 
-            Parameters
-            ----------
-            elist_file : str
-                The csv file containing the list of edges and their associated metadata
-            meta_file : dict
-                The file containing metadata for the whole network (general and experiment)
-                Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
-                'description', 'date', 'authors'
-            cmeta_file : dict
-                The computational metadata for the whole network
-                Must contain information as to how the network was generated
-            obsmeta_file : str
-                The csv file contanining taxonomy information for the nodes of the network
-                If this contains an 'Abundance' column then it is incorporated into the network
-            children_file : str, optional
-                The json file that describes the mapping between {obs_id => [children]}
-            interaction_type : str, optional
-                The type of interaction encoded by the edges of the network
-                Default value is correlation
-            interaction_threshold : float, optional
-                The value to which the interactions (absolute value) are to be thresholded
-                To disable thresholding based on interaction value then pass in 0.0
-                Default value is 0.3
-            pvalue_threshold : float, optional
-                This is the `alpha` value for pvalue cutoff
-                Default value is 0.05
-            pvalue_correction : str, optional
-                The method to use for multiple hypothesis correction
-                Default value is 'fdr_bh'
-                Set to None to turn off multiple hypothesis correction
-            directed : bool, optional
-                True if network is directed
-                Default value is False
+        Parameters
+        ----------
+        elist_file : str
+            The csv file containing the list of edges and their associated metadata
+        meta_file : dict
+            The file containing metadata for the whole network (general and experiment)
+            Must contain 'host', 'condition', 'location', 'experimental_metadata', 'pubmed_id',
+            'description', 'date', 'authors'
+        cmeta_file : dict
+            The computational metadata for the whole network
+            Must contain information as to how the network was generated
+        obsmeta_file : str
+            The csv file contanining taxonomy information for the nodes of the network
+            If this contains an 'Abundance' column then it is incorporated into the network
+        children_file : str, optional
+            The json file that describes the mapping between {obs_id => [children]}
+        interaction_type : str, optional
+            The type of interaction encoded by the edges of the network
+            Default value is correlation
+        interaction_threshold : float, optional
+            The value to which the interactions (absolute value) are to be thresholded
+            To disable thresholding based on interaction value then pass in 0.0
+            Default value is 0.3
+        pvalue_threshold : float, optional
+            This is the `alpha` value for pvalue cutoff
+            Default value is 0.05
+        pvalue_correction : str, optional
+            The method to use for multiple hypothesis correction
+            Default value is 'fdr_bh'
+            Set to None to turn off multiple hypothesis correction
+        directed : bool, optional
+            True if network is directed
+            Default value is False
 
-            Returns
-            -------
-            Network
-                The instance of the `Network` class
+        Returns
+        -------
+        Network
+            The instance of the `Network` class
         """
         elist = pd.read_csv(elist_file, na_filter=False)
         elist_type = ElistType()
