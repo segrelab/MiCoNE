@@ -2,6 +2,7 @@
     Module that defines the `Network` object and methods to read, write and manipulate it
 """
 
+from itertools import product
 from typing import Any, Dict, List, Optional, Tuple, Union
 from warnings import warn
 
@@ -379,9 +380,8 @@ class Network:
             data=np.zeros((size, size), dtype=float), index=ids, columns=ids
         )
         graph = self.simple_graph
-        for row_id, col_id in zip(ids, ids):
-            if graph.has_edge(row_id, col_id):
-                adj_table[row_id][col_id] = graph.get_edge_data(row_id, col_id)[key]
+        for row_id, col_id, data in graph.edges(data=True):
+            adj_table[row_id][col_id] = data[key]
         return adj_table
 
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
