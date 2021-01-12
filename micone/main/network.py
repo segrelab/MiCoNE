@@ -375,13 +375,13 @@ class Network:
         """
         ids = list(self.nodes)
         size = len(ids)
-        adj_table = pd.DataFrame(data=np.zeros(size, 2), index=ids, columns=ids)
+        adj_table = pd.DataFrame(
+            data=np.zeros((size, size), dtype=float), index=ids, columns=ids
+        )
         graph = self.simple_graph
         for row_id, col_id in zip(ids, ids):
             if graph.has_edge(row_id, col_id):
                 adj_table[row_id][col_id] = graph.get_edge_data(row_id, col_id)[key]
-            else:
-                adj_table[row_id][col_id] = 0.0
         return adj_table
 
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
