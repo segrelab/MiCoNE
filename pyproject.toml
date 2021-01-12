@@ -23,6 +23,8 @@ Jinja2 = "^2.11.2"
 jinja2schema = "^0.1.4"
 matplotlib = "^3.3.3"
 simplejson = "^3.17.2"
+jedi = "0.17.2"
+parso = "0.7.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
