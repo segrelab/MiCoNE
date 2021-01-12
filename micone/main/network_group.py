@@ -3,10 +3,12 @@
 """
 
 from collections.abc import Collection
+from itertools import product
 from typing import Any, Dict, Iterator, List, Union
 
 import networkx as nx
 import numpy as np
+import pandas as pd
 from scipy.special import chdtrc as chi2_cdf
 import simplejson
 
@@ -17,25 +19,25 @@ DType = List[Dict[str, Any]]
 
 class NetworkGroup(Collection):
     """
-        Class that represents a group of network objects
-        These network objects are intended to be visualized together
+    Class that represents a group of network objects
+    These network objects are intended to be visualized together
 
-        Parameters
-        ----------
-        networks : List[Network]
-            The collection of networks to be grouped
-            key = context-id, value = Network
+    Parameters
+    ----------
+    networks : List[Network]
+        The collection of networks to be grouped
+        key = context-id, value = Network
 
-        Attributes
-        ----------
-        graph : Union[nx.MultiGraph, nx.MultiDiGraph]
-            The networkx multi-graph representation of the network
-        nodes: DType
-            The list of nodes in the network group
-        links: DType
-            The list of links in the network group
-        contexts: DType
-            The list of all contexts in the network group
+    Attributes
+    ----------
+    graph : Union[nx.MultiGraph, nx.MultiDiGraph]
+        The networkx multi-graph representation of the network
+    nodes: DType
+        The list of nodes in the network group
+    links: DType
+        The list of links in the network group
+    contexts: DType
+        The list of all contexts in the network group
     """
 
     def __init__(self, networks: List[Network]) -> None:
@@ -117,17 +119,17 @@ class NetworkGroup(Collection):
         self, networks: List[Network]
     ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
         """
-            Combine networks into a network group
+        Combine networks into a network group
 
-            Parameters
-            ----------
-            networks : List[Network]
-                The list of networks to be grouped
+        Parameters
+        ----------
+        networks : List[Network]
+            The list of networks to be grouped
 
-            Returns
-            -------
-            Union[nx.MultiGraph, nx.MultiDiGraph]
-                The networkx graph of the network
+        Returns
+        -------
+        Union[nx.MultiGraph, nx.MultiDiGraph]
+            The networkx graph of the network
         """
         nodes_dict = dict()
         links_dict = dict()
@@ -163,21 +165,48 @@ class NetworkGroup(Collection):
         """ The contexts for the group of networks """
         return self.graph.graph["contexts"]
 
+    def get_adjacency_vectors(self, key: str) -> List[pd.Series]:
+        """
+        Returns the adjacency matrix for each context as a `pd.Series`
+
+        Parameters
+        ----------
+        key : str
+            The `edge` property to be used to contruct the vectors
+
+        Returns
+        -------
+        List[pd.Series]:
+            The list of adjacency vectors
+        """
+        ids = list(self.nodes)
+        size = len(ids) * len(ids)
+        index = [f"{id1}-{id2}" for id1, id2 in product(ids, repeat=2)]
+        adj_vector_list: List[pd.Series] = [
+            pd.Series(np.zeros((size), dtype=float), index=index)
+        ]
+        graph = self.graph
+        for source, target, data in graph.edges(data=True):
+            cid = data["cid"]
+            id_ = f"{source}-{target}"
+            adj_vector_list[cid][id_] = data[key]
+        return adj_vector_list
+
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
-            The links of the networks after applying filtering
+        The links of the networks after applying filtering
 
-            Parameters
-            ----------
-            pvalue_filter : bool
-                If True will use `pvalue_threshold` for filtering
-            interaction_filter : bool
-                If True will use `interaction_threshold` for filtering
+        Parameters
+        ----------
+        pvalue_filter : bool
+            If True will use `pvalue_threshold` for filtering
+        interaction_filter : bool
+            If True will use `interaction_threshold` for filtering
 
-            Returns
-            -------
-            DType
-                The list of links in the network after applying thresholds
+        Returns
+        -------
+        DType
+            The list of links in the network after applying thresholds
         """
         filtered_links_dict = dict()
         for cid, network in enumerate(self._networks):
@@ -191,21 +220,21 @@ class NetworkGroup(Collection):
         self, pvalue_filter: bool = False, interaction_filter: bool = False
     ) -> str:
         """
-            Returns the network as a `JSON` string
+        Returns the network as a `JSON` string
 
-            Parameters
-            ----------
-            pvalue_filter : bool
-                If True will use `pvalue_threshold` for filtering
-                Default  value is False
-            interaction_filter : bool
-                If True will use `interaction_threshold` for filtering
-                Default  value is False
+        Parameters
+        ----------
+        pvalue_filter : bool
+            If True will use `pvalue_threshold` for filtering
+            Default  value is False
+        interaction_filter : bool
+            If True will use `interaction_threshold` for filtering
+            Default  value is False
 
-            Returns
-            -------
-            str
-                The `JSON` string representation of the network
+        Returns
+        -------
+        str
+            The `JSON` string representation of the network
         """
         nodes = self.nodes
         links = self.filter_links(
@@ -219,18 +248,18 @@ class NetworkGroup(Collection):
         self, fpath: str, pvalue_filter: bool = False, interaction_filter: bool = False
     ) -> None:
         """
-            Write network to file as JSON
+        Write network to file as JSON
 
-            Parameters
-            ----------
-            fpath : str
-                The path to the `JSON` file
-            pvalue_filter : bool
-                If True will use `pvalue_threshold` for filtering
-                Default  value is False
-            interaction_filter : bool
-                If True will use `interaction_threshold` for filtering
-                Default  value is False
+        Parameters
+        ----------
+        fpath : str
+            The path to the `JSON` file
+        pvalue_filter : bool
+            If True will use `pvalue_threshold` for filtering
+            Default  value is False
+        interaction_filter : bool
+            If True will use `interaction_threshold` for filtering
+            Default  value is False
         """
         with open(fpath, "w") as fid:
             fid.write(
@@ -242,17 +271,17 @@ class NetworkGroup(Collection):
     @classmethod
     def load_json(cls, fpath: str) -> "NetworkGroup":
         """
-            Create a `NetworkGroup` object from network `JSON` file
+        Create a `NetworkGroup` object from network `JSON` file
 
-            Parameters
-            ----------
-            fpath : str
-                The path to the network `JSON` file
+        Parameters
+        ----------
+        fpath : str
+            The path to the network `JSON` file
 
-            Returns
-            -------
-            NetworkGroup
-                The instance of the `NetworkGroup` class
+        Returns
+        -------
+        NetworkGroup
+            The instance of the `NetworkGroup` class
         """
         with open(fpath, "r") as fid:
             raw_data = simplejson.load(fid)
@@ -288,15 +317,15 @@ class NetworkGroup(Collection):
 
     def combine_pvalues(self, method: str) -> None:
         """
-            Combine pvalues of links in the network group using Empirical Brown's Method
+        Combine pvalues of links in the network group using Empirical Brown's Method
 
-            Parameters
-            ----------
-            method : str
+        Parameters
+        ----------
+        method : str
 
-            Returns
-            -------
-            np.array
+        Returns
+        -------
+        np.array
         """
         # TODO: covar_matrix needs to be calculated
         covar_matrix = np.cov(weights)
