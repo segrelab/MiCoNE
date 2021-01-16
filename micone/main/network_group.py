@@ -9,7 +9,7 @@ from typing import Any, Dict, Iterator, List, Union
 import networkx as nx
 import numpy as np
 import pandas as pd
-from scipy.special import chdtrc as chi2_cdf
+from scipy.stats import chi2
 import simplejson
 
 from .network import Network
@@ -315,36 +315,22 @@ class NetworkGroup(Collection):
             networks.append(Network.load_json(raw_data=network_raw_data))
         return cls(networks)
 
-    def combine_pvalues(self, method: str) -> None:
+    def combine_pvalues(self) -> pd.DataFrame:
         """
         Combine pvalues of links in the network group using Empirical Brown's Method
 
-        Parameters
-        ----------
-        method : str
-
         Returns
         -------
-        np.array
+        pvalues_combined
+            The `pd.DataFrame` containing the combined pvalues
         """
-        # TODO: covar_matrix needs to be calculated
-        covar_matrix = np.cov(weights)
-        m = int(covar_matrix.shape[0])
-        df_fisher = 2.0 * m
-        Expected = 2.0 * m
-        cov_sum = 0
-        for i in range(m):
-            for j in range(i + 1, m):
-                cov_sum += covar_matrix[i, j]
-
-        Var = 4.0 * m + 2 * cov_sum
-        c = Var / (2.0 * Expected)
-        df_brown = 2.0 * Expected ** 2 / Var
-        if df_brown > df_fisher:
-            df_brown = df_fisher
-            c = 1.0
-
-        x = 2.0 * sum([-np.log(p) for p in p_values])
-        p_brown = chi2_cdf(df_brown, 1.0 * x / c)
-        p_fisher = chi2_cdf(df_fisher, 1.0 * x)
-        return p_brown, p_fisher, c, df_brown
+        pvalue_vectors = self.get_adjacency_vectors("pvalue")
+        pvalue_df: pd.DataFrame = pd.concat(pvalue_vectors)
+        degrees_of_freedom = 2 * pvalue_df.shape[1]
+        correction_factor = 1.0
+        for row_id in list(pvalue_df.index):
+            pvalues = pvalue_df[row_id, :].values
+            chi_square = -2.0 * np.log(pvalues).sum() / correction_factor
+        # TODO: Should be the same as pchisq(q, df, ncp=0, lower.tail = FALSE, log.p=FALSE)
+        pvalue = 1 - chi2.df(chi_square, df=degrees_of_freedom)
+        # TODO: Finally return df of nxn or series (n.n)x1 ??
