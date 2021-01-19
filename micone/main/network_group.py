@@ -9,7 +9,7 @@ from typing import Any, Dict, Iterator, List, Union
 import networkx as nx
 import numpy as np
 import pandas as pd
-from scipy.stats import chi2
+from scipy.stats import pearsonr, chi2
 import simplejson
 
 from .network import Network
@@ -315,22 +315,41 @@ class NetworkGroup(Collection):
             networks.append(Network.load_json(raw_data=network_raw_data))
         return cls(networks)
 
-    def combine_pvalues(self) -> pd.DataFrame:
+    def combine_pvalues(self) -> pd.Series:
         """
-        Combine pvalues of links in the network group using Empirical Brown's Method
+        Combine pvalues of links in the network group using the Brown's Method
 
         Returns
         -------
         pvalues_combined
-            The `pd.DataFrame` containing the combined pvalues
+            The `pd.Series` containing the combined pvalues
         """
         pvalue_vectors = self.get_adjacency_vectors("pvalue")
-        pvalue_df: pd.DataFrame = pd.concat(pvalue_vectors)
-        degrees_of_freedom = 2 * pvalue_df.shape[1]
-        correction_factor = 1.0
+        weight_vectors = self.get_adjacency_vectors("weight")
+        pvalue_df: pd.DataFrame = pd.concat(pvalue_vectors, join="outer")
+        weight_df: pd.DataFrame = pd.concat(weight_vectors, join="outer")
+        # E[psi] = 2 * k
+        k = pvalue_df.shape[1]
+        expected_value = 2 * k
+        # Var[psi] = 4*k + 2 * sum{i<j} (3.263 * corr_ij + 0.710 * corr_ij^2 + 0.027 * corr_ij^3)
+        variance = 4 * k
+        for i in range(1, k):
+            for j in range(0, i - 1):
+                x_i = weight_df.iloc[:, i].values
+                x_j = weight_df.iloc[:, j].values
+                corr_ij, _ = pearsonr(x_i, x_j)
+                cov_ij_approx = (
+                    3.263 * corr_ij + 0.710 * (corr_ij ** 2) + 0.027 * (corr_ij ** 3)
+                )
+                variance += 2 * cov_ij_approx
+        # df = 2 * E[psi]^2 / var[psi]
+        degrees_of_freedom = 2 * (expected_value ** 2) / variance
+        # c = var[psi] / (2 * E[psi])
+        correction_factor = variance / (2 * expected_value)
+        link_ids = list(pvalue_df.index)
+        pvalues_combined = pd.Series(data=np.zeros(len(link_ids)), index=link_ids)
         for row_id in list(pvalue_df.index):
             pvalues = pvalue_df[row_id, :].values
             chi_square = -2.0 * np.log(pvalues).sum() / correction_factor
-        # TODO: Should be the same as pchisq(q, df, ncp=0, lower.tail = FALSE, log.p=FALSE)
-        pvalue = 1 - chi2.df(chi_square, df=degrees_of_freedom)
-        # TODO: Finally return df of nxn or series (n.n)x1 ??
+            pvalues_combined[row_id] = chi2.sf(chi_square, df=degrees_of_freedom)
+        return pvalues_combined
