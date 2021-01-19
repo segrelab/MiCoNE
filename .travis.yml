@@ -1,21 +1,22 @@
 language: python
 
-python: 3.6
+python: 3.8
 
 install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
     - bash miniconda.sh -b -p $HOME/miniconda
     - export PATH="$HOME/miniconda/bin:$PATH"
-    - conda env create -f env_dev.yml -n mindpipe-test
-    - source activate mindpipe-test
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda env create -f env.yml -n micone-test
+    - source activate micone-test
     - nextflow self-update
     - pip install .
 
 script:
-    - mindpipe init
-    - pytest -sv --cov=mindpipe
-    - flake8 mindpipe
-    - travis-sphinx build --source=docs --nowarn
+    # - micone init
+    - pytest -sv --cov=micone
+    - flake8 micone
 
 deploy:
   provider: pypi
@@ -26,4 +27,4 @@ deploy:
     tags: true
 
 after_success:
-    - travis-sphinx deploy
+    - bash <(curl -s https://codecov.io/bash)
