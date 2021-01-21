@@ -10,19 +10,19 @@ from click import echo
 
 class Spinner:
     """
-        A custom spinner class that makes use of `halo` and `click`
+    A custom spinner class that makes use of `halo` and `click`
 
-        Parameters
-        ----------
-        text : str
-        spinner : str
+    Parameters
+    ----------
+    text : str
+    spinner : str
 
-        Attributes
-        ----------
-        interactive : bool
-            True if the `Spinner` instance is interactive
-        text : str
-            The text currently in the spinner
+    Attributes
+    ----------
+    interactive : bool
+        True if the `Spinner` instance is interactive
+    text : str
+        The text currently in the spinner
     """
 
     def __init__(self, text: str, spinner: str, interactive: bool = True) -> None:
