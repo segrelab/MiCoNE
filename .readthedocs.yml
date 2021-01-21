@@ -1,7 +1,13 @@
 version: 2
 
+sphinx:
+    configuration: docs/conf.py
+
 python:
     version: 3.8
+    install:
+        - method: pip
+          path: .
+          extra_requirements:
+              - docs
 
-conda:
-    environment: env.yml
