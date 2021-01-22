@@ -20,7 +20,7 @@ class TestLineage:
         assert good_lineage.Family == lineage_data["good"]["Family"]
         assert good_lineage.Genus == lineage_data["good"]["Genus"]
         assert good_lineage.Species == lineage_data["good"]["Species"]
-        with pytest.raises(ValueError):
+        with pytest.warns(RuntimeWarning):
             Lineage(**lineage_data["bad"])
 
     def test_sub(self, lineage_data):
