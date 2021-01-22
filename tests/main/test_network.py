@@ -25,13 +25,14 @@ class TestNetwork:
             obsmeta_data,
             cmeta_data,
         ) in correlation_data["good"]:
+            # TODO: FIXME: __init__ was changed to take in nodes and links
             network = Network(
                 corr_data, meta_data, cmeta_data, obsmeta_data, pval_data, child_data
             )
             n_nodes = corr_data.shape[0]
             assert n_nodes == len(network.nodes)
             assert (n_nodes ** 2 - n_nodes) // 2 == len(network.links)
-            assert len(network.filtered_links) <= len(network.links)
+            assert len(network.filter_links(True, True)) <= len(network.links)
             assert all(key in network.metadata for key in meta_data)
 
     def test_load_data(self, correlation_files):
@@ -52,20 +53,20 @@ class TestNetwork:
             n_nodes = corr_data.shape[0]
             assert n_nodes == len(network.nodes)
             assert (n_nodes ** 2 - n_nodes) // 2 == len(network.links)
-            assert len(network.filtered_links) <= len(network.links)
+            assert len(network.filter_links(True, True)) <= len(network.links)
             assert all(key in network.metadata for key in meta_data)
 
-    def test_graph(self, correlation_data):
+    def test_graph(self, correlation_files):
         for (
-            corr_data,
-            pval_data,
-            meta_data,
-            child_data,
-            obsmeta_data,
-            cmeta_data,
-        ) in correlation_data["good"]:
-            network = Network(
-                corr_data, meta_data, cmeta_data, obsmeta_data, pval_data, child_data
+            corr_file,
+            pval_file,
+            meta_file,
+            child_file,
+            obsmeta_file,
+            cmeta_file,
+        ) in correlation_files["good"]:
+            network = Network.load_data(
+                corr_file, meta_file, cmeta_file, obsmeta_file, pval_file, child_file
             )
             graph = network.graph
             assert isinstance(graph, nx.Graph)
@@ -73,45 +74,49 @@ class TestNetwork:
                 assert isinstance(graph, nx.DiGraph)
             assert len(network.nodes) == graph.number_of_nodes()
             assert len(network.links) == graph.number_of_edges()
+            with open(meta_file) as fid:
+                meta_data = json.load(fid)
             assert all(key in graph.graph for key in meta_data)
 
-    def test_json(self, correlation_data):
+    def test_json(self, correlation_files):
         for (
-            corr_data,
-            pval_data,
-            meta_data,
-            child_data,
-            obsmeta_data,
-            cmeta_data,
-        ) in correlation_data["good"]:
-            network = Network(
-                corr_data, meta_data, cmeta_data, obsmeta_data, pval_data, child_data
+            corr_file,
+            pval_file,
+            meta_file,
+            child_file,
+            obsmeta_file,
+            cmeta_file,
+        ) in correlation_files["good"]:
+            network = Network.load_data(
+                corr_file, meta_file, cmeta_file, obsmeta_file, pval_file, child_file
             )
-            net_loaded = json.loads(network.json(threshold=False))
+            net_loaded = json.loads(network.json())
             assert net_loaded["nodes"] == network.nodes
             assert net_loaded["links"] == network.links
-            net_loaded_thres = json.loads(network.json(threshold=True))
+            net_loaded_thres = json.loads(network.json(True, True))
             assert net_loaded_thres["nodes"] == network.nodes
-            assert net_loaded_thres["links"] == network.filtered_links
+            assert net_loaded_thres["links"] == network.filter_links(True, True)
 
-    def test_write_load_network(self, correlation_data, tmpdir):
+    def test_write_load_network(self, correlation_files, tmpdir):
         for (
-            corr_data,
-            pval_data,
-            meta_data,
-            child_data,
-            obsmeta_data,
-            cmeta_data,
-        ) in correlation_data["good"]:
-            network = Network(
-                corr_data, meta_data, cmeta_data, obsmeta_data, pval_data, child_data
+            corr_file,
+            pval_file,
+            meta_file,
+            child_file,
+            obsmeta_file,
+            cmeta_file,
+        ) in correlation_files["good"]:
+            network = Network.load_data(
+                corr_file, meta_file, cmeta_file, obsmeta_file, pval_file, child_file
             )
             network_file = tmpdir.mkdir("test_write_load_network").join("network.json")
-            network.write(network_file, threshold=True)
+            network.write(network_file, pvalue_filter=True, interaction_filter=True)
             network_loaded = Network.load_json(network_file)
             assert network.metadata == network_loaded.metadata
             assert network.nodes == network_loaded.nodes
-            assert network.filtered_links == network_loaded.filtered_links
+            assert network.filter_links(True, True) == network_loaded.filter_links(
+                True, True
+            )
 
     def test_load_elist(self, network_elist_files):
         for (
@@ -142,9 +147,11 @@ class TestNetwork:
                     return frozenset([x["source"], x["target"]])
 
             links1 = {
-                fun(x): (x["pvalue"], x["weight"]) for x in network_elist.filtered_links
+                fun(x): (f"{x['pvalue']:.5f}", f"{x['weight']:.5f}")
+                for x in network_elist.filter_links(True, True)
             }
             links2 = {
-                fun(x): (x["pvalue"], x["weight"]) for x in network_json.filtered_links
+                fun(x): (f"{x['pvalue']:.5f}", f"{x['weight']:.5f}")
+                for x in network_json.filter_links(True, True)
             }
             assert links1 == links2

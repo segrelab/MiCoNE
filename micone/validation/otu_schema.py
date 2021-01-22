@@ -10,7 +10,7 @@ from schematics.types import BaseType
 
 class HeaderType(BaseType):
     """
-        DataType that describes the expected structure and format for the sample headers
+    DataType that describes the expected structure and format for the sample headers
     """
 
     def validate_header(self, value):
@@ -128,15 +128,17 @@ class ObsmetaType(BaseType):
                 query = filt_data[
                     ~filt_data.str.contains(r"^[a-zA-Z0-9-._ ]+(?<! )$")
                 ].any()
+                # TODO: FIXME:
                 # if query:
                 #     raise ValidationError(
                 #         "Invalid observation metadata. "
                 #         f"Taxonomy names are not standard: {query} is not allowed in {level}"
                 #     )
-            else:
+            elif level in ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus"]:
                 query = filt_data[
                     ~filt_data.str.contains(r"^[a-zA-Z0-9-._ ]+(?<! )$")
                 ].any()
+                # TODO: FIXME:
                 # if query:
                 #     raise ValidationError(
                 #         "Invalid observation metadata. "
@@ -146,13 +148,13 @@ class ObsmetaType(BaseType):
 
 class BiomType(BaseType):
     """
-        DataType that describes the expected structure and format for the `biom.Table`
+    DataType that describes the expected structure and format for the `biom.Table`
 
-        Parameters
-        ----------
-        norm : bool, optional
-            True if abundances are normalized
-            Default value is False
+    Parameters
+    ----------
+    norm : bool, optional
+        True if abundances are normalized
+        Default value is False
     """
 
     def __init__(self, norm=False, *args, **kwargs):
