@@ -11,12 +11,12 @@ import pytest
 from micone.main import Network
 
 
-@pytest.mark.usefixtures("raw_network_data", "correlation_files", "network_elist_files")
+@pytest.mark.usefixtures("network_data", "correlation_files", "network_elist_files")
 @pytest.mark.filterwarnings("ignore::RuntimeWarning")
 class TestNetwork:
     """ Tests for the Network class """
 
-    def test_init(self, raw_network_data):
+    def test_init(self, network_data):
         for (
             nodes,
             links,
@@ -29,7 +29,7 @@ class TestNetwork:
             pvalue_threshold,
             pvalue_correction,
             directed,
-        ) in raw_network_data["good"]:
+        ) in network_data["good"]:
             network = Network(
                 nodes,
                 links,

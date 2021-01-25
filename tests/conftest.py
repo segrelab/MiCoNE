@@ -147,26 +147,46 @@ def network_json_files():
 def raw_network_data(network_json_files):
     """ Fixture that loads the network file directly as json """
     data = {"good": [], "bad": []}
-    for kind in {"good"}:
+    for kind in {"good", "bad"}:
+        for file in network_json_files[kind]:
+            with open(file, "r") as fid:
+                data[kind].append(simplejson.load(fid))
+    return data
+
+
+@pytest.fixture(scope="module")
+def network_data(network_json_files):
+    """ Fixture that loads the network for the Network contructor """
+    data = {"good": [], "bad": []}
+    for kind in {"good", "bad"}:
         for file in network_json_files[kind]:
             with open(file, "r") as fid:
                 network_data = simplejson.load(fid)
             non_meta_keys = ["nodes", "links"]
             metadata = {k: v for k, v in network_data.items() if k not in non_meta_keys}
-            cmetadata = network_data["computational_metadata"]
-            interaction_type = network_data["interaction_type"]
-            interaction_threshold = cmetadata["interaction_threshold"]
-            pvalue_threshold = cmetadata["pvalue_threshold"]
+            cmetadata = network_data.get("computational_metadata", {})
+            interaction_type = network_data.get("interaction_type", "")
+            interaction_threshold = cmetadata.get("interaction_threshold", np.nan)
+            pvalue_threshold = cmetadata.get("pvalue_threshold", np.nan)
             pvalue_correction = None
-            directed = True if network_data["directionality"] == "directed" else False
+            directed = (
+                True if network_data.get("directionality", "") == "directed" else False
+            )
             nodes = []
             links = []
             lineages = []
             children_map = {}
             for node in network_data["nodes"]:
-                nodes.append(node["id"])
-                lineage = Lineage.from_str(node["lineage"]).to_dict("Species")
-                children_map[node["id"]] = node["children"]
+                try:
+                    node_id = node["id"]
+                    children_map[node_id] = node["children"]
+                except KeyError:
+                    node_id = "missing"
+                nodes.append(node_id)
+                try:
+                    lineage = Lineage.from_str(node["lineage"]).to_dict("Species")
+                except KeyError:
+                    lineage = Lineage().to_dict("Species")
                 abundance = node.get("abundance", np.nan)
                 if abundance is not None:
                     lineages.append({**lineage, **dict(Abundance=abundance)})
@@ -174,12 +194,17 @@ def raw_network_data(network_json_files):
                     lineages.append(lineage)
             obs_metadata = pd.DataFrame(lineages, index=nodes)
             for link in network_data["links"]:
-                source, target = link["source"], link["target"]
+                source, target = link.get("source", "missing"), link.get(
+                    "target", "missing"
+                )
                 links.append(
                     (
                         source,
                         target,
-                        {"weight": link["weight"], "pvalue": link["pvalue"]},
+                        {
+                            "weight": link.get("weight", np.nan),
+                            "pvalue": link.get("pvalue", np.nan),
+                        },
                     )
                 )
             data[kind].append(
