@@ -19,6 +19,7 @@ class TestParamsSet:
         assert ParamsSet(internal_raw)
         wrong_format = {
             "env": "micone",
+            "root_dir": "filter/partition",
             "output_location": "split_otu_table",
             "input": [{"datatype": "sequence_16s", "format": ["fasta"]}],
             "output": [
@@ -26,46 +27,46 @@ class TestParamsSet:
             ],
             "parameters": [{"process": "something", "data": 123}],
         }
-        assert Params(("otu_processing.filtering.partition", wrong_format))
+        assert Params(("otu_processing.filter.partition", wrong_format))
         with pytest.raises(TypeError):
             Params(
                 (
-                    "otu_processing.filtering.partition",
+                    "otu_processing.filter.partition",
                     {**wrong_format, "input": "string"},
                 )
             )
         with pytest.raises(TypeError):
             Params(
                 (
-                    "otu_processing.filtering.partition",
+                    "otu_processing.filter.partition",
                     {**wrong_format, "output": "string"},
                 )
             )
         with pytest.raises(TypeError):
             Params(
                 (
-                    "otu_processing.filtering.partition",
+                    "otu_processing.filter.partition",
                     {**wrong_format, "parameters": "string"},
                 )
             )
         with pytest.raises(ValueError):
             Params(
                 (
-                    "otu_processing.filtering.partition",
+                    "otu_processing.filter.partition",
                     {**wrong_format, "input": [{"datatype": "sequence_16s"}]},
                 )
             )
         with pytest.raises(ValueError):
             Params(
                 (
-                    "otu_processing.filtering.partition",
+                    "otu_processing.filter.partition",
                     {**wrong_format, "output": [{"datatype": "sequence_16s"}]},
                 )
             )
         with pytest.raises(ValueError):
             Params(
                 (
-                    "otu_processing.filtering.partition",
+                    "otu_processing.filter.partition",
                     {**wrong_format, "parameters": [{"data": "temp"}]},
                 )
             )
@@ -94,7 +95,7 @@ class TestParamsSet:
     def test_param_get(self, pipeline_settings):
         internal_raw = pipeline_settings["otu_processing"]
         internal = ParamsSet(internal_raw)
-        curr_param = internal["otu_processing.filtering.group"]
+        curr_param = internal["otu_processing.filter.group"]
         assert curr_param.get("otu_table", category="input")
         assert curr_param.get("group", category="parameters")
         assert curr_param.get("children_map", category="output")
@@ -102,25 +103,23 @@ class TestParamsSet:
     def test_param_update_location(self, pipeline_settings):
         external_raw = pipeline_settings["otu_assignment"]
         external = ParamsSet(external_raw)
-        curr_param = external[
-            "otu_assignment.sequence_processing.demultiplexing_illumina"
-        ]
+        curr_param = external["otu_assignment.sequence_processing.demultiplex_illumina"]
         curr_param.update_location(
             "sequence_16s", location="file_path", category="input"
         )
-        assert external[
-            "otu_assignment.sequence_processing.demultiplexing_illumina"
-        ].get("sequence_16s", "input").location == pathlib.Path("file_path")
+        assert external["otu_assignment.sequence_processing.demultiplex_illumina"].get(
+            "sequence_16s", "input"
+        ).location == pathlib.Path("file_path")
 
     def test_param_merge(self, pipeline_settings, example_pipelines):
         external_raw = pipeline_settings["otu_assignment"]
         external = ParamsSet(external_raw)
-        curr_param = external["otu_assignment.sequence_processing.demultiplexing_454"]
+        curr_param = external["otu_assignment.sequence_processing.demultiplex_454"]
         user_settings = example_pipelines[
             "otu_assignment_sequence_processing_demultiplexing_454"
         ]
         curr_param.merge(
-            user_settings["otu_assignment"]["sequence_processing"]["demultiplexing_454"]
+            user_settings["otu_assignment"]["sequence_processing"]["demultiplex_454"]
         )
         assert curr_param.get("sequence_16s", "input").location == pathlib.Path(
             "/path/to/sequence_16s"
