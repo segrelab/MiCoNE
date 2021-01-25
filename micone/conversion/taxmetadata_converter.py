@@ -14,21 +14,21 @@ from ..main import Lineage
 
 def qiime2_to_default(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
     """
-        Convert Taxonomy metadata file from qiime2 to default format
+    Convert Taxonomy metadata file from qiime2 to default format
 
-        Parameters
-        ----------
-        in_file : pathlib.Path
-            The path to the qiime2 formatted input file
-        out_file : pathlib.Path
-            The path to the default format output file
+    Parameters
+    ----------
+    in_file : pathlib.Path
+        The path to the qiime2 formatted input file
+    out_file : pathlib.Path
+        The path to the default format output file
     """
     with open(in_file, "r") as fid:
         csv_reader = csv.reader(fid, delimiter="\t")
         data_dict: Dict[str, List[str]] = {key: [] for key in ObsmetaType._req_keys}
         data_dict["ID"] = []
         header, *rest = csv_reader
-        ekey = ObsmetaType._extra_key
+        ekey = ObsmetaType._extra_keys[0]  # the Confidence value
         if ekey in header:
             data_dict[ekey] = []
         for line in rest:
@@ -47,28 +47,28 @@ def qiime2_to_default(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
 
 def qiime1_to_default(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
     """
-        Convert Taxonomy metadata file from qiime1 to default format
+    Convert Taxonomy metadata file from qiime1 to default format
 
-        Parameters
-        ----------
-        in_file : pathlib.Path
-            The path to the qiime1 formatted input file
-        out_file : pathlib.Path
-            The path to the default format output file
+    Parameters
+    ----------
+    in_file : pathlib.Path
+        The path to the qiime1 formatted input file
+    out_file : pathlib.Path
+        The path to the default format output file
     """
     pass
 
 
 def default_to_qiime2(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
     """
-        Convert Taxonomy metadata file from default format to qiime2
+    Convert Taxonomy metadata file from default format to qiime2
 
-        Parameters
-        ----------
-        in_file : pathlib.Path
-            The path to the default format input file
-        out_file : pathlib.Path
-            The path to the qiime2 formatted output file
+    Parameters
+    ----------
+    in_file : pathlib.Path
+        The path to the default format input file
+    out_file : pathlib.Path
+        The path to the qiime2 formatted output file
     """
     pass
 
