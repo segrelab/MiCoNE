@@ -283,7 +283,9 @@ class Network:
         abundance_flag = "Abundance" in obs_metadata.columns
         for node in nodes:
             if abundance_flag:
-                lineage = Lineage(**obs_metadata.drop("Abundance").loc[node].to_dict())
+                lineage = Lineage(
+                    **obs_metadata.drop("Abundance", axis=1).loc[node].to_dict()
+                )
                 abundance = obs_metadata.loc[node].Abundance
             else:
                 if node not in obs_metadata.index:
@@ -648,7 +650,7 @@ class Network:
             children_map[node["id"]] = node["children"]
             abundance = node.get("abundance", np.nan)
             if abundance is not None:
-                lineages.append({**lineage, **dict(abundance=abundance)})
+                lineages.append({**lineage, **dict(Abundance=abundance)})
             else:
                 lineages.append(lineage)
         obs_metadata = pd.DataFrame(lineages, index=nodes)

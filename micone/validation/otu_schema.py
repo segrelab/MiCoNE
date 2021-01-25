@@ -79,7 +79,7 @@ class ObsmetaType(BaseType):
     """ DataType that describes the expected structure and format for the observation metadata """
 
     _req_keys = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
-    _extra_key = "Confidence"
+    _extra_keys = ["Confidence", "Abundance"]
 
     def validate_index(self, value):
         if any(not isinstance(v, str) for v in value.index):
@@ -87,7 +87,7 @@ class ObsmetaType(BaseType):
 
     def validate_obsmeta_headers(self, value):
         for col in value.columns:
-            if col not in self._req_keys and col != self._extra_key:
+            if col not in self._req_keys and col not in self._extra_keys:
                 raise ValidationError(
                     f"Invalid observation metadata. Unknown attribute {col} present"
                 )
@@ -104,22 +104,32 @@ class ObsmetaType(BaseType):
                     break
 
     def validate_obsmeta_data(self, value):
-        if self._extra_key in value.columns:
-            confidence = value[self._extra_key]
+        if self._extra_keys[0] in value.columns:
+            confidence = value[self._extra_keys[0]]
             if confidence.dtype == float:
                 cond1 = 0 <= confidence.min() <= 1
                 cond2 = 0 <= confidence.max() <= 1
                 if not cond1 and not cond2:
                     raise ValidationError(
                         "Invalid observation metadata. "
-                        f"{self._extra_key} must have a value between 0 and 1"
+                        f"{self._extra_keys[0]} must have a value between 0 and 1"
                     )
             else:
                 raise ValidationError(
                     "Invalid observation metadata. "
-                    f"{self._extra_key} column must be of type float"
+                    f"{self._extra_keys[0]} column must be of type float"
                 )
-            df = value.drop(self._extra_key, axis=1)
+            df = value.drop(self._extra_keys[0], axis=1)
+        else:
+            df = value
+        if self._extra_keys[1] in value.columns:
+            abundance = value[self._extra_keys[1]]
+            if abundance.dtype != float:
+                raise ValidationError(
+                    "Invalid observation metadata. "
+                    f"{self._extra_keys[1]} column must be of type float"
+                )
+            df = value.drop(self._extra_keys[1], axis=1)
         else:
             df = value
         for level, data in df.items():
