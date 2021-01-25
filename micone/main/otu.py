@@ -289,7 +289,10 @@ class Otu:
             filt_fun, axis="observation", inplace=False
         )
         otu_df = otu_dense_obs.to_dataframe()
-        otu_rel_abund = (otu_df / otu_df.sum(axis=0)).to_dense()
+        if otu_df.apply(pd.api.types.is_sparse).any():
+            otu_rel_abund = (otu_df / otu_df.sum(axis=0)).sparse.to_dense()
+        else:
+            otu_rel_abund = otu_df / otu_df.sum(axis=0)
         ind_above_thres = otu_rel_abund.index[
             (otu_rel_abund > abundance_thres).any(axis=1)
         ]
