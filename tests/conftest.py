@@ -2,14 +2,16 @@
     Common configuration for all the tests
 """
 
-import json
 import pathlib
 
 from biom import load_table
+import numpy as np
 import pandas as pd
 import pytest
+import simplejson
 import toml
 
+from micone.main import Lineage
 from micone.logging import LOG
 
 LOG.enable()
@@ -119,11 +121,11 @@ def correlation_data(correlation_files):
             pval_data = pd.read_table(pval, index_col=0)
             obsmeta_data = pd.read_csv(obsmeta, index_col=0, na_filter=False)
             with open(meta, "r") as fid:
-                meta_data = json.load(fid)
+                meta_data = simplejson.load(fid)
             with open(child, "r") as fid:
-                child_data = json.load(fid)
+                child_data = simplejson.load(fid)
             with open(cmeta, "r") as fid:
-                cmeta_data = json.load(fid)
+                cmeta_data = simplejson.load(fid)
             data[kind].append(
                 (corr_data, pval_data, meta_data, child_data, obsmeta_data, cmeta_data)
             )
@@ -145,10 +147,56 @@ def network_json_files():
 def raw_network_data(network_json_files):
     """ Fixture that loads the network file directly as json """
     data = {"good": [], "bad": []}
-    for kind in {"good", "bad"}:
+    for kind in {"good"}:
         for file in network_json_files[kind]:
             with open(file, "r") as fid:
-                data[kind].append(json.load(fid))
+                network_data = simplejson.load(fid)
+            non_meta_keys = ["nodes", "links"]
+            metadata = {k: v for k, v in network_data.items() if k not in non_meta_keys}
+            cmetadata = network_data["computational_metadata"]
+            interaction_type = network_data["interaction_type"]
+            interaction_threshold = cmetadata["interaction_threshold"]
+            pvalue_threshold = cmetadata["pvalue_threshold"]
+            pvalue_correction = None
+            directed = True if network_data["directionality"] == "directed" else False
+            nodes = []
+            links = []
+            lineages = []
+            children_map = {}
+            for node in network_data["nodes"]:
+                nodes.append(node["id"])
+                lineage = Lineage.from_str(node["lineage"]).to_dict("Species")
+                children_map[node["id"]] = node["children"]
+                abundance = node.get("abundance", np.nan)
+                if abundance is not None:
+                    lineages.append({**lineage, **dict(Abundance=abundance)})
+                else:
+                    lineages.append(lineage)
+            obs_metadata = pd.DataFrame(lineages, index=nodes)
+            for link in network_data["links"]:
+                source, target = link["source"], link["target"]
+                links.append(
+                    (
+                        source,
+                        target,
+                        {"weight": link["weight"], "pvalue": link["pvalue"]},
+                    )
+                )
+            data[kind].append(
+                (
+                    nodes,
+                    links,
+                    metadata,
+                    cmetadata,
+                    obs_metadata,
+                    children_map,
+                    interaction_type,
+                    interaction_threshold,
+                    pvalue_threshold,
+                    pvalue_correction,
+                    directed,
+                )
+            )
     return data
 
 

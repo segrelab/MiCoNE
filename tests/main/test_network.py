@@ -11,29 +11,42 @@ import pytest
 from micone.main import Network
 
 
-@pytest.mark.usefixtures("correlation_data", "correlation_files", "network_elist_files")
+@pytest.mark.usefixtures("raw_network_data", "correlation_files", "network_elist_files")
 @pytest.mark.filterwarnings("ignore::RuntimeWarning")
 class TestNetwork:
     """ Tests for the Network class """
 
-    def test_init(self, correlation_data):
+    def test_init(self, raw_network_data):
         for (
-            corr_data,
-            pval_data,
-            meta_data,
-            child_data,
-            obsmeta_data,
-            cmeta_data,
-        ) in correlation_data["good"]:
-            # TODO: FIXME: __init__ was changed to take in nodes and links
+            nodes,
+            links,
+            metadata,
+            cmetadata,
+            obs_metadata,
+            children_map,
+            interaction_type,
+            interaction_threshold,
+            pvalue_threshold,
+            pvalue_correction,
+            directed,
+        ) in raw_network_data["good"]:
             network = Network(
-                corr_data, meta_data, cmeta_data, obsmeta_data, pval_data, child_data
+                nodes,
+                links,
+                metadata,
+                cmetadata,
+                obs_metadata,
+                children_map,
+                interaction_type,
+                interaction_threshold,
+                pvalue_threshold,
+                pvalue_correction,
+                directed,
             )
-            n_nodes = corr_data.shape[0]
-            assert n_nodes == len(network.nodes)
-            assert (n_nodes ** 2 - n_nodes) // 2 == len(network.links)
+            assert len(nodes) == len(network.nodes)
+            assert len(links) == len(network.links)
             assert len(network.filter_links(True, True)) <= len(network.links)
-            assert all(key in network.metadata for key in meta_data)
+            assert all(key in network.metadata for key in metadata)
 
     def test_load_data(self, correlation_files):
         for (
