@@ -57,5 +57,8 @@ class TestCommand:
         cmd = "ls"
         profile = "sge"
         timeout = 1000
-        command = Command(cmd, profile, timeout)
+        with pytest.raises(ValueError):
+            command = Command(cmd, profile, timeout)
+        project = "project"
+        command = Command(cmd, profile, timeout, project=project)
         assert command.cmd.startswith("qsub ")
