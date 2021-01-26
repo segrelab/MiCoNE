@@ -217,7 +217,7 @@ class Pipeline(collections.Sequence):
                 root_dir = str(default_process_data.root_dir) + suffix_flag
             else:
                 root_dir = str(default_process_data.root_dir)
-            tree.node[node_name]["process"] = Process(
+            tree.nodes[node_name]["process"] = Process(
                 default_process_data,
                 self.profile,
                 str(self.output_location),
@@ -235,12 +235,12 @@ class Pipeline(collections.Sequence):
 
     def __getitem__(self, key: str) -> Process:
         for process in self:
-            if process.name == key:
+            if process == key:
                 return process
         raise KeyError(f"{key} is not a process of this pipeline")
 
     def __repr__(self) -> str:
-        processes = [process.name for process in self]
+        processes = [process for process in self]
         return (
             f"<Pipeline title={self.title} output_location={self.output_location} "
             f"processes={processes}>"
@@ -268,28 +268,28 @@ class Pipeline(collections.Sequence):
         # Get the process for the root node and update locations
         tree = self.process_tree
         root_node = next(nx.topological_sort(tree))
-        root_node_process = tree.node[root_node]["process"]
+        root_node_process = tree.nodes[root_node]["process"]
         root_node_process.update_location(str(self.base_dir), "input")
         root_path = self.output_location / root_node_process.params.root_dir
         root_node_process.update_location(str(root_path), "output")
-        tree.node[root_node]["location"] = str(root_path)
+        tree.nodes[root_node]["location"] = str(root_path)
         # Attach outputs of parent node to inputs of child node
         for curr_process_name in nx.bfs_tree(tree, root_node):
-            curr_process = tree.node[curr_process_name]["process"]
+            curr_process = tree.nodes[curr_process_name]["process"]
             curr_process.update_location(str(self.base_dir), "input")
             root_path = self.output_location / curr_process.params.root_dir
             curr_process.update_location(str(root_path), "output")
-            tree.node[curr_process_name]["location"] = str(root_path)
+            tree.nodes[curr_process_name]["location"] = str(root_path)
             predecessors: List[str] = list(tree.predecessors(curr_process_name))
             while predecessors:
                 prev_process_name = predecessors[0]
-                prev_process = tree.node[prev_process_name]["process"]
+                prev_process = tree.nodes[prev_process_name]["process"]
                 curr_process.attach_to(prev_process)
                 predecessors = list(tree.predecessors(prev_process_name))
         self.draw_process_tree(self.output_location)
         self.process_queue = collections.deque([], max_procs)
         for process_name in nx.bfs_tree(tree, root_node):
-            process = self.process_tree.node[process_name]["process"]
+            process = self.process_tree.nodes[process_name]["process"]
             loc = pathlib.Path(self.output_location)  # / process.params.output_location
             if self.resume and process.io_exist:
                 yield process
@@ -319,7 +319,7 @@ class Pipeline(collections.Sequence):
         gml = pathlib.Path(fpath) / "DAG.gml"
         nodes = list(self.process_tree.nodes)
         labels = {n: n.split(".", 2)[-1] for n in nodes}
-        pos = hierarchy_pos(tree, 0, width=2 * math.pi, xcenter=0)
+        pos = hierarchy_pos(tree, width=2 * math.pi)
         # If you want a radial graph
         # new_pos = {u:(r*math.cos(theta),r*math.sin(theta)) for u, (theta, r) in pos.items()}
         nx.draw_networkx_nodes(tree, pos, node_size=500, alpha=0.8)
@@ -347,7 +347,7 @@ class Pipeline(collections.Sequence):
         root_node = next(nx.topological_sort(tree))
         status_dict: Dict[str, str] = {}
         for process_name in nx.bfs_tree(tree, root_node):
-            process = tree.node[process_name]["process"]
+            process = tree.nodes[process_name]["process"]
             status_dict[process_name] = process.status
         return status_dict
 
@@ -439,7 +439,7 @@ class Pipeline(collections.Sequence):
             cmd.log()
         if "configs" in files:
             for node in self:
-                process = self.process_tree.node[node]["process"]
+                process = self.process_tree.nodes[node]["process"]
                 script_file = f"{process.id}.nf"
                 config_file = f"{process.id}.config"
                 cmd = Command(f"rm {script_file} {config_file}", "local")
@@ -453,7 +453,7 @@ class Pipeline(collections.Sequence):
             cmd.log()
         if "results" in files:
             for node in self:
-                process = self.process_tree.node[node]["process"]
+                process = self.process_tree.nodes[node]["process"]
                 root_path = process.output_location / process.params.root_dir
                 cmd = Command(f"rm -rf {root_path}", "local")
                 cmd.run()

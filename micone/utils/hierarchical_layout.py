@@ -126,8 +126,7 @@ def hierarchy_pos(
             leafpos[root] = (leftmost, vert_loc)
         # pos[root] = (leftmost + (leaf_count-1)*dx/2., vert_loc)
         # print(leaf_count)
-
-    return rootpos, leafpos, leaf_count
+        return rootpos, leafpos, leaf_count
 
     xcenter = width / 2.0
     if isinstance(G, nx.DiGraph):
