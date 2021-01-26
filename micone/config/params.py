@@ -81,7 +81,7 @@ class Params(collections.Hashable):
         The list of inputs of the process
     output : Set[Output]
         The list of outputs of the process
-    parameters : Set[Dict[str, Any]]
+    parameters : Set[Parameters]
         The list of parameters of the process
     """
 

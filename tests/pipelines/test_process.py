@@ -41,7 +41,7 @@ def setup_external(
     pipeline_settings,
     example_pipelines,
     module="otu_assignment",
-    pipeline="otu_assignment.sequence_processing.demultiplexing_454",
+    pipeline="otu_assignment.sequence_processing.demultiplex_454",
 ):
     external_raw = pipeline_settings[module]
     external = ParamsSet(external_raw)
@@ -68,11 +68,11 @@ class TestInternalProcess:
 
     def test_init(self, pipeline_settings, example_pipelines):
         params = setup_internal(pipeline_settings, example_pipelines)
-        assert Process(params, profile="local")
+        assert Process(params, profile="local", output_location=".")
 
     def test_update_location(self, pipeline_settings, example_pipelines):
         params = setup_internal(pipeline_settings, example_pipelines)
-        process = Process(params, profile="local")
+        process = Process(params, profile="local", output_location=".")
         output_dir = pathlib.Path.home() / "Documents/results"
         process.update_location(str(output_dir), "input")
         for input_ in process.params.input:
@@ -85,7 +85,7 @@ class TestInternalProcess:
 
     def test_build_bad(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_internal(pipeline_settings, example_pipelines)
-        process = Process(params, profile="local")
+        process = Process(params, profile="local", output_location=".")
         process_dir = tmpdir.mkdir("test_process_build")
         output_dir = pathlib.Path.cwd() / "tests/data"
         with pytest.raises(FileNotFoundError):
@@ -98,15 +98,15 @@ class TestInternalProcess:
             pipeline_settings,
             example_pipelines,
             module="otu_processing",
-            pipeline="otu_processing.filtering.group",
+            pipeline="otu_processing.filter.group",
         )
-        process = Process(params, profile="local")
+        process = Process(params, profile="local", output_location=".")
         process_dir = tmpdir.mkdir("test_process_build")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
         process.build(process_dir)
-        script_file = os.path.join(process_dir, "otu_processing.filtering.group.nf")
-        config_file = os.path.join(process_dir, "otu_processing.filtering.group.config")
+        script_file = os.path.join(process_dir, "otu_processing.filter.group.nf")
+        config_file = os.path.join(process_dir, "otu_processing.filter.group.config")
         assert os.path.exists(script_file)
         assert os.path.exists(config_file)
 
@@ -115,11 +115,10 @@ class TestInternalProcess:
             pipeline_settings,
             example_pipelines,
             module="otu_processing",
-            pipeline="otu_processing.filtering.group",
+            pipeline="otu_processing.filter.group",
         )
-        process = Process(params, profile="local")
-        with pytest.warns(UserWarning):
-            process.cmd
+        process = Process(params, profile="local", output_location=".")
+        assert process.cmd
         process_dir = tmpdir.mkdir("test_process_cmd")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -135,9 +134,9 @@ class TestInternalProcess:
             pipeline_settings,
             example_pipelines,
             module="otu_processing",
-            pipeline="otu_processing.filtering.group",
+            pipeline="otu_processing.filter.group",
         )
-        process = Process(params, profile="local")
+        process = Process(params, profile="local", output_location=".")
         process_dir = tmpdir.mkdir("test_process_run")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -161,9 +160,9 @@ class TestInternalProcess:
             pipeline_settings,
             example_pipelines,
             module="otu_processing",
-            pipeline="otu_processing.filtering.group",
+            pipeline="otu_processing.filter.group",
         )
-        process = Process(params, profile="local")
+        process = Process(params, profile="local", output_location=".")
         process_dir = tmpdir.mkdir("test_process_clean")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -194,14 +193,16 @@ class TestInternalProcess:
             module="otu_processing",
             pipeline="otu_processing.transform.normalize",
         )
-        previous_process = Process(previous_params, profile="local")
+        previous_process = Process(
+            previous_params, profile="local", output_location="."
+        )
         curr_params = setup_internal(
             pipeline_settings,
             example_pipelines,
             module="otu_processing",
-            pipeline="otu_processing.filtering.group",
+            pipeline="otu_processing.filter.group",
         )
-        curr_process = Process(curr_params, profile="local")
+        curr_process = Process(curr_params, profile="local", output_location=".")
         output_dir = pathlib.Path.cwd() / "tests/data"
         previous_process.update_location(str(output_dir), "input")
         previous_process.build(tmpdir)
@@ -219,19 +220,18 @@ class TestInternalProcess:
             pipeline_settings,
             example_pipelines,
             module="otu_processing",
-            pipeline="otu_processing.filtering.group",
+            pipeline="otu_processing.filter.group",
         )
-        process = Process(params, profile="local")
+        process = Process(params, profile="local", output_location=".")
         process_dir = tmpdir.mkdir("test_process_dict")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
         process.build(process_dir)
-        param_dict = process.params.dict
-        assert "input" in param_dict
-        assert "output" in param_dict
-        assert "output_dir" in param_dict
+        assert process.params.input
+        assert process.params.output
+        assert process.params.root_dir
         for params in process.params.parameters:
-            assert params.process in param_dict
+            assert params.process in params
 
 
 @pytest.mark.usefixtures("pipeline_settings", "example_pipelines")
@@ -240,7 +240,7 @@ class TestExternalProcess:
 
     def test_init(self, pipeline_settings, example_pipelines):
         params = setup_external(pipeline_settings, example_pipelines)
-        assert Process(params, profile="local")
+        assert Process(params, profile="local", output_location=".")
 
     def test_run(self, pipeline_settings, example_pipelines, tmpdir):
         params = setup_external(
@@ -249,7 +249,7 @@ class TestExternalProcess:
             module="network_inference",
             pipeline="network_inference.correlation.sparcc",
         )
-        process = Process(params, profile="local")
+        process = Process(params, profile="local", output_location=".")
         process_dir = tmpdir.mkdir("test_process_run")
         output_dir = pathlib.Path.cwd() / "tests/data"
         process.update_location(str(output_dir), "input")
@@ -283,8 +283,8 @@ class TestExternalProcess:
         for remove in to_remove:
             json_params.input.remove(remove)
             json_params.input.add(Input(datatype=remove.datatype, format=remove.format))
-        sparcc_process = Process(sparcc_params, profile="local")
-        json_process = Process(json_params, profile="local")
+        sparcc_process = Process(sparcc_params, profile="local", output_location=".")
+        json_process = Process(json_params, profile="local", output_location=".")
         output_dir = pathlib.Path.cwd() / "tests/data"
         sparcc_process.update_location(str(output_dir), "input")
         sparcc_process.build(tmpdir)

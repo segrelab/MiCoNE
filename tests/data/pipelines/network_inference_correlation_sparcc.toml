@@ -13,7 +13,7 @@ output_location = "/home/dileep/Documents/results/sparcc"
   [[network_inference.correlation.sparcc.input]]
     datatype = "otu_bootstrap"
     format = ["boot"]
-    location = "/home/dileep/Documents/results/resample/network_inference/bootstrap/resample.1/fmt/otu/*.boot"
+    location = "otus/tsv/good/fmt/boot/*.boot"
   [[network_inference.correlation.sparcc.parameters]]
     process = "sparcc"
     iterations = 5

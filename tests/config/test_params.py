@@ -116,7 +116,7 @@ class TestParamsSet:
         external = ParamsSet(external_raw)
         curr_param = external["otu_assignment.sequence_processing.demultiplex_454"]
         user_settings = example_pipelines[
-            "otu_assignment_sequence_processing_demultiplexing_454"
+            "otu_assignment_sequence_processing_demultiplex_454"
         ]
         curr_param.merge(
             user_settings["otu_assignment"]["sequence_processing"]["demultiplex_454"]
