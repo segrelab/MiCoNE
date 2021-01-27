@@ -2,6 +2,8 @@
     Module that has functions to enable drawing hierarchical graphs in networkx without graphviz
 """
 
+import random
+
 import networkx as nx
 
 
