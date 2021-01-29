@@ -278,7 +278,7 @@ class TestExternalProcess:
         json_params = setup_internal(pipeline_settings, example_pipelines)
         to_remove = []
         for io_elem in json_params.input:
-            if io_elem.datatype in {"interaction_table", "pvalue_table"}:
+            if io_elem.datatype in {"interaction_table"}:
                 to_remove.append(io_elem)
         for remove in to_remove:
             json_params.input.remove(remove)
