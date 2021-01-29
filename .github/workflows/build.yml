@@ -20,8 +20,9 @@ jobs:
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Install dependencies
       run: |
-        conda env update --file env.yml --name base
+        conda create -n micone -f env.yml
         pip install .
+        micone init --env micone-sparcc
     - name: Lint with flake8
       run: |
         conda install flake8
@@ -31,7 +32,7 @@ jobs:
         flake8 micone --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest -sv --cov=micone
+        pytest --cov=micone
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
       with:
