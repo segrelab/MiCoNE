@@ -294,7 +294,7 @@ class Pipeline(collections.Sequence):
             if self.resume and process.io_exist:
                 yield process
             else:
-                if len(self.process_queue) >= self.process_queue.maxlen:
+                if len(self.process_queue) > self.process_queue.maxlen:
                     raise RuntimeError(
                         f"Number of parallel processes executed has exceeded {max_procs}"
                     )
