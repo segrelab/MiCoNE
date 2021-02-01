@@ -28,9 +28,9 @@ class Process(collections.Hashable):
         The execution environment
     output_location : str
         The absolute path to the base input file directory
-    id : str, optional
-        The unique id given to the process in the process tree
-        Default value is None, in this case process name is used as id
+    id_ : str, optional
+        The unique id_ given to the process in the process tree
+        Default value is None, in this case process name is used as id_
     root_dir : str, optional
         The root directory for the results of the current process
         Default value is None
@@ -52,8 +52,8 @@ class Process(collections.Hashable):
 
     Attributes
     ----------
-    id : str
-        The unique id given to the process in the process tree
+    id_ : str
+        The unique id_ given to the process in the process tree
     name : str
         The name of the process
     params : Params
@@ -79,7 +79,7 @@ class Process(collections.Hashable):
         params: Params,
         profile: str,
         output_location: str,
-        id: Optional[str] = None,
+        id_: Optional[str] = None,
         root_dir: Optional[str] = None,
         script_name: str = "process.nf",
         config_name: str = "process.config",
@@ -92,7 +92,7 @@ class Process(collections.Hashable):
         self.profile = profile
         self.project = project
         self.resume = resume
-        self.id = id if id else self.name
+        self.id_ = id_ if id_ else self.name
         self.output_location = pathlib.Path(output_location)
         script_file = self.params.root / script_name
         process_dir = self.params.root / process_dir_name
@@ -104,13 +104,13 @@ class Process(collections.Hashable):
         self.env = self.params.env
 
     def __hash__(self) -> int:
-        return hash(self.id)
+        return hash(self.id_)
 
     def __repr__(self) -> str:
-        return f'<Process name={self.id} cmd="{self.cmd}">'
+        return f'<Process name={self.id_} cmd="{self.cmd}">'
 
     def __str__(self) -> str:
-        return self.id
+        return self.id_
 
     def build(self, output_dir: Optional[str] = None) -> None:
         """
@@ -131,12 +131,12 @@ class Process(collections.Hashable):
             raise FileNotFoundError(f"{self.output_location} must be an absolute path")
         self.output_location.mkdir(exist_ok=True, parents=True)
         script = self.script.render()
-        script_file = self.output_location / f"{self.id}.nf"
+        script_file = self.output_location / f"{self.id_}.nf"
         LOG.logger.success(f"Building script: {script_file}")
         with open(script_file, "w") as fid:
             fid.write(script)
         config = self.config.render(self.dict, resource_config=True)
-        config_file = self.output_location / f"{self.id}.config"
+        config_file = self.output_location / f"{self.id_}.config"
         LOG.logger.success(f"Building config: {config_file}")
         with open(config_file, "w") as fid:
             fid.write(config)
@@ -157,9 +157,9 @@ class Process(collections.Hashable):
         Command
             The `Command` instance for the process
         """
-        script_path = self.output_location / f"{self.id}.nf"
-        config_path = self.output_location / f"{self.id}.config"
-        log_path = self.output_location / f"{self.id}.log"
+        script_path = self.output_location / f"{self.id_}.nf"
+        config_path = self.output_location / f"{self.id_}.config"
+        log_path = self.output_location / f"{self.id_}.log"
         work_dir = self.output_location / "work"
         cmd = (
             f"nextflow -C {config_path} -log {log_path} run {script_path} -w {work_dir} "
@@ -184,8 +184,8 @@ class Process(collections.Hashable):
             The command object
             It has `cmd`, `out`, `pid` and other facilities
         """
-        script_path = self.output_location / f"{self.id}.nf"
-        config_path = self.output_location / f"{self.id}.config"
+        script_path = self.output_location / f"{self.id_}.nf"
+        config_path = self.output_location / f"{self.id_}.config"
         work_dir = self.output_location / "work"
         env = self.params.env
         if not env or not env.exists() or not env.is_dir():
@@ -209,7 +209,7 @@ class Process(collections.Hashable):
     def log(self) -> None:
         """ Logs the stdout and stderr of the process to the log_file """
         LOG.logger.info(
-            f"Running process: {self.id} with profile {self.profile} and env {self.env}"
+            f"Running process: {self.id_} with profile {self.profile} and env {self.env}"
         )
         self.cmd.log()
 
@@ -245,9 +245,9 @@ class Process(collections.Hashable):
             raise FileNotFoundError(
                 f"{self.output_location} does not exist or is not an absolute path"
             )
-        script_path = self.output_location / f"{self.id}.nf"
-        config_path = self.output_location / f"{self.id}.config"
-        log_path = self.output_location / f"{self.id}.log"
+        script_path = self.output_location / f"{self.id_}.nf"
+        config_path = self.output_location / f"{self.id_}.config"
+        log_path = self.output_location / f"{self.id_}.log"
         work_dir = self.output_location / "work"
         if scope == "all":
             shutil.rmtree(work_dir)
@@ -270,7 +270,7 @@ class Process(collections.Hashable):
         previous : Process
             The `Process` instance to attach the current instance to
         """
-        LOG.logger.info(f"Attaching IO of {previous.name} to {self.id}")
+        LOG.logger.info(f"Attaching IO of {previous.name} to {self.id_}")
         self.params.attach_to(previous.params)
 
     def update_location(self, location: str, category: str) -> None:
@@ -292,7 +292,7 @@ class Process(collections.Hashable):
                 path = pathlib.Path(str_path)
             else:
                 raise ValueError("location must be an absolute path")
-        LOG.logger.info(f"Updating location of {category}s of {self.id} to {location}")
+        LOG.logger.info(f"Updating location of {category}s of {self.id_} to {location}")
         if category == "input":
             for input_ in self.params.input:
                 in_location = input_.location
@@ -354,11 +354,11 @@ class Process(collections.Hashable):
             raise ValueError(
                 f"Invalid category: {category}. Can either be 'input' or 'output'"
             )
-        for io in io_object:
-            loc = io.location
+        for io_item in io_object:
+            loc = io_item.location
             if loc is None:
                 return False
-            elif "*" in str(loc):
+            if "*" in str(loc):
                 str_loc = str(loc)
                 mult_match = re.match(mult_pattern, str_loc)
                 if mult_match:
@@ -401,9 +401,9 @@ class Process(collections.Hashable):
         for elem in self.params.input:
             if elem.location is None:
                 raise ValueError(
-                    f"Input: {elem} has not been assigned a location yet for process.id: {self.id}"
+                    f"Input: {elem} has not been assigned a location yet for process.id_: {self.id_}"
                 )
-            elif "*" in str(elem.location):
+            if "*" in str(elem.location):
                 str_loc = str(elem.location)
                 mult_match = re.match(mult_pattern, str_loc)
                 if mult_match:
@@ -417,20 +417,20 @@ class Process(collections.Hashable):
                     files = list(pathlib.Path(str_loc[:ind]).glob(str_loc[ind:]))
                     if len(files) == 0:
                         raise FileNotFoundError(
-                            f"Unable to locate input files at {elem.location} for process.id: {self.id}"
+                            f"Unable to locate input files at {elem.location} for process.id_: {self.id_}"
                         )
             elif not elem.location.exists():
                 raise FileNotFoundError(
-                    f"Unable to locate input file at {elem.location} for process.id: {self.id}"
+                    f"Unable to locate input file at {elem.location} for process.id_: {self.id_}"
                 )
         for elem in self.params.output:
             if elem.location is None:
                 raise ValueError(
-                    f"Output: {elem} has not been assigned a location yet for process.id: {self.id}"
+                    f"Output: {elem} has not been assigned a location yet for process.id_: {self.id_}"
                 )
-            elif not elem.location.is_absolute():
+            if not elem.location.is_absolute():
                 raise ValueError(
-                    "Not all the output objects have absolute paths for process.id: {self.id}"
+                    "Not all the output objects have absolute paths for process.id_: {self.id_}"
                 )
 
     @property
