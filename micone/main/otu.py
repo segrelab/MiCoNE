@@ -57,13 +57,13 @@ class Otu:
         if not isinstance(otu_data, Table):
             raise TypeError("Otu data must be of type `biom.Table`")
         otu_data_copy = otu_data.copy()
-        if sample_metadata:
+        if sample_metadata is not None:
             samplemeta_type = SamplemetaType()
             samplemeta_type.validate(sample_metadata)
             otu_data_copy.add_metadata(
                 sample_metadata.to_dict(orient="index"), axis="sample"
             )
-        if obs_metadata:
+        if obs_metadata is not None:
             obsmeta_type = ObsmetaType()
             obsmeta_type.validate(obs_metadata)
             otu_data_copy.add_metadata(
