@@ -134,16 +134,16 @@ class Otu:
     @property
     def obs_metadata(self) -> pd.DataFrame:
         """ Lineage data for the observations (OTUs) """
-        df = self.otu_data.metadata_to_dataframe("observation")
+        obs_metadata = self.otu_data.metadata_to_dataframe("observation")
         lineage = list(Lineage._fields)
-        n_tax_levels = len(set(df.columns) & set(lineage))
+        n_tax_levels = len(set(obs_metadata.columns) & set(lineage))
         lineage_columns = lineage[:n_tax_levels]
-        extra_columns = list(set(df.columns) - set(lineage_columns))
+        extra_columns = list(set(obs_metadata.columns) - set(lineage_columns))
         if extra_columns:
             columns: List[str] = lineage_columns + extra_columns
         else:
             columns = lineage_columns
-        return df[columns]
+        return obs_metadata[columns]
 
     @property
     def tax_level(self) -> str:
@@ -155,14 +155,14 @@ class Otu:
         str
             The lowest taxonomy defined in the Otu instance
         """
-        df = self.otu_data.metadata_to_dataframe("observation")
+        obs_metadata = self.otu_data.metadata_to_dataframe("observation")
         lineage = list(Lineage._fields)
-        n_tax_levels = len(set(df.columns) & set(lineage))
+        n_tax_levels = len(set(obs_metadata.columns) & set(lineage))
         return Lineage._fields[n_tax_levels - 1]
 
     def filter(
         self,
-        ids: Iterable[str] = [],
+        ids: Optional[Iterable[str]] = None,
         func: Optional[Filterfun] = None,
         axis: str = "observation",
     ) -> "Otu":
@@ -187,7 +187,7 @@ class Otu:
         Otu
             Filtered Otu instance
         """
-        if ids:
+        if ids is not None:
             otu_filtered = self.otu_data.filter(ids, inplace=False, axis=axis)
         elif func:
             otu_filtered = self.otu_data.filter(func, inplace=False, axis=axis)
@@ -228,11 +228,11 @@ class Otu:
         """
         Returns true if the Otu instance has been normalized
         """
-        df = self.otu_data.to_dataframe()
+        otu_data = self.otu_data.to_dataframe()
         if axis == "sample":
-            return bool(np.isclose(df.sum(axis=0), 1.0).all())
+            return bool(np.isclose(otu_data.sum(axis=0), 1.0).all())
         if axis == "observation":
-            return bool(np.isclose(df.sum(axis=1), 1.0).all())
+            return bool(np.isclose(otu_data.sum(axis=1), 1.0).all())
         raise ValueError("Axis must of either {'sample' or 'observation'}")
 
     def rm_sparse_samples(self, count_thres: int = 500) -> "Otu":
@@ -369,7 +369,6 @@ class Otu:
         Tuple[Otu, dict]
             Collapsed Otu instance
         """
-        # TODO: Drop any obs_metadata columns other than lineage columns
         obs_metadata_cols = list(self.obs_metadata)
         lineage_cols = list(Lineage._fields)
         unwanted_obs_metadata_cols = list(set(obs_metadata_cols) - set(lineage_cols))
