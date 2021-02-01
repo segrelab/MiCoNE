@@ -29,7 +29,7 @@ class Environments:
 
     def __init__(self) -> None:
         self.configs = list(ENV_DIR.glob("**/env.yml"))
-        self.env_names = [f"micone-{c.parent.stem}" for c in self.configs]
+        self.env_names = [f"{c.parent.stem}" for c in self.configs]
 
     def init(self, env: Optional[str] = None) -> Iterable[Command]:
         """
@@ -85,7 +85,6 @@ class Environments:
         if env is None:
             post_scripts = list(ENV_DIR.glob("**/post_install.sh"))
         else:
-            env = env.split("micone-")[-1]
             post_scripts = list(ENV_DIR.glob(f"**/{env}/post_install.sh"))
         for script in post_scripts:
             cmd_str = f"bash {script}"
