@@ -1,0 +1,3 @@
+*.boot export-ignore
+tests/data/* export-ignore
+tests/data/* linguist-vendored
