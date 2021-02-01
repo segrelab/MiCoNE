@@ -133,20 +133,17 @@ class Otu:
 
     @property
     def obs_metadata(self) -> pd.DataFrame:
-        """
-        Lineage data for the observations (OTUs)
-
-        Returns
-        -------
-        pd.DataFrame
-        """
+        """ Lineage data for the observations (OTUs) """
         df = self.otu_data.metadata_to_dataframe("observation")
-        n_tax_levels = len(df.columns)
         lineage = list(Lineage._fields)
-        # Unknown ordering if observation metadata contains extra columns
-        if set(df.columns) - set(lineage):
-            return df
-        return df[lineage[:n_tax_levels]]
+        n_tax_levels = len(set(df.columns) & set(lineage))
+        lineage_columns = lineage[:n_tax_levels]
+        extra_columns = list(set(df.columns) - set(lineage_columns))
+        if extra_columns:
+            columns: List[str] = lineage_columns + extra_columns
+        else:
+            columns = lineage_columns
+        return df[columns]
 
     @property
     def tax_level(self) -> str:
@@ -158,7 +155,9 @@ class Otu:
         str
             The lowest taxonomy defined in the Otu instance
         """
-        n_tax_levels = len(self.obs_metadata.columns)
+        df = self.otu_data.metadata_to_dataframe("observation")
+        lineage = list(Lineage._fields)
+        n_tax_levels = len(set(df.columns) & set(lineage))
         return Lineage._fields[n_tax_levels - 1]
 
     def filter(
@@ -309,8 +308,14 @@ class Otu:
             self.otu_data.ids(axis="sample"),
         )
         tax_level = self.tax_level
+        random_row_metadata = dict(self.otu_data.metadata(axis="observation")[0])
         new_row.add_metadata(
-            {"otu_merged": Lineage("Unclassified").to_dict(tax_level)},
+            {
+                "otu_merged": {
+                    **random_row_metadata,
+                    **Lineage("Unclassified").to_dict(tax_level),
+                }
+            },
             axis="observation",
         )
         final_otu = new_otu.concat([new_row], axis="observation")
@@ -364,10 +369,17 @@ class Otu:
         Tuple[Otu, dict]
             Collapsed Otu instance
         """
+        # TODO: Drop any obs_metadata columns other than lineage columns
+        obs_metadata_cols = list(self.obs_metadata)
+        lineage_cols = list(Lineage._fields)
+        unwanted_obs_metadata_cols = list(set(obs_metadata_cols) - set(lineage_cols))
+        otu_data_copy = self.otu_data.copy()
+        otu_data_copy.del_metadata(keys=unwanted_obs_metadata_cols, axis="observation")
+        obs_metadata_copy = self.obs_metadata.drop(unwanted_obs_metadata_cols, axis=1)
         if level not in Lineage._fields:
             raise ValueError(f"level must be one of {Lineage._fields}")
         cfunc = lambda id_, md: str(Lineage(**md).get_superset(level))
-        otu_collapse = self.otu_data.collapse(
+        otu_collapse = otu_data_copy.collapse(
             cfunc, axis="observation", norm=False, include_collapsed_metadata=True
         )
         curr_ids = otu_collapse.ids(axis="observation")
@@ -379,7 +391,7 @@ class Otu:
         afunc = lambda x: pd.Series(
             Lineage(**x.to_dict()).get_superset(level).to_dict(level)
         )
-        obs_collapse = self.obs_metadata.apply(afunc, axis=1)
+        obs_collapse = obs_metadata_copy.apply(afunc, axis=1)
         gfunc = lambda x: str(Lineage(**x.to_dict()))
         obs_collapse.index = obs_collapse.apply(gfunc, axis=1)
         obs_collapse.drop_duplicates(inplace=True)
