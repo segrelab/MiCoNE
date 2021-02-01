@@ -119,14 +119,16 @@ def run(
     """ Run the pipeline """
     spinner = ctx.obj["SPINNER"]
     pipeline = Pipeline(
-        config, profile, base_dir, resume, output_location=output_location
+        str(config), profile, str(base_dir), resume, output_location=output_location
     )
     spinner.start()
     spinner.text = "Starting pipeline execution"
     try:
         for process in pipeline.run(max_procs=max_procs):
+            if pipeline.process_queue is None:
+                raise ValueError("Pipeline process queue is empty")
             process_list = " and ".join(
-                [proc.id.split(".", 2)[-1] for proc in pipeline.process_queue]
+                [proc.id_.split(".", 2)[-1] for proc in pipeline.process_queue]
             )
             if resume and process.io_exist:
                 spinner.start()
@@ -157,14 +159,14 @@ def run(
 )
 @click.pass_context
 def clean(ctx, config: click.Path, files: List[str]):
-    """ Clean files from the pipeline run """
+    """ Clean files from a pipeline run """
     click.confirm(f"Are you sure you want to delete {files}", abort=True)
     spinner = ctx.obj["SPINNER"]
     spinner.start()
     spinner.text = "Cleaning up pipeline files"
-    pipeline = Pipeline(config, "local")
+    pipeline = Pipeline(str(config), "local")
     pipeline.clean(files)
-    spinner.succeed(f"Completed cleanup")
+    spinner.succeed("Completed cleanup")
 
 
 def main():
