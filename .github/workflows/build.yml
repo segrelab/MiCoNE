@@ -35,7 +35,7 @@ jobs:
     - name: Test with pytest
       run: |
         source activate micone
-        pytest --cov=micone --cov-config setup.cfg
+        pytest --cov=micone --cov-config=setup.cfg --cov-report=xml
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
       with:
