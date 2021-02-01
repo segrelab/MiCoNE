@@ -2,7 +2,6 @@
     Module that defines the `Network` object and methods to read, write and manipulate it
 """
 
-from itertools import product
 from typing import Any, Dict, List, Optional, Tuple, Union
 from warnings import warn
 
@@ -143,7 +142,6 @@ class Network:
             interaction_type,
             directed,
         )
-        # TODO: option to set validate=True
         nodes_model = NodesModel({"nodes": self.nodes}, strict=False)
         nodes_model.validate()
         links_model = LinksModel({"links": self.links}, strict=False)
@@ -639,7 +637,7 @@ class Network:
         interaction_threshold = cmetadata["interaction_threshold"]
         pvalue_threshold = cmetadata["pvalue_threshold"]
         pvalue_correction = None
-        directed = True if data["directionality"] == "directed" else False
+        directed = data["directionality"] == "directed"
         nodes: List[str] = []
         links: List[LinkDType] = []
         lineages: List[dict] = []
@@ -730,12 +728,12 @@ class Network:
         Network
             The instance of the `Network` class
         """
-        elist = pd.read_csv(elist_file, na_filter=False)
+        elist: pd.DataFrame = pd.read_csv(elist_file, na_filter=False)
         elist_type = ElistType()
         elist_type.validate(elist)
         nodes = list(set([*elist["source"], *elist["target"]]))
         links: List[LinkDType] = []
-        pvalue_flag = True if "pvalue" in elist.columns else False
+        pvalue_flag = "pvalue" in elist.columns
         for entry in elist.to_dict("records"):
             source, target, weight = entry["source"], entry["target"], entry["weight"]
             links.append(
