@@ -64,3 +64,6 @@ omit = [
   "micone/pipelines/envs/*",
   "micone/pipelines/src/*",
 ]
+
+[tool.poetry.scripts]
+micone = "micone.cli:main"
