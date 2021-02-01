@@ -3,19 +3,20 @@
 """
 
 import collections
-from itertools import chain
 import math
 import pathlib
 import time
+from itertools import chain
 from typing import Deque, Dict, Iterator, List, Optional
 
+import matplotlib.pyplot as plt
 import networkx as nx
 import toml
 
 from ..config import Config
+from ..utils.hierarchical_layout import hierarchy_pos
 from .command import Command
 from .process import Process, stringizer
-from ..utils.hierarchical_layout import hierarchy_pos
 
 
 class Pipeline(collections.Sequence):
@@ -105,6 +106,7 @@ class Pipeline(collections.Sequence):
             output_location if output_location else user_settings["output_location"]
         )
         self._create_processes(user_settings)
+        self._updated_processes: List[Process] = []
 
     @staticmethod
     def _parse_process_tree(process_string: str) -> nx.Graph:
@@ -240,7 +242,7 @@ class Pipeline(collections.Sequence):
         raise KeyError(f"{key} is not a process of this pipeline")
 
     def __repr__(self) -> str:
-        processes = [process for process in self]
+        processes = list(self)
         return (
             f"<Pipeline title={self.title} output_location={self.output_location} "
             f"processes={processes}>"
@@ -312,8 +314,6 @@ class Pipeline(collections.Sequence):
         fpath: str
             The folder path where the DAG chart should be saved
         """
-        import matplotlib.pyplot as plt
-
         tree = self.process_tree
         diagram = pathlib.Path(fpath) / "DAG.pdf"
         gml = pathlib.Path(fpath) / "DAG.gml"
@@ -325,8 +325,8 @@ class Pipeline(collections.Sequence):
         nx.draw_networkx_nodes(tree, pos, node_size=500, alpha=0.8)
         nx.draw_networkx_edges(tree, pos, width=1.0, arrows=True)
         text = nx.draw_networkx_labels(tree, pos, labels=labels, font_size=8)
-        for _, t in text.items():
-            t.set_rotation(30)
+        for _, node_text in text.items():
+            node_text.set_rotation(30)
         plt.axis("off")
         fig = plt.gcf()
         fig.set_size_inches(30, 20)  # default is 6.4, 4.8
@@ -367,7 +367,7 @@ class Pipeline(collections.Sequence):
             The list of processes that just finished execution
         """
         not_started_processes: List[str] = []
-        self._updated_processes: List[Process] = []
+        self._updated_processes = []
         tree = self.process_tree
         root_node = next(nx.topological_sort(tree))
         process_order = list(nx.bfs_tree(tree, root_node))
