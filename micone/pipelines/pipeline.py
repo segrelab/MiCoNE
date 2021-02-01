@@ -223,7 +223,7 @@ class Pipeline(collections.Sequence):
                 default_process_data,
                 self.profile,
                 str(self.output_location),
-                id=node_name,
+                id_=node_name,
                 root_dir=root_dir,
                 project=self.project,
                 resume=self.resume,
