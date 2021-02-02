@@ -340,7 +340,7 @@ class Pipeline(collections.Sequence):
         Returns
         -------
         Dict[str, str]
-            A dictionary containing key=process.id and value=process.status
+            A dictionary containing key=process.id_ and value=process.status
         """
         tree = self.process_tree
         root_node = next(nx.topological_sort(tree))
@@ -377,7 +377,7 @@ class Pipeline(collections.Sequence):
                 if process_status == "in progress":
                     running_processes.append(process_id)
             for process in self.process_queue:
-                if process.id not in running_processes:
+                if process.id_ not in running_processes:
                     self._updated_processes.append(process)
             for process in self._updated_processes:
                 if process in self.process_queue:
@@ -401,13 +401,13 @@ class Pipeline(collections.Sequence):
                     time.sleep(poll_rate)
                 return self._updated_processes
             dependent_processes = set(
-                chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
+                chain.from_iterable(list(tree[p.id_]) for p in self.process_queue)
             )
             while next_process in dependent_processes:
                 _update_queue()
                 time.sleep(poll_rate)
                 dependent_processes = set(
-                    chain.from_iterable(list(tree[p.id]) for p in self.process_queue)
+                    chain.from_iterable(list(tree[p.id_]) for p in self.process_queue)
                 )
         return self._updated_processes
 
@@ -439,8 +439,8 @@ class Pipeline(collections.Sequence):
         if "configs" in files:
             for node in self:
                 process = self.process_tree.nodes[node]["process"]
-                script_file = f"{process.id}.nf"
-                config_file = f"{process.id}.config"
+                script_file = f"{process.id_}.nf"
+                config_file = f"{process.id_}.config"
                 cmd = Command(f"rm {script_file} {config_file}", "local")
                 cmd.run()
                 cmd.wait()
