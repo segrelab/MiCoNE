@@ -3,7 +3,6 @@
 """
 
 import collections
-import math
 import pathlib
 import time
 from itertools import chain
@@ -14,7 +13,6 @@ import networkx as nx
 import toml
 
 from ..config import Config
-from ..utils.hierarchical_layout import hierarchy_pos
 from .command import Command
 from .process import Process, stringizer
 
@@ -319,9 +317,10 @@ class Pipeline(collections.Sequence):
         gml = pathlib.Path(fpath) / "DAG.gml"
         nodes = list(self.process_tree.nodes)
         labels = {n: n.split(".", 2)[-1] for n in nodes}
-        pos = hierarchy_pos(tree, width=2 * math.pi)
-        # If you want a radial graph
-        # new_pos = {u:(r*math.cos(theta),r*math.sin(theta)) for u, (theta, r) in pos.items()}
+        if len(nodes) > 50:
+            pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="twopi")
+        else:
+            pos = nx.drawing.nx_agraph.graphviz_layout(tree, prog="dot")
         nx.draw_networkx_nodes(tree, pos, node_size=500, alpha=0.8)
         nx.draw_networkx_edges(tree, pos, width=1.0, arrows=True)
         text = nx.draw_networkx_labels(tree, pos, labels=labels, font_size=8)
