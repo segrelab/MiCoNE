@@ -354,7 +354,7 @@ class Pipeline(collections.Sequence):
         """
         Pauses pipeline execution if process_queue is full
 
-        Parameters:
+        Parameters
         -----------
         poll_rate : int, optional
             The numbers of seconds to sleep before polling processes for status
@@ -417,7 +417,7 @@ class Pipeline(collections.Sequence):
         This command irrevesibly deletes content, use with caution
 
         Parameters
-        ----------
+        -----------
         files : List[str]
             The supported files are:
             - logs: the `nextflow` log files
