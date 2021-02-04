@@ -5,6 +5,10 @@ Changelog
 Unreleased
 ----------
 
+0.6.0 (2021-02-04)
+------------------
+
+Stable update! All the tests pass and the pipelines work as expected
 
 0.5.0 (2019-01-02)
 ------------------
