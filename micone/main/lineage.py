@@ -3,6 +3,7 @@
 """
 
 
+import os
 from collections import namedtuple
 from typing import Dict, Tuple
 from warnings import warn
@@ -11,25 +12,27 @@ from ete3 import NCBITaxa
 
 from ..logging import LOG
 
-
 BaseLineage = namedtuple("Lineage", "Kingdom Phylum Class Order Family Genus Species")
 
-NCBI = NCBITaxa()
+if os.environ.get("RTD") != "True":
+    NCBI = NCBITaxa()
+else:
+    NCBI = None
 
 
 class Lineage(BaseLineage):
     """
-        `NamedTuple` that stores the lineage of a taxon and methods to interact with it
+    `NamedTuple` that stores the lineage of a taxon and methods to interact with it
 
-        Attributes
-        ----------
-        Kingdom: str
-        Phylum: str
-        Class: str
-        Order: str
-        Family: str
-        Genus: str
-        Species: str
+    Attributes
+    ----------
+    Kingdom: str
+    Phylum: str
+    Class: str
+    Order: str
+    Family: str
+    Genus: str
+    Species: str
     """
 
     def __new__(
@@ -56,16 +59,16 @@ class Lineage(BaseLineage):
     @staticmethod
     def _normalize_tax(tax: str) -> str:
         """
-            Normalize taxonomy name by removing unwanted characters
+        Normalize taxonomy name by removing unwanted characters
 
-            Parameters
-            ----------
-            tax : str
+        Parameters
+        ----------
+        tax : str
 
-            Returns
-            -------
-            str
-                Normalized taxonomy name
+        Returns
+        -------
+        str
+            Normalized taxonomy name
         """
         return (
             tax.strip()
@@ -77,16 +80,16 @@ class Lineage(BaseLineage):
 
     def __sub__(self, other: "Lineage") -> "Lineage":
         """
-            Returns the lineage that is in common between two lineages
+        Returns the lineage that is in common between two lineages
 
-            Parameters
-            ----------
-            other : "Lineage"
+        Parameters
+        ----------
+        other : "Lineage"
 
-            Returns
-            -------
-            Lineage
-                Common lineage
+        Returns
+        -------
+        Lineage
+            Common lineage
         """
         for i, (s_lin, o_lin) in enumerate(zip(self, other)):
             if s_lin != o_lin:
@@ -96,12 +99,12 @@ class Lineage(BaseLineage):
     @property
     def name(self) -> Tuple[str, str]:
         """
-            Get the lowest populated level and name of the taxon
+        Get the lowest populated level and name of the taxon
 
-            Returns
-            -------
-            Tuple[str, str]
-                Tuple containing (level, name)
+        Returns
+        -------
+        Tuple[str, str]
+            Tuple containing (level, name)
         """
         fields = self._fields
         for field in reversed(fields):
@@ -114,20 +117,20 @@ class Lineage(BaseLineage):
     @classmethod
     def from_str(cls, lineage_str: str, style: str = "gg") -> "Lineage":
         """
-            Create `Lineage` instance from a lineage string
+        Create `Lineage` instance from a lineage string
 
-            Parameters
-            ----------
-            lineage_str : str
-                Lineage in the form of a string
-            style : {'gg', 'silva'}, optional
-                The style of the lineage string
-                Default is 'gg'
+        Parameters
+        ----------
+        lineage_str : str
+            Lineage in the form of a string
+        style : {'gg', 'silva'}, optional
+            The style of the lineage string
+            Default is 'gg'
 
-            Returns
-            -------
-            Lineage
-                Instance of the `Lineage` class
+        Returns
+        -------
+        Lineage
+            Instance of the `Lineage` class
         """
         if style == "gg":
             if lineage_str.startswith("k"):
@@ -150,18 +153,18 @@ class Lineage(BaseLineage):
 
     def to_str(self, style: str, level: str) -> str:
         """
-            Return the string Lineage of the instance in requested 'style'
+        Return the string Lineage of the instance in requested 'style'
 
-            Parameters
-            ----------
-            style : {'gg', 'silva'}
-                The style of the lineage string
-            level : str
-                The lowest Lineage field that is to be populated
+        Parameters
+        ----------
+        style : {'gg', 'silva'}
+            The style of the lineage string
+        level : str
+            The lowest Lineage field that is to be populated
 
-            Returns
-            -------
-            str
+        Returns
+        -------
+        str
         """
         if level not in self._fields:
             raise ValueError(f"{level} not a valid field for Lineage")
@@ -179,23 +182,23 @@ class Lineage(BaseLineage):
 
     def __str__(self) -> str:
         """
-            Get the lineage in the form of a string
+        Get the lineage in the form of a string
 
-            Returns
-            -------
-            str
-                The lineage string in 'gg' format
+        Returns
+        -------
+        str
+            The lineage string in 'gg' format
         """
         return self.to_str(style="gg", level="Species")
 
     def to_dict(self, level: str) -> Dict[str, str]:
         """
-            Get the lineage in the form of a dictionary
+        Get the lineage in the form of a dictionary
 
-            Parameters
-            ----------
-            level : str
-                The lowest Lineage field to be used to populate the dictionary
+        Parameters
+        ----------
+        level : str
+            The lowest Lineage field to be used to populate the dictionary
         """
         if level not in self._fields:
             raise ValueError(f"{level} not a valid field for Lineage")
@@ -205,17 +208,17 @@ class Lineage(BaseLineage):
 
     def get_superset(self, level: str) -> "Lineage":
         """
-            Return a superset of the current lineage for the requested level
+        Return a superset of the current lineage for the requested level
 
-            Parameters
-            ----------
-            level : str
-                The lowest Lineage field to be used to calculate the superset
+        Parameters
+        ----------
+        level : str
+            The lowest Lineage field to be used to calculate the superset
 
-            Returns
-            -------
-            Lineage
-                Lineage instance that is a superset of current instance
+        Returns
+        -------
+        Lineage
+            Lineage instance that is a superset of current instance
         """
         if level not in self._fields:
             raise ValueError(f"{level} not a valid field for Lineage")
@@ -226,12 +229,12 @@ class Lineage(BaseLineage):
     @property
     def taxid(self) -> Tuple[str, int]:
         """
-            Get the NCBI taxonomy id of the Lineage
+        Get the NCBI taxonomy id of the Lineage
 
-            Returns
-            -------
-            Tuple[str, int]
-                A tuple containing (taxonomy level, NCBI taxonomy id)
+        Returns
+        -------
+        Tuple[str, int]
+            A tuple containing (taxonomy level, NCBI taxonomy id)
         """
         query = list(self)
         # species or subspecies level
@@ -262,17 +265,17 @@ class Lineage(BaseLineage):
     @classmethod
     def from_taxid(cls, taxid: int) -> "Lineage":
         """
-            Create `Lineage` instance from taxid
+        Create `Lineage` instance from taxid
 
-            Parameters
-            ----------
-            taxid : int
-                A valid NCBI taxonomy id
+        Parameters
+        ----------
+        taxid : int
+            A valid NCBI taxonomy id
 
-            Returns
-            -------
-            "Lineage"
-                Instance of the `Lineage` class
+        Returns
+        -------
+        "Lineage"
+            Instance of the `Lineage` class
         """
         lineage_taxids = NCBI.get_lineage(taxid)
         lineage_names = NCBI.get_taxid_translator(lineage_taxids)
