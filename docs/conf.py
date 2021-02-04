@@ -33,7 +33,13 @@ import micone
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode", "numpydoc"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.autosummary",
+    "sphinx_rtd_theme",
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -49,7 +55,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"Microbial Co-occurrence Network Explorer"
-copyright = u"2018, Dileep Kishore"
+copyright = u"2018-2021, Dileep Kishore"
 author = u"Dileep Kishore"
 
 # The version info for the project you're documenting, acts as replacement
@@ -129,7 +135,7 @@ latex_documents = [
     (
         master_doc,
         "micone.tex",
-        u"Microbial Interaction Database Pipeline Documentation",
+        u"Microbial Co-occurrence Network Explorer Documentation",
         u"Dileep Kishore",
         "manual",
     ),
@@ -144,7 +150,7 @@ man_pages = [
     (
         master_doc,
         "micone",
-        u"Microbial Interaction Database Pipeline Documentation",
+        u"Microbial Co-occurrence Network Explorer Documentation",
         [author],
         1,
     )
@@ -160,7 +166,7 @@ texinfo_documents = [
     (
         master_doc,
         "micone",
-        u"Microbial Interaction Database Pipeline Documentation",
+        u"Microbial Co-occurrence Network Explorer Documentation",
         author,
         "micone",
         "One line description of project.",
