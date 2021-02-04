@@ -159,8 +159,12 @@ def run(
 )
 @click.pass_context
 def clean(ctx, config: click.Path, files: List[str]):
-    """ Clean files from a pipeline run """
-    click.confirm(f"Are you sure you want to delete {files}", abort=True)
+    """Clean files from a pipeline run in the current directory.
+    This command irrevesibly deletes content, use with caution
+    """
+    click.confirm(
+        f"Are you sure you want to delete {files} in current directory?", abort=True
+    )
     spinner = ctx.obj["SPINNER"]
     spinner.start()
     spinner.text = "Cleaning up pipeline files"
