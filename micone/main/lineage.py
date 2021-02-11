@@ -14,11 +14,6 @@ from ..logging import LOG
 
 BaseLineage = namedtuple("Lineage", "Kingdom Phylum Class Order Family Genus Species")
 
-if os.environ.get("RTD") != "True":
-    NCBI = NCBITaxa()
-else:
-    NCBI = None
-
 
 class Lineage(BaseLineage):
     """
@@ -54,6 +49,7 @@ class Lineage(BaseLineage):
                 )
             )
         norm_taxa = [cls._normalize_tax(i) for i in tax_order]
+        cls._ncbi = NCBITaxa()
         return super().__new__(cls, *norm_taxa)
 
     @staticmethod
@@ -241,7 +237,7 @@ class Lineage(BaseLineage):
         query.append(query[-2] + " " + query[-1].strip())
         # species level
         query[-2] = query[-3] + " " + query[-2].split(" ")[0].strip()
-        taxid_dict = NCBI.get_name_translator(query)
+        taxid_dict = self._ncbi.get_name_translator(query)
         taxid_list = [12908]
         for taxa in reversed(query):
             if taxa != "" and taxa in taxid_dict:
@@ -277,10 +273,11 @@ class Lineage(BaseLineage):
         "Lineage"
             Instance of the `Lineage` class
         """
-        lineage_taxids = NCBI.get_lineage(taxid)
-        lineage_names = NCBI.get_taxid_translator(lineage_taxids)
+        ncbi = NCBITaxa()
+        lineage_taxids = ncbi.get_lineage(taxid)
+        lineage_names = ncbi.get_taxid_translator(lineage_taxids)
         lineage_ranks = {
-            v.capitalize(): k for k, v in NCBI.get_rank(lineage_taxids).items()
+            v.capitalize(): k for k, v in ncbi.get_rank(lineage_taxids).items()
         }
         if "Superkingdom" in lineage_ranks:
             lineage_ranks["Kingdom"] = lineage_ranks["Superkingdom"]
