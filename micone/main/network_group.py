@@ -192,6 +192,25 @@ class NetworkGroup(Collection):
             adj_vector_list[cid][id_] = data[key]
         return adj_vector_list
 
+    def update_thresholds(
+        self, interaction_threshold: float = 0.3, pvalue_threshold: float = 0.05
+    ) -> None:
+        """Update the thresholds on the networks
+
+        Parameters
+        ----------
+        interaction_threshold : float, optional
+            The value to which the interactions (absolute value) are to be thresholded
+            To disable thresholding based on interaction value then pass in 0.0
+            Default value is 0.3
+        pvalue_threshold : float, optional
+            This is the `alpha` value for pvalue cutoff
+            Default value is 0.05
+        """
+        for network in self._networks:
+            network.interaction_threshold = interaction_threshold
+            network.pvalue_threshold = pvalue_threshold
+
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
         The links of the networks after applying filtering
