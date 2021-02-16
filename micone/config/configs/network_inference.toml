@@ -63,6 +63,26 @@
     format = ["boot"]
     location = "**/*_corr.boot"
 
+[network_inference.correlation.propr]
+  env = "micone-propr"
+  root_dir = "network_inference/propr"
+  [[network_inference.correlation.propr.input]]
+    datatype = "otu_table"
+    format = ["tsv"]
+  [[network_inference.correlation.propr.input]]
+    datatype = "otu_bootstrap"
+    format = ["boot"]
+  [[network_inference.correlation.propr.parameters]]
+    process = "propr"
+  [[network_inference.correlation.propr.output]]
+    datatype = "interaction_table"
+    format = ["tsv"]
+    location = "**/*_corr.tsv"
+  [[network_inference.correlation.propr.output]]
+    datatype = "interaction_bootstrap"
+    format = ["boot"]
+    location = "**/*_corr.boot"
+
 [network_inference.correlation.pearson]
   env = "micone"
   root_dir = "network_inference/pearson"
