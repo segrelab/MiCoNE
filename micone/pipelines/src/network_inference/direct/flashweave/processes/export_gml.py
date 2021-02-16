@@ -16,9 +16,9 @@ def main(otu_file, network_file, output_file):
     directed = nx.is_directed(graph)
     for source, target, data in graph.edges(data=True):
         if (source in nodes) and (target in nodes):
-            interaction_table[source, target] = data["weight"]
+            interaction_table.loc[source, target] = data["weight"]
             if not directed:
-                interaction_table[target, source] = data["weight"]
+                interaction_table.loc[target, source] = data["weight"]
     interaction_table.to_csv(output_file, sep="\\t", index=True, float_format="%.4f")
 
 
