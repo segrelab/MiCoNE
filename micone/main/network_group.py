@@ -66,6 +66,13 @@ class NetworkGroup(Collection):
         n_contexts = len(self.contexts)
         return f"<NetworkGroup contexts={n_contexts} nodes={n_nodes} links={n_links}>"
 
+    def __add__(self, other: "NetworkGroup") -> "NetworkGroup":
+        """Combine two `NetworkGroup` objects and return a new `NetworkGroup` object
+        The new `NetworkGroup` contains nodes and edges from both the input objects
+        """
+        networks = [*self._networks, *other._networks]
+        return NetworkGroup(networks)
+
     def _combine_nodes(self, all_nodes: Dict[int, DType]) -> DType:
         """ Combine nodes of individual networks into a single list """
         nodes: DType = []
