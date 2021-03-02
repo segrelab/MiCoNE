@@ -131,9 +131,6 @@
   [[network_inference.direct.spieceasi.input]]
     datatype = "otu_table"
     format = ["tsv"]
-  [[network_inference.direct.spieceasi.input]]
-    datatype = "otu_bootstrap"
-    format = ["boot"]
   [[network_inference.direct.spieceasi.parameters]]
     process = "spieceasi"
     method = "mb"
@@ -145,10 +142,6 @@
     datatype = "interaction_table"
     format = ["tsv"]
     location = "**/*_corr.tsv"
-  [[network_inference.direct.spieceasi.output]]
-    datatype = "interaction_bootstrap"
-    format = ["boot"]
-    location = "**/*_corr.boot"
 
 [network_inference.direct.flashweave]
   env = "micone-flashweave"
