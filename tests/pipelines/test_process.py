@@ -16,7 +16,7 @@ def setup_internal(
     pipeline_settings,
     example_pipelines,
     module="network_inference",
-    pipeline="network_inference.network.make_network",
+    pipeline="network_inference.network.make_network_with_pvalue",
 ):
     internal_raw = pipeline_settings[module]
     internal = ParamsSet(internal_raw)

@@ -21,8 +21,8 @@ class TestPipeline:
         user_settings = example_pipeline_files["grouptaxa_sparcc_json"]
         pipeline = Pipeline(user_settings, profile="local")
         assert len(pipeline) == 6
-        process = pipeline["network_inference.network.make_network.1"]
-        assert process == "network_inference.network.make_network.1"
+        process = pipeline["network_inference.network.make_network_with_pvalue.1"]
+        assert process == "network_inference.network.make_network_with_pvalue.1"
 
     @pytest.mark.filterwarnings("ignore::UserWarning")
     def test_pipeline_run(self, example_pipeline_files, tmpdir):
