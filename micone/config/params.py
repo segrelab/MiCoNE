@@ -334,7 +334,6 @@ class Params(collections.Hashable):
                     )
                 except KeyError:
                     pass
-        return None
 
 
 class ParamsSet(collections.Set):
