@@ -180,9 +180,6 @@
   [[network_inference.direct.mldm.input]]
     datatype = "sample_metadata"
     format = ["tsv"]
-  [[network_inference.direct.mldm.input]]
-    datatype = "otu_bootstrap"
-    format = ["boot"]
   [[network_inference.direct.mldm.parameters]]
     process = "mldm"
     Z_mean = 1
@@ -191,10 +188,6 @@
     datatype = "interaction_table"
     format = ["tsv"]
     location = "**/*_corr.tsv"
-  [[network_inference.direct.mldm.output]]
-    datatype = "interaction_bootstrap"
-    format = ["boot"]
-    location = "**/*_corr.boot"
 
 
 ## Network
