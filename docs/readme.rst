@@ -129,7 +129,7 @@ example ``config`` file that performs:
      network_inference.bootstrap.resample
      network_inference.correlation.sparcc
      network_inference.bootstrap.pvalue
-     network_inference.network.make_network
+     network_inference.network.make_network_with_pvalue
    """
 
    output_location = "/home/dileep/Documents/results/sparcc_network"
@@ -157,12 +157,12 @@ example ``config`` file that performs:
 
    [network_inference.bootstrap.pvalue]
 
-   [network_inference.network.make_network]
-     [[network_inference.network.make_network.input]]
+   [network_inference.network.make_network_with_pvalue]
+     [[network_inference.network.make_network_with_pvalue.input]]
        datatype = "metadata"
        format = ["json"]
        location = "correlations/good/deblur/deblur_metadata.json"
-     [[network_inference.network.make_network.input]]
+     [[network_inference.network.make_network_with_pvalue.input]]
        datatype = "computational_metadata"
        format = ["json"]
        location = "correlations/good/deblur/deblur_cmetadata.json"
