@@ -206,30 +206,55 @@
 
 ## Network
 
-[network_inference.network.make_network]
+[network_inference.network.make_network_with_pvalue]
   env = "micone"
-  root_dir = "network_inference/make_network"
-  [[network_inference.network.make_network.input]]
+  root_dir = "network_inference/make_network_with_pvalue"
+  [[network_inference.network.make_network_with_pvalue.input]]
     datatype = "interaction_table"
     format = ["tsv"]
-  [[network_inference.network.make_network.input]]
+  [[network_inference.network.make_network_with_pvalue.input]]
     datatype = "pvalue_table"
     format = ["tsv"]
-  [[network_inference.network.make_network.input]]
+  [[network_inference.network.make_network_with_pvalue.input]]
     datatype = "observation_metadata"
     format = ["csv"]
-  [[network_inference.network.make_network.input]]
+  [[network_inference.network.make_network_with_pvalue.input]]
     datatype = "children_map"
     format = ["json"]
-  [[network_inference.network.make_network.input]]
+  [[network_inference.network.make_network_with_pvalue.input]]
     datatype = "computational_metadata"
     format = ["json"]
-  [[network_inference.network.make_network.input]]
+  [[network_inference.network.make_network_with_pvalue.input]]
     datatype = "metadata"
     format = ["json"]
-  [[network_inference.network.make_network.parameters]]
+  [[network_inference.network.make_network_with_pvalue.parameters]]
     process = "make_jsonnet"
-  [[network_inference.network.make_network.output]]
+  [[network_inference.network.make_network_with_pvalue.output]]
     datatype = "network"
     format = ["json"]
     location = "**/*_network.json"
+
+  [network_inference.network.make_network_wo_pvalue]
+    env = "micone"
+    root_dir = "network_inference/make_network_wo_pvalue"
+    [[network_inference.network.make_network_wo_pvalue.input]]
+      datatype = "interaction_table"
+      format = ["tsv"]
+    [[network_inference.network.make_network_wo_pvalue.input]]
+      datatype = "observation_metadata"
+      format = ["csv"]
+    [[network_inference.network.make_network_wo_pvalue.input]]
+      datatype = "children_map"
+      format = ["json"]
+    [[network_inference.network.make_network_wo_pvalue.input]]
+      datatype = "computational_metadata"
+      format = ["json"]
+    [[network_inference.network.make_network_wo_pvalue.input]]
+      datatype = "metadata"
+      format = ["json"]
+    [[network_inference.network.make_network_wo_pvalue.parameters]]
+      process = "make_jsonnet"
+    [[network_inference.network.make_network_wo_pvalue.output]]
+      datatype = "network"
+      format = ["json"]
+      location = "**/*_network.json"

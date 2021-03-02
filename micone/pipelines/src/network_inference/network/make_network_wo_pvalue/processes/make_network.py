@@ -9,7 +9,6 @@ def main(
     meta_file: str,
     cmeta_file: str,
     obsmeta_file: str,
-    pvalue_file: str,
     children_file: str,
 ) -> None:
     network = Network.load_data(
@@ -17,10 +16,8 @@ def main(
         meta_file=meta_file,
         cmeta_file=cmeta_file,
         obsmeta_file=obsmeta_file,
-        pvalue_file=pvalue_file,
         children_file=children_file,
         interaction_threshold=0.2,
-        pvalue_threshold=0.05,
     )
     network_group = NetworkGroup([network])
     network_group.write(base_name + "_network.json")
@@ -35,7 +32,6 @@ if __name__ == "__main__":
     META_FILE = "${metadata}"
     CMETA_FILE = "$cmetadata"
     OBSMETA_FILE = "$obsdata_file"
-    PVALUE_FILE = "$pval_file"
     CHILDREN_FILE = "$childrenmap_file"
     main(
         BASE_NAME,
@@ -43,6 +39,5 @@ if __name__ == "__main__":
         META_FILE,
         CMETA_FILE,
         OBSMETA_FILE,
-        PVALUE_FILE,
         CHILDREN_FILE,
     )
