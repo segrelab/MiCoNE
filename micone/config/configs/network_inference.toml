@@ -152,9 +152,6 @@
   [[network_inference.direct.flashweave.input]]
     datatype = "sample_metadata"
     format = ["tsv"]
-  [[network_inference.direct.flashweave.input]]
-    datatype = "otu_bootstrap"
-    format = ["boot"]
   [[network_inference.direct.flashweave.parameters]]
     process = "flashweave"
     ncpus = 1
@@ -165,11 +162,6 @@
     datatype = "interaction_table"
     format = ["tsv"]
     location = "**/*_corr.tsv"
-  [[network_inference.direct.flashweave.output]]
-    datatype = "interaction_bootstrap"
-    format = ["boot"]
-    location = "**/*_corr.boot"
-
 
 [network_inference.direct.mldm]
   env = "micone-mldm"
