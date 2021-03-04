@@ -5,6 +5,26 @@ Changelog
 Unreleased
 ----------
 
+0.7.0 (2021-03-04)
+------------------
+
+Added
++++++
+- ``NetworkGroup`` method now supports an ``__add__`` method
+- ``FlashWeave.jl`` for network inference
+- ``propr`` for network inference
+- ``make_network`` module split into ``make_network_with_pvalue`` and ``make_network_wo_pvalue``
+
+Changed
++++++++
+- ``MAGMA`` network inference was removed because it has not been updated
+- ``network_inference.direct`` modules will not support bootstrapping and pvalues in the future
+
+Fixed
++++++
+- Threading error due to database connection with ``NCBITaxa``
+
+
 0.6.0 (2021-02-04)
 ------------------
 
