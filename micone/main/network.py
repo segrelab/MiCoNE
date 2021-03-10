@@ -402,7 +402,12 @@ class Network:
         """
         interaction_threshold = abs(self.interaction_threshold)
         interaction_func = lambda x: abs(x["weight"]) >= interaction_threshold
-        pvalue_func = lambda x: x["pvalue"] <= self.pvalue_threshold
+        pvalues = [l["pvalue"] for l in self.links]
+        no_pvalues = np.isnan(pvalues).all()
+        if no_pvalues:
+            pvalue_func = lambda _: True
+        else:
+            pvalue_func = lambda x: x["pvalue"] <= self.pvalue_threshold
         if pvalue_filter and interaction_filter:
             filter_func = lambda x: interaction_func(x) and pvalue_func(x)
         elif interaction_filter:
