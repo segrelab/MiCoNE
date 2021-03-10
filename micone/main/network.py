@@ -659,9 +659,15 @@ class Network:
         obs_metadata = pd.DataFrame(lineages, index=nodes)
         for link in data["links"]:
             source, target = link["source"], link["target"]
-            links.append(
-                (source, target, {"weight": link["weight"], "pvalue": link["pvalue"]})
-            )
+            if link["weight"] is None:
+                weight = np.nan
+            else:
+                weight = link["weight"]
+            if link["pvalue"] is None:
+                pvalue = np.nan
+            else:
+                pvalue = link["pvalue"]
+            links.append((source, target, {"weight": weight, "pvalue": pvalue}))
         network = cls(
             nodes,
             links,
