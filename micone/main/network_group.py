@@ -341,9 +341,14 @@ class NetworkGroup(Collection):
             networks.append(Network.load_json(raw_data=network_raw_data))
         return cls(networks)
 
-    def combine_pvalues(self) -> pd.Series:
+    def combine_pvalues(self, cids: List[str]) -> pd.Series:
         """
-        Combine pvalues of links in the network group using the Brown's Method
+        Combine pvalues of links in the `cids` using Brown's p-value merging method
+
+        Parameters:
+        -----------
+        cids : List[str]
+            The list of context ids that are to be used in the merger
 
         Returns
         -------
@@ -352,8 +357,12 @@ class NetworkGroup(Collection):
         """
         pvalue_vectors = self.get_adjacency_vectors("pvalue")
         weight_vectors = self.get_adjacency_vectors("weight")
-        pvalue_df: pd.DataFrame = pd.concat(pvalue_vectors, join="outer")
-        weight_df: pd.DataFrame = pd.concat(weight_vectors, join="outer")
+        pvalue_df: pd.DataFrame = pd.concat(
+            [pvalue_vectors[i] for i in cids], join="outer"
+        )
+        weight_df: pd.DataFrame = pd.concat(
+            [weight_vectors[i] for i in cids], join="outer"
+        )
         # E[psi] = 2 * k
         k = pvalue_df.shape[1]
         expected_value = 2 * k
