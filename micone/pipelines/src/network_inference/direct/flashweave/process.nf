@@ -32,7 +32,7 @@ process flashweave_graph {
     input:
     set val(id), val(dataset), val(level), file(otu_file) from chnl_otudata
     output:
-    set val(id), file(otu_file), file('*_network.gml') into chnl_graph
+    set val(id), val(dataset), file(otu_file), file('*_network.gml') into chnl_graph
     script:
     {{ flashweave }}
 }
@@ -41,7 +41,7 @@ process flashweave_corr {
     tag "${id}"
     publishDir "${output_dir}/${dataset}", mode: 'copy', overwrite: true
     input:
-    set val(id), file(otu_file), file(network_file) from chnl_graph
+    set val(id), val(dataset), file(otu_file), file(network_file) from chnl_graph
     output:
     set val(id), file('*_corr.tsv') into chnl_corr
     script:
