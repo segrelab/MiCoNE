@@ -82,7 +82,7 @@ class Pipeline(collections.Sequence):
         if self.profile == "sge":
             self._req_keys.add("project")
         self.resume = resume
-        if base_dir is None:
+        if (base_dir is None) or (base_dir == "None"):
             self.base_dir = pathlib.Path.cwd()
         else:
             base_path = pathlib.Path(base_dir)
