@@ -4,6 +4,9 @@ version = "0.7.1"
 description = "The Microbial Co-occurrence Network Explorer"
 authors = ["Dileep Kishore <dkishore@bu.edu>"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/segrelab/MiCoNE"
+documentation = "https://micone.readthedocs.io/en/latest"
 
 [tool.poetry.dependencies]
 python = "~3.8"
