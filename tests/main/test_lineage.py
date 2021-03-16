@@ -81,7 +81,7 @@ class TestLineage:
         lineage1 = Lineage.from_str(
             "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae"
         )
-        assert lineage1.taxid[1] == 541_000
+        assert lineage1.taxid[1] == 216572
         lineage2 = Lineage.from_str(
             "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacterales;f__Enterobacteriaceae;g__Escherichia;s__coli"
         )
