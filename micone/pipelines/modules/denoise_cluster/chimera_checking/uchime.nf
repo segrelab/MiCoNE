@@ -1,11 +1,11 @@
 // Step2: Remove chimeras using vserach uchime-denovo
-process remove_chimeras {
+process uchime {
+    label 'qiime2'
     tag "${id}"
     input:
-    tuple val(id), file(otutable_artifact), file(repseqs_artifact)
+        tuple val(id), file(otutable_artifact), file(repseqs_artifact)
     output:
-    tuple val(id), file("otu_table_nonchimeric.qza"), file("rep_seqs_nonchimeric.qza")
+        tuple val(id), file("otu_table_nonchimeric.qza"), file("rep_seqs_nonchimeric.qza")
     script:
-    template 'denoise_cluster/chimera_checking/remove_chimeras.sh'
+        template 'denoise_cluster/chimera_checking/remove_chimeras.sh'
 }
-
