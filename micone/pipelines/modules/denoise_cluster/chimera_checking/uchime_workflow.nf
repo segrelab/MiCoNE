@@ -13,6 +13,6 @@ workflow uchime_workflow {
             | uchime \
             | export_files
     emit:
-        // has `publishDir` -> ${params.output_dir}/${id}
+        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
         export_files.out
 }

@@ -2,7 +2,7 @@
 process hashing3 {
     label 'dada2'
     tag "${id}"
-    publishDir "${params.output_dir}/${id}", mode: 'copy', overwrite: true
+    publishDir "${params.output_dir}/${task.process}/${id}", mode: 'copy', overwrite: true
     input:
         tuple val(id), file(unhashed_otu_table), file(unhashed_rep_seqs)
     output:

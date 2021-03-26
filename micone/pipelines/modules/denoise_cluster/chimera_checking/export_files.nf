@@ -2,7 +2,7 @@
 process export_files {
     label 'qiime2'
     tag "${id}"
-    publishDir "${params.output_dir}/${id}", mode: 'copy', overwrite: true
+    publishDir "${params.output_dir}/${task.process}/${id}", mode: 'copy', overwrite: true
     input:
         tuple val(id), file(otutable_nonchimeric), file(repseqs_nonchimeric)
     output:

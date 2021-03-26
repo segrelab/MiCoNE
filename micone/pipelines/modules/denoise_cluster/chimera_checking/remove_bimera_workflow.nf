@@ -13,6 +13,6 @@ workflow remove_bimera_workflow {
             | remove_bimera \
             | hashing3
     emit:
-        // has `publishDir` -> ${params.output_dir}/${id}
+        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
         hashing3.out
 }

@@ -1,10 +1,11 @@
 // Step1: Convert fastq to fasta and merge
 process fastq2fasta {
+    label 'qiime1'
     tag "${id}"
     input:
-    tuple val(id), file(sequence_files), file(manifest_file)
+        tuple val(id), file(sequence_files), file(manifest_file)
     output:
-    tuple val(id), file("${id}.fasta")
+        tuple val(id), file("${id}.fasta")
     script:
-    template 'denoise_cluster/denoise_cluster/fastq2fasta.py'
+        template 'denoise_cluster/denoise_cluster/fastq2fasta.py'
 }
