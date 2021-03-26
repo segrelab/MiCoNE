@@ -1,11 +1,11 @@
-// Step2: Replace the ids with hashes of the sequences
+// Step1: Denoise using deblur
 process deblur {
+    label 'qiime2'
     tag "${id}"
-    publishDir "${output_dir}/${id}", mode: 'copy', overwrite: true
     input:
-    tuple val(id), file(unhashed_otu_table), file(unhashed_rep_seqs)
+        tuple val(id), file(sequence_files), file(manifest_file)
     output:
-    tuple val(id), file('otu_table.biom'), file('rep_seqs.fasta')
+        tuple val(id), file('*_otu_table.biom'), file('*_rep_seqs.fasta')
     script:
-    template 'denoise_cluster/denoise_cluster/hashing3.py'
+        template 'denoise_cluster/denoise_cluster/deblur.sh'
 }
