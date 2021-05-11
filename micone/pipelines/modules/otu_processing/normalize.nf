@@ -1,10 +1,11 @@
 process normalize {
+    label 'micone'
     tag "$id"
-    publishDir "${output_dir}", mode: 'copy', overwrite: true
+    publishDir "${params.output_dir}/${task.process}/${id}", mode: 'copy', overwrite: true
     input:
-    tuple val(id), file(otu_file)
+        tuple val(id), file(otu_file)
     output:
-    tuple val(id), file("*.biom")
+        tuple val(id), file("*.biom")
     script:
-    template 'otu_processing/normalize.py'
+        template 'otu_processing/normalize.py'
 }
