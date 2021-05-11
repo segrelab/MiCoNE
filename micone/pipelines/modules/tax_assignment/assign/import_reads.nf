@@ -1,11 +1,11 @@
 // Step1a: Import files
 process import_reads {
+    label 'qiime2'
     tag "${id}"
     input:
-    tuple val(id), file(rep_seqs)
+        tuple val(id), file(rep_seqs)
     output:
-    tuple val(id), file('rep_seqs.qza')
+        tuple val(id), file('rep_seqs.qza')
     script:
-    template 'tax_assignment/assign/import_reads.sh'
+        template 'tax_assignment/assign/import_reads.sh'
 }
-
