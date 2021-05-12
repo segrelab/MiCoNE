@@ -1,10 +1,11 @@
 process filter {
+    label 'sparcc'
     tag "${id}"
-    publishDir "${output_dir}/${datatuple}/${level}", saveAs: { filename -> filename.split("/")[-1] }, mode: 'copy', overwrite: true
+    // publishDir "${params.output_dir}/${task.process}/${id}", saveAs: { filename -> filename.split("/")[-1] }, mode: 'copy', overwrite: true
     input:
-    tuple val(id), val(datatuple), val(level), file(boot_file)
+        tuple val(id), val(datatuple), val(level), file(boot_file)
     output:
-    tuple val(id), val(datatuple), val(level), file('filtered/*.boot')
+        tuple val(id), val(datatuple), val(level), file('filtered/*.boot')
     script:
-    template 'network_inference/bootstrap/filter.py'
+        template 'network_inference/bootstrap/filter.py'
 }
