@@ -6,6 +6,8 @@ process closed_reference {
         tuple val(meta), file(fasta_file)
     output:
         tuple val(meta), file('unhashed_otu_table.biom'), file('unhashed_rep_seqs.fasta'), file('log*.txt')
+    when:
+        "closed_reference" in params.denoise_cluster.denoise_cluster['selection']
     script:
         meta.denoise_cluster = "closed_reference"
         ncpus = params.denoise_cluster.denoise_cluster['closed_reference']['ncpus']

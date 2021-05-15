@@ -6,6 +6,8 @@ process de_novo {
         tuple val(meta), file(fasta_file)
     output:
         tuple val(meta), file('unhashed_otu_table.biom'), file('unhashed_rep_seqs.fasta'), file('log*.txt')
+    when:
+        "de_novo" in params.denoise_cluster.denoise_cluster['selection']
     script:
         meta.denoise_cluster = "de_novo"
         ncpus = params.denoise_cluster.denoise_cluster['de_novo']['ncpus']

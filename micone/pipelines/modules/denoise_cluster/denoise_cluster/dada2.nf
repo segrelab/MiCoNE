@@ -6,6 +6,8 @@ process dada2 {
         tuple val(meta), file(sequence_files), file(manifest_file)
     output:
         tuple val(meta), file("seq_table.tsv")
+    when:
+        "dada2" in params.denoise_cluster.denoise_cluster['selection']
     script:
         meta.denoise_cluster = "dada2"
         ncpus = params.denoise_cluster.denoise_cluster['dada2']['ncpus']
