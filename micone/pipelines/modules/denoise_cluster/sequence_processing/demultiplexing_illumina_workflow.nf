@@ -15,6 +15,7 @@ workflow demultiplexing_illumina_workflow {
             | join_reads
     // TODO: Connect `join_reads` properly
     emit:
-        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
+        // export_sequences and join_reads has publishDir
+        // tuple val(meta), file('joined_reads/*_reads.fastq.gz'), file('joined_reads/*_barcodes.fastq.gz')
         join_reads.out
 }
