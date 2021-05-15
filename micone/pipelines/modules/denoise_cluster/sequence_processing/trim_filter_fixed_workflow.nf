@@ -5,8 +5,9 @@ include { trimming } from './trimming.nf'
 
 
 workflow trim_filter_fixed_workflow {
+    // TODO: FIXME: Output from `join_reads` (previous workflow) does not match
     take:
-        // tuple val(id), file(sequence_file), file(manifest_file)
+        // tuple val(meta), file(sequence_file), file(manifest_file)
         input_channel
     main:
         input_channel \
@@ -16,6 +17,7 @@ workflow trim_filter_fixed_workflow {
             | join(input_channel) \
             | trimming
     emit:
-        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
+        // triming and quality_analysis have publishDir
+        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST')
         trimming.out
 }

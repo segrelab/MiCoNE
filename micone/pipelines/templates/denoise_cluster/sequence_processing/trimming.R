@@ -2,9 +2,9 @@
 
 suppressWarnings(library(dada2))
 
-multithread <- ${params.denoise_cluster.ncpus}
-maxEE <- ${params.trim_filter_fixed.max_ee}
-truncQ <- ${params.trim_filter_fixed.trunc_q}
+multithread <- ${ncpus}
+maxEE <- ${max_ee}
+truncQ <- ${trunc_q}
 trim_cmd <- "${trim_cmd}"
 
 untrimmed.reads <- list.files(".", pattern=".fastq.gz\$", full.names=TRUE)

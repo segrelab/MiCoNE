@@ -39,6 +39,7 @@ def main(sequence_glob, trim_cmd, ncpus, adapters):
 
 
 if __name__ == "__main__":
+    # NOTE: This template is not being used
     SEQUENCE_GLOB = "*.fastq.gz"
     TRIM_CMD = "${trim_cmd}"
     NCPUS = $ncpus

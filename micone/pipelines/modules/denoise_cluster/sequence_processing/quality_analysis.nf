@@ -2,13 +2,17 @@
 // a. quality and b. sequence retainment
 process quality_analysis {
     label 'qiime2'
-    tag "${id}"
-    publishDir "${params.output_dir}/${task.process}/${id}/quality_summary", mode: 'copy', overwrite: true
+    tag "${meta.id}"
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+        mode: 'copy',
+        overwrite: true
     input:
-        tuple val(id), file(qual_summary)
+        tuple val(meta), file(qual_summary)
     output:
-        tuple val(id), file('trim.txt')
+        tuple val(meta), file('trim.txt')
     script:
+        String task_process = "${task.process}"
+        f = getHierarchy(task_process)
         template 'denoise_cluster/sequence_processing/quality_analysis.py'
 }
 
