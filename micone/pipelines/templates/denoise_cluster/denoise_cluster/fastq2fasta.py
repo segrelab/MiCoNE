@@ -21,13 +21,15 @@ def merge(fasta_files, output_file):
                 count = 0
                 for line in rid:
                     if line.startswith(">"):
-                        wid.write(">{0}_{1} {2}".format(sample_name, str(count), line[1:]))
+                        wid.write(
+                            ">{0}_{1} {2}".format(sample_name, str(count), line[1:])
+                        )
                     else:
                         wid.write(line)
                     count += 1
 
 
-def main(manifest_file, dataset_name, ncpus):
+def main(manifest_file, dataset_name):
     os.mkdir("fasta")
     data = []
     with open(manifest_file) as fid:
@@ -44,5 +46,4 @@ def main(manifest_file, dataset_name, ncpus):
 if __name__ == "__main__":
     DATASET_NAME = "${meta.id}"
     MANIFEST_FILE = "${manifest_file}"
-    NCPUS = ${ncpus}
-    main(MANIFEST_FILE, DATASET_NAME, NCPUS)
+    main(MANIFEST_FILE, DATASET_NAME)

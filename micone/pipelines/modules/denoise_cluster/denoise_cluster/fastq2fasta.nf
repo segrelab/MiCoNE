@@ -7,6 +7,5 @@ process fastq2fasta {
     output:
         tuple val(meta), file("*.fasta")
     script:
-        ncpus = params.denoise_cluster.denoise_cluster['closed_reference']['ncpus']
         template 'denoise_cluster/denoise_cluster/fastq2fasta.py'
 }
