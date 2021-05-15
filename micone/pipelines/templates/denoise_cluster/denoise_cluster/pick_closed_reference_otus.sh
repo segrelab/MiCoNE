@@ -3,13 +3,13 @@
 pick_closed_reference_otus.py \
   -i ${fasta_file} \
   ${parallel_option} \
-  -r ${params.closed_reference.reference_sequences} \
-  -p ${params.closed_reference.parameters} \
+  -r ${reference_sequences} \
+  -p ${parameters} \
   --suppress_taxonomy_assignment \
   -f -o \$PWD
 
 pick_rep_set.py \
-  -i uclust_ref_picked_otus/${id}_otus.txt \
+  -i uclust_ref_picked_otus/${meta.id}_otus.txt \
   -f ${fasta_file} \
   -o rep_seqs.fasta
 

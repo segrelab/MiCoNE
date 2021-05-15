@@ -13,8 +13,8 @@ process trimming {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        ncpus = params.denoise_cluster.sequence_processing.['trimming'].['ncpus']
-        max_ee = params.denoise_cluster.sequence_processing.['trimming'].['max_ee']
-        trunc_q = params.denoise_cluster.sequence_processing.['trimming'].['trunc_q']
+        ncpus = params.denoise_cluster.sequence_processing['trimming']['ncpus']
+        max_ee = params.denoise_cluster.sequence_processing['trimming']['max_ee']
+        trunc_q = params.denoise_cluster.sequence_processing['trimming']['trunc_q']
         template 'denoise_cluster/sequence_processing/trimming.R'
 }

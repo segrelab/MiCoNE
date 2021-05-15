@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 
-import glob
 import os
 import subprocess
 
@@ -43,7 +42,7 @@ def main(manifest_file, dataset_name, ncpus):
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "${id}"
+    DATASET_NAME = "${meta.id}"
     MANIFEST_FILE = "${manifest_file}"
-    NCPUS = ${params.denoise_cluster.ncpus}
+    NCPUS = ${ncpus}
     main(MANIFEST_FILE, DATASET_NAME, NCPUS)
