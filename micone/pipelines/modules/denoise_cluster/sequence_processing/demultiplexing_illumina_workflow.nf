@@ -5,15 +5,16 @@ include { export_sequences } from './export_sequences.nf'
 
 workflow demultiplexing_illumina_workflow {
     take:
-        // tuple val(id), file(sequence_file), file(barcode_file), file(mapping_file)
+        // tuple val(meta), file(sequence_file), file(barcode_file), file(mapping_file)
         input_channel
     main:
         input_channel \
             | import_sequences_sh \
             | demultiplexing_illumina \
-            | export_sequences
-    // TODO: Add `join_reads` process here if PairedEnd
+            | export_sequences \
+            | join_reads
+    // TODO: Connect `join_reads` properly
     emit:
         // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
-        export_sequences.out
+        join_reads.out
 }

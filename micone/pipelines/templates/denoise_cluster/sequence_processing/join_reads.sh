@@ -4,8 +4,8 @@ join_paired_ends.py \
     -f ${sequence_files[0]} \
     -r ${sequence_files[1]} \
     -b ${barcode_file} \
-    --min_overlap ${params.join_reads.min_overlap} \
-    --perc_max_diff ${params.join_reads.perc_max_diff} \
+    --min_overlap ${min_overlap} \
+    --perc_max_diff ${perc_max_diff} \
     --output_dir joined_reads \
 
 gzip joined_reads/fastqjoin.join.fastq
