@@ -2,7 +2,7 @@
 process export_sequences {
     label 'qiime2'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f1}/${f2}/${f3}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
         saveAs: { filename -> filename.split("/")[1] },
         mode: 'copy',
         overwrite: true
@@ -11,6 +11,7 @@ process export_sequences {
     output:
         tuple val(meta), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST')
     script:
-        f1, f2, f3 = getHierarchy("${task.process}")
+        String task_process = "${task.process}"
+        f = getHierarchy(task_process)
         template 'denoise_cluster/sequence_processing/export_sequences.py'
 }
