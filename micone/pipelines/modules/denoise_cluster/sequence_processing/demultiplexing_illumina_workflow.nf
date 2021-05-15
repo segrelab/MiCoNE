@@ -12,6 +12,7 @@ workflow demultiplexing_illumina_workflow {
             | import_sequences_sh \
             | demultiplexing_illumina \
             | export_sequences
+    // TODO: Add `join_reads` process here if PairedEnd
     emit:
         // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
         export_sequences.out
