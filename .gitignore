@@ -110,3 +110,6 @@ tags
 # nextflow
 .nextflow/
 .nextflow.log.*
+
+# pipeline data directory
+micone/pipelines/data/
