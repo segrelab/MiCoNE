@@ -11,15 +11,15 @@ deblur workflow \
     --output-dir deblur_output \
     -t -1 \
     --left-trim-length 0 \
-    --min-reads ${params.deblur.min_reads} \
-    --min-size ${params.deblur.min_size} \
-    --jobs-to-start ${params.deblur.ncpus} \
+    --min-reads ${min_reads} \
+    --min-size ${min_size} \
+    --jobs-to-start ${ncpus} \
     --keep-tmp-files
 
 # Build otu table and rep seqs for the step before chimera checking
 mkdir otu_table
 deblur build-biom-table \
-    --min-reads ${params.deblur.min_reads} \
+    --min-reads ${min_reads} \
     --file_type .trim.derep.no_artifacts.msa.deblur \
     deblur_output/deblur_working_dir \
     otu_table

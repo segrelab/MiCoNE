@@ -1,11 +1,15 @@
 // Step1: Denoise using deblur
 process deblur {
     label 'qiime2'
-    tag "${id}"
+    tag "${meta.id}"
     input:
-        tuple val(id), file(sequence_files), file(manifest_file)
+        tuple val(meta), file(sequence_files), file(manifest_file)
     output:
-        tuple val(id), file('*_otu_table.biom'), file('*_rep_seqs.fasta')
+        tuple val(meta), file('*_otu_table.biom'), file('*_rep_seqs.fasta')
     script:
+        meta.denoise_cluster = "deblur"
+        ncpus = params.denoise_cluster.denoise_cluster['deblur']['ncpus']
+        min_reads = params.denoise_cluster.denoise_cluster['deblur']['min_reads']
+        min_size = params.denoise_cluster.denoise_cluster['deblur']['min_size']
         template 'denoise_cluster/denoise_cluster/deblur.sh'
 }
