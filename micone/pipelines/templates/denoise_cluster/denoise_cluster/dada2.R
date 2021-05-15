@@ -2,8 +2,8 @@
 
 suppressWarnings(library(dada2))
 
-big.data <- ${params.dada2.big_data}
-multithread <- ${params.dada2.ncpus}
+big.data <- ${big_data}
+multithread <- ${ncpus}
 
 # Load file names and sample names from manifest file
 manifest <- read.csv("MANIFEST", comment.char="#")

@@ -13,6 +13,7 @@ workflow dada2_workflow {
             | make_biom_repseqs \
             | hashing3
     emit:
-        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
+        // hashing3 has publishDir
+        // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
         hashing3.out
 }
