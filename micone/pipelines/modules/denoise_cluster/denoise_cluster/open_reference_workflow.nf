@@ -13,6 +13,7 @@ workflow de_novo_workflow {
             | open_reference \
             | hashing2
     emit:
-        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
+        // hashing2 has publishDir
+        // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
         hashing2.out
 }

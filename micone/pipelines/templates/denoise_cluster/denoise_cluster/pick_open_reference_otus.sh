@@ -2,9 +2,9 @@
 
 pick_open_reference_otus.py \
     -i ${fasta_file} \
-    -m ${params.open_reference.picking_method} \
-    -r ${params.open_reference.reference_sequences} \
-    -p ${params.open_reference.parameters} \
+    -m ${picking_method} \
+    -r ${reference_sequences} \
+    -p ${parameters} \
     ${parallel_option} \
     --suppress_taxonomy_assignment \
     --suppress_align_and_tree \
