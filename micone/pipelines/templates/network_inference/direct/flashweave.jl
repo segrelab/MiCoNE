@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 using Distributed
-addprocs(${ncpus})
+addprocs(${params.flashweave.ncpus})
 
 @everywhere using FlashWeave
 
@@ -20,9 +20,9 @@ new_metadata_path = "${sample_metadata.baseName}_transposed.tsv"
 CSV.write(new_metadata_path, metadata; delim="\\t")
 
 # options
-sensitive = ${sensitive}
-heterogeneous = ${heterogeneous}
-FDR = ${fdr_correction}
+sensitive = ${params.flashweave.sensitive}
+heterogeneous = ${params.flashweave.heterogeneous}
+FDR = ${params.flashweave.fdr_correction}
 
 netw_results = learn_network(
 new_data_path,
