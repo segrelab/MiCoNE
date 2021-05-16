@@ -1,11 +1,11 @@
-// Step1a: Import files
+// Import files
 process import_reads {
     label 'qiime2'
-    tag "${id}"
+    tag "${meta.id}"
     input:
-        tuple val(id), file(rep_seqs)
+        tuple val(meta), val(otu_table_file), file(rep_seqs), file(sample_metadata_file)
     output:
-        tuple val(id), file('rep_seqs.qza')
+        tuple val(meta), val(otu_table_file), file('rep_seqs.qza'), file(sample_metadata_file)
     script:
         template 'tax_assignment/assign/import_reads.sh'
 }
