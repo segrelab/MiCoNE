@@ -2,11 +2,12 @@
 
 suppressWarnings(library(dada2))
 
-chimera.method <- "${params.remove_bimera.chimera_method}"
-multithread <- ${params.chimera_checking.ncpus}
+chimera.method <- "${chimera_method}"
+multithread <- ${ncpus}
 
 # load table and convert to matrix
-seq.table <- read.csv("seq_table.tsv", sep="\\t")
+seq.table.file <- "${seqtable_file}"
+seq.table <- read.csv(seq.table.file, sep="\\t")
 rownames(seq.table) <- seq.table[,1]
 seq.table <- seq.table[ -c(1) ]
 seq.mat <- data.matrix(seq.table)
