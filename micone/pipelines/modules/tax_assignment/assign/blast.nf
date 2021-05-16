@@ -4,6 +4,8 @@ process blast {
     tag "${meta.id}"
     input:
         tuple val(meta), file(otu_table_file), file(repseq_artifact), file(sample_metadata_file)
+    when:
+        'blast' in params.tax_assignment.assign['selection']
     output:
         tuple val(meta), file(otu_table_file), file("taxonomy.tsv"), file(sample_metadata_file)
     script:

@@ -4,6 +4,8 @@ process naive_bayes {
     tag "${meta.id}"
     input:
         tuple val(meta), file(otu_table), file(rep_seqs), file(sample_metadata)
+    when:
+        'naive_bayes' in params.tax_assignment.assign['selection']
     output:
         tuple val(meta), file(otu_table), file('taxonomy.tsv'), file(sample_metadata)
     script:
