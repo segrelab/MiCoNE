@@ -7,5 +7,6 @@ process uchime {
     output:
         tuple val(meta), file("otu_table_nonchimeric.qza"), file("rep_seqs_nonchimeric.qza")
     script:
+        meta.chimera_checking = "uchime"
         template 'denoise_cluster/chimera_checking/remove_chimeras.sh'
 }
