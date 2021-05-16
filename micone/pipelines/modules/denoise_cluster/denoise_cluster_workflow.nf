@@ -1,11 +1,8 @@
 // Main variables to be defined
 // NOTE: These should be defined before any include statements
-// params.dc_tools
-// params.chimera_tools
+
 
 // Sequencing processing imports
-// QUESTION: What about `join_reads`(?)
-include { demultiplexing_454_workflow } from './sequence_processing/demultiplexing_454_workflow.nf'
 include { demultiplexing_illumina_workflow } from './sequence_processing/demultiplexing_illumina_workflow.nf'
 include { trim_filter_fixed_workflow } from './sequence_processing/trim_filter_fixed_workflow.nf'
 
@@ -26,16 +23,19 @@ workflow denoise_cluster_workflow {
     take:
         // tuple val(id), file(sequence_files), file(barcode_files), file(barcode_sample_mapping)
         input_channel
+        // tuple val(meta), file(samplemetadata_files)
+        samplemetadata_channel
     main:
         input_channel \
             | demultiplexing_illumina_workflow \
             | trim_filter_fixed_workflow \
             | (dada2_workflow & deblur_workflow & open_reference_workflow & de_novo_workflow & closed_reference_workflow) \
             | mix \
-            | (uchime_workflow & remove_bimera_workflow) \
-            | mix
+            | (uchime_workflow & remove_bimera_workflow)
+        output_channel = uchime_workflow.out
+                            .mix(remove_bimera_workflow.out)
+                            .join(samplemetadata_channel)
     emit:
-        // NOTE: We do not worry about publishDir here as the intermediate workflows handle that
-        // TODO: Find out if you can output from a mix
-        mix.out
+        // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file(samplemetadata_files)
+        output_channel
 }
