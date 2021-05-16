@@ -1,11 +1,11 @@
 // Step1: Import files as artifacts
 process import_files {
     label 'qiime2'
-    tag "${id}"
+    tag "${meta.id}"
     input:
-        tuple val(id), file(otu_table), file(rep_seqs)
+        tuple val(meta), file(otutable_file), file(repseqs_file)
     output:
-        tuple val(id), file("otu_table.qza"), file("rep_seqs.qza")
+        tuple val(meta), file("otu_table.qza"), file("rep_seqs.qza")
     script:
         template 'denoise_cluster/chimera_checking/import_files.sh'
 }

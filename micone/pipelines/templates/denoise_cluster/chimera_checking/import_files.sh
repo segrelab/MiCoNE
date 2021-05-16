@@ -4,13 +4,13 @@ set -e
 
 # Import biom file
 qiime tools import \
-    --input-path ${otu_table} \
+    --input-path ${otutable_file} \
     --type 'FeatureTable[Frequency]' \
     --input-format BIOMV210Format \
     --output-path otu_table.qza
 
 # Import representative sequences
 qiime tools import \
-    --input-path ${rep_seqs} \
+    --input-path ${repseqs_file} \
     --type 'FeatureData[Sequence]' \
     --output-path rep_seqs.qza

@@ -5,7 +5,7 @@ include { export_files } from './export_files.nf'
 
 workflow uchime_workflow {
     take:
-        // tuple val(id), file(otu_table), file(rep_seqs)
+        // tuple val(id), file(otutable_file), file(repseqs_file)
         input_channel
     main:
         input_channel \
@@ -13,6 +13,7 @@ workflow uchime_workflow {
             | uchime \
             | export_files
     emit:
-        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
+        // export_files has publishDir
+        // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
         export_files.out
 }
