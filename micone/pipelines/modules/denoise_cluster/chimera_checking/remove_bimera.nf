@@ -4,6 +4,8 @@ process remove_bimera {
     tag "${meta.id}"
     input:
         tuple val(meta), file(seqtable_file)
+    when:
+        "remove_bimera" in params.denoise_cluster.chimera_checking['selection']
     output:
         tuple val(meta), file("unhashed_otu_table.biom"), file("unhashed_rep_seqs.fasta")
     script:
