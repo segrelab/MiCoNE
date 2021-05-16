@@ -9,6 +9,6 @@ def main(biom_file, base_name):
 
 
 if __name__ == "__main__":
-    BIOM_FILE = "$otu_file"
-    BASE_NAME = "$level"
+    BIOM_FILE = "${otu_file}"
+    BASE_NAME = "${tax_level}"
     main(BIOM_FILE, BASE_NAME)
