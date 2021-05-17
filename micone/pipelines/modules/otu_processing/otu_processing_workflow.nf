@@ -3,8 +3,8 @@
 
 
 // Imports
-include { group } from './transform/group.nf'
 include { normalize} from './transform/normalize.nf'
+include { group } from './transform/group.nf'
 include { biom2tsv } from './export/biom2tsv.nf'
 
 // Main workflow
@@ -15,11 +15,9 @@ workflow otu_processing_workflow {
     main:
         normalize(input_channel)
         group(normalize.out, params.otu_processing.transform['group']['tax_levels'])
-        export(group.out)
+        biom2tsv(group.out)
     emit:
         // all processes have publishDir
         // tuple val(meta), file("*_otu.tsv"), file("*_obs_metadata.csv"), file("*_sample_metadata.tsv"), file(children_file)
-        otu = export.out.otu
-        md = export.out.md
-        children_map = export.out.children_map
+        biom2tsv.out
 }

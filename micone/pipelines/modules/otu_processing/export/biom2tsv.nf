@@ -7,9 +7,7 @@ process biom2tsv {
     input:
         tuple val(meta), val(tax_level), file(otu_file), file(children_file)
     output:
-        tuple val(meta), file("*_otu.tsv"), emit: otu
-        tuple val(meta), file("*_obs_metadata.csv"), file("*_sample_metadata.tsv"), emit: md
-        tuple val(meta), file(children_file), emit: children_map
+        tuple val(meta), file("*_otu.tsv"), file("*_obs_metadata.csv"), file("*_sample_metadata.tsv"), file(children_file)
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
