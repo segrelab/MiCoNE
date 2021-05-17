@@ -13,10 +13,9 @@ workflow otu_processing_workflow {
         // tuple val(id), file(otu_file)
         input_channel
     main:
-        input_channel \
-            | normalize \
-            | group \
-            | export \
+        normalize(input_channel)
+        group(normalize.out, params.otu_processing.transform['group']['tax_levels'])
+        export(group.out)
     emit:
         // all processes have publishDir
         // tuple val(meta), file("*_otu.tsv"), file("*_obs_metadata.csv"), file("*_sample_metadata.tsv"), file(children_file)
