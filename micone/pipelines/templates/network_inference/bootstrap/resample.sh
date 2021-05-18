@@ -9,5 +9,5 @@ fastspar_bootstrap \
     --threads ${ncpus}
 
 for f in bootstraps/*.tsv; do
-    mv -- "\$f" "\${f%.tsv}.boot"
+    mv -- "\$f" "\${f%.tsv}_otu.boot"
 done

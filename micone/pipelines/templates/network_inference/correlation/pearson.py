@@ -41,6 +41,6 @@ def main(id_, otu_file, bootstrap_files, ncpus):
 if __name__ == "__main__":
     ID_ = "${meta.id}"
     OTU_FILE = pathlib.Path("${otu_file}")
-    BOOTSTRAP_FILES = pathlib.Path().glob("*.boot")
+    BOOTSTRAP_FILES = pathlib.Path().glob("*_otu.boot")
     NCPUS = ${ncpus}
     main(ID_, OTU_FILE, BOOTSTRAP_FILES, NCPUS)
