@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
+import pathlib
+import multiprocessing as mp
+
 import numpy as np
 import pandas as pd
 from scipy.stats import spearmanr
 
 
-def main(otu_file, output_file):
+def spearman(otu_file, output_file):
     otu_table = pd.read_table(otu_file, index_col=0)
     data = otu_table.values
     n = otu_table.shape[0]
@@ -24,7 +27,19 @@ def main(otu_file, output_file):
     corr_table.to_csv(output_file, sep="\\t", index=True, float_format="%.4f")
 
 
+def main(id_, otu_file, bootstrap_files, ncpus):
+    output_file = f"{id_}_corr.tsv"
+    args = [(otu_file, output_file)]
+    for i, bootstrap_file in enumerate(bootstrap_files):
+        output_file = f"{id_}_{i}_corr.boot"
+        args.append((bootstrap_file, output_file))
+    with mp.Pool(processes=ncpus) as pool:
+        pool.starmap(spearman, args)
+
+
 if __name__ == "__main__":
-    OTU_FILE = "${otu_file}"
-    OUTPUT_FILE = "${otu_file.baseName.split('_otu')[0]}_corr.tsv"
-    main(OTU_FILE, OUTPUT_FILE)
+    ID_ = "${meta.id}"
+    OTU_FILE = pathlib.Path("${otu_file}")
+    BOOTSTRAP_FILES = pathlib.Path().glob("*.boot")
+    NCPUS = ${ncpus}
+    main(ID_, OTU_FILE, BOOTSTRAP_FILES, NCPUS)

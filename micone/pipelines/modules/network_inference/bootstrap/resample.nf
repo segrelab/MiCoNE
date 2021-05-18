@@ -1,10 +1,12 @@
 process resample {
     label 'sparcc'
-    tag "${id}"
+    tag "${meta.id}"
     input:
-        tuple val(id), val(datatuple), val(level), file(otu_file)
+        tuple val(meta), file(otu_file), file(obs_metadata), file(sample_metadata), file(children_map)
     output:
-        tuple val(id), val(datatuple), val(level), file('bootstraps/*.boot.temp')
+        tuple val(meta), file(otu_file), file('bootstraps/*.boot.temp'), file(obsmeta_file), file(samplemeta_file), file(children_file)
     script:
+        ncpus = params.network_inference.bootstrap['resample']['ncpus']
+        bootstraps = params.network_inference.bootstrap['resample']['bootstraps']
         template 'network_inference/bootstrap/resample.sh'
 }
