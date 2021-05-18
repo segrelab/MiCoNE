@@ -1,14 +1,17 @@
 process sparcc {
-    label 'sparcc'
-    tag "${id}"
-    publishDir "${params.output_dir}/${task.process}/${id}", mode: 'copy', overwrite: true
+    label 'micone'
+    tag "${meta.id}"
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+        mode: 'copy',
+        overwrite: true
     input:
-        // tuple val(id), val(datatuple), val(level), file(otu_file)
-        tuple val(id), file(otu_file), file(sample_metadata)
+        tuple val(meta), file(otu_file), file(bootstrap_files), file(obsmeta_file), file(samplemeta_file), file(children_file)
     output:
-        tuple val(id), file('*_corr.tsv')
-    when:
-        'sparcc' in params.ni_tools
+        tuple val(meta), file(otu_file), file('*_corr.tsv'), file('*_corr.boot'), file(obsmeta_file), file(samplemeta_file), file(children_file)
     script:
-        template 'network_inference/correlation/sparcc.sh'
+        String task_process = "${task.process}"
+        f = getHierarchy(task_process)
+        ncpus = params.network_inference.correlation['sparcc']['ncpus']
+        iterations = params.network_inference.correlation['sparcc']['iterations']
+        template 'network_inference/correlation/sparcc.py'
 }
