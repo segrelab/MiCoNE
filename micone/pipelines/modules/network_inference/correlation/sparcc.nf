@@ -1,5 +1,5 @@
 process sparcc {
-    label 'micone'
+    label 'sparcc'
     tag "${meta.id}"
     publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
         mode: 'copy',
@@ -13,5 +13,5 @@ process sparcc {
         f = getHierarchy(task_process)
         ncpus = params.network_inference.correlation['sparcc']['ncpus']
         iterations = params.network_inference.correlation['sparcc']['iterations']
-        template 'network_inference/correlation/sparcc.py'
+        template 'network_inference/correlation/sparcc.sh'
 }
