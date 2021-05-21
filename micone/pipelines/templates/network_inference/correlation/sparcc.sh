@@ -7,14 +7,11 @@ fastspar --iterations ${iterations} --yes \
     --threads ${ncpus}
 
 function do_fastspar {
-    args=(\$(echo \$1 | tr "," "\\n"))
-    number=\$args[0]
-    otu_table=\$args[0]
     fastspar --iterations ${iterations} --yes \
-        --otu_table \$otu_table \
-        --correlation ${meta.id}_\${number}_corr.boot \
-        --covariance ${meta.id}_\${number}_cov.boot \
+        --otu_table \$1 \
+        --correlation \${1%_otu.boot}_corr.boot \
+        --covariance \${1%_otu.boot}_cov.boot \
         --threads ${ncpus}
 }
 
-find . -name "*_otu.boot" | awk '{print NR "," $0}' | parallel -j ${ncpus} do_fastspar
+find . -name "*_otu.boot" | parallel -j ${ncpus} do_fastspar
