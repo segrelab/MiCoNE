@@ -32,7 +32,7 @@ def main(id_, otu_file, bootstrap_files, ncpus):
     output_file = f"{id_}_corr.tsv"
     args = [(otu_file, output_file)]
     for i, bootstrap_file in enumerate(bootstrap_files):
-        output_file = f"{id_}_{i}_corr.boot"
+        output_file = f"{id_}_{i+1}_corr.boot"
         args.append((bootstrap_file, output_file))
     with mp.Pool(processes=ncpus) as pool:
         pool.starmap(pearson, args)
