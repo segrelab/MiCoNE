@@ -11,6 +11,7 @@ process sparcc {
     when:
         "sparcc" in params.network_inference.correlation['selection']
     script:
+        meta.network_inference = "sparcc"
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         ncpus = params.network_inference.correlation['sparcc']['ncpus']

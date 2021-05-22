@@ -11,6 +11,7 @@ process propr {
     when:
         "propr" in params.network_inference.correlation['selection']
     script:
+        meta.network_inference = "propr"
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         ncpus = params.network_inference.correlation['propr']['ncpus']

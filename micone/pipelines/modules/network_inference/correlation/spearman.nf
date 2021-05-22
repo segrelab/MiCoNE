@@ -11,6 +11,7 @@ process spearman {
     when:
         "spearman" in params.network_inference.correlation['selection']
     script:
+        meta.network_inference = "spearman"
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         ncpus = params.network_inference.correlation['spearman']['ncpus']
