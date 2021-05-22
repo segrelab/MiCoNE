@@ -1,11 +1,15 @@
 process export_gml {
     label 'flashweave'
-    tag "${id}"
-    publishDir "${params.output_dir}/${task.process}/${id}", mode: 'copy', overwrite: true
+    tag "${meta.id}"
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+        mode: 'copy',
+        overwrite: true
     input:
-        tuple val(id), val(datatuple), file(otu_file), file(network_file)
+        tuple val(meta), file(otu_file), file(network_file), file(obs_metadata), file(sample_metadata), file(children_map)
     output:
-        tuple val(id), file('*_corr.tsv')
+        tuple val(meta), file('*_corr.tsv'), file(obs_metadata), file(sample_metadata), file(children_map)
     script:
+        String task_process = "${task.process}"
+        f = getHierarchy(task_process)
         template 'network_inference/direct/export_gml.py'
 }

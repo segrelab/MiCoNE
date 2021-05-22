@@ -1,15 +1,21 @@
 process flashweave {
     label 'flashweave'
-    tag "${id}"
-    publishDir "${params.output_dir}/${task.process}/${id}", mode: 'copy', overwrite: true
+    tag "${meta.id}"
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+        mode: 'copy',
+        overwrite: true
     input:
-        // tuple val(id), val(datatuple), val(level), file(otu_file)
-        tuple val(id), file(otu_file), file(sample_metadata)
+        tuple val(meta), file(otu_file), file(obs_metadata), file(sample_metadata), file(children_map)
     output:
-        // tuple val(id), val(datatuple), file(otu_file), file('*_network.gml')
-        tuple val(id), file(otu_file), file('*_network.gml')
+        tuple val(meta), file(otu_file), file('*_network.gml'), file(obs_metadata), file(sample_metadata), file(children_map)
     when:
-        'flashweave' in params.ni_tools
+        'flashweave' in params.network_inference.correlation['selection']
     script:
+        String task_process = "${task.process}"
+        f = getHierarchy(task_process)
+        ncpus = params.network_inference.direct['flashweave']['ncpus']
+        sensitive = params.network_inference.direct['flashweave']['sensitive']
+        heterogeneous = params.network_inference.direct['flashweave']['heterogeneous']
+        fdr_correction = params.network_inference.direct['flashweave']['fdr_correction']
         template 'network_inference/direct/flashweave.jl'
 }

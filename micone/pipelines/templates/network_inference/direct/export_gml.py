@@ -25,5 +25,5 @@ def main(otu_file, network_file, output_file):
 if __name__ == "__main__":
     OTU_FILE = "${otu_file}"
     NETWORK_FILE = "${network_file}"
-    OUTPUT_FILE = "${otu_file.baseName.split('_otu')[0]}_corr.tsv"
+    OUTPUT_FILE = "${meta.id}_corr.tsv"
     main(OTU_FILE, NETWORK_FILE, OUTPUT_FILE)

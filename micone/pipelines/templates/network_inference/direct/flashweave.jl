@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 using Distributed
-addprocs(${params.flashweave.ncpus})
+addprocs(${ncpus})
 
 @everywhere using FlashWeave
 
@@ -20,9 +20,9 @@ new_metadata_path = "${sample_metadata.baseName}_transposed.tsv"
 CSV.write(new_metadata_path, metadata; delim="\\t")
 
 # options
-sensitive = ${params.flashweave.sensitive}
-heterogeneous = ${params.flashweave.heterogeneous}
-FDR = ${params.flashweave.fdr_correction}
+sensitive = ${sensitive}
+heterogeneous = ${heterogeneous}
+FDR = ${fdr_correction}
 
 netw_results = learn_network(
 new_data_path,
@@ -34,5 +34,5 @@ transposed=true,
 )
 
 # You need to use networkx to export the .gml to table
-output_file = "${otu_file.baseName.split('_otu')[0]}_network.gml"
+output_file = "${meta.id}_network.gml"
 save_network(output_file, netw_results)
