@@ -11,6 +11,7 @@ process spieceasi {
     when:
         'spieceasi' in params.network_inference.correlation['selection']
     script:
+        meta.network_inference = 'spieceasi'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         method = params.network_inference.direct['spieceasi']['method']

@@ -11,6 +11,7 @@ process mldm {
     when:
         'mldm' in params.network_inference.correlation['selection']
     script:
+        meta.network_inference = 'mldm'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         Z_mean = params.network_inference.direct['mldm']['Z_mean']
