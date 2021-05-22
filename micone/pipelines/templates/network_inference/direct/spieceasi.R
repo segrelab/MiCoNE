@@ -4,12 +4,12 @@ library(SpiecEasi)
 library(Matrix)
 
 otu_file <- "${otu_file}"
-method <- "${params.spieceasi.method}"
-rep.num <- ${params.spieceasi.nreps}
-ncpus <- ${params.spieceasi.ncpus}
-nlambda <- ${params.spieceasi.nlambda}
-lambda.min.ratio <- ${params.spieceasi.lambda_min_ratio}
-corr_file <- "${otu_file.baseName.split('_otu')[0]}_corr.tsv"
+method <- "${method}"
+rep.num <- ${nreps}
+ncpus <- ${ncpus}
+nlambda <- ${nlambda}
+lambda.min.ratio <- ${lambda_min_ratio}
+corr_file <- "${meta.id}_corr.tsv"
 
 # NOTE: The data does not have to be normalized
 # Read in the OTU table
