@@ -6,7 +6,7 @@ otu_file <- "${otu_file}"
 sample_metadata <- "${sample_metadata}"
 Z_mean <- ${Z_mean}
 max_iteration <- ${max_iteration}
-corr_file <- "${otu_file.baseName.split('_otu')[0]}_corr.tsv"
+corr_file <- "${meta.id}_corr.tsv"
 
 read_data <- function(datafile) {
     data <- read.table(datafile, header=TRUE, comment.char="", sep="\\t")

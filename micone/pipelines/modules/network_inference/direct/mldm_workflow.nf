@@ -2,11 +2,11 @@ include { mldm } from './mldm.nf'
 
 workflow mldm_workflow {
     take:
-        // tuple val(id), file(otu_table)
+        // tuple val(meta), file(otu_file), file(obs_metadata), file(sample_metadata), file(children_map)
         otu_table_channel
     main:
         otu_table_channel | mldm
     emit:
-        // has `publishDir` -> ${params.output_dir}/${task.process}/${id}
+        // tuple val(meta), file(corr_file), file(obsmeta_file), file(samplemeta_file), file(children_file)
         mldm.out
 }
