@@ -21,6 +21,7 @@ include { remove_bimera_workflow } from './chimera_checking/remove_bimera_workfl
 // Main workflow
 workflow denoise_cluster_workflow {
     take:
+        // TODO: Merge these channels using the data ingestion script
         // tuple val(id), file(sequence_files), file(barcode_files), file(barcode_sample_mapping)
         input_channel
         // tuple val(meta), file(samplemetadata_files)
