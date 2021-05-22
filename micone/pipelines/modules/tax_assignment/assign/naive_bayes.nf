@@ -11,6 +11,7 @@ process naive_bayes {
     script:
         meta.tax_assignment = "naive_bayes"
         classifier = params.tax_assignment.assign['naive_bayes']['classifier']
+        meta.taxonomy_database = classifier
         confidence = params.tax_assignment.assign['naive_bayes']['confidence']
         ncpus = params.tax_assignment.assign['naive_bayes']['ncpus']
         template 'tax_assignment/assign/assign_taxonomy_naivebayes.sh'

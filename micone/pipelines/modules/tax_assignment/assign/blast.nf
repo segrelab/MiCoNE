@@ -11,6 +11,7 @@ process blast {
     script:
         meta.tax_assignment = "blast"
         reference_sequences = params.tax_assignment.assign['blast']['reference_sequences']
+        meta.taxonomy_database = reference_sequences
         tax_map = params.tax_assignment.assign['blast']['tax_map']
         max_accepts = params.tax_assignment.assign['blast']['max_accepts']
         perc_identity = params.tax_assignment.assign['blast']['perc_identity']
