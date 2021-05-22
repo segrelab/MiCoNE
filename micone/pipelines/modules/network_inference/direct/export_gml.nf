@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process export_gml {
     label 'flashweave'
     tag "${meta.id}"

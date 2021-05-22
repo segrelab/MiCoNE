@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process biom2tsv {
     label 'micone'
     tag "${meta.id}"

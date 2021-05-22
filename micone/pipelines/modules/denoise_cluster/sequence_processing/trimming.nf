@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 // Trimming the sequences using cutadapt
 process trimming {
     label 'qiime2'

@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process mldm {
     label 'mldm'
     tag "${meta.id}"

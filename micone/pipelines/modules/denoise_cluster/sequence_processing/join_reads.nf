@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 // Join reads
 process join_reads {
     label 'qiime1'

@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process spieceasi {
     label 'spieceasi'
     tag "${meta.id}"

@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process make_network_with_pvalue {
     label 'micone'
     tag "${meta.id}"

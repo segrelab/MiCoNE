@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 // Export the sequences and fix the manifest file
 process export_sequences {
     label 'qiime2'

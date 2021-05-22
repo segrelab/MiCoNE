@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process sparcc {
     label 'sparcc'
     tag "${meta.id}"

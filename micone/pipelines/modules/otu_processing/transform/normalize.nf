@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process normalize {
     label 'micone'
     tag "${meta.id}"

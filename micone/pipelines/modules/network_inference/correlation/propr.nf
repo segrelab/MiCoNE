@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process propr {
     label 'propr'
     tag "${meta.id}"

@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 process group {
     label 'micone'
     tag "${meta.id}:${tax_level}"

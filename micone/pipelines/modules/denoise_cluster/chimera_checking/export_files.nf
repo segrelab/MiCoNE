@@ -1,3 +1,5 @@
+include { getHierarchy } from ='../../../functions/functions.nf'
+
 // Step3: Export files
 process export_files {
     label 'qiime2'
