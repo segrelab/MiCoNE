@@ -11,7 +11,7 @@ function do_fastspar {
         --otu_table \$1 \
         --correlation \${1%_otu.boot}_corr.boot \
         --covariance \${1%_otu.boot}_cov.boot \
-        --threads ${ncpus}
+        --threads 1
 }
 
 find . -name "*_otu.boot" | parallel -j ${ncpus} do_fastspar
