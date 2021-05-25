@@ -8,11 +8,11 @@
 
 workflow dc_data_ingestion {
     take:
-        samplesheet
+    samplesheet
 
     main:
-        samplesheet
-            .splitCsv(header: true, sep:',')
+    samplesheet
+        .splitCsv(header: true, sep:',')
         .map { create_dc_channels(it) }
         .multiMap { it ->
             reads: tuple(it[0], it[1], it[2], it[3])
@@ -21,8 +21,8 @@ workflow dc_data_ingestion {
         .set { result }
 
     emit:
-        reads = result.reads
-        sample_md = result.sample_md
+    reads = result.reads
+    sample_md = result.sample_md
 }
 
 
