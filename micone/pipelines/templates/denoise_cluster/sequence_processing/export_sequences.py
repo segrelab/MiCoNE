@@ -39,5 +39,5 @@ def main(demux_artifact):
 
 
 if __name__ == "__main__":
-    DEMUX_ARTIFACT = "${demux_artifact}"
+    DEMUX_ARTIFACT = "${joined_artifact}"
     main(DEMUX_ARTIFACT)

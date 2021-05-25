@@ -5,7 +5,6 @@ include { trimming } from './trimming.nf'
 
 
 workflow trim_filter_fixed_workflow {
-    // TODO: FIXME: Output from `join_reads` (previous workflow) does not match
     take:
         // tuple val(meta), file(sequence_file), file(manifest_file)
         input_channel
