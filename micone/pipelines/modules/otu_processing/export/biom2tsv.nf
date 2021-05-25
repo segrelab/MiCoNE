@@ -11,6 +11,7 @@ process biom2tsv {
     output:
         tuple val(meta), file("*_otu.tsv"), file("*_obs_metadata.csv"), file("*_sample_metadata.tsv"), file(children_file)
     script:
+        meta.tax_level = tax_level
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         template 'otu_processing/export/biom2tsv.py'
