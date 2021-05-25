@@ -1,3 +1,5 @@
+nextflow.enable.dsl=2
+
 // Include workflows
 include { denoise_cluster_workflow } from './modules/denoise_cluster/denoise_cluster_workflow.nf'
 include { tax_assignment_workflow } from './modules/tax_assignment/tax_assignment_workflow.nf'
