@@ -1,10 +1,10 @@
 // input:
 // samplesheet
-// id,sequences,barcodes,mapping,samplemetadata
+// id,sequences,barcodes,mapping,sample_metadata
 // output1:
 // tuple val(meta), file(sequence_files), file(barcode_files), file(mapping_files)
 // output2:
-// tuple val(meta), file(samplemetadata_files)
+// tuple val(meta), file(sample_metadata_files)
 
 workflow dc_data_ingestion {
     take:
@@ -39,9 +39,9 @@ def create_dc_channels(LinkedHashMap row) {
     if (!file(row.mapping).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Mapping file does not exist!\n${row.mapping}"
     }
-    if (!file(row.samplemetadata).exists()) {
-        exit 1, "ERROR: Please check input samplesheet -> Samplemetadata file does not exist!\n${row.samplemetadata}"
+    if (!file(row.sample_metadata).exists()) {
+        exit 1, "ERROR: Please check input samplesheet -> Sample_Metadata file does not exist!\n${row.sample_metadata}"
     }
-    array = [ meta, file(row.sequences), file(row.barcodes), file(row.mapping), file(row.samplemetadata) ]
+    array = [ meta, file(row.sequences), file(row.barcodes), file(row.mapping), file(row.sample_metadata) ]
     return array
 }
