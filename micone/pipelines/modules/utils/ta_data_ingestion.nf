@@ -3,8 +3,6 @@
 // id,otu_table,rep_seqs,samplemetadata
 // output1:
 // tuple val(meta), file(otu_table), file(rep_seqs), file(samplemetadata)
-// output2:
-// tuple val(meta), file(otu_table_wtax)
 
 workflow ta_data_ingestion {
     take:
