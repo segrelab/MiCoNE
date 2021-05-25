@@ -13,6 +13,6 @@ workflow pearson_workflow {
             | pvalues
     emit:
         // pearson and pvalues have publishDir
-        // tuple val(meta), file(corr_file), file(pvalue_file) file(obs_metadata), file(sample_metadata), file(children_map)
+        // tuple val(meta), file(corr_file), file(pvalue_file), file(obs_metadata), file(sample_metadata), file(children_map)
         pvalues.out
 }
