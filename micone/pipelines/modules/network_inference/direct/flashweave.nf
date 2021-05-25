@@ -1,4 +1,4 @@
-include { getHierarchy } from ='../../../functions/functions.nf'
+include { getHierarchy } from '../../../functions/functions.nf'
 
 process flashweave {
     label 'flashweave'

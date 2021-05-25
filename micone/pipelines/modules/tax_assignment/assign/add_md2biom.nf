@@ -1,4 +1,4 @@
-include { getHierarchy } from ='../../../functions/functions.nf'
+include { getHierarchy } from '../../../functions/functions.nf'
 
 // Attach the observation and sample metadata to the OTU table
 process add_md2biom {

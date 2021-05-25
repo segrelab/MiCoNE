@@ -1,4 +1,4 @@
-include { getHierarchy } from ='../../../functions/functions.nf'
+include { getHierarchy } from '../../../functions/functions.nf'
 
 // Step3: Replace the ids with the hashes of the sequences
 process hashing2 {

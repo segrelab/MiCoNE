@@ -1,4 +1,4 @@
-include { getHierarchy } from ='../../../functions/functions.nf'
+include { getHierarchy } from '../../../functions/functions.nf'
 
 // Identify positions on the front and the tail that need to be trimmed based on
 // a. quality and b. sequence retainment
