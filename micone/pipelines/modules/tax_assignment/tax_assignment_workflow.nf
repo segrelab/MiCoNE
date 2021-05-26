@@ -12,7 +12,7 @@ workflow tax_assignment_workflow {
         input_channel
     main:
         input_channel \
-            | (naive_bayes_workflow & blast_workflow) \
+            | (naive_bayes_workflow & blast_workflow)
         output_channel = blast_workflow.out
                             .mix(naive_bayes_workflow.out)
     emit:

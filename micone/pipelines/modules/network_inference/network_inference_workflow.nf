@@ -13,13 +13,14 @@ include { flashweave_workflow } from './direct/flashweave_workflow.nf'
 include { mldm_workflow } from './direct/mldm_workflow.nf'
 
 // Network imports
-include { make_network } from './network/make_network.nf'
+include { make_network_with_pvalue } from './network/make_network_with_pvalue.nf'
+include { make_network_without_pvalue } from './network/make_network_without_pvalue.nf'
 
 // Main workflow
 workflow network_inference_workflow {
     take:
-        // tuple val(meta), file(otu_file), file(obs_metadata), file(sample_metadata), file(children_map)
-        input_channel
+    // tuple val(meta), file(otu_file), file(obs_metadata), file(sample_metadata), file(children_map)
+    input_channel
 
     main:
     input_channel \
@@ -31,24 +32,24 @@ workflow network_inference_workflow {
             & flashweave_workflow \
             & mldm_workflow )
 
-    // NOTE: These will have have extra pvalues
+    // NOTE: These will have have extra pvalue
     corr_output = sparcc_workflow.out
                     .mix(
                         pearson_workflow.out,
                         spearman_workflow.out,
                         propr_workflow.out,
                     )
-    // NOTE: These will not have pvalues
+    // NOTE: These will not have pvalue
     direct_output = spieceasi_workflow.out
                         .mix(
                             flashweave_workflow.out,
                             mldm_workflow.out
                         )
 
-    make_network_with_pvalues(corr_output)
-    make_network_without_pvalues(direct_output)
+    make_network_with_pvalue(corr_output)
+    make_network_without_pvalue(direct_output)
 
-    network_channel = make_network_with_pvalues.out.mix(make_network_without_pvalues)
+    network_channel = make_network_with_pvalue.out.mix(make_network_without_pvalue.out)
 
     emit:
         // all processes have publishDir

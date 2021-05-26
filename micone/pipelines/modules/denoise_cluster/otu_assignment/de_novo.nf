@@ -1,6 +1,6 @@
 // Step2: de_novo OTU picking
 process de_novo {
-    lable 'qiime1'
+    label 'qiime1'
     tag "${meta.id}"
     input:
         tuple val(meta), file(fasta_file)

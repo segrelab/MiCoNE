@@ -3,7 +3,7 @@ include { add_md2biom } from './add_md2biom.nf'
 
 // NOTE: We try to simplify the workflow by requiring the user to pre-train the classifier
 
-workflow blast_workflow {
+workflow naive_bayes_workflow {
     take:
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file(samplemetadata_files)
         input_channel

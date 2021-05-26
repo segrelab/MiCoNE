@@ -1,4 +1,4 @@
-include { import_sequences_py } from './import_sequences_py.nf'
+include { import_sequences } from './import_sequences_py.nf'
 include { export_visualization } from './export_visualization.nf'
 include { quality_analysis } from './quality_analysis.nf'
 include { trimming } from './trimming.nf'
@@ -10,7 +10,7 @@ workflow trim_filter_fixed_workflow {
         input_channel
     main:
         input_channel \
-            | import_sequences_py \
+            | import_sequences \
             | export_visualization \
             | quality_analysis \
             | join(input_channel) \

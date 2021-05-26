@@ -1,5 +1,5 @@
-include { import_sequences_sh } from './import_sequences_sh.nf'
-include { demultiplexing_illumina } from './demultiplex_illumina.nf'
+include { import_sequences } from './import_sequences_sh.nf'
+include { demultiplexing_illumina } from './demultiplexing_illumina.nf'
 include { export_sequences } from './export_sequences.nf'
 
 
@@ -9,7 +9,7 @@ workflow demultiplexing_illumina_workflow {
         input_channel
     main:
         input_channel \
-            | import_sequences_sh \
+            | import_sequences \
             | demultiplexing_illumina \
             // | join_reads \
             | export_sequences

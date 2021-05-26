@@ -1,6 +1,6 @@
 include { create_seqtable } from './create_seqtable.nf'
 include { remove_bimera } from './remove_bimera.nf'
-include { hashing3 } from './../denoise_cluster/hashing3.nf'
+include { hashing3 } from './../otu_assignment/hashing3.nf'
 
 
 workflow remove_bimera_workflow {

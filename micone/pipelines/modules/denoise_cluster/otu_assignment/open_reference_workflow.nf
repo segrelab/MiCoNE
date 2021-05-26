@@ -3,7 +3,7 @@ include { open_reference } from './open_reference.nf'
 include { hashing2 } from './hashing2.nf'
 
 
-workflow de_novo_workflow {
+workflow open_reference_workflow {
     take:
         // tuple val(id), file(sequence_files), file(manifest_file)
         input_channel
