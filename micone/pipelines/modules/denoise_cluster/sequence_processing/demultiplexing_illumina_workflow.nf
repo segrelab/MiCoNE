@@ -11,10 +11,10 @@ workflow demultiplexing_illumina_workflow {
         input_channel \
             | import_sequences_sh \
             | demultiplexing_illumina \
-            | join_reads \
+            // | join_reads \
             | export_sequences
     emit:
         // export_sequences and join_reads has publishDir
-        // tuple val(meta), file('joined_seqs/*.fastq.gz'), file('joined_seqs/MANIFEST')
+        // tuple val(meta), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST')
         export_sequences.out
 }

@@ -9,9 +9,9 @@ process export_sequences {
         mode: 'copy',
         overwrite: true
     input:
-        tuple val(meta), file(joined_artifact)
+        tuple val(meta), file(demux_artifact)
     output:
-        tuple val(meta), file('joined_seqs/*.fastq.gz'), file('joined_seqs/MANIFEST')
+        tuple val(meta), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST')
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
