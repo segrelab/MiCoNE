@@ -7,5 +7,5 @@ process fastq2fasta {
     output:
         tuple val(meta), file("*.fasta")
     script:
-        template 'denoise_cluster/denoise_cluster/fastq2fasta.py'
+        template 'denoise_cluster/otu_assignment/fastq2fasta.py'
 }

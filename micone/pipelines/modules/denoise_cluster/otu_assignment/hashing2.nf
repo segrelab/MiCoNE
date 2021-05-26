@@ -14,5 +14,5 @@ process hashing2 {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        template 'denoise_cluster/denoise_cluster/hashing2.py'
+        template 'denoise_cluster/otu_assignment/hashing2.py'
 }

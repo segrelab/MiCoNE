@@ -7,5 +7,5 @@ process make_biom_repseqs {
     output:
         tuple val(meta), file('*.biom'), file('*.fasta')
     script:
-        template 'denoise_cluster/denoise_cluster/make_biom_repseqs.py'
+        template 'denoise_cluster/otu_assignment/make_biom_repseqs.py'
 }

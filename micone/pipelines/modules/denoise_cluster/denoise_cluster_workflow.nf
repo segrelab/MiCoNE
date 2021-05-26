@@ -7,11 +7,11 @@ include { demultiplexing_illumina_workflow } from './sequence_processing/demulti
 include { trim_filter_fixed_workflow } from './sequence_processing/trim_filter_fixed_workflow.nf'
 
 // Denoising clustering imports
-include { closed_reference_workflow } from './denoise_cluster/closed_reference_workflow.nf'
-include { dada2_workflow } from './denoise_cluster/dada2_workflow.nf'
-include { deblur_workflow } from './denoise_cluster/deblur_workflow.nf'
-include { de_novo_workflow } from './denoise_cluster/de_novo_workflow.nf'
-include { open_reference_workflow } from './denoise_cluster/open_reference_workflow.nf'
+include { closed_reference_workflow } from './otu_assignment/closed_reference_workflow.nf'
+include { dada2_workflow } from './otu_assignment/dada2_workflow.nf'
+include { deblur_workflow } from './otu_assignment/deblur_workflow.nf'
+include { de_novo_workflow } from './otu_assignment/de_novo_workflow.nf'
+include { open_reference_workflow } from './otu_assignment/open_reference_workflow.nf'
 
 // Chimera checking imports
 include { uchime_workflow } from './chimera_checking/uchime_workflow.nf'
