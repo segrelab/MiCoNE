@@ -12,6 +12,6 @@ def main(sequence_artifact, seq_samplesize, output_dir):
 
 if __name__ == "__main__":
     SEQUENCE_ARTIFACT = "${sequence_artifact}"
-    SEQ_SAMPLESIZE = "${seq_samplesize}"
+    SEQ_SAMPLESIZE = ${seq_samplesize}
     OUTPUT_DIR = "output"
     main(SEQUENCE_ARTIFACT, SEQ_SAMPLESIZE, OUTPUT_DIR)
