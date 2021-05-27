@@ -3,7 +3,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process normalize {
     label 'micone'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
