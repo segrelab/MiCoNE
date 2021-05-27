@@ -11,6 +11,6 @@ process remove_bimera {
     script:
         meta.chimera_checking = "remove_bimera"
         ncpus = params.denoise_cluster.chimera_checking['remove_bimera']['ncpus']
-        chimera_method = params.denoise_cluster.chimera_checking['remove_bimera']['ncpus']
+        chimera_method = params.denoise_cluster.chimera_checking['remove_bimera']['chimera_method']
         template 'denoise_cluster/chimera_checking/remove_chimeras.R'
 }

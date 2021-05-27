@@ -46,3 +46,4 @@ def hashing(unhashed_otu_table, unhashed_rep_seqs):
 if __name__ == "__main__":
     UNHASHED_OTU_TABLE = "${unhashed_otu_table}"
     UNHASHED_REP_SEQS = "${unhashed_rep_seqs}"
+    hashing(UNHASHED_OTU_TABLE, UNHASHED_REP_SEQS)
