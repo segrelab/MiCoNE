@@ -49,7 +49,7 @@ if __name__ == "__main__":
     BASE_NAME = "${meta.id}"
     CORR_FILE = "${corr_file}"
     PVALUE_FILE = "${pvalue_file}"
-    META_FILE = "${metadata}"
+    META_FILE = "${metadata_file}"
     OBSMETA_FILE = "${obs_metadata}"
     CHILDREN_FILE = "${children_map}"
     INTERACTION_THRESHOLD = ${interaction_threshold}

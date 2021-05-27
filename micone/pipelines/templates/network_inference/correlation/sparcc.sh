@@ -14,4 +14,6 @@ function do_fastspar {
         --threads 1
 }
 
+export -f do_fastspar
+
 find . -name "*_otu.boot" | parallel -j ${ncpus} do_fastspar
