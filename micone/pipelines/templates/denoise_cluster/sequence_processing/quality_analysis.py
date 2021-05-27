@@ -111,7 +111,7 @@ def analyze_quality(quality_file: str) -> list:
         List that contains the scores 'good', 'warning', 'failure' for each position
     """
     with open(quality_file, "r") as fid:
-        header, count, *stats = csv.reader(fid, delimiter=",")
+        header, count, *stats = csv.reader(fid, delimiter="\t")
     stat_dict = dict((stat[0], list(map(float, stat[1:]))) for stat in stats)
     if len(set(count[1:])) > 1:
         warn("Sequences are of different lengths")

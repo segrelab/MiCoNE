@@ -5,7 +5,7 @@ process export_visualization {
     input:
         tuple val(meta), file(sequence_artifact)
     output:
-        tuple val(meta), file('output/forward-seven-number-summaries.csv')
+        tuple val(meta), file('output/forward-seven-number-summaries.tsv')
     script:
         seq_samplesize = params.denoise_cluster.sequence_processing['export_visualization']['seq_samplesize']
         template 'denoise_cluster/sequence_processing/export_visualization.py'

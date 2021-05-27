@@ -7,7 +7,7 @@ from qiime2.plugins import demux
 def main(sequence_artifact, seq_samplesize, output_dir):
     demux_artifact = Artifact.load(sequence_artifact)
     demux_viz = demux.visualizers.summarize(demux_artifact, n=seq_samplesize)
-    demux_viz.export_data(output_dir)
+    demux_viz.visualization.export_data(output_dir)
 
 
 if __name__ == "__main__":
