@@ -11,7 +11,7 @@ process flashweave {
     output:
         tuple val(meta), file(otu_file), file('*_network.gml'), file(obs_metadata), file(sample_metadata), file(children_map)
     when:
-        'flashweave' in params.network_inference.correlation['selection']
+        'flashweave' in params.network_inference.direct['selection']
     script:
         meta.network_inference = 'flashweave'
         String task_process = "${task.process}"

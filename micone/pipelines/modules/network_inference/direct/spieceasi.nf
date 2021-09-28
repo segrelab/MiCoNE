@@ -11,7 +11,7 @@ process spieceasi {
     output:
         tuple val(meta), file('*_corr.tsv'), file(obs_metadata), file(sample_metadata), file(children_map)
     when:
-        'spieceasi' in params.network_inference.correlation['selection']
+        'spieceasi' in params.network_inference.direct['selection']
     script:
         meta.network_inference = 'spieceasi'
         String task_process = "${task.process}"

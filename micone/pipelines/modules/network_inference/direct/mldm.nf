@@ -11,7 +11,7 @@ process mldm {
     output:
         tuple val(meta), file('*_corr.tsv'), file(obs_metadata), file(sample_metadata), file(children_map)
     when:
-        'mldm' in params.network_inference.correlation['selection']
+        'mldm' in params.network_inference.direct['selection']
     script:
         meta.network_inference = 'mldm'
         String task_process = "${task.process}"
