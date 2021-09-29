@@ -1,13 +1,16 @@
+include { updateMeta } from '../../../functions/functions.nf'
+
 // demultiplex
 process demultiplexing_illumina {
     label 'qiime2'
-    tag "${meta.id}"
+    tag "${new_meta.id}"
     input:
         tuple val(meta), file(sequence_artifact), file(mapping_file)
     output:
-        tuple val(meta), file('*_demux.qza')
+        tuple val(new_meta), file('*_demux.qza')
     script:
-        meta.demultiplexing = "illumina"
+        new_meta = updateMeta(meta)
+        new_meta.demultiplexing = 'illumina'
         rev_comp_barcodes = params.denoise_cluster.sequence_processing['demultiplexing_illumina']['rev_comp_barcodes']
         rev_comp_mapping_barcodes = params.denoise_cluster.sequence_processing['demultiplexing_illumina']['rev_comp_mapping_barcodes']
         rcb = rev_comp_barcodes == 'True' ? '--p-rev-comp-barcodes' : '--p-no-rev-comp-barcodes'
