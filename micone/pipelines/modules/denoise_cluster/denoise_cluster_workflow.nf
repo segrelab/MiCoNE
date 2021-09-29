@@ -34,10 +34,10 @@ workflow denoise_cluster_workflow {
             | (uchime_workflow & remove_bimera_workflow)
         // FIXME: This is a bug, we can't "cross" the samplemetadata_channel this way
         output_channel = uchime_workflow.out.mix(remove_bimera_workflow.out)
-        samplemetadata_channel
+        crossed_channel = samplemetadata_channel
             .cross(output_channel) { it -> it[0].id }
             .map { it -> [it[1], it[0][1]].flatten() }
     emit:
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file(samplemetadata_files)
-        output_channel
+        crossed_channel
 }
