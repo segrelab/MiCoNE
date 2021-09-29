@@ -12,7 +12,7 @@ workflow dc_data_ingestion {
 
     main:
     samplesheet
-        .splitCsv(header: true, sep:',')
+        .splitCsv(header: true, sep: ',')
         .map { create_dc_channels(it) }
         .multiMap { it ->
             reads: tuple(it[0], it[1], it[2], it[3])
