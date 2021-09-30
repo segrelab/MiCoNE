@@ -3,7 +3,7 @@ include { getHierarchy; updateMeta } from '../../../functions/functions.nf'
 process biom2tsv {
     label 'micone'
     tag "${new_meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/export/${f[1]}/${tax_level}/${new_meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/export/${f[1]}/${directory}/${tax_level}/${new_meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -15,5 +15,6 @@ process biom2tsv {
         new_meta.tax_level = tax_level
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}"
         template 'otu_processing/export/biom2tsv.py'
 }

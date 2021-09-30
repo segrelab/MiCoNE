@@ -3,7 +3,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process group {
     label 'micone'
     tag "${meta.id}:${tax_level}"
-    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${tax_level}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${directory}/${tax_level}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -14,5 +14,6 @@ process group {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}"
         template 'otu_processing/transform/group.py'
 }

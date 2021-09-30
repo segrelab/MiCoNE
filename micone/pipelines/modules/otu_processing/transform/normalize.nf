@@ -3,7 +3,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process normalize {
     label 'micone'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${directory}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -13,6 +13,7 @@ process normalize {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}"
         axis = params.otu_processing.transform['normalize']['axis']
         count_thres = params.otu_processing.transform['normalize']['count_thres']
         prevalence_thres = params.otu_processing.transform['normalize']['prevalence_thres']
