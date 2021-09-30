@@ -4,7 +4,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process export_sequences {
     label 'qiime2'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/demultiplexed_sequences/${meta.id}",
         saveAs: { filename -> filename.split("/")[1] },
         mode: 'copy',
         overwrite: true

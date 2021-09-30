@@ -32,7 +32,6 @@ workflow denoise_cluster_workflow {
             | (dada2_workflow & deblur_workflow & open_reference_workflow & de_novo_workflow & closed_reference_workflow) \
             | mix \
             | (uchime_workflow & remove_bimera_workflow)
-        // FIXME: This is a bug, we can't "cross" the samplemetadata_channel this way
         output_channel = uchime_workflow.out.mix(remove_bimera_workflow.out)
         crossed_channel = samplemetadata_channel
             .cross(output_channel) { it -> it[0].id }

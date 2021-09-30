@@ -4,7 +4,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process export_files {
     label 'qiime2'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/filtered_output/${meta.denoise_cluster}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:

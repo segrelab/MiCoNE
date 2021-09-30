@@ -4,7 +4,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process trimming {
     label 'qiime2'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/trimmed_sequences/${meta.id}",
         saveAs: { filename -> filename.split("/")[1] },
         mode: 'copy',
         overwrite: true
