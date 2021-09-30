@@ -4,7 +4,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process add_md2biom {
     label 'qiime2'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/taxonomy_tables/${directory}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -14,5 +14,6 @@ process add_md2biom {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}"
         template 'tax_assignment/assign/add_md2biom.py'
 }
