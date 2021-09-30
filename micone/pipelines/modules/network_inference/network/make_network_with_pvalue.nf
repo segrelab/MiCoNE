@@ -3,7 +3,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process make_network_with_pvalue {
     label 'micone'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/network/${f[1]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/network/${f[1]}/${directory}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -13,6 +13,7 @@ process make_network_with_pvalue {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}-${meta.network_inference}"
         metadata_file = params.network_inference.network['make_network_with_pvalue']['metadata_file']
         interaction_threshold = params.network_inference.network['make_network_with_pvalue']['interaction_threshold']
         pvalue_threshold = params.network_inference.network['make_network_with_pvalue']['pvalue_threshold']

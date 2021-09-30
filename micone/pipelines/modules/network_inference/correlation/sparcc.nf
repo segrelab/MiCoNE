@@ -3,7 +3,7 @@ include { getHierarchy; updateMeta } from '../../../functions/functions.nf'
 process sparcc {
     label 'sparcc'
     tag "${new_meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${new_meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${directory}/${new_meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -17,6 +17,7 @@ process sparcc {
         new_meta.network_inference = 'sparcc'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
         ncpus = params.network_inference.correlation['sparcc']['ncpus']
         iterations = params.network_inference.correlation['sparcc']['iterations']
         template 'network_inference/correlation/sparcc.sh'

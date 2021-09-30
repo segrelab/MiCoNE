@@ -3,7 +3,7 @@ include { getHierarchy; updateMeta } from '../../../functions/functions.nf'
 process propr {
     label 'propr'
     tag "${new_meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${new_meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${directory}/${new_meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -16,6 +16,7 @@ process propr {
         new_meta = updateMeta(meta)
         new_meta.network_inference = 'propr'
         String task_process = "${task.process}"
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
         f = getHierarchy(task_process)
         ncpus = params.network_inference.correlation['propr']['ncpus']
         template 'network_inference/correlation/propr.R'

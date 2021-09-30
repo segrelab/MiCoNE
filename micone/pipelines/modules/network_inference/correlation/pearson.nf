@@ -3,7 +3,7 @@ include { getHierarchy; updateMeta } from '../../../functions/functions.nf'
 process pearson {
     label 'micone'
     tag "${new_meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${new_meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${directory}/${new_meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -17,6 +17,7 @@ process pearson {
         new_meta.network_inference = 'pearson'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
         ncpus = params.network_inference.correlation['pearson']['ncpus']
         template 'network_inference/correlation/pearson.py'
 }

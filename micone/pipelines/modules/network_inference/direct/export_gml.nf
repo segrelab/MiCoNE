@@ -3,7 +3,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process export_gml {
     label 'flashweave'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${directory}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -13,5 +13,6 @@ process export_gml {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
         template 'network_inference/direct/export_gml.py'
 }
