@@ -361,9 +361,10 @@ class Network:
             data=np.zeros((size, size), dtype=float), index=ids, columns=ids
         )
         graph = self.graph
-        # NOTE: This will not reproduce the original interaction matrices for undirected
         for source_id, target_id, data in graph.edges(data=True):
             adj_table[source_id][target_id] = data[key]
+            if not self.graph.is_directed():
+                adj_table[target_id][source_id] = data[key]
         return adj_table
 
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
