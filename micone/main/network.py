@@ -773,3 +773,62 @@ class Network:
             directed,
         )
         return network
+
+    @classmethod
+    def load_graph(cls, graph: Union[nx.Graph, nx.DiGraph]) -> "Network":
+        """
+        Load `Network` object from a `networkx` graph
+
+        Parameters
+        ----------
+        graph : Union[nx.Graph, nx.DiGraph]
+            The networkx graph of the network
+
+        Returns
+        -------
+        Network
+            The instance of the `Network` class
+        """
+        graph_md = graph.graph
+        directed: bool = True if graph_md["directionality"] == "directed" else False
+        interaction_type = graph_md["interaction_type"]
+        cmetadata = graph_md["computational_metadata"]
+        interaction_threshold = cmetadata["interaction_threshold"]
+        pvalue_threshold = cmetadata["pvalue_threshold"]
+        pvalue_correction = None
+
+        non_meta_keys = ["computational_metadata", "interaction_type", "directionality"]
+        metadata = {k: v for k, v in graph_md.items() if k not in non_meta_keys}
+        networkmetadata_model = NetworkmetadataModel(metadata, strict=False)
+        networkmetadata_model.validate()
+
+        nodes: List[str] = []
+        links: List[LinkDType] = list(graph.edges(data=True))
+        lineages: List[dict] = []
+        children_map: Dict[str, List[str]] = {}
+
+        for node, ndata in graph.nodes(data=True):
+            nodes.append(node)
+            lineage = Lineage.from_str(ndata["lineage"]).to_dict("Species")
+            children_map[node] = ndata["children"]
+            abundance = ndata.get("abundance", np.nan)
+            if abundance is not None:
+                lineages.append({**lineage, **dict(Abundance=abundance)})
+            else:
+                lineages.append(lineage)
+        obs_metadata = pd.DataFrame(lineages, index=nodes)
+
+        network = cls(
+            nodes,
+            links,
+            metadata,
+            cmetadata,
+            obs_metadata,
+            children_map,
+            interaction_type=interaction_type,
+            interaction_threshold=interaction_threshold,
+            pvalue_threshold=pvalue_threshold,
+            pvalue_correction=pvalue_correction,
+            directed=directed,
+        )
+        return network
