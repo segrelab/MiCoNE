@@ -74,7 +74,7 @@ class Network:
 
     Attributes
     ----------
-    graph : Union[nx.MultiGraph, nx.MultiDiGraph]
+    graph : Union[nx.Graph, nx.DiGraph]
         The networkx multi-graph representation of the network
     simple_graph : Union[nx.Graph, nx.DiGraph]
         The networkx simple-graph representation of the network
@@ -238,7 +238,7 @@ class Network:
         children_map: Optional[dict],
         interaction_type: str,
         directed: bool,
-    ) -> Union[nx.MultiGraph, nx.MultiDiGraph]:
+    ) -> Union[nx.Graph, nx.DiGraph]:
         """
         Create network from interaction matrix, pvalue matrix, metadata dictionary,
         lineage table and children mapping
@@ -264,7 +264,7 @@ class Network:
 
         Returns
         -------
-        Union[nx.MultiGraph, nx.MultiDiGraph]
+        Union[nx.Graph, nx.DiGraph]
             The networkx graph of the network
         """
         directionality = "directed" if directed else "undirected"
@@ -275,9 +275,9 @@ class Network:
             "directionality": directionality,
         }
         if directed:
-            graph = nx.MultiDiGraph(**metadata)
+            graph = nx.DiGraph(**metadata)
         else:
-            graph = nx.MultiGraph(**metadata)
+            graph = nx.Graph(**metadata)
         abundance_flag = "Abundance" in obs_metadata.columns
         for node in nodes:
             if abundance_flag:
@@ -362,7 +362,7 @@ class Network:
     def get_adjacency_table(self, key: str) -> pd.DataFrame:
         """
         Returns the adjacency table representation for the requested `key`
-        This method does not support `MultiGraph`
+        This method does not support `Graph`
 
         Parameters
         ----------
@@ -380,7 +380,7 @@ class Network:
             data=np.zeros((size, size), dtype=float), index=ids, columns=ids
         )
         graph = self.simple_graph
-        # NOTE: This makes no guarantees of being a triangular matrix (for undirected)
+        # NOTE: This should reproduce the original interaction matrices
         for source_id, target_id, data in graph.edges(data=True):
             adj_table[source_id][target_id] = data[key]
         return adj_table
