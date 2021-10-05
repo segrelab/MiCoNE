@@ -2,9 +2,10 @@
     Module that defines the `NetworkGroup` object and methods to read, write and manipulate it
 """
 
+from collections import defaultdict
 from collections.abc import Collection
-from itertools import product
-from typing import Any, Dict, Iterator, List, Union
+from itertools import groupby, product
+from typing import Any, Dict, Iterator, List, Tuple, Union
 
 import networkx as nx
 import numpy as np
@@ -41,8 +42,11 @@ class NetworkGroup(Collection):
     """
 
     def __init__(self, networks: List[Network]) -> None:
+        # dict(cid => dict(id_old => id_new))
         self.nodeid_map: Dict[int, Dict[str, str]] = dict()
-        self._networks = networks
+        # dict(s_new-t_new => List[Tuple[cid, s_old-t_old], ...])
+        self.linkid_revmap: Dict[str, List[Tuple[int, str]]] = defaultdict(list)
+        self._networks = tuple(networks)
         if not networks or [n for n in networks if not isinstance(n, Network)]:
             raise ValueError(
                 "The networks parameter must be a list of one or more networks"
@@ -74,35 +78,42 @@ class NetworkGroup(Collection):
         return NetworkGroup(networks)
 
     def _combine_nodes(self, all_nodes: Dict[int, DType]) -> DType:
-        """ Combine nodes of individual networks into a single list """
+        """Combine nodes of individual networks into a single list"""
         nodes: DType = []
         node_hash: Dict[int, int] = dict()  # taxid => nodes.index
         if len(all_nodes) == 1:
             return all_nodes[0]
         for cid, network_nodes in all_nodes.items():
             self.nodeid_map[cid] = dict()
-            for node in network_nodes:
-                if node["taxid"] not in node_hash:
+            for network_node in network_nodes:
+                if network_node["taxid"] not in node_hash:
                     id_ = len(nodes)
-                    id_old = node["id"]
+                    id_old = network_node["id"]
                     id_new = f"id{id_}"
                     nodes.append(
-                        {**node, **{"id": id_new, "children": [], "abundance": None}}
+                        {
+                            **network_node,
+                            **{"id": id_new, "children": [], "abundance": None},
+                        }
                     )
-                    node_hash[node["taxid"]] = id_
+                    node_hash[network_node["taxid"]] = id_
                     self.nodeid_map[cid][id_old] = id_new
                 else:
-                    id_old = node["id"]
-                    ind = node_hash[node["taxid"]]
+                    id_old = network_node["id"]
+                    ind = node_hash[network_node["taxid"]]
                     id_new = nodes[ind]["id"]
                     self.nodeid_map[cid][id_old] = id_new
         return nodes
 
     def _combine_links(self, all_links: Dict[int, DType]) -> DType:
-        """ Combine links of individual networks into a single list """
+        """Combine links of individual networks into a single list"""
         links = []
         if len(all_links) == 1:
             for link in all_links[0]:
+                source, target = link["source"], link["target"]
+                self.linkid_revmap[f"{source}-{target}"].append(
+                    (0, f"{source}-{target}")
+                )
                 links.append({**link, "context_index": 0})
             return links
         for cid, network_links in all_links.items():
@@ -110,6 +121,9 @@ class NetworkGroup(Collection):
                 source, target = link["source"], link["target"]
                 new_source = self.nodeid_map[cid][source]
                 new_target = self.nodeid_map[cid][target]
+                self.linkid_revmap[f"{new_source}-{new_target}"].append(
+                    (cid, f"{source}-{target}")
+                )
                 links.append(
                     {
                         **link,
@@ -159,22 +173,22 @@ class NetworkGroup(Collection):
 
     @property
     def nodes(self) -> DType:
-        """ The list of nodes in the `NetworkGroup` and their corresponding properties """
+        """The list of nodes in the `NetworkGroup` and their corresponding properties"""
         return [data for _, data in self.graph.nodes(data=True)]
 
     @property
     def links(self) -> DType:
-        """ The list of links in the `NetworkGroup` and their corresponding properties """
+        """The list of links in the `NetworkGroup` and their corresponding properties"""
         return [data for _, _, data in self.graph.edges(data=True)]
 
     @property
     def contexts(self) -> DType:
-        """ The contexts for the group of networks """
+        """The contexts for the group of networks"""
         return self.graph.graph["contexts"]
 
-    def get_adjacency_vectors(self, key: str) -> List[pd.Series]:
+    def get_adjacency_vectors(self, key: str) -> pd.DataFrame:
         """
-        Returns the adjacency matrix for each context as a `pd.Series`
+        Returns the adjacency matrix for each context as a `pd.DataFrame`
 
         Parameters
         ----------
@@ -183,22 +197,28 @@ class NetworkGroup(Collection):
 
         Returns
         -------
-        List[pd.Series]:
-            The list of adjacency vectors
+        pd.DataFrame:
+            The DataFrame containing adjacency vectors as columns
         """
         ids = list(self.nodes)
         size = len(ids) * len(ids)
+        # NOTE: This will consider id1-id2 and id2-id1 as different (even for undirected)
         index = [f"{id1}-{id2}" for id1, id2 in product(ids, repeat=2)]
-        adj_vector_list: List[pd.Series] = [
-            pd.Series(np.zeros((size), dtype=float), index=index)
-        ]
+        adj_vector_df: pd.DataFrame = pd.concat(
+            [pd.Series(np.zeros((size), dtype=float), index=index)],
+            join="outer",
+            axis=1,
+        )
+        adj_vector_df.fillna(0.0, inplace=True)
         graph = self.graph
-        for source, target, data in graph.edges(data=True):
+        # NOTE: networkx automatically handles directionality (source -> target) here
+        for source, target, data in graph.edges(data=True, keys=False):
             cid = data["cid"]
             id_ = f"{source}-{target}"
-            adj_vector_list[cid][id_] = data[key]
-        return adj_vector_list
+            adj_vector_df.loc[id_, cid] = data[key]
+        return adj_vector_df
 
+    # FIXME: Doesn't affect the NetworkGroup object
     def update_thresholds(
         self, interaction_threshold: float = 0.3, pvalue_threshold: float = 0.05
     ) -> None:
@@ -218,6 +238,7 @@ class NetworkGroup(Collection):
             network.interaction_threshold = interaction_threshold
             network.pvalue_threshold = pvalue_threshold
 
+    # FIXME: Doesn't affect the NetworkGroup object
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
         The links of the networks after applying filtering
@@ -341,6 +362,74 @@ class NetworkGroup(Collection):
             networks.append(Network.load_json(raw_data=network_raw_data))
         return cls(networks)
 
+    def get_consensus_network(
+        self, cids: List[str], method: str = "simple_voting", parameter: float = 0.0
+    ) -> "NetworkGroup":
+        """
+        Get consensus network for the network defined by the `cids`
+
+        Parameters:
+        -----------
+        cids : List[str]
+            The list of context ids that are to be used in the merger
+        method : str, {"simple_voting", "scaled_sum"}
+            Default value is simple_voting
+        parameter : float
+            Default value is 0.0 (which is the union of all the links)
+
+        Returns
+        -------
+        consensus_network
+            The `NetworkGroup` that represents the consensus network
+        """
+
+        # Method 1: Simple voting method
+        def simple_voting(weights: pd.DataFrame, parameter: float) -> List[str]:
+            """Perform a simple voting consensus"""
+            size = weights.shape[1]  # no. of networks
+            num_req_edges = np.floor(parameter * size)
+            num_actual_edges = weights.astype(bool).sum(axis=1)
+            indices_removal = weights.index[not (num_actual_edges >= num_req_edges)]
+            return list(indices_removal)
+
+        # Method 2: Scaled sum method
+        def scaled_sum(weights: pd.DataFrame, parameter: float) -> List[str]:
+            """Peform a scaled sum consensus"""
+            size = weights.shape[1]  # no. of networks
+            weights_scaled = weights.apply(lambda x: x / (np.abs(x).max()))
+            parameter_scaled = (size - 1) * parameter
+            indices_removal = weights.index[
+                not (weights_scaled.sum(axis=1) > parameter_scaled)
+            ]
+            return list(indices_removal)
+
+        # Step1: Filter by "cids" and make copies of graphs
+        graphs = []
+        for cid, network in enumerate(self._networks):
+            if cid in cids:
+                graphs.append(network.graph.copy())
+        weights: pd.DataFrame = self.get_adjacency_vectors("weight")[cids]
+
+        # Step 2: Apply voting method to each multiedge
+        # indices_removal has {new_id_source}-{new_id_target}
+        if method == "simple_voting":
+            indices_removal = simple_voting(weights, parameter)
+        elif method == "scaled_sum":
+            indices_removal = scaled_sum(weights, parameter)
+        else:
+            raise ValueError("Only methods supported are simple_voting and scaled_sum")
+
+        # Step 3: Use indices_removal on the networks
+        graph_dict = dict(enumerate(graphs))
+        for ind in indices_removal:
+            for cid, ind_old in self.linkid_revmap[ind]:
+                source_old, target_old = ind_old.split("-")
+                graph_dict[cid].remove_edge(source_old, target_old)
+        new_networks = [Network.load_graph(graph) for graph in graphs]
+
+        # Step 4: Return NetworkGroup object
+        return NetworkGroup(new_networks)
+
     def combine_pvalues(self, cids: List[str]) -> pd.Series:
         """
         Combine pvalues of links in the `cids` using Brown's p-value merging method
@@ -355,14 +444,8 @@ class NetworkGroup(Collection):
         pvalues_combined
             The `pd.Series` containing the combined pvalues
         """
-        pvalue_vectors = self.get_adjacency_vectors("pvalue")
-        weight_vectors = self.get_adjacency_vectors("weight")
-        pvalue_df: pd.DataFrame = pd.concat(
-            [pvalue_vectors[i] for i in cids], join="outer"
-        )
-        weight_df: pd.DataFrame = pd.concat(
-            [weight_vectors[i] for i in cids], join="outer"
-        )
+        pvalue_df = self.get_adjacency_vectors("pvalue")[cids]
+        weight_df = self.get_adjacency_vectors("weight")[cids]
         # E[psi] = 2 * k
         k = pvalue_df.shape[1]
         expected_value = 2 * k
