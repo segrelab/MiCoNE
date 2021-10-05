@@ -75,9 +75,7 @@ class Network:
     Attributes
     ----------
     graph : Union[nx.Graph, nx.DiGraph]
-        The networkx multi-graph representation of the network
-    simple_graph : Union[nx.Graph, nx.DiGraph]
-        The networkx simple-graph representation of the network
+        The networkx graph representation of the network
     nodes : DType
         The list of nodes in the network and their corresponding properties
     links : DType
@@ -342,23 +340,6 @@ class Network:
         """The metadata for the network"""
         return self.graph.graph
 
-    @property
-    def simple_graph(self) -> Union[nx.Graph, nx.DiGraph]:
-        """The networkx simple-graph representation of the network"""
-        if self.graph.is_directed():
-            simple_graph = nx.DiGraph(**self.metadata)
-        else:
-            simple_graph = nx.Graph(**self.metadata)
-        for node, data in self.graph.nodes(data=True):
-            simple_graph.add_node(node, **data)
-        for source, target, data in self.graph.edges(data=True):
-            if simple_graph.has_edge(source, target):
-                simple_graph[source][target]["weight"] += data["weight"]
-                simple_graph[source][target]["pvalue"] = np.nan
-            else:
-                simple_graph.add_edge(source, target, **data)
-        return simple_graph
-
     def get_adjacency_table(self, key: str) -> pd.DataFrame:
         """
         Returns the adjacency table representation for the requested `key`
@@ -379,7 +360,7 @@ class Network:
         adj_table = pd.DataFrame(
             data=np.zeros((size, size), dtype=float), index=ids, columns=ids
         )
-        graph = self.simple_graph
+        graph = self.graph
         # NOTE: This should reproduce the original interaction matrices
         for source_id, target_id, data in graph.edges(data=True):
             adj_table[source_id][target_id] = data[key]
