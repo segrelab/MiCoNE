@@ -329,22 +329,22 @@ class Network:
 
     @property
     def nodes(self) -> DType:
-        """ The list of nodes in the network and their corresponding properties """
+        """The list of nodes in the network and their corresponding properties"""
         return [data for _, data in self.graph.nodes(data=True)]
 
     @property
     def links(self) -> DType:
-        """ The list of links in the network and their corresponding properties """
+        """The list of links in the network and their corresponding properties"""
         return [data for _, _, data in self.graph.edges(data=True)]
 
     @property
     def metadata(self) -> Dict[str, Any]:
-        """ The metadata for the network """
+        """The metadata for the network"""
         return self.graph.graph
 
     @property
     def simple_graph(self) -> Union[nx.Graph, nx.DiGraph]:
-        """ The networkx simple-graph representation of the network """
+        """The networkx simple-graph representation of the network"""
         if self.graph.is_directed():
             simple_graph = nx.DiGraph(**self.metadata)
         else:
@@ -380,8 +380,9 @@ class Network:
             data=np.zeros((size, size), dtype=float), index=ids, columns=ids
         )
         graph = self.simple_graph
-        for row_id, col_id, data in graph.edges(data=True):
-            adj_table[row_id][col_id] = data[key]
+        # NOTE: This makes no guarantees of being a triangular matrix (for undirected)
+        for source_id, target_id, data in graph.edges(data=True):
+            adj_table[source_id][target_id] = data[key]
         return adj_table
 
     def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
