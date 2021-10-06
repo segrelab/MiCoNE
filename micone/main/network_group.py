@@ -5,7 +5,7 @@
 from collections import defaultdict
 from collections.abc import Collection
 from itertools import groupby, product
-from typing import Any, Dict, Iterator, List, Tuple, Union
+from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
 import networkx as nx
 import numpy as np
@@ -218,7 +218,6 @@ class NetworkGroup(Collection):
             adj_vector_df.loc[id_, cid] = data[key]
         return adj_vector_df
 
-    # FIXME: Doesn't affect the NetworkGroup object
     def update_thresholds(
         self, interaction_threshold: float = 0.3, pvalue_threshold: float = 0.05
     ) -> None:
@@ -234,12 +233,15 @@ class NetworkGroup(Collection):
             This is the `alpha` value for pvalue cutoff
             Default value is 0.05
         """
+        for context in self.graph.graph["contexts"]:
+            context["interaction_threshold"] = interaction_threshold
+            context["pvalue_threshold"] = pvalue_threshold
         for network in self._networks:
             network.interaction_threshold = interaction_threshold
             network.pvalue_threshold = pvalue_threshold
 
     # FIXME: Doesn't affect the NetworkGroup object
-    def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
+    def _filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
         The links of the networks after applying filtering
 
@@ -316,31 +318,41 @@ class NetworkGroup(Collection):
             )
 
     @classmethod
-    def load_json(cls, fpath: str) -> "NetworkGroup":
+    def load_json(
+        cls, fpath: Optional[str] = None, raw_data: Optional[dict] = None
+    ) -> "NetworkGroup":
         """
         Create a `NetworkGroup` object from network `JSON` file
+        Either fpath or raw_data must be specified
 
         Parameters
         ----------
-        fpath : str
+        fpath : str, optional
             The path to the network `JSON` file
+        raw_data : dict, optional
+            The raw data stored in the network `JSON` file
 
         Returns
         -------
         NetworkGroup
             The instance of the `NetworkGroup` class
         """
-        with open(fpath, "r") as fid:
-            raw_data = simplejson.load(fid)
-        n_networks = len(raw_data["contexts"])
-        all_node_dict = {n["id"]: n for n in raw_data["nodes"]}
+        if not raw_data and not fpath:
+            raise ValueError("Either fpath or raw_data must be specified")
+        if not raw_data and fpath:
+            with open(fpath, "r") as fid:
+                data = simplejson.load(fid)
+        else:
+            data: dict = raw_data
+        n_networks = len(data["contexts"])
+        all_node_dict = {n["id"]: n for n in data["nodes"]}
         data_dict: Dict[int, dict] = {
             n: {"nodes": [], "links": [], "metadata": {}} for n in range(n_networks)
         }
         unique_node_dict: Dict[int, dict] = {n: set() for n in range(n_networks)}
         for cid in range(n_networks):
-            data_dict[cid]["metadata"] = {**raw_data["contexts"][cid]}
-        for link in raw_data["links"]:
+            data_dict[cid]["metadata"] = {**data["contexts"][cid]}
+        for link in data["links"]:
             link_cid = link["context_index"]
             source = all_node_dict[link["source"]]
             source_name = link["source"]
@@ -358,8 +370,8 @@ class NetworkGroup(Collection):
             metadata = data_dict[cid]["metadata"]
             nodes = data_dict[cid]["nodes"]
             links = data_dict[cid]["links"]
-            network_raw_data = {**metadata, "nodes": nodes, "links": links}
-            networks.append(Network.load_json(raw_data=network_raw_data))
+            network_data = {**metadata, "nodes": nodes, "links": links}
+            networks.append(Network.load_json(raw_data=network_data))
         return cls(networks)
 
     def get_consensus_network(
