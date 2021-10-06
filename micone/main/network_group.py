@@ -4,6 +4,7 @@
 
 from collections import defaultdict
 from collections.abc import Collection
+import pathlib
 from itertools import groupby, product
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
@@ -320,7 +321,11 @@ class NetworkGroup(Collection):
         return simplejson.dumps(network, indent=2, sort_keys=True, ignore_nan=True)
 
     def write(
-        self, fpath: str, pvalue_filter: bool = False, interaction_filter: bool = False
+        self,
+        fpath: str,
+        pvalue_filter: bool = False,
+        interaction_filter: bool = False,
+        split_files: bool = False,
     ) -> None:
         """
         Write network to file as JSON
@@ -335,13 +340,27 @@ class NetworkGroup(Collection):
         interaction_filter : bool
             If True will use `interaction_threshold` for filtering
             Default  value is False
+        split_files : bool
+            If True will write networks into separate files
+            Default value is False
         """
-        with open(fpath, "w") as fid:
-            fid.write(
-                self.json(
-                    pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+        if not split_files:
+            with open(fpath, "w") as fid:
+                fid.write(
+                    self.json(
+                        pvalue_filter=pvalue_filter,
+                        interaction_filter=interaction_filter,
+                    )
                 )
-            )
+        else:
+            for cid, network in enumerate(self._networks):
+                path = pathlib.Path(fpath)
+                fname = f"{path.parent}/{path.stem}_{cid}{path.suffix}"
+                network.write(
+                    fname,
+                    pvalue_filter=pvalue_filter,
+                    interaction_filter=interaction_filter,
+                )
 
     @classmethod
     def load_json(
