@@ -5,7 +5,7 @@
 from collections import defaultdict
 from collections.abc import Collection
 import pathlib
-from itertools import groupby, product
+from itertools import product
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
 import networkx as nx
