@@ -259,11 +259,37 @@ class NetworkGroup(Collection):
         """
         filtered_links_dict = dict()
         for cid, network in enumerate(self._networks):
-            filtered_links_dict[cid] = network.filter_links(
+            filtered_links_dict[cid] = network._filter_links(
                 pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
             )
         merged_filtered_links = self._combine_links(filtered_links_dict)
         return merged_filtered_links
+
+    def filter(self, pvalue_filter: bool, interaction_filter: bool) -> "NetworkGroup":
+        """Filter network using pvalue and interaction thresholds
+
+        Parameters
+        ----------
+        pvalue_filter : bool
+            If `True` will use `pvalue_threshold` for filtering
+        interaction_filter : bool
+            If `True` will use `interaction_threshold` for filtering
+
+        Returns
+        -------
+        "NetworkGroup"
+            The filtered `NetworkGroup` object
+        """
+        nodes = {"nodes": self.nodes}
+        links = {
+            "links": self._filter_links(
+                pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+            )
+        }
+        contexts = {"contexts": self.contexts}
+        network_data = {**contexts, **nodes, **links}
+        new_network = NetworkGroup.load_json(raw_data=network_data)
+        return new_network
 
     def json(
         self, pvalue_filter: bool = False, interaction_filter: bool = False
@@ -286,7 +312,7 @@ class NetworkGroup(Collection):
             The `JSON` string representation of the network
         """
         nodes = self.nodes
-        links = self.filter_links(
+        links = self._filter_links(
             pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
         )
         contexts = self.contexts
