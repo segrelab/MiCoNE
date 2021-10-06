@@ -487,7 +487,7 @@ class NetworkGroup(Collection):
         # Step 4: Return NetworkGroup object
         return NetworkGroup(new_networks)
 
-    def combine_pvalues(self, cids: List[str]) -> pd.Series:
+    def combine_pvalues(self, cids: List[str]) -> "NetworkGroup":
         """
         Combine pvalues of links in the `cids` using Brown's p-value merging method
 
@@ -498,11 +498,15 @@ class NetworkGroup(Collection):
 
         Returns
         -------
-        pvalues_combined
-            The `pd.Series` containing the combined pvalues
+        merged_network
+            The `NetworkGroup` that contains the merged pvalues
         """
-        pvalue_df = self.get_adjacency_vectors("pvalue")[cids]
-        weight_df = self.get_adjacency_vectors("weight")[cids]
+
+        # Step 1: Obtain the pvalues and weights
+        pvalue_df: pd.DataFrame = self.get_adjacency_vectors("pvalue")[cids]
+        weight_df: pd.DataFrame = self.get_adjacency_vectors("weight")[cids]
+
+        # Step 2: Calculate the combined pvalues using Browns method
         # E[psi] = 2 * k
         k = pvalue_df.shape[1]
         expected_value = 2 * k
@@ -521,10 +525,27 @@ class NetworkGroup(Collection):
         degrees_of_freedom = 2 * (expected_value ** 2) / variance
         # c = var[psi] / (2 * E[psi])
         correction_factor = variance / (2 * expected_value)
-        link_ids = list(pvalue_df.index)
+        link_ids = pvalue_df.index
         pvalues_combined = pd.Series(data=np.zeros(len(link_ids)), index=link_ids)
-        for row_id in list(pvalue_df.index):
+        for row_id in pvalue_df.index:
             pvalues = pvalue_df[row_id, :].values
+            # Natural log
             chi_square = -2.0 * np.log(pvalues).sum() / correction_factor
             pvalues_combined[row_id] = chi2.sf(chi_square, df=degrees_of_freedom)
-        return pvalues_combined
+
+        # Step 3: Create new networks
+        graphs = []
+        for cid, network in enumerate(self._networks):
+            if cid in cids:
+                graphs.append(network.graph.copy())
+        graph_dict = dict(enumerate(graphs))
+        for ind in pvalues_combined.index:
+            for cid, ind_old in self.linkid_revmap[ind]:
+                source_old, target_old = ind_old.split("-")
+                graph_dict[cid].edges[source_old, target_old][
+                    "pvalue"
+                ] = pvalues_combined[ind]
+        new_networks = [Network.load_graph(graph) for graph in graphs]
+
+        # Step 4: Return NetworkGroup object
+        return NetworkGroup(new_networks)
