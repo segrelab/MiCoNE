@@ -6,6 +6,7 @@ def updateMeta(Map args) {
     meta.denoise_cluster   = args.denoise_cluster ?: ''
     meta.chimera_checking  = args.chimera_checking ?: ''
     meta.tax_assignment    = args.tax_assignment ?: ''
+    meta.tax_level         = args.tax_level ?: ''
     meta.network_inference = args.network_inference ?: ''
     return meta
 }
