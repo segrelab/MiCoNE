@@ -367,7 +367,7 @@ class Network:
                 adj_table[target_id][source_id] = data[key]
         return adj_table
 
-    def filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
+    def _filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
         The links of the network after applying filtering
 
@@ -401,6 +401,32 @@ class Network:
             return self.links
         links_thres = list(filter(filter_func, self.links))
         return links_thres
+
+    def filter(self, pvalue_filter: bool, interaction_filter: bool) -> "Network":
+        """Filter network using pvalue and interaction thresholds
+
+        Parameters
+        ----------
+        pvalue_filter : bool
+            If `True` will use `pvalue_threshold` for filtering
+        interaction_filter : bool
+            If `True` will use `interaction_threshold` for filtering
+
+        Returns
+        -------
+        "Network"
+            The filtered `Network` object
+        """
+        nodes = {"nodes": self.nodes}
+        links = {
+            "links": self._filter_links(
+                pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
+            )
+        }
+        metadata = self.metadata
+        network_data = {**metadata, **nodes, **links}
+        new_network = Network.load_json(raw_data=network_data)
+        return new_network
 
     @classmethod
     def load_data(
@@ -551,7 +577,7 @@ class Network:
         """
         nodes = {"nodes": self.nodes}
         links = {
-            "links": self.filter_links(
+            "links": self._filter_links(
                 pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
             )
         }
