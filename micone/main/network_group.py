@@ -106,15 +106,18 @@ class NetworkGroup(Collection):
                     self.nodeid_map[cid][id_old] = id_new
         return nodes
 
-    def _combine_links(self, all_links: Dict[int, DType]) -> DType:
+    def _combine_links(
+        self, all_links: Dict[int, DType], inplace: bool = True
+    ) -> DType:
         """Combine links of individual networks into a single list"""
         links = []
         if len(all_links) == 1:
             for link in all_links[0]:
                 source, target = link["source"], link["target"]
-                self.linkid_revmap[f"{source}-{target}"].append(
-                    (0, f"{source}-{target}")
-                )
+                if inplace:
+                    self.linkid_revmap[f"{source}-{target}"].append(
+                        (0, f"{source}-{target}")
+                    )
                 links.append({**link, "context_index": 0})
             return links
         for cid, network_links in all_links.items():
@@ -122,9 +125,10 @@ class NetworkGroup(Collection):
                 source, target = link["source"], link["target"]
                 new_source = self.nodeid_map[cid][source]
                 new_target = self.nodeid_map[cid][target]
-                self.linkid_revmap[f"{new_source}-{new_target}"].append(
-                    (cid, f"{source}-{target}")
-                )
+                if inplace:
+                    self.linkid_revmap[f"{new_source}-{new_target}"].append(
+                        (cid, f"{source}-{target}")
+                    )
                 links.append(
                     {
                         **link,
@@ -205,8 +209,12 @@ class NetworkGroup(Collection):
         size = len(ids) * len(ids)
         # NOTE: This will consider id1-id2 and id2-id1 as different (even for undirected)
         index = [f"{id1}-{id2}" for id1, id2 in product(ids, repeat=2)]
+        n_contexts = len(self)
         adj_vector_df: pd.DataFrame = pd.concat(
-            [pd.Series(np.zeros((size), dtype=float), index=index)],
+            [
+                pd.Series(np.zeros((size), dtype=float), index=index)
+                for _ in range(n_contexts)
+            ],
             join="outer",
             axis=1,
         )
@@ -261,7 +269,7 @@ class NetworkGroup(Collection):
             filtered_links_dict[cid] = network._filter_links(
                 pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
             )
-        merged_filtered_links = self._combine_links(filtered_links_dict)
+        merged_filtered_links = self._combine_links(filtered_links_dict, inplace=False)
         return merged_filtered_links
 
     def filter(self, pvalue_filter: bool, interaction_filter: bool) -> "NetworkGroup":
@@ -444,7 +452,7 @@ class NetworkGroup(Collection):
             size = weights.shape[1]  # no. of networks
             num_req_edges = np.floor(parameter * size)
             num_actual_edges = weights.astype(bool).sum(axis=1)
-            indices_removal = weights.index[not (num_actual_edges >= num_req_edges)]
+            indices_removal = weights.index[num_actual_edges < num_req_edges]
             return list(indices_removal)
 
         # Method 2: Scaled sum method
@@ -454,7 +462,7 @@ class NetworkGroup(Collection):
             weights_scaled = weights.apply(lambda x: x / (np.abs(x).max()))
             parameter_scaled = (size - 1) * parameter
             indices_removal = weights.index[
-                not (weights_scaled.sum(axis=1) > parameter_scaled)
+                weights_scaled.sum(axis=1) < parameter_scaled
             ]
             return list(indices_removal)
 
@@ -464,6 +472,8 @@ class NetworkGroup(Collection):
             if cid in cids:
                 graphs.append(network.graph.copy())
         weights: pd.DataFrame = self.get_adjacency_vectors("weight")[cids]
+        # Filling with dummy values
+        weights.fillna(0.0, inplace=True)  # dummy weights = 0
 
         # Step 2: Apply voting method to each multiedge
         # indices_removal has {new_id_source}-{new_id_target}
@@ -480,7 +490,7 @@ class NetworkGroup(Collection):
             for cid, ind_old in self.linkid_revmap[ind]:
                 source_old, target_old = ind_old.split("-")
                 graph_dict[cid].remove_edge(source_old, target_old)
-        new_networks = [Network.load_graph(graph) for graph in graphs]
+        new_networks = [Network.load_graph(graph) for graph in graph_dict.values()]
 
         # Step 4: Return NetworkGroup object
         return NetworkGroup(new_networks)
