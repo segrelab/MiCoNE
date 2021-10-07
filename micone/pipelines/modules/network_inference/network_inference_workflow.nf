@@ -15,6 +15,8 @@ include { mldm_workflow } from './direct/mldm_workflow.nf'
 // Network imports
 include { make_network_with_pvalue } from './network/make_network_with_pvalue.nf'
 include { make_network_without_pvalue } from './network/make_network_without_pvalue.nf'
+include { merge_pvalues } from './network/merge_pvalues.nf'
+include { create_consensus } from './network/create_consensus.nf'
 
 // Main workflow
 workflow network_inference_workflow {
@@ -46,13 +48,20 @@ workflow network_inference_workflow {
                             mldm_workflow.out
                         )
 
+    // Correlation method output
     make_network_with_pvalue(corr_output)
+    merge_pvalues(make_network_with_pvalue.out.collect())
+
+    // Direct method output
     make_network_without_pvalue(direct_output)
 
-    network_channel = make_network_with_pvalue.out.mix(make_network_without_pvalue.out)
+    // Create consensus
+    network_channel = merge_pvalues.out.flatten().mix(make_network_without_pvalue.out)
+    create_consensus(network_channel.out.collect())
+
 
     emit:
         // all processes have publishDir
         // tuple val(meta), file("*.json")
-        network_channel
+        create_consensus.out
 }
