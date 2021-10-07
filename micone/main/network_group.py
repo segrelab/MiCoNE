@@ -201,7 +201,7 @@ class NetworkGroup(Collection):
         pd.DataFrame:
             The DataFrame containing adjacency vectors as columns
         """
-        ids = list(self.nodes)
+        ids = list(self.graph.nodes)
         size = len(ids) * len(ids)
         # NOTE: This will consider id1-id2 and id2-id1 as different (even for undirected)
         index = [f"{id1}-{id2}" for id1, id2 in product(ids, repeat=2)]
@@ -210,11 +210,10 @@ class NetworkGroup(Collection):
             join="outer",
             axis=1,
         )
-        adj_vector_df.fillna(0.0, inplace=True)
         graph = self.graph
         # NOTE: networkx automatically handles directionality (source -> target) here
         for source, target, data in graph.edges(data=True, keys=False):
-            cid = data["cid"]
+            cid = data["context_index"]
             id_ = f"{source}-{target}"
             adj_vector_df.loc[id_, cid] = data[key]
         return adj_vector_df
@@ -241,7 +240,6 @@ class NetworkGroup(Collection):
             network.interaction_threshold = interaction_threshold
             network.pvalue_threshold = pvalue_threshold
 
-    # FIXME: Doesn't affect the NetworkGroup object
     def _filter_links(self, pvalue_filter: bool, interaction_filter: bool) -> DType:
         """
         The links of the networks after applying filtering
@@ -503,8 +501,14 @@ class NetworkGroup(Collection):
         """
 
         # Step 1: Obtain the pvalues and weights
-        pvalue_df: pd.DataFrame = self.get_adjacency_vectors("pvalue")[cids]
         weight_df: pd.DataFrame = self.get_adjacency_vectors("weight")[cids]
+        pvalue_df: pd.DataFrame = self.get_adjacency_vectors("pvalue")[cids]
+
+        # Filling with dummy values
+        weight_df.fillna(0.0, inplace=True)  # dummy weights = 0
+        pvalue_df.fillna(1.0, inplace=True)  # dummy pvalues = 1
+        eps = np.finfo(np.float).eps
+        pvalue_df.replace(0.0, eps, inplace=True)  # to prevent log(0)
 
         # Step 2: Calculate the combined pvalues using Browns method
         # E[psi] = 2 * k
@@ -526,12 +530,12 @@ class NetworkGroup(Collection):
         # c = var[psi] / (2 * E[psi])
         correction_factor = variance / (2 * expected_value)
         link_ids = pvalue_df.index
-        pvalues_combined = pd.Series(data=np.zeros(len(link_ids)), index=link_ids)
-        for row_id in pvalue_df.index:
-            pvalues = pvalue_df[row_id, :].values
-            # Natural log
-            chi_square = -2.0 * np.log(pvalues).sum() / correction_factor
-            pvalues_combined[row_id] = chi2.sf(chi_square, df=degrees_of_freedom)
+        chi_square = pvalue_df.apply(
+            lambda x: -2.0 * np.log(x).sum() / correction_factor, axis=1
+        )
+        pvalues_combined = pd.Series(
+            data=chi2.sf(chi_square, df=degrees_of_freedom), index=link_ids
+        )
 
         # Step 3: Create new networks
         graphs = []
