@@ -487,13 +487,13 @@ class NetworkGroup(Collection):
         # Step 4: Return NetworkGroup object
         return NetworkGroup(new_networks)
 
-    def combine_pvalues(self, cids: List[str]) -> "NetworkGroup":
+    def combine_pvalues(self, cids: List[int]) -> "NetworkGroup":
         """
         Combine pvalues of links in the `cids` using Brown's p-value merging method
 
         Parameters:
         -----------
-        cids : List[str]
+        cids : List[int]
             The list of context ids that are to be used in the merger
 
         Returns
