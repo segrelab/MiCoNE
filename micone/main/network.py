@@ -823,8 +823,7 @@ class Network:
         pvalue_threshold = cmetadata["pvalue_threshold"]
         pvalue_correction = None
 
-        non_meta_keys = ["computational_metadata", "interaction_type", "directionality"]
-        metadata = {k: v for k, v in graph_md.items() if k not in non_meta_keys}
+        metadata = graph_md
         networkmetadata_model = NetworkmetadataModel(metadata, strict=False)
         networkmetadata_model.validate()
 
