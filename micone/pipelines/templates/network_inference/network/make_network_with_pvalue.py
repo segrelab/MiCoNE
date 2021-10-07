@@ -26,9 +26,8 @@ def main(
         interaction_threshold=interaction_threshold,
         pvalue_threshold=pvalue_threshold,
     )
-    network_group = NetworkGroup([network])
-    network_group.write(base_name + "_network.json")
-    network_group.write(
+    network.write(base_name + "_network.json")
+    network.write(
         base_name + "_thres_network.json", pvalue_filter=True, interaction_filter=True
     )
 

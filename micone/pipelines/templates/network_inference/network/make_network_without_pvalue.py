@@ -22,9 +22,8 @@ def main(
         children_file=children_file,
         interaction_threshold=interaction_threshold,
     )
-    network_group = NetworkGroup([network])
-    network_group.write(base_name + "_network.json")
-    network_group.write(
+    network.write(base_name + "_network.json")
+    network.write(
         base_name + "_thres_network.json", pvalue_filter=False, interaction_filter=True
     )
 
