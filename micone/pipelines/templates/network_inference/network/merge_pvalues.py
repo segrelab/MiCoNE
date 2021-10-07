@@ -11,7 +11,7 @@ def main(base_name: str, network_files: List[pathlib.Path]) -> None:
     for network_file in network_files:
         networks.append(Network.load_json(str(network_file)))
     network_group = NetworkGroup(networks)
-    cids = [ctx["cid"] for ctx in network_group.contexts]
+    cids = list(range(len(network_group.contexts)))
     merged_network_group = network_group.combine_pvalues(cids)
     merged_network_group.write(base_name + "_network.json", split_files=True)
 

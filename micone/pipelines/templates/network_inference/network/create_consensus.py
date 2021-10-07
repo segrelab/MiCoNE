@@ -18,7 +18,7 @@ def main(
     for network_file in network_files:
         networks.append(Network.load_json(str(network_file)))
     network_group = NetworkGroup(networks)
-    cids = [ctx["cid"] for ctx in network_group.contexts]
+    cids = list(range(len(network_group.contexts)))
     filtered_network_group = network_group.filter(
         pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
     )
