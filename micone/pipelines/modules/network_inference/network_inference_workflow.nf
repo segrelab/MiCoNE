@@ -57,7 +57,7 @@ workflow network_inference_workflow {
 
     // Create consensus
     network_channel = merge_pvalues.out.flatten().mix(make_network_without_pvalue.out)
-    create_consensus(network_channel.out.collect())
+    create_consensus(network_channel.collect())
 
 
     emit:
