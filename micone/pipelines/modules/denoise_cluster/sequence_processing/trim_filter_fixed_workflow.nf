@@ -4,7 +4,7 @@ include { quality_analysis } from './quality_analysis.nf'
 include { trimming } from './trimming.nf'
 
 
-workflow trim_filter_fixed_workflow {
+workflow trim_filter_workflow {
     take:
         // tuple val(meta), file(sequence_file), file(manifest_file)
         input_channel

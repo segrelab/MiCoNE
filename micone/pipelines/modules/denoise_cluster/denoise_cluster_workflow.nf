@@ -4,7 +4,7 @@
 
 // Sequencing processing imports
 include { demultiplexing_illumina_workflow } from './sequence_processing/demultiplexing_illumina_workflow.nf'
-include { trim_filter_fixed_workflow } from './sequence_processing/trim_filter_fixed_workflow.nf'
+include { trim_filter_workflow } from './sequence_processing/trim_filter_workflow.nf'
 
 // Denoising clustering imports
 include { closed_reference_workflow } from './otu_assignment/closed_reference_workflow.nf'
@@ -28,7 +28,7 @@ workflow denoise_cluster_workflow {
     main:
         input_channel \
             | demultiplexing_illumina_workflow \
-            | trim_filter_fixed_workflow \
+            | trim_filter_workflow \
             | (dada2_workflow & deblur_workflow & open_reference_workflow & de_novo_workflow & closed_reference_workflow) \
             | mix \
             | (uchime_workflow & remove_bimera_workflow)
