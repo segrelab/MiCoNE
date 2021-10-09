@@ -18,6 +18,7 @@ def main(
     for network_file in network_files:
         networks.append(Network.load_json(str(network_file)))
     network_group = NetworkGroup(networks)
+    pathlib.Path("consensus/").mkdir(parents=True, exist_ok=True)
     cids = list(range(len(network_group.contexts)))
     filtered_network_group = network_group.filter(
         pvalue_filter=pvalue_filter, interaction_filter=interaction_filter
@@ -25,11 +26,11 @@ def main(
     consensus_network_group = filtered_network_group.get_consensus_network(
         cids, method=method, parameter=parameter
     )
-    consensus_network_group.write(base_name + "_network.json")
+    consensus_network_group.write("consensus/" + base_name + "_network.json")
 
 
 if __name__ == "__main__":
-    BASE_NAME = "${meta.id}"
+    BASE_NAME = "consensus"
     METHOD = "${method}"
     PARAMETER = float("${parameter}")
     PVALUE_FILTER = True if "${pvalue_filter}" == "true" else False

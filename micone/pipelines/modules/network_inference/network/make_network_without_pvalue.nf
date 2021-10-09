@@ -9,7 +9,7 @@ process make_network_without_pvalue {
     input:
         tuple val(meta), file(corr_file), file(obs_metadata), file(sample_metadata), file(children_map)
     output:
-        tuple val(meta), file('*_network.json')
+        file('*_network.json')
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
