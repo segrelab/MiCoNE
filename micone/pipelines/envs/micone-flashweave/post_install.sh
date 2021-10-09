@@ -19,4 +19,4 @@ cp -r "$FOLDER/$VERSION" "$CONDA_PREFIX/"
 ln -s "$CONDA_PREFIX/$VERSION/bin/julia" "$CONDA_PREFIX/bin/julia"
 
 source activate micone-flashweave
-julia -e 'import Pkg; Pkg.add("FlashWeave"); Pkg.add("CSV"); Pkg.add("DataFrames")'
+julia -e 'import Pkg; Pkg.add("FlashWeave"); Pkg.add("CSV"); Pkg.add("DataFrames"); using FlashWeave;'
