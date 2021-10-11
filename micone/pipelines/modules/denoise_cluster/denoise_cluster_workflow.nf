@@ -21,14 +21,12 @@ include { remove_bimera_workflow } from './chimera_checking/remove_bimera_workfl
 // Main workflow
 workflow denoise_cluster_workflow {
     take:
-        // tuple val(meta), file(sequence_files), file(barcode_files), file(mapping_files)
+        // tuple val(meta), file(trimmed_sequences), file(manifest_file)
         input_channel
         // tuple val(meta), file(samplemetadata_files)
         samplemetadata_channel
     main:
         input_channel \
-            | demultiplexing_illumina_workflow \
-            | trim_filter_workflow \
             | (dada2_workflow & deblur_workflow & open_reference_workflow & de_novo_workflow & closed_reference_workflow) \
             | mix \
             | (uchime_workflow & remove_bimera_workflow)

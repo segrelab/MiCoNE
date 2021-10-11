@@ -15,5 +15,5 @@ process export_sequences {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        template 'denoise_cluster/sequence_processing/export_sequences.py'
+        template 'sequence_processing/demultiplexing/export_sequences.py'
 }

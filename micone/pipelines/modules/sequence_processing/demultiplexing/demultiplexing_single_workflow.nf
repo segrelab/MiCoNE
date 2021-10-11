@@ -1,17 +1,16 @@
-include { import_sequences } from './import_sequences_sh.nf'
-include { demultiplexing_illumina } from './demultiplexing_illumina.nf'
+include { import_sequences_single } from './import_sequences_single.nf'
+include { demultiplexing_illumina_single } from './demultiplexing_illumina_single.nf'
 include { export_sequences } from './export_sequences.nf'
 
 
-workflow demultiplexing_illumina_workflow {
+workflow sequence_processing_single_workflow {
     take:
         // tuple val(meta), file(sequence_file), file(barcode_file), file(mapping_file)
         input_channel
     main:
         input_channel \
-            | import_sequences \
-            | demultiplexing_illumina \
-            // | join_reads \
+            | import_sequences_single \
+            | demultiplexing_illumina_single \
             | export_sequences
     emit:
         // export_sequences and join_reads has publishDir

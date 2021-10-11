@@ -11,8 +11,8 @@ def main(input_type, input_path, input_format, output_path):
 
 
 if __name__ == "__main__":
-    INPUT_TYPE = "SampleData[SequencesWithQuality]"
+    INPUT_TYPE = "SampleData[PairedEndSequencesWithQuality]"
     INPUT_PATH = "${manifest_file}"
-    INPUT_FORMAT = "SingleEndFastqManifestPhred33"
+    INPUT_FORMAT = "PairedEndFastqManifestPhred33V2"
     OUTPUT_PATH = "${meta.id}_sequences.qza"
     main(INPUT_TYPE, INPUT_PATH, INPUT_FORMAT, OUTPUT_PATH)

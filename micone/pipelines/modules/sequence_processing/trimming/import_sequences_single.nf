@@ -1,5 +1,5 @@
 // Import the sequences to qiime2 artifacts
-process import_sequences {
+process import_sequences_single {
     label 'qiime2'
     tag "${meta.id}"
     input:
@@ -7,6 +7,6 @@ process import_sequences {
     output:
         tuple val(meta), file('*_sequences.qza')
     script:
-        template 'denoise_cluster/sequence_processing/import_sequences.py'
+        template 'sequence_processing/trimming/import_sequences_single.py'
 }
 

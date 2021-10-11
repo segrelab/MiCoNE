@@ -1,7 +1,7 @@
 include { getHierarchy } from '../../../functions/functions.nf'
 
 // Trimming the sequences using cutadapt
-process trimming {
+process trimming_single {
     label 'qiime2'
     tag "${meta.id}"
     publishDir "${params.output_dir}/${f[0]}/${f[1]}/trimmed_sequences/${meta.id}",
@@ -15,8 +15,8 @@ process trimming {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        ncpus = params.denoise_cluster.sequence_processing['trimming']['ncpus']
-        max_ee = params.denoise_cluster.sequence_processing['trimming']['max_ee']
-        trunc_q = params.denoise_cluster.sequence_processing['trimming']['trunc_q']
-        template 'denoise_cluster/sequence_processing/trimming.R'
+        ncpus = params.sequence_processing.trimming['trimming_single']['ncpus']
+        max_ee = params.sequence_processing.trimming['trimming_single']['max_ee']
+        trunc_q = params.sequence_processing.trimming['trimming_single']['trunc_q']
+        template 'sequence_processing/trimming/trimming_single.R'
 }

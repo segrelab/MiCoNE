@@ -1,7 +1,7 @@
 include { updateMeta } from '../../../functions/functions.nf'
 
 // demultiplex
-process demultiplexing_illumina {
+process demultiplexing_illumina_single {
     label 'qiime2'
     tag "${new_meta.id}"
     input:
@@ -11,9 +11,9 @@ process demultiplexing_illumina {
     script:
         new_meta = updateMeta(meta)
         new_meta.demultiplexing = 'illumina'
-        rev_comp_barcodes = params.denoise_cluster.sequence_processing['demultiplexing_illumina']['rev_comp_barcodes']
-        rev_comp_mapping_barcodes = params.denoise_cluster.sequence_processing['demultiplexing_illumina']['rev_comp_mapping_barcodes']
+        rev_comp_barcodes = params.sequence_processing.demultiplexing['demultiplexing_illumina_single']['rev_comp_barcodes']
+        rev_comp_mapping_barcodes = params.sequence_processing.demultiplexing['demultiplexing_illumina_single']['rev_comp_mapping_barcodes']
         rcb = rev_comp_barcodes == 'True' ? '--p-rev-comp-barcodes' : '--p-no-rev-comp-barcodes'
         rcmb = rev_comp_mapping_barcodes == 'True' ? '--p-rev-comp-mapping-barcodes' : '--p-no-rev-comp-mapping-barcodes'
-        template 'denoise_cluster/sequence_processing/demultiplex_illumina.sh'
+        template 'sequence_processing/demultiplexing/demultiplex_illumina_single.sh'
 }
