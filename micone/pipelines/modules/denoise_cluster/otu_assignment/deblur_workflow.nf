@@ -1,3 +1,4 @@
+include { join_reads } from './join_reads.nf'
 include { deblur } from './deblur.nf'
 include { hashing3 } from './hashing3.nf'
 
@@ -7,9 +8,17 @@ workflow deblur_workflow {
         // tuple val(id), file(sequence_files), file(manifest_file)
         input_channel
     main:
-        input_channel \
-            | deblur \
-            | hashing3
+        if (params.paired_end) {
+            input_channel \
+                | join_reads \
+                | deblur \
+                | hashing3
+        } else {
+            input_channel \
+                | deblur \
+                | hashing3
+
+        }
     emit:
         // hashing3 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')

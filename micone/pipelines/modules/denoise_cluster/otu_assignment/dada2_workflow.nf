@@ -9,7 +9,7 @@ workflow dada2_workflow {
         // tuple val(id), file(sequence_files), file(manifest_file)
         input_channel
     main:
-        d2 = params.paired ? dada2_paired : dada2_single
+        d2 = params.paired_end ? dada2_paired : dada2_single
         input_channel \
             | d2 \
             | make_biom_repseqs \
