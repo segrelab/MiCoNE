@@ -1,4 +1,5 @@
-include { dada2 } from './dada2.nf'
+include { dada2_single } from './dada2_single.nf'
+include { dada2_paired } from './dada2_paired.nf'
 include { make_biom_repseqs } from './make_biom_repseqs.nf'
 include { hashing3 } from './hashing3.nf'
 
@@ -8,8 +9,9 @@ workflow dada2_workflow {
         // tuple val(id), file(sequence_files), file(manifest_file)
         input_channel
     main:
+        d2 = params.paired ? dada2_paired : dada2_single
         input_channel \
-            | dada2 \
+            | d2 \
             | make_biom_repseqs \
             | hashing3
     emit:
