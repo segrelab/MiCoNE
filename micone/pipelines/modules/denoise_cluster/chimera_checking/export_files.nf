@@ -8,9 +8,9 @@ process export_files {
         mode: 'copy',
         overwrite: true
     input:
-        tuple val(meta), file(otutable_nonchimeric), file(repseqs_nonchimeric)
+        tuple val(meta), file(otutable_nonchimeric), file(repseqs_nonchimeric), file(samplemetadata_files)
     output:
-        tuple val(meta), file("otu_table.biom"), file("rep_seqs.fasta")
+        tuple val(meta), file("otu_table.biom"), file("rep_seqs.fasta"), file(samplemetadata_files)
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)

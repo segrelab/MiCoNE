@@ -5,9 +5,9 @@ process open_reference {
     label 'qiime1'
     tag "${new_meta.id}"
     input:
-        tuple val(meta), file(fasta_file)
+        tuple val(meta), file(fasta_file), file(samplemetadata_files)
     output:
-        tuple val(new_meta), file('unhashed_otu_table.biom'), file('unhashed_rep_seqs.fasta'), file('log*.txt')
+        tuple val(new_meta), file('unhashed_otu_table.biom'), file('unhashed_rep_seqs.fasta'), file('log*.txt'), file(samplemetadata_files)
     when:
         "open_reference" in params.denoise_cluster.otu_assignment['selection']
     script:

@@ -6,7 +6,7 @@ include { hashing2 } from './hashing2.nf'
 
 workflow open_reference_workflow {
     take:
-        // tuple val(id), file(sequence_files), file(manifest_file)
+        // tuple val(meta), file(trimmed_sequences), file(manifest_file), file(samplemetadata_files)
         input_channel
     main:
         if (params.paired_end) {

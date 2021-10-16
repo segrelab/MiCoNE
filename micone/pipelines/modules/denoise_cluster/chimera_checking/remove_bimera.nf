@@ -5,11 +5,11 @@ process remove_bimera {
     label 'dada2'
     tag "${new_meta.id}"
     input:
-        tuple val(meta), file(seqtable_file)
+        tuple val(meta), file(seqtable_file), file(samplemetadata_files)
     when:
         "remove_bimera" in params.denoise_cluster.chimera_checking['selection']
     output:
-        tuple val(new_meta), file("unhashed_otu_table.biom"), file("unhashed_rep_seqs.fasta")
+        tuple val(new_meta), file("unhashed_otu_table.biom"), file("unhashed_rep_seqs.fasta"), file(samplemetadata_files)
     script:
         new_meta = updateMeta(meta)
         new_meta.chimera_checking = 'remove_bimera'

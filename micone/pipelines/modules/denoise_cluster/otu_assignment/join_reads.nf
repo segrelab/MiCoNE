@@ -9,9 +9,9 @@ process join_reads {
         mode: 'copy',
         overwrite: true
     input:
-        tuple val(meta), file(sequence_files), file(manifest_file)
+        tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
     output:
-        tuple val(meta), file('joined_reads/*.fastq.gz'), file('joined_reads/MANIFEST')
+        tuple val(meta), file('joined_reads/*.fastq.gz'), file('joined_reads/MANIFEST'), file(samplemetadata_files)
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)

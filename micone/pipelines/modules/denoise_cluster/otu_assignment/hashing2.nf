@@ -8,9 +8,9 @@ process hashing2 {
         mode: 'copy',
         overwrite: true
     input:
-        tuple val(meta), file(unhashed_otu_table), file(unhashed_rep_seqs), file(log)
+        tuple val(meta), file(unhashed_otu_table), file(unhashed_rep_seqs), file(log), file(samplemetadata_files)
     output:
-        tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
+        tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file(samplemetadata_files)
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)

@@ -5,9 +5,9 @@ process deblur {
     label 'qiime2'
     tag "${new_meta.id}"
     input:
-        tuple val(meta), file(sequence_files), file(manifest_file)
+        tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
     output:
-        tuple val(new_meta), file('*_otu_table.biom'), file('*_rep_seqs.fasta')
+        tuple val(new_meta), file('*_otu_table.biom'), file('*_rep_seqs.fasta'), file(samplemetadata_files)
     when:
         "deblur" in params.denoise_cluster.otu_assignment['selection']
     script:

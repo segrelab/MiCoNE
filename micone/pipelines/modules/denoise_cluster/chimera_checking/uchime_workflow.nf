@@ -5,7 +5,7 @@ include { export_files } from './export_files.nf'
 
 workflow uchime_workflow {
     take:
-        // tuple val(id), file(otutable_file), file(repseqs_file)
+        // tuple val(id), file(otutable_file), file(repseqs_file), file(samplemetadata_files)
         input_channel
     main:
         input_channel \

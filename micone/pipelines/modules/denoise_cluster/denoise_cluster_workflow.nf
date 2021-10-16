@@ -21,20 +21,15 @@ include { remove_bimera_workflow } from './chimera_checking/remove_bimera_workfl
 // Main workflow
 workflow denoise_cluster_workflow {
     take:
-        // tuple val(meta), file(trimmed_sequences), file(manifest_file)
+        // tuple val(meta), file(trimmed_sequences), file(manifest_file), file(samplemetadata_files)
         input_channel
-        // tuple val(meta), file(samplemetadata_files)
-        samplemetadata_channel
     main:
         input_channel \
             | (dada2_workflow & deblur_workflow & open_reference_workflow & de_novo_workflow & closed_reference_workflow) \
             | mix \
             | (uchime_workflow & remove_bimera_workflow)
         output_channel = uchime_workflow.out.mix(remove_bimera_workflow.out)
-        crossed_channel = samplemetadata_channel
-            .cross(output_channel) { it -> it[0].id }
-            .map { it -> [it[1], it[0][1]].flatten() }
     emit:
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file(samplemetadata_files)
-        crossed_channel
+        output_channel
 }

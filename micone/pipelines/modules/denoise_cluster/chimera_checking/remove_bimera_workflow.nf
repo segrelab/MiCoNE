@@ -5,7 +5,7 @@ include { hashing3 } from './../otu_assignment/hashing3.nf'
 
 workflow remove_bimera_workflow {
     take:
-        // tuple val(id), file(otutable_file), file(repseqs_file)
+        // tuple val(id), file(otutable_file), file(repseqs_file), file(samplemetadata_files)
         input_channel
     main:
         input_channel \
