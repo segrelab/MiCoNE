@@ -1,7 +1,7 @@
 include { updateMeta } from '../../../functions/functions.nf'
 
 // Denoise using dada2
-process dada2 {
+process dada2_paired {
     label 'dada2'
     tag "${new_meta.id}"
     input:
@@ -15,5 +15,5 @@ process dada2 {
         new_meta.denoise_cluster = 'dada2'
         ncpus = params.denoise_cluster.otu_assignment['dada2']['ncpus']
         big_data = params.denoise_cluster.otu_assignment['dada2']['big_data']
-        template 'denoise_cluster/otu_assignment/dada2.R'
+        template 'denoise_cluster/otu_assignment/dada2_paired.R'
 }
