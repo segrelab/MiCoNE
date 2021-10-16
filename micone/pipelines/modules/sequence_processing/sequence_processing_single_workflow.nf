@@ -12,9 +12,8 @@ workflow sequence_processing_single_workflow {
         input_channel \
             | demultiplexing_single_workflow \
             | trimming_single_workflow
+        joined_channel = trimming_single_workflow.out.join(samplemetadata_channel, failOnMismatch: true)
     emit:
-        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST')
-        trimming_single_workflow.out
-        // tuple val(meta), file(samplemetadata_files)
-        samplemetadata_channel
+        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST'), file(samplemetadata_files)
+        joined_channel
 }
