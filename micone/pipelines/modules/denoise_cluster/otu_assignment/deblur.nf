@@ -7,7 +7,7 @@ process deblur {
     input:
         tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
     output:
-        tuple val(new_meta), file('*_otu_table.biom'), file('*_rep_seqs.fasta'), file(samplemetadata_files)
+        tuple val(new_meta), file('*_unhashed_otu_table.biom'), file('*_unhashed_rep_seqs.fasta'), file('*_sample_metadata.tsv')
     when:
         "deblur" in params.denoise_cluster.otu_assignment['selection']
     script:

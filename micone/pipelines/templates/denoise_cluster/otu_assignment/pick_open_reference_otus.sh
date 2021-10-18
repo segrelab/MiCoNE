@@ -10,5 +10,6 @@ pick_open_reference_otus.py \
     --suppress_align_and_tree \
     -f -o \$PWD
 
-mv rep_set.fna unhashed_rep_seqs.fasta
-mv otu_table_mc2.biom unhashed_otu_table.biom
+mv otu_table_mc2.biom ${meta.id}_unhashed_otu_table.biom
+mv rep_set.fna ${meta.id}_unhashed_rep_seqs.fasta
+mv ${samplemetadata_files} ${meta.id}_sample_metadata.tsv

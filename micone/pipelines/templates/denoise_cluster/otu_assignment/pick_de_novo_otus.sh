@@ -8,5 +8,6 @@ pick_de_novo_otus.py \
 
 mv rep_set/${meta.id}_rep_set.fasta rep_seqs.fasta
 
-mv otu_table.biom unhashed_otu_table.biom
-mv rep_seqs.fasta unhashed_rep_seqs.fasta
+mv otu_table.biom ${meta.id}_unhashed_otu_table.biom
+mv rep_seqs.fasta ${meta.id}_unhashed_rep_seqs.fasta
+mv ${samplemetadata_files} ${meta.id}_sample_metadata.tsv

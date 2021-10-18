@@ -7,7 +7,7 @@ process closed_reference {
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
     output:
-        tuple val(new_meta), file('unhashed_otu_table.biom'), file('unhashed_rep_seqs.fasta'), file('log*.txt'), file(samplemetadata_files)
+        tuple val(new_meta), file('*_unhashed_otu_table.biom'), file('*_unhashed_rep_seqs.fasta'), file('log*.txt'), file('*_sample_metadata.tsv')
     when:
         "closed_reference" in params.denoise_cluster.otu_assignment['selection']
     script:

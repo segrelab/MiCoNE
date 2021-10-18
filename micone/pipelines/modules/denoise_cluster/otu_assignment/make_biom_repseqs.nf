@@ -5,7 +5,7 @@ process make_biom_repseqs {
     input:
         tuple val(meta), file(seq_table_file), file(samplemetadata_files)
     output:
-        tuple val(meta), file('*.biom'), file('*.fasta'), file(samplemetadata_files)
+        tuple val(new_meta), file('*.biom'), file('*.fasta'), file('*_sample_metadata.tsv')
     script:
         template 'denoise_cluster/otu_assignment/make_biom_repseqs.py'
 }
