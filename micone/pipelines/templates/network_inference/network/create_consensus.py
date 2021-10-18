@@ -35,5 +35,5 @@ if __name__ == "__main__":
     PARAMETER = float("${parameter}")
     PVALUE_FILTER = True if "${pvalue_filter}" == "true" else False
     INTERACTION_FILTER = True if "${interaction_filter}" == "true" else False
-    NETWORK_FILES = list(pathlib.Path().glob("*.json"))
+    NETWORK_FILES = list(pathlib.Path().glob("*_network.json"))
     main(BASE_NAME, NETWORK_FILES, METHOD, PARAMETER, PVALUE_FILTER, INTERACTION_FILTER)

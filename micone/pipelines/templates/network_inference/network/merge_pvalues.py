@@ -21,5 +21,5 @@ def main(base_name: str, network_files: List[pathlib.Path]) -> None:
 
 if __name__ == "__main__":
     BASE_NAME = "merged"
-    NETWORK_FILES = list(pathlib.Path().glob("*.json"))
+    NETWORK_FILES = list(pathlib.Path().glob("*_network.json"))
     main(BASE_NAME, NETWORK_FILES)

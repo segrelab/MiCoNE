@@ -361,7 +361,7 @@ class NetworkGroup(Collection):
         else:
             for cid, network in enumerate(self._networks):
                 path = pathlib.Path(fpath)
-                fname = f"{path.parent}/{path.stem}_{cid}{path.suffix}"
+                fname = f"{path.parent}/{cid}_{path.stem}{path.suffix}"
                 network.write(
                     fname,
                     pvalue_filter=pvalue_filter,

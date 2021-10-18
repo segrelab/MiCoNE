@@ -24,7 +24,7 @@ def main(
     )
     network.write(base_name + "_network.json")
     network.write(
-        base_name + "_thres_network.json", pvalue_filter=False, interaction_filter=True
+        base_name + "_network_thres.json", pvalue_filter=False, interaction_filter=True
     )
 
 
