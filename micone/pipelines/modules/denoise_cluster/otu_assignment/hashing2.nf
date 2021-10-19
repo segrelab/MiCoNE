@@ -2,7 +2,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 
 // Step3: Replace the ids with the hashes of the sequences
 process hashing2 {
-    label 'qiime1'
+    label 'qiime2'
     tag "${meta.id}"
     publishDir "${params.output_dir}/${f[0]}/${f[1]}/hashed_output/${meta.id}",
         mode: 'copy',

@@ -13,14 +13,13 @@ workflow open_reference_workflow {
             input_channel \
                 | join_reads \
                 | fastq2fasta \
-                | open_reference \
-                | hashing2
+                | open_reference
         } else {
             input_channel \
                 | fastq2fasta \
-                | open_reference \
-                | hashing2
+                | open_reference
         }
+        hashing2(open_reference.out.collect())
     emit:
         // hashing2 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')

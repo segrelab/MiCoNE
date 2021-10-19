@@ -11,14 +11,13 @@ workflow deblur_workflow {
         if (params.paired_end) {
             input_channel \
                 | join_reads \
-                | deblur \
-                | hashing3
+                | deblur
         } else {
             input_channel \
-                | deblur \
-                | hashing3
+                | deblur
 
         }
+        hashing3(deblur.out.collect())
     emit:
         // hashing3 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')

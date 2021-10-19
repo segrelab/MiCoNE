@@ -13,14 +13,13 @@ workflow de_novo_workflow {
             input_channel \
                 | join_reads \
                 | fastq2fasta \
-                | de_novo \
-                | hashing2
+                | de_novo
         } else {
             input_channel \
                 | fastq2fasta \
-                | de_novo \
-                | hashing2
+                | de_novo
         }
+        hashing2(de_novo.out.collect())
     emit:
         // hashing2 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
