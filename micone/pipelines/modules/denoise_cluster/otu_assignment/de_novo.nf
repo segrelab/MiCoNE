@@ -2,7 +2,7 @@ include { updateMeta } from '../../../functions/functions.nf'
 
 // Step2: de_novo OTU picking
 process de_novo {
-    label 'qiime1'
+    label 'qiime2'
     tag "${new_meta.id}"
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
@@ -16,5 +16,5 @@ process de_novo {
         ncpus = params.denoise_cluster.otu_assignment['de_novo']['ncpus']
         parameters = params.denoise_cluster.otu_assignment['de_novo']['parameters']
         parallel_option = ncpus > 1 ? "-a -O ${ncpus}" : ''
-        template 'denoise_cluster/otu_assignment/pick_de_novo_otus.sh'
+        template 'denoise_cluster/otu_assignment/cluster_de_novo.sh'
 }

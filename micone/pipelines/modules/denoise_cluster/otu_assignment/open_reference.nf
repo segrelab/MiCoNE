@@ -2,7 +2,7 @@ include { updateMeta } from '../../../functions/functions.nf'
 
 // Step2: open reference OTU picking
 process open_reference {
-    label 'qiime1'
+    label 'qiime2'
     tag "${new_meta.id}"
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
@@ -18,5 +18,5 @@ process open_reference {
         reference_sequences = params.denoise_cluster.otu_assignment['open_reference']['reference_sequences']
         picking_method = params.denoise_cluster.otu_assignment['open_reference']['picking_method']
         parallel_option = ncpus > 1 ? "-a -O ${ncpus}" : ''
-        template 'denoise_cluster/otu_assignment/pick_open_reference_otus.sh'
+        template 'denoise_cluster/otu_assignment/cluster_open_reference.sh'
 }

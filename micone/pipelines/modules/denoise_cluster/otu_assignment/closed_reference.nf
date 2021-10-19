@@ -2,7 +2,7 @@ include { updateMeta } from '../../../functions/functions.nf'
 
 // Step2: Closed reference OTU picking
 process closed_reference {
-    label 'qiime1'
+    label 'qiime2'
     tag "${new_meta.id}"
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
