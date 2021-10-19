@@ -13,9 +13,9 @@ process closed_reference {
     script:
         new_meta = updateMeta(meta)
         new_meta.denoise_cluster = 'closed_reference'
-        ncpus = params.denoise_cluster.otu_assignment['closed_reference']['ncpus']
-        parameters = params.denoise_cluster.otu_assignment['closed_reference']['parameters']
         reference_sequences = params.denoise_cluster.otu_assignment['closed_reference']['reference_sequences']
-        parallel_option = ncpus > 1 ? "-a -O ${ncpus}" : ''
+        percent_identity = params.denoise_cluster.otu_assignment['closed_reference']['percent_identity']
+        ncpus = params.denoise_cluster.otu_assignment['closed_reference']['ncpus']
+        strand = params.denoise_cluster.otu_assignment['closed_reference']['strand']
         template 'denoise_cluster/otu_assignment/pick_closed_reference_otus.sh'
 }

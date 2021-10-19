@@ -13,8 +13,10 @@ qiime vsearch dereplicate-sequences \
 qiime vsearch cluster-features-open-reference \
   --i-table table.qza \
   --i-sequences rep-seqs.qza \
-  --i-reference-sequences ${ref_seqs} \
+  --i-reference-sequences ${reference_sequences} \
   --p-perc-identity ${percent_identity} \
+  --p-strand ${strand} \
+  --p-threads ${ncpus} \
   --o-clustered-table table-or.qza \
   --o-clustered-sequences rep-seqs-or.qza \
   --o-new-reference-sequences new-ref-seqs-or.qza

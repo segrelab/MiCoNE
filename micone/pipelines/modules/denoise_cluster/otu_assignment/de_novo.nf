@@ -13,8 +13,7 @@ process de_novo {
     script:
         new_meta = updateMeta(meta)
         new_meta.denoise_cluster = 'de_novo'
+        percent_identity = params.denoise_cluster.otu_assignment['de_novo']['percent_identity']
         ncpus = params.denoise_cluster.otu_assignment['de_novo']['ncpus']
-        parameters = params.denoise_cluster.otu_assignment['de_novo']['parameters']
-        parallel_option = ncpus > 1 ? "-a -O ${ncpus}" : ''
         template 'denoise_cluster/otu_assignment/cluster_de_novo.sh'
 }

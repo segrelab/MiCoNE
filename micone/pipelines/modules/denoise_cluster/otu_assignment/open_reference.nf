@@ -13,10 +13,9 @@ process open_reference {
     script:
         new_meta = updateMeta(meta)
         new_meta.denoise_cluster = 'open_reference'
-        ncpus = params.denoise_cluster.otu_assignment['open_reference']['ncpus']
-        parameters = params.denoise_cluster.otu_assignment['open_reference']['parameters']
         reference_sequences = params.denoise_cluster.otu_assignment['open_reference']['reference_sequences']
-        picking_method = params.denoise_cluster.otu_assignment['open_reference']['picking_method']
-        parallel_option = ncpus > 1 ? "-a -O ${ncpus}" : ''
+        percent_identity = params.denoise_cluster.otu_assignment['open_reference']['percent_identity']
+        strand = params.denoise_cluster.otu_assignment['open_reference']['strand']
+        ncpus = params.denoise_cluster.otu_assignment['open_reference']['ncpus']
         template 'denoise_cluster/otu_assignment/cluster_open_reference.sh'
 }

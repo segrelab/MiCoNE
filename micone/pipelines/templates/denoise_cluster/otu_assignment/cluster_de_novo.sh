@@ -14,6 +14,7 @@ qiime vsearch cluster-features-de-novo \
   --i-table table.qza \
   --i-sequences rep-seqs.qza \
   --p-perc-identity ${percent_identity} \
+  --p-threads ${ncpus} \
   --o-clustered-table table-dn.qza \
   --o-clustered-sequences rep-seqs-dn.qza
 
