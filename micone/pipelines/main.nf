@@ -12,8 +12,8 @@ include { otu_processing_workflow } from './nf_micone/modules/otu_processing/otu
 include { network_inference_workflow } from './nf_micone/modules/network_inference/network_inference_workflow.nf'
 
 // Include data ingestion functions
-include { spp_data_ingestion } from './nf_micone/modules/utils/sp_data_ingestion.nf'
-include { sps_data_ingestion } from './nf_micone/modules/utils/sp_data_ingestion.nf'
+include { spp_data_ingestion } from './nf_micone/modules/utils/spp_data_ingestion.nf'
+include { sps_data_ingestion } from './nf_micone/modules/utils/sps_data_ingestion.nf'
 
 // Channels for samplesheets
 Channel
@@ -22,7 +22,7 @@ Channel
 
 workflow {
     ingestion = params.paired_end ? spp_data_ingestion : sps_data_ingestion
-    sequence_processing_workflow = params.paired_end ? sequence_processing_paired_workflow ? sequence_processing_single_workflow
+    sequence_processing_workflow = params.paired_end ? sequence_processing_paired_workflow : sequence_processing_single_workflow
     input_channel \
         | ingestion \
         | sequence_processing_workflow \

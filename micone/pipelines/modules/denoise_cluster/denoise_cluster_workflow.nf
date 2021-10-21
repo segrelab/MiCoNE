@@ -1,11 +1,6 @@
 // Main variables to be defined
 // NOTE: These should be defined before any include statements
 
-
-// Sequencing processing imports
-include { demultiplexing_illumina_workflow } from './sequence_processing/demultiplexing_illumina_workflow.nf'
-include { trim_filter_workflow } from './sequence_processing/trim_filter_workflow.nf'
-
 // Denoising clustering imports
 include { closed_reference_workflow } from './otu_assignment/closed_reference_workflow.nf'
 include { dada2_workflow } from './otu_assignment/dada2_workflow.nf'

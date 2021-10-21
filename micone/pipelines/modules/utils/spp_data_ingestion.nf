@@ -6,14 +6,14 @@
 // output2:
 // tuple val(meta), file(sample_metadata_files)
 
-workflow sps_data_ingestion {
+workflow spp_data_ingestion {
     take:
     samplesheet
 
     main:
     samplesheet
         .splitCsv(header: true, sep: ',')
-        .map { create_sps_channels(it) }
+        .map { create_spp_channels(it) }
         .multiMap { it ->
             reads: tuple(it[0], it[1], it[2], it[3])
             sample_md: tuple(it[0], it[4])
@@ -26,7 +26,7 @@ workflow sps_data_ingestion {
 }
 
 
-def create_sps_channels(LinkedHashMap row) {
+def create_spp_channels(LinkedHashMap row) {
     def meta = [:]
     meta.id = row.id
     def array = []

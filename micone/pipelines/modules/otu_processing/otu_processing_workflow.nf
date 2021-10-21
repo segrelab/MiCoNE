@@ -3,6 +3,7 @@
 
 
 // Imports
+include { split} from './transform/split.nf'
 include { normalize} from './transform/normalize.nf'
 include { group } from './transform/group.nf'
 include { biom2tsv } from './export/biom2tsv.nf'

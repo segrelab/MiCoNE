@@ -3,7 +3,7 @@ include { demultiplexing_illumina_single } from './demultiplexing_illumina_singl
 include { export_sequences } from './export_sequences.nf'
 
 
-workflow sequence_processing_single_workflow {
+workflow demultiplexing_single_workflow {
     take:
         // tuple val(meta), file(sequence_file), file(barcode_file), file(mapping_file)
         input_channel

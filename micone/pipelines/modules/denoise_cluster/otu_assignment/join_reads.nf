@@ -5,7 +5,7 @@ process join_reads {
     label 'qiime2'
     tag "${meta.id}"
     publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
-        saveAs: { filename -> filename.split("/")[1] }
+        saveAs: { filename -> filename.split("/")[1] },
         mode: 'copy',
         overwrite: true
     input:
