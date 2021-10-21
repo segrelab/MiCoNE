@@ -1,16 +1,18 @@
-include { getHierarchy } from '../../../functions/functions.nf'
+include { getHierarchy; updateMeta } from '../../../functions/functions.nf'
 
 process normalize {
     label 'micone'
-    tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${directory}/${meta.id}",
+    tag "${new_meta.id}"
+    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${directory}/${new_meta.id}",
         mode: 'copy',
         overwrite: true
     input:
         tuple val(meta), file(otu_file)
     output:
-        tuple val(meta), file("*_normalized.biom")
+        tuple val(new_meta), file("*_normalized.biom")
     script:
+        new_meta = updateMeta(meta)
+        new_meta.id = "${otu_file.baseName}"  // "meta.id_label"
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}"
