@@ -15,8 +15,8 @@ workflow spp_data_ingestion {
         .splitCsv(header: true, sep: ',')
         .map { create_spp_channels(it) }
         .multiMap { row ->
-            reads: tuple(row[0], row[2], row[3], row[4], row[5])
-            sample_md: tuple(row[0], row[6])
+            reads: tuple(row[0], row[1], row[2], row[3], row[4])
+            sample_md: tuple(row[0], row[5])
         }
         .set { result }
 

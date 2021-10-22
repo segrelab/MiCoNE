@@ -15,8 +15,8 @@ workflow sps_data_ingestion {
         .splitCsv(header: true, sep: ',')
         .map { create_sps_channels(it) }
         .multiMap { row ->
-            reads: tuple(row[0], row[2], row[3], row[4])
-            sample_md: tuple(row[0], row[5])
+            reads: tuple(row[0], row[1], row[2], row[3])
+            sample_md: tuple(row[0], row[4])
         }
         .set { result }
 

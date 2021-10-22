@@ -15,8 +15,8 @@ workflow dc_data_ingestion {
         .splitCsv(header: true, sep: ',')
         .map { create_dc_channels(it) }
         .multiMap { row ->
-            reads: tuple(row[0], row[2], row[3])
-            sample_md: tuple(row[0], row[4])
+            reads: tuple(row[0], row[1], row[2])
+            sample_md: tuple(row[0], row[3])
         }
         .set { result }
 
