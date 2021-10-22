@@ -1,6 +1,6 @@
 // input:
 // samplesheet
-// id,trimmed_sequences,manifest,sample_metadata
+// id,run,trimmed_sequences,manifest,sample_metadata
 // output1:
 // tuple val(meta), file(trimmed_sequences), file(manifest_file)
 // output2:
@@ -14,9 +14,9 @@ workflow dc_data_ingestion {
     samplesheet
         .splitCsv(header: true, sep: ',')
         .map { create_dc_channels(it) }
-        .multiMap { it ->
-            reads: tuple(it[0], it[1], it[2])
-            sample_md: tuple(it[0], it[3])
+        .multiMap { row ->
+            reads: tuple(row[0], row[2], row[3])
+            sample_md: tuple(row[0], row[4])
         }
         .set { result }
 
@@ -29,6 +29,7 @@ workflow dc_data_ingestion {
 def create_dc_channels(LinkedHashMap row) {
     def meta = [:]
     meta.id = row.id
+    meta.run = row.run
     def array = []
     if (!file(row.trimmed_sequences).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Trimmed_Sequences file does not exist!\n${row.trimmed_sequences}"

@@ -1,6 +1,6 @@
 // input:
 // samplesheet
-// id,forward,reverse,barcodes,mapping,sample_metadata
+// id,run,forward,reverse,barcodes,mapping,sample_metadata
 // output1:
 // tuple val(meta), file(forward_files), file(reverse_files), file(barcode_files), file(mapping_files)
 // output2:
@@ -14,9 +14,9 @@ workflow spp_data_ingestion {
     samplesheet
         .splitCsv(header: true, sep: ',')
         .map { create_spp_channels(it) }
-        .multiMap { it ->
-            reads: tuple(it[0], it[1], it[2], it[3])
-            sample_md: tuple(it[0], it[4])
+        .multiMap { row ->
+            reads: tuple(row[0], row[2], row[3], row[4], row[5])
+            sample_md: tuple(row[0], row[6])
         }
         .set { result }
 
@@ -29,6 +29,7 @@ workflow spp_data_ingestion {
 def create_spp_channels(LinkedHashMap row) {
     def meta = [:]
     meta.id = row.id
+    meta.run = row.run
     def array = []
     if (!file(row.forward_sequences).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Forward sequences file does not exist!\n${row.forward_sequences}"

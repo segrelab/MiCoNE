@@ -1,6 +1,6 @@
 // input:
 // samplesheet
-// id,sequences,barcodes,mapping,sample_metadata
+// id,run,sequences,barcodes,mapping,sample_metadata
 // output1:
 // tuple val(meta), file(sequence_files), file(barcode_files), file(mapping_files)
 // output2:
@@ -14,9 +14,9 @@ workflow sps_data_ingestion {
     samplesheet
         .splitCsv(header: true, sep: ',')
         .map { create_sps_channels(it) }
-        .multiMap { it ->
-            reads: tuple(it[0], it[1], it[2], it[3])
-            sample_md: tuple(it[0], it[4])
+        .multiMap { row ->
+            reads: tuple(row[0], row[2], row[3], row[4])
+            sample_md: tuple(row[0], row[5])
         }
         .set { result }
 
@@ -29,6 +29,7 @@ workflow sps_data_ingestion {
 def create_sps_channels(LinkedHashMap row) {
     def meta = [:]
     meta.id = row.id
+    meta.run = row.run
     def array = []
     if (!file(row.sequences).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Sequences file does not exist!\n${row.sequences}"
