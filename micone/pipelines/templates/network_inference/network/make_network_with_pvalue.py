@@ -27,9 +27,9 @@ def main(
         pvalue_threshold=pvalue_threshold,
     )
     network.write(base_name + "_network.json")
-    network.write(
-        base_name + "_network_thres.json", pvalue_filter=True, interaction_filter=True
-    )
+    # network.write(
+    #     base_name + "_network_thres.json", pvalue_filter=True, interaction_filter=True
+    # )
 
 
 def create_cmetadata():

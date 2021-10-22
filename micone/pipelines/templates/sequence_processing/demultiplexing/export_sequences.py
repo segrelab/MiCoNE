@@ -19,7 +19,7 @@ def fix_manifest(manifest_file):
         shutil.move(fname, new_fname)
         data[i][1] = "\$PWD/" + data[i][0] + ".fastq.gz"
     with open(manifest_file, "w") as fid:
-        csv_writer = csv.writer(fid, delimiter=",")
+        csv_writer = csv.writer(fid, delimiter="\\t")
         csv_writer.writerow(header)
         csv_writer.writerows(data)
 

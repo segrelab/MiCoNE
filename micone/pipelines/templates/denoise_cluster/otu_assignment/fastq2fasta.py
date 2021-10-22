@@ -33,10 +33,10 @@ def main(manifest_file, dataset_name):
     os.mkdir("fasta")
     data = []
     with open(manifest_file) as fid:
-        _ = next(fid).strip().split(",")
+        _ = next(fid).strip().split("\\t")
         for line in fid:
             if not line.startswith("#"):
-                sample_name, file_location, _ = line.strip().split(",")
+                sample_name, file_location, _ = line.strip().split("\\t")
                 data.append((sample_name, file_location.rsplit("/")[-1]))
     fasta_files = map(convert, data)
     merged_fasta_file = dataset_name + ".fasta"

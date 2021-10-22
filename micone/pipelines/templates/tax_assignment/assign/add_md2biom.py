@@ -36,7 +36,7 @@ def main(otu_table_file, tax_assignment_file, sample_metadata_file):
     otu_table.del_metadata(axis="sample")
     otu_table.add_metadata(sample_metadata.to_dict(orient="index"), axis="sample")
     with biom_open("otu_table_wtax.biom", "w") as fid:
-        otu_table.to_hdf5(fid, "Constructed using the blast pipeline")
+        otu_table.to_hdf5(fid, "Constructed using the micone pipeline")
 
 
 if __name__ == "__main__":

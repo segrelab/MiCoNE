@@ -52,7 +52,9 @@ def hashing(unhashed_otu_table_list, unhashed_rep_seqs_list, sample_metadata_lis
     assert otu_table_ids == rep_seq_ids
     assert len(otu_df.index) == len(rep_seq_ids)
     # Merge sample metadata
-    sample_metadata = pd.concat([pd.read_csv(s) for s in sample_metadata_list])
+    sample_metadata = pd.concat(
+        [pd.read_csv(s, sep="\\t") for s in sample_metadata_list]
+    )
     # Write files
     sample_metadata.to_csv("sample_metadata.tsv", sep="\\t", index=False)
     with biom_open("otu_table.biom", "w") as fid:
@@ -63,7 +65,7 @@ def hashing(unhashed_otu_table_list, unhashed_rep_seqs_list, sample_metadata_lis
 
 
 if __name__ == "__main__":
-    UNHASHED_OTU_TABLE_LIST = pathlib.Path().glob("*_unhashed_otu_table.biom")
-    UNHASHED_REP_SEQS_LIST = pathlib.Path().glob("*_unhashed_rep_seqs.fasta")
-    SAMPLE_METADATA_LIST = pathlib.Path().glob("*_sample_metadata.tsv")
+    UNHASHED_OTU_TABLE_LIST = pathlib.Path().glob("*unhashed_otu_table.biom")
+    UNHASHED_REP_SEQS_LIST = pathlib.Path().glob("*unhashed_rep_seqs.fasta")
+    SAMPLE_METADATA_LIST = pathlib.Path().glob("*sample_metadata.tsv")
     hashing(UNHASHED_OTU_TABLE_LIST, UNHASHED_REP_SEQS_LIST, SAMPLE_METADATA_LIST)

@@ -3,7 +3,7 @@
 
 
 // Imports
-include { split} from './transform/split.nf'
+include { fork} from './transform/fork.nf'
 include { normalize} from './transform/normalize.nf'
 include { group } from './transform/group.nf'
 include { biom2tsv } from './export/biom2tsv.nf'
@@ -14,11 +14,16 @@ workflow otu_processing_workflow {
         // tuple val(id), file(otu_file)
         input_channel
     main:
-        split(input_channel)
-        md_channel = split.out.first()
-        data_channel = split.out.last().flatten()
-        split_channel = md_channel.cross(data_channel)
-        normalize(split_channel)
+        fork(input_channel)
+        // HACK
+        column = params.otu_processing.transform['fork']['column']
+        if (column) {
+                fork_channel = fork.out.flatMap { x -> x[1].collect { y -> [x[0], y] }}
+        } else {
+                fork_channel = fork.out
+        }
+        fork_channel.view()
+        normalize(fork_channel)
         group(normalize.out, params.otu_processing.transform['group']['tax_levels'])
         biom2tsv(group.out)
     emit:

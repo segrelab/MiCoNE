@@ -24,7 +24,7 @@ def make_biom(seq_table, output_file):
 def main(seqtable_file, meta_id, sample_metadata):
     seq_table = pd.read_table(seqtable_file, index_col=0)
     make_repseqs(list(seq_table.index), f"{meta_id}_unhashed_rep_seqs.fasta")
-    make_biom(seq_table, f"{meta_id}.unhashed_otu_table.biom")
+    make_biom(seq_table, f"{meta_id}_unhashed_otu_table.biom")
     sample_metadata_path = pathlib.Path(sample_metadata)
     sample_metadata_path.rename(f"{meta_id}_sample_metadata.tsv")
 

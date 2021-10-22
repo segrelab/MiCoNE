@@ -8,7 +8,11 @@ multithread <- ${ncpus}
 # get files
 filts <- sort(list.files(".", pattern="fastq.gz\$", full.names=TRUE))
 # Extract sample names, assuming filenames have format: SAMPLENAME_XXX.fastq
-sample.names <- sapply(strsplit(basename(filts), "_"), `[`, 1)
+sample.file.names <- sapply(strsplit(basename(filts), "_"), `[`, 1)
+
+
+manifest <- read.table("MANIFEST", header=TRUE)
+sample.names <- sort(manifest\$sample.id)
 names(filts) <- sample.names
 
 

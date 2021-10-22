@@ -10,13 +10,16 @@ multithread <- ${ncpus}
 filtFs <- sort(list.files(".", pattern="_R1_001.fastq.gz\$", full.names=TRUE))
 filtRs <- sort(list.files(".", pattern="_R2_001.fastq.gz\$", full.names=TRUE))
 # Extract sample names, assuming filenames have format: SAMPLENAME_XXX.fastq
-sample.names <- sapply(strsplit(basename(filtFs), "_"), `[`, 1)
-sample.namesR <- sapply(strsplit(basename(filtRs), "_"), `[`, 1)
+sample.file.names <- sapply(strsplit(basename(filtFs), "_"), `[`, 1)
+sample.file.namesR <- sapply(strsplit(basename(filtRs), "_"), `[`, 1)
 
-if(!identical(sample.names, sample.namesR)) stop("Forward and reverse files do not match.")
+if(!identical(sample.file.names, sample.file.namesR)) stop("Forward and reverse files do not match.")
+
+manifest <- read.table("MANIFEST", header=TRUE)
+sample.names <- sort(manifest\$sample.id)
 
 names(filtFs) <- sample.names
-names(filtRs) <- sample.namesR
+names(filtRs) <- sample.names
 
 
 # Denoising

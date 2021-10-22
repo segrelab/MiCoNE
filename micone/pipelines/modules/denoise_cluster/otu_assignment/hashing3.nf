@@ -10,7 +10,7 @@ process hashing3 {
     input:
         tuple val(meta), file(unhashed_otu_table), file(unhashed_rep_seqs), file(samplemetadata_files)
     output:
-        tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file(samplemetadata_files)
+        tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file('sample_metadata.tsv')
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
