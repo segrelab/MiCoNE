@@ -1,7 +1,7 @@
 // Import the sequences
 process import_sequences_paired {
     label 'qiime2'
-    tag "${meta.id}"
+    tag "${meta.id}-${meta.run}"
     input:
         tuple val(meta), file(forward_file), file(reverse_file), file(barcode_file), file(mapping_file)
     output:

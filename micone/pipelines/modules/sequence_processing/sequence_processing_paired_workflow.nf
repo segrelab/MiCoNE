@@ -12,7 +12,12 @@ workflow sequence_processing_paired_workflow {
         input_channel \
             | demultiplexing_paired_workflow \
             | trimming_paired_workflow
-        joined_channel = trimming_paired_workflow.out.join(samplemetadata_channel, failOnMismatch: true)
+        tr_map_channel = trimming_paired_workflow.out.map {
+            [it[0]["id"] + "-" + it[0]["run"], it[0], it[1], it[2]]
+        }
+        sm_map_channel = samplemetadata_channel.map { [it[0]["id"] + "-" + it[0]["run"], it[1]] }
+        joined_map_channel = tr_map_channel.join(sm_map_channel, by: 0, failOnMismatch: true)
+        joined_channel = joined_map_channel.map { [it[1], it[2], it[3], it[4]] }
     emit:
         // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST'), file(samplemetadata_files)
         joined_channel

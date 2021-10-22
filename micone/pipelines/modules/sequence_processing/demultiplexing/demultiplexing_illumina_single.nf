@@ -3,7 +3,7 @@ include { updateMeta } from '../../../functions/functions.nf'
 // demultiplex
 process demultiplexing_illumina_single {
     label 'qiime2'
-    tag "${new_meta.id}"
+    tag "${new_meta.id}-${new_meta.run}"
     input:
         tuple val(meta), file(sequence_artifact), file(mapping_file)
     output:

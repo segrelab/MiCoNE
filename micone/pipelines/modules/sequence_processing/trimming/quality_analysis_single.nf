@@ -4,8 +4,8 @@ include { getHierarchy } from '../../../functions/functions.nf'
 // a. quality and b. sequence retainment
 process quality_analysis_single {
     label 'qiime2'
-    tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    tag "${meta.id}-${meta.run}"
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}-${meta.run}",
         mode: 'copy',
         overwrite: true
     input:

@@ -3,7 +3,7 @@ include { updateMeta } from '../../../functions/functions.nf'
 // Step2: de_novo OTU picking
 process de_novo {
     label 'qiime2'
-    tag "${new_meta.id}"
+    tag "${new_meta.id}-${new_meta.run}"
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
     output:

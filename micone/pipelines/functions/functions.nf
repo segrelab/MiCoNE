@@ -1,6 +1,7 @@
 def updateMeta(Map args) {
     def Map meta = [:]
     meta.id                = args.id ?: ''
+    meta.run                = args.run ?: ''
     meta.single_end        = args.single_end ?: ''
     meta.strandedness      = args.strandedness ?: ''
     meta.denoise_cluster   = args.denoise_cluster ?: ''

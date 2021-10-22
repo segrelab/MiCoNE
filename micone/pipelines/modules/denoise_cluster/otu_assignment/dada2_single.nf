@@ -3,7 +3,7 @@ include { updateMeta } from '../../../functions/functions.nf'
 // Denoise using dada2
 process dada2_single {
     label 'dada2'
-    tag "${new_meta.id}"
+    tag "${new_meta.id}-${new_meta.run}"
     input:
         tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
     output:

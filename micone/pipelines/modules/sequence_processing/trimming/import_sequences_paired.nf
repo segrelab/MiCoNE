@@ -1,7 +1,7 @@
 // Import the sequences to qiime2 artifacts
 process import_sequences_paired {
     label 'qiime2'
-    tag "${meta.id}"
+    tag "${meta.id}-${meta.run}"
     input:
         tuple val(meta), file(sequence_files), file(manifest_file)
     output:

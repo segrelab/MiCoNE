@@ -3,8 +3,8 @@ include { getHierarchy } from '../../../functions/functions.nf'
 // Export the sequences and fix the manifest file
 process export_sequences {
     label 'qiime2'
-    tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/demultiplexed_sequences/${meta.id}",
+    tag "${meta.id}-${meta.run}"
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/demultiplexed_sequences/${meta.id}-${meta.run}",
         saveAs: { filename -> filename.split("/")[1] },
         mode: 'copy',
         overwrite: true

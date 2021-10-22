@@ -3,8 +3,8 @@ include { getHierarchy } from '../../../functions/functions.nf'
 // Join reads
 process join_reads {
     label 'qiime2'
-    tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}",
+    tag "${meta.id}-${meta.run}"
+    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}-${meta.run}",
         saveAs: { filename -> filename.split("/")[1] },
         mode: 'copy',
         overwrite: true

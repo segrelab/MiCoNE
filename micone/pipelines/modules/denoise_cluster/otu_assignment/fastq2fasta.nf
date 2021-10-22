@@ -1,7 +1,7 @@
 // Convert fastq to fasta and merge
 process fastq2fasta {
     label 'qiime2'
-    tag "${meta.id}"
+    tag "${meta.id}-${meta.run}"
     input:
         tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
     output:

@@ -1,7 +1,7 @@
 // 2. Obtain sampled quality profiles via demux viz
 process export_visualization_paired {
     label 'qiime2'
-    tag "${meta.id}"
+    tag "${meta.id}-${meta.run}"
     input:
         tuple val(meta), file(sequence_artifact)
     output:

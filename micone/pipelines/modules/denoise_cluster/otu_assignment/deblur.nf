@@ -3,7 +3,7 @@ include { updateMeta } from '../../../functions/functions.nf'
 // Step1: Denoise using deblur
 process deblur {
     label 'qiime2'
-    tag "${new_meta.id}"
+    tag "${new_meta.id}-${new_meta.run}"
     input:
         tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
     output:
