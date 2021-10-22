@@ -12,8 +12,8 @@ process blast {
         tuple val(new_meta), file(otu_table_file), file("taxonomy.tsv"), file(sample_metadata_file)
     script:
         new_meta = updateMeta(meta)
-        new_meta.tax_assignment = 'blast'
         reference_sequences = params.tax_assignment.assign['blast']['reference_sequences']
+        new_meta.tax_assignment = "blast(${file(reference_sequences).baseName.split('-')[0]})"
         new_meta.taxonomy_database = reference_sequences
         tax_map = params.tax_assignment.assign['blast']['tax_map']
         max_accepts = params.tax_assignment.assign['blast']['max_accepts']

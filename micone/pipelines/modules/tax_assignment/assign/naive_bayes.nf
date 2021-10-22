@@ -12,8 +12,8 @@ process naive_bayes {
         tuple val(new_meta), file(otu_table), file('taxonomy.tsv'), file(sample_metadata)
     script:
         new_meta = updateMeta(meta)
-        new_meta.tax_assignment = 'naive_bayes'
         classifier = params.tax_assignment.assign['naive_bayes']['classifier']
+        new_meta.tax_assignment = "naive_bayes(${file(classifier).baseName.split('-')[0]})"
         new_meta.taxonomy_database = classifier
         confidence = params.tax_assignment.assign['naive_bayes']['confidence']
         ncpus = params.tax_assignment.assign['naive_bayes']['ncpus']
