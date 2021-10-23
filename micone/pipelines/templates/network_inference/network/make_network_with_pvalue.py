@@ -2,7 +2,7 @@
 
 import json
 
-from micone import Network, NetworkGroup
+from micone import Network
 
 
 def main(
@@ -49,10 +49,14 @@ if __name__ == "__main__":
     CORR_FILE = "${corr_file}"
     PVALUE_FILE = "${pvalue_file}"
     META_FILE = "${metadata_file}"
+    if not META_FILE:
+        raise ValueError(
+            "The metadata file needs to be supplied via network.config in make_network_with_pvalue"
+        )
     OBSMETA_FILE = "${obs_metadata}"
     CHILDREN_FILE = "${children_map}"
-    INTERACTION_THRESHOLD = ${interaction_threshold}
-    PVALUE_THRESHOLD = ${pvalue_threshold}
+    INTERACTION_THRESHOLD = float("${interaction_threshold}")
+    PVALUE_THRESHOLD = float("${pvalue_threshold}")
     create_cmetadata()
     CMETA_FILE = "cmetadata.json"
     main(

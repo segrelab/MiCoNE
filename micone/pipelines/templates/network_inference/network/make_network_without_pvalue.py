@@ -45,9 +45,13 @@ if __name__ == "__main__":
     BASE_NAME = "${meta.id}"
     CORR_FILE = "${corr_file}"
     META_FILE = "${metadata_file}"
+    if not META_FILE:
+        raise ValueError(
+            "The metadata file needs to be supplied via network.config in make_network_without_pvalue"
+        )
     OBSMETA_FILE = "${obs_metadata}"
     CHILDREN_FILE = "${children_map}"
-    INTERACTION_THRESHOLD = ${interaction_threshold}
+    INTERACTION_THRESHOLD = float("${interaction_threshold}")
     create_cmetadata()
     CMETA_FILE = "cmetadata.json"
     main(
