@@ -7,7 +7,7 @@ process closed_reference {
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
     output:
-        tuple val(new_meta), file('*_unhashed_otu_table.biom'), file('*_unhashed_rep_seqs.fasta'), file('log*.txt'), file('*_sample_metadata.tsv')
+        tuple val(new_meta), file('*_unhashed_otu_table.biom'), file('*_unhashed_rep_seqs.fasta'), file('*_sample_metadata.tsv')
     when:
         "closed_reference" in params.denoise_cluster.otu_assignment['selection']
     script:
@@ -17,5 +17,5 @@ process closed_reference {
         percent_identity = params.denoise_cluster.otu_assignment['closed_reference']['percent_identity']
         ncpus = params.denoise_cluster.otu_assignment['closed_reference']['ncpus']
         strand = params.denoise_cluster.otu_assignment['closed_reference']['strand']
-        template 'denoise_cluster/otu_assignment/pick_closed_reference_otus.sh'
+        template 'denoise_cluster/otu_assignment/cluster_closed_reference.sh'
 }
