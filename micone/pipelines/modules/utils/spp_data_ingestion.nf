@@ -31,10 +31,10 @@ def create_spp_channels(LinkedHashMap row) {
     meta.id = row.id
     meta.run = row.run
     def array = []
-    if (!file(row.forward_sequences).exists()) {
+    if (!file(row.forward).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Forward sequences file does not exist!\n${row.forward_sequences}"
     }
-    if (!file(row.reverse_sequences).exists()) {
+    if (!file(row.reverse).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Reverse sequences file does not exist!\n${row.reverse_sequences}"
     }
     if (!file(row.barcodes).exists()) {
@@ -46,6 +46,6 @@ def create_spp_channels(LinkedHashMap row) {
     if (!file(row.sample_metadata).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Sample_Metadata file does not exist!\n${row.sample_metadata}"
     }
-    array = [ meta, file(row.forward_sequences), file(row.reverse_sequences), file(row.barcodes), file(row.mapping), file(row.sample_metadata) ]
+    array = [ meta, file(row.forward), file(row.reverse), file(row.barcodes), file(row.mapping), file(row.sample_metadata) ]
     return array
 }
