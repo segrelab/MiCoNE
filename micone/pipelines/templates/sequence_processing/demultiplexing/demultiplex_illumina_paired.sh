@@ -3,7 +3,7 @@
 qiime demux emp-paired \
     --i-seqs ${sequence_artifact} \
     --m-barcodes-file ${mapping_file} \
-    --m-barcodes-column BarcodeSequence \
+    --m-barcodes-column ${barcode_column} \
     ${rcb} \
     ${rcmb} \
     --o-per-sample-sequences ${meta.id}_demux.qza \
