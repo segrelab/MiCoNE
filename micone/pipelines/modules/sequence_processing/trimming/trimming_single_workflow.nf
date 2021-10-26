@@ -6,7 +6,7 @@ include { trimming_single } from './trimming_single.nf'
 
 workflow trimming_single_workflow {
     take:
-        // tuple val(meta), file(sequence_file), file(manifest_file)
+        // tuple val(meta), file(sequence_files), file(manifest_file), file(sequence_metadata)
         input_channel
     main:
         input_channel \

@@ -14,6 +14,6 @@ workflow demultiplexing_single_workflow {
             | export_sequences
     emit:
         // export_sequences and join_reads has publishDir
-        // tuple val(meta), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST')
+        // tuple val(meta), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST'), file('demux_seqs/metadata.yml')
         export_sequences.out
 }

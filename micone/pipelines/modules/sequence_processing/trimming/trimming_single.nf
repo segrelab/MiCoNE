@@ -9,7 +9,7 @@ process trimming_single {
         mode: 'copy',
         overwrite: true
     input:
-        tuple val(meta), file(trim_cmd), file(sequence_files), file(manifest_file)
+        tuple val(meta), file(trim_cmd), file(sequence_files), file(manifest_file), file(sequence_metadata)
     output:
         tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST')
     script:

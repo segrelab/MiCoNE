@@ -11,9 +11,9 @@ process export_sequences {
     input:
         tuple val(meta), file(demux_artifact)
     output:
-        tuple val(meta), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST')
+    tuple val(meta), file('demux_seqs/*.fastq.gz'), file('demux_seqs/MANIFEST'), file('demux_seqs/metadata.yml')
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        template 'sequence_processing/demultiplexing/export_sequences.py'
+        template 'sequence_processing/demultiplexing/export_sequences.sh'
 }

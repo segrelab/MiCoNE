@@ -6,7 +6,7 @@ include { trimming_paired } from './trimming_paired.nf'
 
 workflow trimming_paired_workflow {
     take:
-        // tuple val(meta), file(sequence_file), file(manifest_file)
+        // tuple val(meta), file(sequence_files), file(manifest_file), file(sequence_metadata)
         input_channel
     main:
         input_channel \

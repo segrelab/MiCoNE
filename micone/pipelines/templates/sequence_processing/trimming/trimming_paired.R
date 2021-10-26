@@ -5,8 +5,8 @@ suppressWarnings(library(dada2))
 multithread <- ${ncpus}
 maxEE <- ${max_ee}
 truncQ <- ${trunc_q}
-forward_trim <- "forward_trim.txt"
-reverse_trim <- "reverse_trim.txt"
+forward_trim_cmd <- "forward_trim.txt"
+reverse_trim_cmd <- "reverse_trim.txt"
 
 forward_untrimmed.reads <- list.files(".", pattern="_R1_001.fastq.gz\$", full.names=TRUE)
 reverse_untrimmed.reads <- list.files(".", pattern="_R2_001.fastq.gz\$", full.names=TRUE)
@@ -19,7 +19,8 @@ reverse_untrimmed.reads <- list.files(".", pattern="_R2_001.fastq.gz\$", full.na
   }
 
 # read trim and filter commands
-trim.cmd <- read.csv(trim_cmd, header=FALSE)
+forward_trim.cmd <- read.csv(forward_trim_cmd, header=FALSE)
+reverse_trim.cmd <- read.csv(reverse_trim_cmd, header=FALSE)
 trimLeft <- c(forward_trim.cmd[1,2], reverse_trim.cmd[1,2])
 truncLen <- c(forward_trim.cmd[2,2], reverse_trim.cmd[2,2])
 
