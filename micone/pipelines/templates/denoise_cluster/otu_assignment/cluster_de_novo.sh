@@ -26,6 +26,6 @@ qiime tools export \
     --input-path rep-seqs-dn.qza \
     --output-path rep_seqs
 
-mv table/feature-table.biom ${meta.id}_unhashed_otu_table.biom
-mv rep_seqs/dna-sequences.fasta ${meta.id}_unhashed_rep_seqs.fasta
-mv ${samplemetadata_files} ${meta.id}_sample_metadata.tsv
+mv table/feature-table.biom ${meta.id}-${meta.run}_unhashed_otu_table.biom
+mv rep_seqs/dna-sequences.fasta ${meta.id}-${meta.run}_unhashed_rep_seqs.fasta
+mv ${samplemetadata_files} ${meta.id}-${meta.run}_sample_metadata.tsv

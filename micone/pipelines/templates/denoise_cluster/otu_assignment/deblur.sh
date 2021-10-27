@@ -25,6 +25,6 @@ deblur build-biom-table \
     deblur_output/deblur_working_dir \
     otu_table
 
-mv otu_table/all.biom ${meta.id}_unhashed_otu_table.biom
-mv otu_table/all.seq.fa ${meta.id}_unhashed_rep_seqs.fasta
-mv ${samplemetadata_files} ${meta.id}_sample_metadata.tsv
+mv otu_table/all.biom ${meta.id}-${meta.run}_unhashed_otu_table.biom
+mv otu_table/all.seq.fa ${meta.id}-${meta.run}_unhashed_rep_seqs.fasta
+mv ${samplemetadata_files} ${meta.id}-${meta.run}_sample_metadata.tsv

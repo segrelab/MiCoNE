@@ -32,5 +32,5 @@ def main(seqtable_file, meta_id, sample_metadata):
 if __name__ == "__main__":
     SEQ_TABLE_FILE = "${seq_table_file}"
     SAMPLE_METADATA = "${samplemetadata_files}"
-    META_ID = "${meta.id}"
+    META_ID = "${meta.id}-${meta.run}"
     main(SEQ_TABLE_FILE, META_ID, SAMPLE_METADATA)
