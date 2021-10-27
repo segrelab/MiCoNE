@@ -1,6 +1,6 @@
 // input:
 // samplesheet
-// id,run,trimmed_sequences,manifest,sample_metadata
+// id,run,trimmed_sequences,manifest,sequence_metadata,sample_metadata
 // output1:
 // tuple val(meta), file(trimmed_sequences), file(manifest_file)
 // output2:
@@ -14,15 +14,9 @@ workflow dc_data_ingestion {
     samplesheet
         .splitCsv(header: true, sep: ',')
         .map { create_dc_channels(it) }
-        .multiMap { row ->
-            reads: tuple(row[0], row[1], row[2])
-            sample_md: tuple(row[0], row[3])
-        }
         .set { result }
-
     emit:
-    reads = result.reads
-    sample_md = result.sample_md
+    result
 }
 
 
@@ -37,9 +31,12 @@ def create_dc_channels(LinkedHashMap row) {
     if (!file(row.manifest).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Manifest file does not exist!\n${row.manifest}"
     }
+    if (!file(row.sequence_metadata).exists()) {
+        exit 1, "ERROR: Please check input samplesheet -> Sequence_Metadata file does not exist!\n${row.sequence_metadata}"
+    }
     if (!file(row.sample_metadata).exists()) {
         exit 1, "ERROR: Please check input samplesheet -> Sample_Metadata file does not exist!\n${row.sample_metadata}"
     }
-    array = [ meta, file(row.trimmed_sequences), file(row.manifest), file(row.sample_metadata) ]
+    array = [ meta, file(row.trimmed_sequences), file(row.manifest), file(row.sequence_metadata), file(row.sample_metadata) ]
     return array
 }
