@@ -22,7 +22,6 @@ workflow otu_processing_workflow {
         } else {
                 fork_channel = fork.out
         }
-        fork_channel.view()
         normalize(fork_channel)
         group(normalize.out, params.otu_processing.transform['group']['tax_levels'])
         biom2tsv(group.out)

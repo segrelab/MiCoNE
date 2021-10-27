@@ -32,8 +32,6 @@ if __name__ == "__main__":
         if label == "":
             split_otu.write(ID_, fol_path=str(folder))
         elif label is None:
-            warn(f"Unable to split on column {COLUMN}")
-            otu = Otu.load_data(OTU_FILE)
-            otu.write(ID_, fol_path=str(folder))
+            raise ValueError(f"Unable to split on column {COLUMN}")
         else:
             split_otu.write(ID_ + f"_{label}", fol_path=str(folder))
