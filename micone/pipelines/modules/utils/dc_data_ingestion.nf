@@ -25,7 +25,7 @@ def create_dc_channels(LinkedHashMap row) {
     meta.id = row.id
     meta.run = row.run
     def array = []
-    if (!file(row.trimmed_sequences).exists()) {
+    if (!file(row.trimmed_sequences)) {
         exit 1, "ERROR: Please check input samplesheet -> Trimmed_Sequences file does not exist!\n${row.trimmed_sequences}"
     }
     if (!file(row.manifest).exists()) {
