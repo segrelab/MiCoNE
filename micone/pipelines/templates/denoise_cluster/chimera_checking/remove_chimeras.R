@@ -7,7 +7,7 @@ multithread <- ${ncpus}
 
 # load table and convert to matrix
 seq.table.file <- "${seqtable_file}"
-seq.table <- read.csv(seq.table.file, sep="\\t")
+seq.table <- read.csv(seq.table.file, sep="\\t", check.names=FALSE)
 rownames(seq.table) <- seq.table[,1]
 seq.table <- seq.table[ -c(1) ]
 seq.mat <- data.matrix(seq.table)

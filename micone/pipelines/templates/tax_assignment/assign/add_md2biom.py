@@ -23,9 +23,9 @@ def tax_splitter(full_tax):
 def main(otu_table_file, tax_assignment_file, sample_metadata_file):
     otu_table = load_table(otu_table_file)
     if os.path.splitext(sample_metadata_file)[1] == "csv":
-        sample_metadata = pd.read_csv(sample_metadata_file, index_col=0)
+        sample_metadata = pd.read_csv(sample_metadata_file, index_col=0, comment="#")
     else:
-        sample_metadata = pd.read_table(sample_metadata_file, index_col=0)
+        sample_metadata = pd.read_table(sample_metadata_file, index_col=0, comment="#")
     tax_assignment = pd.read_table(tax_assignment_file, index_col=0)
     obs_metadata = tax_assignment[["Taxon"]].apply(tax_splitter, axis=1)
     for index in otu_table.ids("observation"):
