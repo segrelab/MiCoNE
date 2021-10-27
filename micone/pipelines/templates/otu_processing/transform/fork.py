@@ -29,7 +29,11 @@ if __name__ == "__main__":
     filter_fun = lambda values, id_, md: True if any(values > 0.0) else False
     for label, split_otu in split_results:
         split_otu.filter(func=filter_fun, axis="observation")
-        if label:
-            split_otu.write(ID_ + f"_{label}", fol_path=str(folder))
-        else:
+        if label == "":
             split_otu.write(ID_, fol_path=str(folder))
+        elif label is None:
+            warn(f"Unable to split on column {COLUMN}")
+            otu = Otu.load_data(OTU_FILE)
+            otu.write(ID_, fol_path=str(folder))
+        else:
+            split_otu.write(ID_ + f"_{label}", fol_path=str(folder))
