@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import pathlib
 import os
 import subprocess
 
@@ -17,7 +18,7 @@ def merge(fasta_files, output_file):
     with open(output_file, "w") as wid:
         for fasta_file in fasta_files:
             with open(fasta_file) as rid:
-                sample_name = fasta_file.split("/")[-1].split(".")[0]
+                sample_name = pathlib.Path(fasta_file).stem
                 count = 0
                 for line in rid:
                     if line.startswith(">"):
