@@ -52,4 +52,7 @@ if(length(trimmed.reads) == 0) { # All reads were filtered out
   errQuit("No reads passed the filter (was truncLen longer than the read length?)", status=2)
 }
 
-file.copy("MANIFEST", "trimmed")
+manifest <- read.csv("MANIFEST", header=TRUE, check.names=FALSE)
+manifest_trimmed <- manifest[manifest[, "filename"] %in% basename(trimmed.reads),]
+
+write.csv(manifest_trimmed, "trimmed/MANIFEST", row.names=FALSE, quote=FALSE)

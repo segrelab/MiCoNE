@@ -5,11 +5,11 @@ process join_reads {
     label 'qiime2'
     tag "${meta.id}-${meta.run}"
     publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${meta.id}-${meta.run}",
-        saveAs: { filename -> filename.split("/")[1] },
+        saveAs: { filename -> filename.split("/")[-1] },
         mode: 'copy',
         overwrite: true
     input:
-        tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
+        tuple val(meta), file(sequence_files), file(manifest_file), file(sequence_metadata), file(samplemetadata_files)
     output:
         tuple val(meta), file('joined_reads/*.fastq.gz'), file('joined_reads/MANIFEST'), file(samplemetadata_files)
     script:

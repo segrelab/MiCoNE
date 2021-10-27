@@ -11,8 +11,8 @@ filts <- sort(list.files(".", pattern="fastq.gz\$", full.names=TRUE))
 sample.file.names <- sapply(strsplit(basename(filts), "_"), `[`, 1)
 
 
-manifest <- read.table("MANIFEST", header=TRUE)
-sample.names <- sort(manifest\$sample.id)
+manifest <- read.csv("MANIFEST", header=TRUE)
+sample.names <- sort(unique(manifest\$sample.id))
 names(filts) <- sample.names
 
 

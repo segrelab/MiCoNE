@@ -17,6 +17,6 @@ workflow trimming_single_workflow {
             | trimming_single
     emit:
         // triming and quality_analysis_single have publishDir
-        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST')
+        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST'), file(sequence_metadata)
         trimming_single.out
 }

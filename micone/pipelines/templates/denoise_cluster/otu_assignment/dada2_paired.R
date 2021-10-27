@@ -15,8 +15,8 @@ sample.file.namesR <- sapply(strsplit(basename(filtRs), "_"), `[`, 1)
 
 if(!identical(sample.file.names, sample.file.namesR)) stop("Forward and reverse files do not match.")
 
-manifest <- read.table("MANIFEST", header=TRUE)
-sample.names <- sort(manifest\$sample.id)
+manifest <- read.csv("MANIFEST", header=TRUE)
+sample.names <- sort(unique(manifest\$sample.id))
 
 names(filtFs) <- sample.names
 names(filtRs) <- sample.names

@@ -5,6 +5,7 @@ set -e
 mkdir sequence_folder
 mv ${sequence_files} sequence_folder
 mv ${manifest_file} sequence_folder
+mv ${sequence_metadata} sequence_folder
 
 deblur workflow \
     --seqs-fp  sequence_folder \

@@ -3,6 +3,7 @@
 mkdir sequence_folder
 mv ${sequence_files} sequence_folder
 mv ${manifest_file} sequence_folder
+mv ${sequence_metadata} sequence_folder
 
 qiime tools import \
     --input-path sequence_folder \

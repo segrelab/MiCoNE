@@ -5,7 +5,7 @@ process dada2_single {
     label 'dada2'
     tag "${new_meta.id}-${new_meta.run}"
     input:
-        tuple val(meta), file(sequence_files), file(manifest_file), file(samplemetadata_files)
+        tuple val(meta), file(sequence_files), file(manifest_file), file(sequence_metadata), file(samplemetadata_files)
     output:
         tuple val(new_meta), file("seq_table.tsv"), file(samplemetadata_files)
     when:

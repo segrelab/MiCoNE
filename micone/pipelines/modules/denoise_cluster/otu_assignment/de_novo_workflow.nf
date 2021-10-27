@@ -6,7 +6,7 @@ include { hashing2 } from './hashing2.nf'
 
 workflow de_novo_workflow {
     take:
-        // tuple val(meta), file(trimmed_sequences), file(manifest_file), file(samplemetadata_files)
+        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST'), file(sequence_metadata), file(samplemetadata_files)
         input_channel
     main:
         if (params.paired_end) {

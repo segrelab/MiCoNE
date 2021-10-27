@@ -6,7 +6,7 @@ include { hashing3 } from './hashing3.nf'
 
 workflow dada2_workflow {
     take:
-        // tuple val(meta), file(trimmed_sequences), file(manifest_file), file(samplemetadata_files)
+        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST'), file(sequence_metadata), file(samplemetadata_files)
         input_channel
     main:
         d2 = params.paired_end ? dada2_paired : dada2_single

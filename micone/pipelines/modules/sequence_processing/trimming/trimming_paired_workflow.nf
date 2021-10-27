@@ -17,6 +17,6 @@ workflow trimming_paired_workflow {
             | trimming_paired
     emit:
         // triming and quality_analysis_paired have publishDir
-        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST')
+        // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST'), file(sequence_metadata)
         trimming_paired.out
 }
