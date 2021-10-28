@@ -9,9 +9,12 @@ workflow blast_workflow {
         input_channel
     main:
         input_channel \
-            | import_reads \
-            | blast \
-            | add_md2biom
+            | import_reads
+        blast(
+            import_reads.out,
+            params.tax_assignment.assign['blast']['references']
+        )
+        add_md2biom(blast.out)
     emit:
         // add_md2biom has publishDir
         // tuple val(meta), file("otu_table_wtax.biom")
