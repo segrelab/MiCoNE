@@ -7,7 +7,7 @@ process open_reference {
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
     output:
-        val(meta), emit: meta_channel
+        val(new_meta), emit: meta_channel
         path('*_unhashed_otu_table.biom'), emit: otu_channel
         path('*_unhashed_rep_seqs.fasta'), emit: repseq_channel
         path('*_sample_metadata.tsv'), emit: samplemetadata_channel
