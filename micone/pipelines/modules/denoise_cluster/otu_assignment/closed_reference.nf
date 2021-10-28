@@ -7,7 +7,10 @@ process closed_reference {
     input:
         tuple val(meta), file(fasta_file), file(samplemetadata_files)
     output:
-        tuple val(new_meta), file('*_unhashed_otu_table.biom'), file('*_unhashed_rep_seqs.fasta'), file('*_sample_metadata.tsv')
+        val(meta), emit: meta_channel
+        path('*_unhashed_otu_table.biom'), emit: otu_channel
+        path('*_unhashed_rep_seqs.fasta'), emit: repseq_channel
+        path('*_sample_metadata.tsv'), emit: samplemetadata_channel
     when:
         "closed_reference" in params.denoise_cluster.otu_assignment['selection']
     script:

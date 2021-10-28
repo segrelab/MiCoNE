@@ -19,7 +19,12 @@ workflow de_novo_workflow {
                 | fastq2fasta \
                 | de_novo
         }
-        hashing2(de_novo.out.collect())
+        hashing2(
+            de_novo.out.meta_channel.first(),
+            de_novo.out.otu_channel.collect(),
+            de_novo.out.repseq_channel.collect(),
+            de_novo.out.samplemetadata_channel.collect()
+        )
     emit:
         // hashing2 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')

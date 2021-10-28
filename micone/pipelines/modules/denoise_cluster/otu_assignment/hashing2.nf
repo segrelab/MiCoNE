@@ -8,7 +8,10 @@ process hashing2 {
         mode: 'copy',
         overwrite: true
     input:
-        tuple val(meta), file(unhashed_otu_table), file(unhashed_rep_seqs), file(samplemetadata_files)
+        val(meta)
+        path(unhashed_otu_table)
+        path(unhashed_rep_seqs)
+        path(samplemetadata_files)
     output:
         tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta'), file('sample_metadata.tsv')
     script:

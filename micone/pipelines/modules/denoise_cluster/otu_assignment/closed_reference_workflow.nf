@@ -19,7 +19,12 @@ workflow closed_reference_workflow {
                 | fastq2fasta \
                 | closed_reference
         }
-        hashing2(closed_reference.out.collect())
+        hashing2(
+            closed_reference.out.meta_channel.first(),
+            closed_reference.out.otu_channel.collect(),
+            closed_reference.out.repseq_channel.collect(),
+            closed_reference.out.samplemetadata_channel.collect()
+        )
     emit:
         // hashing2 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')

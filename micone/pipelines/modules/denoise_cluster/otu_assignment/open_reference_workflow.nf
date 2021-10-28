@@ -19,7 +19,12 @@ workflow open_reference_workflow {
                 | fastq2fasta \
                 | open_reference
         }
-        hashing2(open_reference.out.collect())
+        hashing2(
+            open_reference.out.meta_channel.first(),
+            open_reference.out.otu_channel.collect(),
+            open_reference.out.repseq_channel.collect(),
+            open_reference.out.samplemetadata_channel.collect()
+        )
     emit:
         // hashing2 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')

@@ -13,7 +13,12 @@ workflow dada2_workflow {
         input_channel \
             | d2 \
             | make_biom_repseqs
-        hashing3(make_biom_repseqs.out.collect())
+        hashing3(
+            make_biom_repseqs.out.meta_channel.first(),
+            make_biom_repseqs.out.otu_channel.collect(),
+            make_biom_repseqs.out.repseq_channel.collect(),
+            make_biom_repseqs.out.samplemetadata_channel.collect()
+        )
     emit:
         // hashing3 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')

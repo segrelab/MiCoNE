@@ -17,7 +17,12 @@ workflow deblur_workflow {
                 | deblur
 
         }
-        hashing3(deblur.out.collect())
+        hashing3(
+            deblur.out.meta_channel.first(),
+            deblur.out.otu_channel.collect(),
+            deblur.out.repseq_channel.collect(),
+            deblur.out.samplemetadata_channel.collect()
+        )
     emit:
         // hashing3 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
