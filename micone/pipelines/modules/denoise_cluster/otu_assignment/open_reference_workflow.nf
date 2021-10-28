@@ -12,13 +12,15 @@ workflow open_reference_workflow {
         if (params.paired_end) {
             input_channel \
                 | join_reads \
-                | fastq2fasta \
-                | open_reference
+                | fastq2fasta
         } else {
             input_channel \
-                | fastq2fasta \
-                | open_reference
+                | fastq2fasta
         }
+        open_reference(
+            fastq2fasta.out,
+            params.denoise_cluster.otu_assignment['open_reference']['reference_sequences']
+        )
         hashing2(
             open_reference.out.meta_channel.first(),
             open_reference.out.otu_channel.collect(),
