@@ -9,7 +9,7 @@ process remove_bimera {
     when:
         "remove_bimera" in params.denoise_cluster.chimera_checking['selection']
     output:
-        val(meta), emit: meta_channel
+        val(new_meta), emit: meta_channel
         path('unhashed_otu_table.biom'), emit: otu_channel
         path('unhashed_rep_seqs.fasta'), emit: repseq_channel
         path(samplemetadata_files), emit: samplemetadata_channel
