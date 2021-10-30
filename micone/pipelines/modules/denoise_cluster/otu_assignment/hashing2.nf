@@ -4,7 +4,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process hashing2 {
     label 'qiime2'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/hashed_output/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${module_dir}/hashed_output/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -17,5 +17,6 @@ process hashing2 {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        module_dir = "${meta.denoise_cluster}"
         template 'denoise_cluster/otu_assignment/hashing2.py'
 }

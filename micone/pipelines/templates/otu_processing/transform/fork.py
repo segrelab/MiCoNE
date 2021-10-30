@@ -34,4 +34,4 @@ if __name__ == "__main__":
         elif label is None:
             raise ValueError(f"Unable to split on column {COLUMN}")
         else:
-            split_otu.write(ID_ + f"_{label}", fol_path=str(folder))
+            split_otu.write(ID_ + f"-{label}", fol_path=str(folder))

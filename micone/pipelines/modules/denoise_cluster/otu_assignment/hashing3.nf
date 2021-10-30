@@ -4,7 +4,7 @@ include { getHierarchy } from '../../../functions/functions.nf'
 process hashing3 {
     label 'dada2'
     tag "${meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/${f[1]}/${directory}/${meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/${module_dir}/${directory}/${meta.id}",
         mode: 'copy',
         overwrite: true
     input:
@@ -17,6 +17,7 @@ process hashing3 {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        module_dir = f[1] == 'remove_bimera' ? 'remove_bimera' : "${meta.denoise_cluster}"
         directory = f[1] == 'remove_bimera' ? "filtered_output/${meta.denoise_cluster}" : 'hashed_output'
         template 'denoise_cluster/otu_assignment/hashing3.py'
 }
