@@ -16,7 +16,7 @@ process open_reference {
         "open_reference" in params.denoise_cluster.otu_assignment['selection']
     script:
         new_meta = updateMeta(meta)
-        ref_seq_id = "${file(reference_sequences).simpleName}"
+        ref_seq_id = "${file(reference_sequences).parent.simpleName}"
         new_meta.denoise_cluster = "open_reference(${ref_seq_id})"
         percent_identity = params.denoise_cluster.otu_assignment['open_reference']['percent_identity']
         strand = params.denoise_cluster.otu_assignment['open_reference']['strand']
