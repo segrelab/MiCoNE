@@ -14,12 +14,14 @@ qiime tools import \
 
 qiime deblur denoise-16S \
     --i-demultiplexed-seqs seq_artifact.qza \
+    --p-hashed-feature-ids \
     --p-trim-length -1 \
     --p-min-reads ${min_reads} \
     --p-min-size ${min_size} \
     --p-jobs-to-start ${ncpus} \
     --o-representative-sequences rep-seqs.qza \
     --o-table table.qza \
+    --o-stats stats.qza
 
 qiime tools export \
     --input-path rep-seqs.qza \
