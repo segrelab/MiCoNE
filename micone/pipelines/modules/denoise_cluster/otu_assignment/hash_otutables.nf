@@ -1,7 +1,7 @@
 include { getHierarchy } from '../../../functions/functions.nf'
 
 // Step3: Replace the ids with the hashes of the sequences
-process hashing2 {
+process hash_otutables {
     label 'qiime2'
     tag "${meta.id}"
     publishDir "${params.output_dir}/${f[0]}/${module_dir}/hashed_output/${meta.id}",
@@ -18,5 +18,5 @@ process hashing2 {
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
         module_dir = "${meta.denoise_cluster}"
-        template 'denoise_cluster/otu_assignment/hashing2.py'
+        template 'denoise_cluster/otu_assignment/hash_otutables.py'
 }

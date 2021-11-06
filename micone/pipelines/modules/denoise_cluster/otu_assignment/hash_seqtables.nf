@@ -1,7 +1,7 @@
 include { getHierarchy } from '../../../functions/functions.nf'
 
 // Step3: Replace the ids with hashes of the sequences
-process hashing3 {
+process hash_seqtables {
     label 'dada2'
     tag "${meta.id}"
     publishDir "${params.output_dir}/${f[0]}/${module_dir}/${directory}/${meta.id}",
@@ -19,5 +19,5 @@ process hashing3 {
         f = getHierarchy(task_process)
         module_dir = f[1] == 'remove_bimera' ? 'remove_bimera' : "${meta.denoise_cluster}"
         directory = f[1] == 'remove_bimera' ? "filtered_output/${meta.denoise_cluster}" : 'hashed_output'
-        template 'denoise_cluster/otu_assignment/hashing3.py'
+        template 'denoise_cluster/otu_assignment/hash_seqtables.py'
 }

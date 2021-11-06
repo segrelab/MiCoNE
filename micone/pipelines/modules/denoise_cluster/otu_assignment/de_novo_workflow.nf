@@ -1,7 +1,7 @@
 include { join_reads } from './join_reads.nf'
 include { fastq2fasta } from './fastq2fasta.nf'
 include { de_novo } from './de_novo.nf'
-include { hashing2 } from './hashing2.nf'
+include { hash_otutables } from './hash_otutables.nf'
 
 
 workflow de_novo_workflow {
@@ -19,14 +19,14 @@ workflow de_novo_workflow {
                 | fastq2fasta \
                 | de_novo
         }
-        hashing2(
+        hash_otutables(
             de_novo.out.meta_channel.first(),
             de_novo.out.otu_channel.collect(),
             de_novo.out.repseq_channel.collect(),
             de_novo.out.samplemetadata_channel.collect()
         )
     emit:
-        // hashing2 has publishDir
+        // hash_otutables has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
-        hashing2.out
+        hash_otutables.out
 }

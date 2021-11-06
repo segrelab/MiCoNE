@@ -1,7 +1,7 @@
 include { join_reads } from './join_reads.nf'
 include { fastq2fasta } from './fastq2fasta.nf'
 include { open_reference } from './open_reference.nf'
-include { hashing2 } from './hashing2.nf'
+include { hash_otutables } from './hash_otutables.nf'
 
 
 workflow open_reference_workflow {
@@ -21,14 +21,14 @@ workflow open_reference_workflow {
             fastq2fasta.out,
             params.denoise_cluster.otu_assignment['open_reference']['reference_sequences']
         )
-        hashing2(
+        hash_otutables(
             open_reference.out.meta_channel.first(),
             open_reference.out.otu_channel.collect(),
             open_reference.out.repseq_channel.collect(),
             open_reference.out.samplemetadata_channel.collect()
         )
     emit:
-        // hashing2 has publishDir
+        // hash_otutables has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
-        hashing2.out
+        hash_otutables.out
 }
