@@ -1,6 +1,6 @@
 include { join_reads } from './join_reads.nf'
 include { deblur } from './deblur.nf'
-include { hashing3 } from './hashing3.nf'
+include { hashing2 } from './hashing2.nf'
 
 
 workflow deblur_workflow {
@@ -9,14 +9,14 @@ workflow deblur_workflow {
         input_channel
     main:
         deblur(input_channel)
-        hashing3(
+        hashing2(
             deblur.out.meta_channel.first(),
             deblur.out.otu_channel.collect(),
             deblur.out.repseq_channel.collect(),
             deblur.out.samplemetadata_channel.collect()
         )
     emit:
-        // hashing3 has publishDir
+        // hashing2 has publishDir
         // tuple val(meta), file('otu_table.biom'), file('rep_seqs.fasta')
-        hashing3.out
+        hashing2.out
 }
