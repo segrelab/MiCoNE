@@ -19,5 +19,6 @@ process deblur {
         ncpus = params.denoise_cluster.otu_assignment['deblur']['ncpus']
         min_reads = params.denoise_cluster.otu_assignment['deblur']['min_reads']
         min_size = params.denoise_cluster.otu_assignment['deblur']['min_size']
+        seq_type = params.paired_end ? "SampleData[PairedEndSequencesWithQuality]" : "SampleData[SequencesWithQuality]"
         template 'denoise_cluster/otu_assignment/deblur.sh'
 }

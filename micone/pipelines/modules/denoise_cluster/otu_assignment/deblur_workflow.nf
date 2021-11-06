@@ -8,15 +8,7 @@ workflow deblur_workflow {
         // tuple val(meta), file('trimmed/*.fastq.gz'), file('trimmed/MANIFEST'), file(sequence_metadata), file(samplemetadata_files)
         input_channel
     main:
-        if (params.paired_end) {
-            input_channel \
-                | join_reads \
-                | deblur
-        } else {
-            input_channel \
-                | deblur
-
-        }
+        deblur(input_channel)
         hashing3(
             deblur.out.meta_channel.first(),
             deblur.out.otu_channel.collect(),

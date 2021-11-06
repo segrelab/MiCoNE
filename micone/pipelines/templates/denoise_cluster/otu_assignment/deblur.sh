@@ -7,24 +7,28 @@ mv ${sequence_files} sequence_folder
 mv ${manifest_file} sequence_folder
 mv ${sequence_metadata} sequence_folder
 
-deblur workflow \
-    --seqs-fp  sequence_folder \
-    --output-dir deblur_output \
-    -t -1 \
-    --left-trim-length 0 \
-    --min-reads ${min_reads} \
-    --min-size ${min_size} \
-    --jobs-to-start ${ncpus} \
-    --keep-tmp-files
+qiime tools import \
+    --input-path sequence_folder \
+    --output-path seq_artifact.qza \
+    --type "${seq_type}"
 
-# Build otu table and rep seqs for the step before chimera checking
-mkdir otu_table
-deblur build-biom-table \
-    --min-reads ${min_reads} \
-    --file_type .trim.derep.no_artifacts.msa.deblur \
-    deblur_output/deblur_working_dir \
-    otu_table
+qiime deblur denoise-16S \
+    --i-demultiplexed-seqs seq_artifact.qza \
+    --p-trim-length -1 \
+    --p-min-reads ${min_reads} \
+    --p-min-size ${min_size} \
+    --p-jobs-to-start ${ncpus} \
+    --o-representative-sequences rep-seqs.qza \
+    --o-table table.qza \
 
-mv otu_table/all.biom ${meta.id}-${meta.run}_unhashed_otu_table.biom
-mv otu_table/all.seq.fa ${meta.id}-${meta.run}_unhashed_rep_seqs.fasta
+qiime tools export \
+    --input-path rep-seqs.qza \
+    --output-path rep_seqs
+
+qiime tools export \
+    --input-path table.qza \
+    --output-path table
+
+mv table/feature-table.biom ${meta.id}-${meta.run}_unhashed_otu_table.biom
+mv rep_seqs/dna-sequences.fasta ${meta.id}-${meta.run}_unhashed_rep_seqs.fasta
 mv ${samplemetadata_files} ${meta.id}-${meta.run}_sample_metadata.tsv
