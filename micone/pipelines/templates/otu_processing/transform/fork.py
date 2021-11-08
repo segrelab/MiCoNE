@@ -28,6 +28,7 @@ if __name__ == "__main__":
     folder.mkdir(exist_ok=True)
     filter_fun = lambda values, id_, md: True if any(values > 0.0) else False
     for label, split_otu in split_results:
+        split_otu.otu_data.del_metadata(keys=[COLUMN], axis=AXIS)
         split_otu.filter(func=filter_fun, axis="observation")
         if label == "":
             split_otu.write(ID_, fol_path=str(folder))
