@@ -23,7 +23,7 @@ def pearson(otu_file, output_file):
                 corr_data[i][j] = corr
                 corr_data[j][i] = corr
     corr_table = pd.DataFrame(data=corr_data, index=index, columns=index)
-    corr_table.fillna(value=1.0, inplace=True)
+    corr_table.fillna(value=0.0, inplace=True)
     corr_table.to_csv(output_file, sep="\\t", index=True, float_format="%.4f")
     return output_file
 
@@ -42,5 +42,5 @@ if __name__ == "__main__":
     ID_ = "${meta.id}"
     OTU_FILE = pathlib.Path("${otu_file}")
     BOOTSTRAP_FILES = pathlib.Path().glob("*_otu.boot")
-    NCPUS = ${ncpus}
+    NCPUS = int("${ncpus}")
     main(ID_, OTU_FILE, BOOTSTRAP_FILES, NCPUS)
