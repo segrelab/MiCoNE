@@ -10,5 +10,5 @@ def main(biom_file, base_name):
 
 if __name__ == "__main__":
     BIOM_FILE = "${otu_file}"
-    BASE_NAME = "${tax_level}"
+    BASE_NAME = "${meta.id}"
     main(BIOM_FILE, BASE_NAME)
