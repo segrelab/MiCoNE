@@ -19,7 +19,7 @@ if __name__ == "__main__":
     OTU_FILE = "${otu_file}"  # "otu.biom"
     OTU_DATA = Otu.load_data(OTU_FILE)
     child_otu, child_groups = grp_otu_data(OTU_DATA, TAX_LEVEL)
-    fname = child_otu.tax_level + "_level"
+    fname = "${new_meta.id}"
     child_otu.write(fname, file_type="biom")
     with open(fname + "_children.json", "w") as fid:
         json.dump(child_groups, fid, indent=2, sort_keys=True)
