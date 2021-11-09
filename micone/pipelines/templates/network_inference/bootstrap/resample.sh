@@ -5,7 +5,7 @@ mkdir bootstraps
 fastspar_bootstrap \
     --otu_table ${otu_file} \
     --number ${bootstraps} \
-    --prefix bootstraps/ \
+    --prefix bootstraps/${meta.id} \
     --threads ${ncpus}
 
 for f in bootstraps/*.tsv; do
