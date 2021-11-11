@@ -9,8 +9,17 @@ Z_mean <- ${Z_mean}
 max_iteration <- ${max_iteration}
 corr_file <- "${meta.id}_corr.tsv"
 
-read_data <- function(tablefile) {
-    table <- read.table(tablefile, header=TRUE, comment.char="", sep="\\t")
+read_otu_data <- function(tablefile) {
+    table <- read.table(tablefile, header=TRUE, check.names=FALSE, comment.char="", sep="\t")
+    table.rownames <- table[, 1]
+    table <- table[, 2:ncol(table)]
+    table.matrix <- data.matrix(table)
+    rownames(table.matrix) <- table.rownames
+    return(table.matrix)
+}
+
+read_otu_data <- function(tablefile) {
+    table <- read.table(tablefile, header=TRUE, check.names=FALSE, comment.char="", sep="\t")
     table.rownames <- table[, 1]
     table <- table[, 2:ncol(table)]
     dmy <- dummyVars(" ~ .", data=table)
@@ -20,8 +29,8 @@ read_data <- function(tablefile) {
     return(table.matrix)
 }
 
-otu <- read_data(otu_file)
-sample.md <- read_data(sample_metadata) # Must be purely numeric or categorical metadata
+otu <- read_otu_data(otu_file)
+sample.md <- read_sample_data(sample_metadata) # Must be purely numeric or categorical metadata
 
 mldmNetwork <- mLDM(X=t(otu), M=sample.md, Z_mean=Z_mean, max_iteration=max_iteration, verbose=TRUE)
 

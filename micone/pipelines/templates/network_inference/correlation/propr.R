@@ -8,7 +8,7 @@ ncpus <- ${ncpus}
 # cl <- makeCluster(ncpus)
 
 read_otu <- function(otu_file) {
-    otu <- read.table(otu_file, header=TRUE, comment.char="", sep="\\t")
+    otu <- read.table(otu_file, header=TRUE, comment.char="", check.names=FALSE, sep="\\t")
     rownames(otu) <- otu[, 1]
     otu <- otu[, 2:ncol(otu)]
     return(otu)
