@@ -18,7 +18,7 @@ read_otu_data <- function(tablefile) {
     return(table.matrix)
 }
 
-read_otu_data <- function(tablefile) {
+read_sample_data <- function(tablefile) {
     table <- read.table(tablefile, header=TRUE, check.names=FALSE, comment.char="", sep="\t")
     table.rownames <- table[, 1]
     table <- table[, 2:ncol(table)]
