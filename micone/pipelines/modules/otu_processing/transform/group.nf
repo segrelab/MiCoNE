@@ -3,7 +3,7 @@ include { getHierarchy; updateMeta } from '../../../functions/functions.nf'
 process group {
     label 'micone'
     tag "${meta.id}:${tax_level}"
-    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${directory}/${tax_level}/${new_meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/transform/${f[1]}/${directory}/${new_meta.id}",
         mode: 'copy',
         overwrite: true
     input:

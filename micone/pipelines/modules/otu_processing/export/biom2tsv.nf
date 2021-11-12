@@ -3,7 +3,7 @@ include { getHierarchy; updateMeta } from '../../../functions/functions.nf'
 process biom2tsv {
     label 'micone'
     tag "${new_meta.id}"
-    publishDir "${params.output_dir}/${f[0]}/export/${f[1]}/${directory}/${tax_level}/${new_meta.id}",
+    publishDir "${params.output_dir}/${f[0]}/export/${f[1]}/${directory}/${new_meta.id}",
         mode: 'copy',
         overwrite: true
     input:
