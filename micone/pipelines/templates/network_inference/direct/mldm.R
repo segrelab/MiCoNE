@@ -30,12 +30,20 @@ read_sample_data <- function(tablefile) {
 }
 
 otu <- read_otu_data(otu_file)
+otu_t <- t(otu)
 sample.md <- read_sample_data(sample_metadata) # Must be purely numeric or categorical metadata
 
-mldmNetwork <- mLDM(X=t(otu), M=sample.md, Z_mean=Z_mean, max_iteration=max_iteration, verbose=TRUE)
+mldmNetwork <- mLDM(X=otu_t, M=sample.md, Z_mean=Z_mean, max_iteration=max_iteration, verbose=TRUE)
 
-otuNetwork <- mldmNetwork\$optimal[[9]]
+optimal <- mldmNetwork\$optimal
+if (length(optimal) > 0) {
+    otuNetwork <- mldmNetwork\$optimal[[9]]
+} else {
+    samp <- sample(c(1:nrow(otu_t)), size=50)
+    mldmNetwork <- mLDM(X=otu_t[samp,], M=sample.md[samp,], Z_mean=Z_mean, max_iteration=max_iteration, verbose=TRUE)
+    otuNetwork <- mldmNetwork\$optimal[[9]]
+}
+
 rownames(otuNetwork) <- rownames(otu)
 colnames(otuNetwork) <- rownames(otu)
-
 write.table(otuNetwork, file=corr_file, quote=FALSE, col.names=NA, sep="\\t")
