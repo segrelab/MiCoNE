@@ -39,8 +39,8 @@ optimal <- mldmNetwork\$optimal
 if (length(optimal) > 0) {
     otuNetwork <- mldmNetwork\$optimal[[9]]
 } else {
-    samp <- sample(c(1:nrow(otu_t)), size=50)
-    mldmNetwork <- mLDM(X=otu_t[samp,], M=sample.md[samp,], Z_mean=Z_mean, max_iteration=max_iteration, verbose=TRUE)
+    new_max_iteration <- max_iteration * 10
+    mldmNetwork <- mLDM(X=otu_t, M=sample.md, Z_mean=Z_mean, max_iteration=new_max_iteration, verbose=TRUE)
     otuNetwork <- mldmNetwork\$optimal[[9]]
 }
 
