@@ -11,6 +11,9 @@ include { propr_workflow } from './correlation/propr_workflow.nf'
 include { spieceasi_workflow } from './direct/spieceasi_workflow.nf'
 include { flashweave_workflow } from './direct/flashweave_workflow.nf'
 include { mldm_workflow } from './direct/mldm_workflow.nf'
+include { cozine_workflow } from './direct/cozine_workflow.nf'
+include { harmonies_workflow } from './direct/harmonies_workflow.nf'
+include { spring_workflow } from './direct/spring_workflow.nf'
 
 // Network imports
 include { make_network_with_pvalue } from './network/make_network_with_pvalue.nf'
@@ -32,7 +35,10 @@ workflow network_inference_workflow {
             & propr_workflow \
             & spieceasi_workflow \
             & flashweave_workflow \
-            & mldm_workflow )
+            & mldm_workflow \
+            & cozine_workflow \
+            & harmonies_workflow \
+            & spring_workflow )
 
     // NOTE: These will have have extra pvalue
     corr_output = sparcc_workflow.out
@@ -45,7 +51,10 @@ workflow network_inference_workflow {
     direct_output = spieceasi_workflow.out
                         .mix(
                             flashweave_workflow.out,
-                            mldm_workflow.out
+                            mldm_workflow.out,
+                            cozine_workflow.out,
+                            harmonies_workflow.out,
+                            spring_workflow.out
                         )
 
     // Correlation method output
