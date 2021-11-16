@@ -5,8 +5,8 @@ library(caret)
 
 otu_file <- "${otu_file}"
 sample_metadata <- "${sample_metadata}"
-Z_mean <- ${Z_mean}
-max_iteration <- ${max_iteration}
+Z_mean <- as.double("${Z_mean}")
+max_iteration <- as.integer("${max_iteration}")
 corr_file <- "${meta.id}_corr.tsv"
 
 read_otu_data <- function(tablefile) {
