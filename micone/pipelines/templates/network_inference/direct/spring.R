@@ -34,11 +34,11 @@ fit.spring <- SPRING(otu_t,
 )
 
 # StARS-selected lambda index based on the threshold (default = 0.01)
-opt.K <- fit.spring$output$stars$opt.index
+opt.K <- fit.spring\$output\$stars\$opt.index
 # Estimated adjacency matrix from sparse graphical modeling technique ("mb" method) (1 = edge, 0 = no edge)
-adj.K <- as.matrix(fit.spring$fit$est$path[[opt.K]])
+adj.K <- as.matrix(fit.spring\$fit\$est\$path[[opt.K]])
 # Estimated partial correlation coefficient, same as negative precision matrix.
-pcor.K <- as.matrix(SpiecEasi::symBeta(fit.spring$output$est$beta[[opt.K]], mode = "maxabs"))
+pcor.K <- as.matrix(SpiecEasi::symBeta(fit.spring\$output\$est\$beta[[opt.K]], mode = "maxabs"))
 
 
 otuNetwork <- pcor.K
