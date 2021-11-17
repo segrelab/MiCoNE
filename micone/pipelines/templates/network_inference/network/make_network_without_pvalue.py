@@ -2,7 +2,7 @@
 
 import json
 
-from micone import Network, NetworkGroup
+from micone import Network
 
 
 def main(
@@ -13,6 +13,7 @@ def main(
     obsmeta_file: str,
     children_file: str,
     interaction_threshold: float,
+    interaction_type: str,
 ) -> None:
     network = Network.load_data(
         interaction_file=corr_file,
@@ -20,6 +21,7 @@ def main(
         cmeta_file=cmeta_file,
         obsmeta_file=obsmeta_file,
         children_file=children_file,
+        interaction_type=interaction_type,
         interaction_threshold=interaction_threshold,
         pvalue_correction=None,
     )
@@ -53,6 +55,9 @@ if __name__ == "__main__":
     CHILDREN_FILE = "${children_map}"
     INTERACTION_THRESHOLD = float("${interaction_threshold}")
     create_cmetadata()
+    INTERACTION_TYPE = (
+        "cozine_weight" if "${meta.network_inference}" == "cozine" else "correlation"
+    )
     CMETA_FILE = "cmetadata.json"
     main(
         BASE_NAME,
@@ -62,4 +67,5 @@ if __name__ == "__main__":
         OBSMETA_FILE,
         CHILDREN_FILE,
         INTERACTION_THRESHOLD,
+        INTERACTION_TYPE,
     )
