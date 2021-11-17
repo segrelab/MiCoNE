@@ -35,14 +35,7 @@ sample.md <- read_sample_data(sample_metadata) # Must be purely numeric or categ
 
 mldmNetwork <- mLDM(X=otu_t, M=sample.md, Z_mean=Z_mean, max_iteration=max_iteration, verbose=TRUE)
 
-optimal <- mldmNetwork\$optimal
-if (length(optimal) > 0) {
-    otuNetwork <- mldmNetwork\$optimal[[9]]
-} else {
-    new_max_iteration <- max_iteration * 10
-    mldmNetwork <- mLDM(X=otu_t, M=sample.md, Z_mean=Z_mean, max_iteration=new_max_iteration, verbose=TRUE)
-    otuNetwork <- mldmNetwork\$optimal[[9]]
-}
+otuNetwork <- mldmNetwork\$optimal[[9]]
 
 rownames(otuNetwork) <- rownames(otu)
 colnames(otuNetwork) <- rownames(otu)
