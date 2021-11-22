@@ -2,6 +2,7 @@
     Console script for micone
 """
 
+import pathlib
 from typing import List
 
 import click
@@ -10,6 +11,7 @@ from .logging import LOG
 from .pipelines import Pipeline
 from .setup import Environments
 from .utils import Spinner
+from .validation import check_results
 
 
 @click.group()
@@ -21,7 +23,7 @@ from .utils import Spinner
 )
 @click.pass_context
 def cli(ctx, log: bool, interactive: bool):
-    """ Main entry point to micone """
+    """Main entry point to micone"""
     spinner = Spinner(text="Starting up...", spinner="dots", interactive=interactive)
     spinner.start()
     ctx.obj["SPINNER"] = spinner
@@ -41,7 +43,7 @@ def cli(ctx, log: bool, interactive: bool):
 )
 @click.pass_context
 def init(ctx, env: str):
-    """ Initialize the package and environments """
+    """Initialize the package and environments"""
     spinner = ctx.obj["SPINNER"]
     environments = Environments()
     for env_cmd in environments.init(env):
@@ -116,7 +118,7 @@ def run(
     max_procs: int,
     resume: bool,
 ):
-    """ Run the pipeline """
+    """Run the pipeline"""
     spinner = ctx.obj["SPINNER"]
     pipeline = Pipeline(
         str(config), profile, str(base_dir), resume, output_location=output_location
@@ -171,6 +173,53 @@ def clean(ctx, config: click.Path, files: List[str]):
     pipeline = Pipeline(str(config), "local")
     pipeline.clean(files)
     spinner.succeed("Completed cleanup")
+
+
+@cli.command()
+@click.option(
+    "--dir", "-d", type=click.Path(exists=True), help="The pipeline execution directory"
+)
+@click.option(
+    "--procs",
+    "-p",
+    type=click.INT,
+    default=4,
+    help="Number of processors to use",
+)
+@click.pass_context
+def validate_results(ctx, dir: click.Path, procs: int):
+    """Check results of the pipeline execution"""
+    pipeline_dir = pathlib.Path(str(dir))
+    spinner = ctx.obj["SPINNER"]
+    spinner.start()
+    spinner.text = "Checking pipeline execution"
+    (
+        pipeline_results,
+        trace_results,
+        biom_results,
+        network_results,
+        output_results,
+    ) = check_results(pipeline_dir, procs)
+    if pipeline_results == "success":
+        spinner.succeed("Pipeline execution was successful")
+    else:
+        spinner.fail("Pipeline execution was unsuccessful")
+    spinner.start()
+    if not biom_results.get("fail", None):
+        spinner.succeed("Biom files had no errors")
+    else:
+        spinner.fail("Biom files had errors")
+        print(biom_results)
+    if not network_results.get("fail", None):
+        spinner.succeed("Network files had no errors")
+    else:
+        spinner.fail("Network files had errors")
+        print(network_results)
+    if not output_results["fail"]:
+        spinner.succeed("All modules were executed completely")
+    else:
+        spinner.fail("All modules were not executed completely")
+        print(output_results)
 
 
 def main():
