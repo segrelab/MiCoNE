@@ -92,7 +92,7 @@ def validate_biom_file(biom_file: pathlib.Path) -> Tuple[str, pathlib.Path]:
 
 def validate_biom_results(
     biom_files: List[pathlib.Path], ncpus: int = 1
-) -> Dict[str, List[str]]:
+) -> Dict[str, List[pathlib.Path]]:
     """Validate the biom files in the pipeline output
     The biom files must contain observation and sample metadata
 
@@ -152,7 +152,7 @@ def validate_network_file(network_file: pathlib.Path) -> Tuple[str, pathlib.Path
 
 def validate_network_results(
     network_files: List[pathlib.Path], ncpus: int = 1
-) -> Dict[str, List[str]]:
+) -> Dict[str, List[pathlib.Path]]:
     """Validate the network files in the pipeline output
     These must be `Network` objects not `NetworkGroup` objects
 
@@ -182,6 +182,23 @@ def validate_network_results(
 def validate_expected_results(
     execution_dir: pathlib.Path, trace_file: pathlib.Path, output_dir: pathlib.Path
 ) -> Dict[str, List[str]]:
+    """Compare expected results (from nextflow config) with produced results
+    This needs to be run in the conda environment
+
+    Parameters
+    ----------
+    execution_dir : pathlib.Path
+        The path to the pipeline execution directory
+    trace_file : pathlib.Path
+        The path to the trace file
+    output_dir : pathlib.Path
+        The path to the output directory
+
+    Returns
+    -------
+    Dict[str, List[str]]
+        List of modules that "success" or "fail"
+    """
     cmd = ["nextflow", "config", "-flat", execution_dir]
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = proc.communicate()
@@ -208,7 +225,19 @@ def validate_expected_results(
     return results
 
 
-def check_results(pipeline_dir: pathlib.Path, procs: int) -> None:
+def check_results(pipeline_dir: pathlib.Path, procs: int):
+    """Run all the validation functions on the pipeline_dir
+    1. validate_pipeline(history_file)
+    2. process_trace(trace_file)
+    3. validate_biom_results(biom_files, procs)
+    4. validate_network_results(network_files, procs)
+    5. validate_expected_results(pipeline_dir, trace_file, output_dir)
+
+    Returns
+    -------
+    tuple
+        A tuple containing results from the processes in the order specified above
+    """
     history_file = pipeline_dir / ".nextflow/history"
     trace_file = pipeline_dir / "trace.txt"
     output_dir = pipeline_dir / "outputs"
