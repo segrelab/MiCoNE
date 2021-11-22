@@ -3,6 +3,7 @@
 """
 
 import pathlib
+import pprint
 from typing import List
 
 import click
@@ -209,17 +210,17 @@ def validate_results(ctx, dir: click.Path, procs: int):
         spinner.succeed("Biom files had no errors")
     else:
         spinner.fail("Biom files had errors")
-        print(biom_results)
+        pprint.pprint(biom_results)
     if not network_results.get("fail", None):
         spinner.succeed("Network files had no errors")
     else:
         spinner.fail("Network files had errors")
-        print(network_results)
+        pprint.pprint(network_results)
     if not output_results["fail"]:
         spinner.succeed("All modules were executed completely")
     else:
         spinner.fail("All modules were not executed completely")
-        print(output_results)
+        pprint.pprint(output_results)
 
 
 def main():
