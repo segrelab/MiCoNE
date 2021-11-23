@@ -24,7 +24,7 @@ python-versions = "*"
 
 [[package]]
 name = "astroid"
-version = "2.8.5"
+version = "2.8.6"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
@@ -267,7 +267,7 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "fonttools"
-version = "4.28.1"
+version = "4.28.2"
 description = "Tools to manipulate font files"
 category = "main"
 optional = false
@@ -611,6 +611,7 @@ numpy = [
     {version = ">=1.17.3", markers = "platform_machine != \"aarch64\" and platform_machine != \"arm64\" and python_version < \"3.10\""},
     {version = ">=1.19.2", markers = "platform_machine == \"aarch64\" and python_version < \"3.10\""},
     {version = ">=1.20.0", markers = "platform_machine == \"arm64\" and python_version < \"3.10\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
 ]
 python-dateutil = ">=2.7.3"
 pytz = ">=2017.3"
@@ -1206,8 +1207,8 @@ docs = ["Sphinx", "sphinx-rtd-theme"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "~3.8"
-content-hash = "cf14c72510c03d40610431d604ce8d4fc85f4079ad3aeeace44bfa609d7d2f67"
+python-versions = ">=3.8,<3.11"
+content-hash = "fa69b381350075e5e3c42a412029a4d2def067a77380cf074544d23d5b984c26"
 
 [metadata.files]
 alabaster = [
@@ -1223,8 +1224,8 @@ appnope = [
     {file = "appnope-0.1.2.tar.gz", hash = "sha256:dd83cd4b5b460958838f6eb3000c660b1f9caf2a5b1de4264e941512f603258a"},
 ]
 astroid = [
-    {file = "astroid-2.8.5-py3-none-any.whl", hash = "sha256:abc423a1e85bc1553954a14f2053473d2b7f8baf32eae62a328be24f436b5107"},
-    {file = "astroid-2.8.5.tar.gz", hash = "sha256:11f7356737b624c42e21e71fe85eea6875cb94c03c82ac76bd535a0ff10b0f25"},
+    {file = "astroid-2.8.6-py3-none-any.whl", hash = "sha256:cd8326b424c971e7d87678609cf6275d22028afd37d6ac59c16d47f1245882f6"},
+    {file = "astroid-2.8.6.tar.gz", hash = "sha256:5f6f75e45f15290e73b56f9dfde95b4bf96382284cde406ef4203e928335a495"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -1395,8 +1396,8 @@ flake8 = [
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
 ]
 fonttools = [
-    {file = "fonttools-4.28.1-py3-none-any.whl", hash = "sha256:68071406009e7ef6a5fdcd85d95975cd6963867bb226f2b786bfffe15d1959ef"},
-    {file = "fonttools-4.28.1.zip", hash = "sha256:8c8f84131bf04f3b1dcf99b9763cec35c347164ab6ad006e18d2f99fcab05529"},
+    {file = "fonttools-4.28.2-py3-none-any.whl", hash = "sha256:eff1da7ea274c54cb8842853005a139f711646cbf6f1bcfb6c9b86a627f35ff0"},
+    {file = "fonttools-4.28.2.zip", hash = "sha256:dca694331af74c8ad47acc5171e57f6b78fac5692bf050f2ab572964577ac0dd"},
 ]
 future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},

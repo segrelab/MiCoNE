@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "micone"
-version = "0.10.0"
+version = "0.10.1"
 description = "The Microbial Co-occurrence Network Explorer"
 authors = ["Dileep Kishore <dkishore@bu.edu>"]
 license = "MIT"
@@ -9,7 +9,7 @@ homepage = "https://github.com/segrelab/MiCoNE"
 documentation = "https://micone.readthedocs.io/en/latest"
 
 [tool.poetry.dependencies]
-python = "~3.8"
+python = ">=3.8,<3.11"
 numpy = "^1.19.4"
 pandas = "^1.2.0"
 biom-format = "^2.1.10"
