@@ -5,11 +5,33 @@ Changelog
 Unreleased
 ----------
 
+0.10.0 (2021-11-23)
+-------------------
+
+Added
++++++
+- ``HARMONIES`` network inference method
+- ``COZINE`` network inference method
+- ``SPRING`` network inference method
+- Pipeline output checking functionality - ``micone validate-results``
+- Parametrize some of the pipeline settings
+
+Changed
++++++++
+- ``mldm`` runtime limit
+
+Fixed
++++++
+- ``normalize`` module is turned off by default
+- Many bugs in the pipeline
+
+
 0.9.0 (2021-10-30)
 ------------------
 
 - Major overhaul of the pipeline to enable workflow to be implemented purely in ``nextflow``
 - As of writing the pipeline modules in the package do not work. Currently, to run the pipeline one needs to copy the contents of the ``pipelines`` folder to the destination, update the ``nextflow.config`` and run the pipeline.
+
 
 0.7.0 (2021-03-04)
 ------------------
