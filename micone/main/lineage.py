@@ -3,7 +3,6 @@
 """
 
 
-import os
 from collections import namedtuple
 from typing import Dict, Tuple
 from warnings import warn
