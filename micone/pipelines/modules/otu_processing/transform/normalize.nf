@@ -15,7 +15,7 @@ process normalize {
         new_meta.id = "${otu_file.baseName}"  // "meta.id_label"
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}"
         axis = params.otu_processing.transform['normalize']['axis']
         count_thres = params.otu_processing.transform['normalize']['count_thres']
         prevalence_thres = params.otu_processing.transform['normalize']['prevalence_thres']

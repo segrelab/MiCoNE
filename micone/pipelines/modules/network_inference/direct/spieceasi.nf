@@ -17,7 +17,7 @@ process spieceasi {
         new_meta.network_inference = 'spieceasi'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.tax_level}"
         method = params.network_inference.direct['spieceasi']['method']
         ncpus = params.network_inference.direct['spieceasi']['ncpus']
         nreps = params.network_inference.direct['spieceasi']['nreps']

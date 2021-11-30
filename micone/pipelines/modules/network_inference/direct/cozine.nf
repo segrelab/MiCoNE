@@ -17,7 +17,7 @@ process cozine {
         new_meta.network_inference = 'cozine'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.tax_level}"
         lambda_min_ratio = params.network_inference.direct['cozine']['lambda_min_ratio']
         template 'network_inference/direct/cozine.R'
 }

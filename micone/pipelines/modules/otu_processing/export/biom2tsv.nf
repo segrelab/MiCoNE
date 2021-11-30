@@ -15,6 +15,6 @@ process biom2tsv {
         new_meta.tax_level = "${tax_level}"
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}"
         template 'otu_processing/export/biom2tsv.py'
 }

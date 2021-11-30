@@ -17,7 +17,7 @@ process sparcc {
         new_meta.network_inference = 'sparcc'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.tax_level}"
         ncpus = params.network_inference.correlation['sparcc']['ncpus']
         iterations = params.network_inference.correlation['sparcc']['iterations']
         template 'network_inference/correlation/sparcc.sh'
