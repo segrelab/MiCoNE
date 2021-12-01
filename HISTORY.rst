@@ -5,6 +5,19 @@ Changelog
 Unreleased
 ----------
 
+0.10.2 (2021-12-01)
+-------------------
+
+Added
++++++
+- ``NetworkGroup`` object now supports the ``id_field`` parameter in constructor. Allowing combination of networks on fields other than ``taxid``
+- ``merge_pvalues`` and ``create_consensus`` now support the ``id_field`` parameter
+
+Fixed
++++++
+- ``remove_bimera`` module now uses external ``biom`` command to construct OTU table
+
+
 0.10.0 (2021-11-23)
 -------------------
 
