@@ -12,5 +12,6 @@ process merge_pvalues {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        id_field = params.network_inference.network['merge_pvalues']['id_field']
         template 'network_inference/network/merge_pvalues.py'
 }

@@ -16,5 +16,6 @@ process create_consensus {
         parameter = params.network_inference.network['create_consensus']['parameter']
         pvalue_filter = params.network_inference.network['create_consensus']['pvalue_filter']
         interaction_filter = params.network_inference.network['create_consensus']['interaction_filter']
+        id_field = params.network_inference.network['create_consensus']['id_field']
         template 'network_inference/network/create_consensus.py'
 }
