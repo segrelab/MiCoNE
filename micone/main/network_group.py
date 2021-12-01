@@ -29,6 +29,9 @@ class NetworkGroup(Collection):
     networks : List[Network]
         The collection of networks to be grouped
         key = context-id, value = Network
+    id_field : str
+        The field to use while combining nodes
+        Default value is "taxid"
 
     Attributes
     ----------
@@ -42,7 +45,8 @@ class NetworkGroup(Collection):
         The list of all contexts in the network group
     """
 
-    def __init__(self, networks: List[Network]) -> None:
+    def __init__(self, networks: List[Network], id_field: str = "taxid") -> None:
+        self.id_field = id_field
         # dict(cid => dict(id_old => id_new))
         self.nodeid_map: Dict[int, Dict[str, str]] = dict()
         # dict(s_new-t_new => List[Tuple[cid, s_old-t_old], ...])
@@ -87,7 +91,7 @@ class NetworkGroup(Collection):
         for cid, network_nodes in all_nodes.items():
             self.nodeid_map[cid] = dict()
             for network_node in network_nodes:
-                if network_node["taxid"] not in node_hash:
+                if network_node[self.id_field] not in node_hash:
                     id_ = len(nodes)
                     id_old = network_node["id"]
                     id_new = f"id{id_}"
@@ -97,11 +101,11 @@ class NetworkGroup(Collection):
                             **{"id": id_new, "children": [], "abundance": None},
                         }
                     )
-                    node_hash[network_node["taxid"]] = id_
+                    node_hash[network_node[self.id_field]] = id_
                     self.nodeid_map[cid][id_old] = id_new
                 else:
                     id_old = network_node["id"]
-                    ind = node_hash[network_node["taxid"]]
+                    ind = node_hash[network_node[self.id_field]]
                     id_new = nodes[ind]["id"]
                     self.nodeid_map[cid][id_old] = id_new
         return nodes
