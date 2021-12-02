@@ -19,12 +19,13 @@ apply_propr <- function(otu_file, bootstrap=TRUE) {
     if(bootstrap) {
         corr_file <- gsub("_otu.boot", "_corr.boot", otu_file)
     } else {
-        corr_file <- gsub("_otu.tsv", "_corr.tsv", otu_file)
+        corr_file <- paste0("${meta.id}", "_corr.tsv")
     }
     pr <- propr(t(otu), metric = "rho", ivar = "clr")
     mat <- pr@matrix
     matdims <- rep(list(rownames(otu)), 2)
     dimnames(mat) <- matdims
+    if(otu_file == corr_file) stop("Correlation file and OTU file names are the same")
     write.table(mat, file=corr_file, sep="\\t", quote=FALSE, col.names=NA)
     return(corr_file)
 }
