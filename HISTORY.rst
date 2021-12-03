@@ -5,6 +5,17 @@ Changelog
 Unreleased
 ----------
 
+0.10.3 (2021-12-03)
+-------------------
+
+Fixed
++++++
+- ``Network.get_adjacency_table`` now retrieves ids correctly
+- ``simple_voting`` consensus method now takes sign of the edge into account
+- ``propr`` modules now assigns correlation file name similar to other modules
+- Fixed bug in ``mldm`` when sample metadata is a single column
+
+
 0.10.2 (2021-12-01)
 -------------------
 
