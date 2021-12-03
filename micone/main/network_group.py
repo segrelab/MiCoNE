@@ -430,14 +430,14 @@ class NetworkGroup(Collection):
         return cls(networks)
 
     def get_consensus_network(
-        self, cids: List[str], method: str = "simple_voting", parameter: float = 0.0
+        self, cids: List[int], method: str = "simple_voting", parameter: float = 0.0
     ) -> "NetworkGroup":
         """
         Get consensus network for the network defined by the `cids`
 
         Parameters:
         -----------
-        cids : List[str]
+        cids : List[int]
             The list of context ids that are to be used in the merger
         method : str, {"simple_voting", "scaled_sum"}
             Default value is simple_voting
