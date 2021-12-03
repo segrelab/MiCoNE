@@ -355,7 +355,7 @@ class Network:
         pd.DataFrame:
             The adjacency table
         """
-        ids = list(self.nodes)
+        ids = list(self.graph.nodes)
         size = len(ids)
         adj_table = pd.DataFrame(
             data=np.zeros((size, size), dtype=float), index=ids, columns=ids
