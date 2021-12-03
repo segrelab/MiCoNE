@@ -21,7 +21,7 @@ read_otu_data <- function(tablefile) {
 read_sample_data <- function(tablefile) {
     table <- read.table(tablefile, header=TRUE, check.names=FALSE, comment.char="", sep="\\t")
     table.rownames <- table[, 1]
-    table <- table[, 2:ncol(table)]
+    table <- as.data.frame(table[, 2:ncol(table)])
     dmy <- dummyVars(" ~ .", data=table)
     table.frame <- data.frame(predict(dmy, newdata=table))
     table.matrix <- data.matrix(table.frame)
