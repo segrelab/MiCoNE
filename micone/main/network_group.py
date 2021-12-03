@@ -2,7 +2,7 @@
     Module that defines the `NetworkGroup` object and methods to read, write and manipulate it
 """
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 from collections.abc import Collection
 import pathlib
 from itertools import product
@@ -455,7 +455,13 @@ class NetworkGroup(Collection):
             """Perform a simple voting consensus"""
             size = weights.shape[1]  # no. of networks
             num_req_edges = np.floor(parameter * size)
-            num_actual_edges = weights.astype(bool).sum(axis=1)
+            weights_signed = weights.copy()
+            weights_signed[weights_signed > 0] = 1
+            weights_signed[weights_signed < 0] = -1
+            weights_signed.astype(int, copy=False)
+            num_actual_edges = weights_signed.apply(
+                lambda row: Counter(row).most_common(1)[0][-1], axis=1
+            )
             indices_removal = weights.index[num_actual_edges < num_req_edges]
             return list(indices_removal)
 
