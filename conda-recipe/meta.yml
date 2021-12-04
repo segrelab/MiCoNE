@@ -1,0 +1,34 @@
+package:
+  name: micone
+  version: "0.7.0"
+
+source:
+  path: ../..
+
+build:
+  script: "python -m pip install ."
+
+requirements:
+  host:
+    - python 3.8
+    - setuptools
+
+  run:
+    - python 3.8
+    - openjdk
+    - nextflow
+
+test:
+  requires:
+    - pytest
+  imports:
+    - micone
+  commands:
+    - micone --help
+    - micone init --help
+    - micone run --help
+
+about:
+  home: https://github.com/segrelab/MiCoNE
+  license: MIT
+  summary: The Microbial Co-occurrence Network Explorer
