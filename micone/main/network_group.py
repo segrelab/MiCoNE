@@ -79,8 +79,10 @@ class NetworkGroup(Collection):
         """Combine two `NetworkGroup` objects and return a new `NetworkGroup` object
         The new `NetworkGroup` contains nodes and edges from both the input objects
         """
+        if self.id_field != other.id_field:
+            raise ValueError("Cannot add two NetworkGroups with different id_fields")
         networks = [*self._networks, *other._networks]
-        return NetworkGroup(networks)
+        return NetworkGroup(networks, id_field=self.id_field)
 
     def _combine_nodes(self, all_nodes: Dict[int, DType]) -> DType:
         """Combine nodes of individual networks into a single list"""
@@ -299,7 +301,9 @@ class NetworkGroup(Collection):
         }
         contexts = {"contexts": self.contexts}
         network_data = {**contexts, **nodes, **links}
-        new_network = NetworkGroup.load_json(raw_data=network_data)
+        new_network = NetworkGroup.load_json(
+            raw_data=network_data, id_field=self.id_field
+        )
         return new_network
 
     def json(
@@ -374,7 +378,10 @@ class NetworkGroup(Collection):
 
     @classmethod
     def load_json(
-        cls, fpath: Optional[str] = None, raw_data: Optional[dict] = None
+        cls,
+        fpath: Optional[str] = None,
+        raw_data: Optional[dict] = None,
+        id_field: str = "taxid",
     ) -> "NetworkGroup":
         """
         Create a `NetworkGroup` object from network `JSON` file
@@ -427,7 +434,7 @@ class NetworkGroup(Collection):
             links = data_dict[cid]["links"]
             network_data = {**metadata, "nodes": nodes, "links": links}
             networks.append(Network.load_json(raw_data=network_data))
-        return cls(networks)
+        return cls(networks, id_field=id_field)
 
     def get_consensus_network(
         self, cids: List[int], method: str = "simple_voting", parameter: float = 0.0
@@ -503,7 +510,7 @@ class NetworkGroup(Collection):
         new_networks = [Network.load_graph(graph) for graph in graph_dict.values()]
 
         # Step 4: Return NetworkGroup object
-        return NetworkGroup(new_networks)
+        return NetworkGroup(new_networks, id_field=self.id_field)
 
     def combine_pvalues(self, cids: List[int]) -> "NetworkGroup":
         """
@@ -572,4 +579,4 @@ class NetworkGroup(Collection):
         new_networks = [Network.load_graph(graph) for graph in graphs]
 
         # Step 4: Return NetworkGroup object
-        return NetworkGroup(new_networks)
+        return NetworkGroup(new_networks, id_field=self.id_field)
