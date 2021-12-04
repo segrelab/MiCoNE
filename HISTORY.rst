@@ -5,6 +5,13 @@ Changelog
 Unreleased
 ----------
 
+0.10.4 (2021-12-04)
+-------------------
+
+Fixed
++++++
+- ``NetworkGroup`` methods that return ``NetworkGroup`` objects now make use of the ``id_field`` parameter
+
 0.10.3 (2021-12-03)
 -------------------
 
