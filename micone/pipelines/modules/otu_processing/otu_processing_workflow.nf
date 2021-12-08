@@ -4,7 +4,7 @@
 
 // Imports
 include { fork} from './transform/fork.nf'
-include { normalize} from './transform/normalize.nf'
+include { normalize_filter} from './transform/normalize_filter.nf'
 include { group } from './transform/group.nf'
 include { biom2tsv } from './export/biom2tsv.nf'
 
@@ -22,8 +22,8 @@ workflow otu_processing_workflow {
         } else {
                 fork_channel = fork.out
         }
-        normalize(fork_channel, params.otu_processing.transform['normalize']['rm_sparse_obs'])
-        group(normalize.out, params.otu_processing.transform['group']['tax_levels'])
+        normalize_filter(fork_channel, params.otu_processing.transform['normalize_filter']['rm_sparse_obs'])
+        group(normalize_filter.out, params.otu_processing.transform['group']['tax_levels'])
         biom2tsv(group.out)
     emit:
         // all processes have publishDir

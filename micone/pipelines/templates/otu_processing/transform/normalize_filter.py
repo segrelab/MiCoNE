@@ -43,4 +43,4 @@ if __name__ == "__main__":
         PREVALENCE_THRES,
         ABUNDANCE_THRES,
     )
-    norm_otu.write("${meta.id}" + "_normalized")
+    norm_otu.write("${meta.id}" + "_normalized_filtered")
