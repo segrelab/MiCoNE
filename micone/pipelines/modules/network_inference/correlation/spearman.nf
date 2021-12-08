@@ -17,7 +17,7 @@ process spearman {
         new_meta.network_inference = 'spearman'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.tax_level}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.otu_processing}"
         ncpus = params.network_inference.correlation['spearman']['ncpus']
         template 'network_inference/correlation/spearman.py'
 }

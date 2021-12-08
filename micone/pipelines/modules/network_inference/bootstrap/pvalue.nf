@@ -13,7 +13,7 @@ process pvalues {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}"
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.otu_processing}"
         ncpus = params.network_inference.bootstrap['pvalue']['ncpus']
         template 'network_inference/bootstrap/calculate_pvalues.sh'
 }

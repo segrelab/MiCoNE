@@ -16,7 +16,7 @@ process propr {
         new_meta = updateMeta(meta)
         new_meta.network_inference = 'propr'
         String task_process = "${task.process}"
-        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.tax_level}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.otu_processing}"
         f = getHierarchy(task_process)
         ncpus = params.network_inference.correlation['propr']['ncpus']
         template 'network_inference/correlation/propr.R'

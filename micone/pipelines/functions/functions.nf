@@ -1,13 +1,13 @@
 def updateMeta(Map args) {
     def Map meta = [:]
     meta.id                = args.id ?: ''
-    meta.run                = args.run ?: ''
+    meta.run               = args.run ?: ''
     meta.single_end        = args.single_end ?: ''
     meta.strandedness      = args.strandedness ?: ''
     meta.denoise_cluster   = args.denoise_cluster ?: ''
     meta.chimera_checking  = args.chimera_checking ?: ''
     meta.tax_assignment    = args.tax_assignment ?: ''
-    meta.tax_level         = args.tax_level ?: ''
+    meta.otu_processing    = args.otu_processing ?: ''
     meta.network_inference = args.network_inference ?: ''
     return meta
 }

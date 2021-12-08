@@ -17,7 +17,7 @@ process harmonies {
         new_meta.network_inference = 'harmonies'
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.tax_level}"
+        directory = "${new_meta.denoise_cluster}-${new_meta.chimera_checking}-${new_meta.tax_assignment}-${new_meta.otu_processing}"
         iterations = params.network_inference.direct['harmonies']['iterations']
         sparsity_cutoff = params.network_inference.direct['harmonies']['sparsity_cutoff']
         template 'network_inference/direct/harmonies.R'

@@ -22,7 +22,7 @@ workflow otu_processing_workflow {
         } else {
                 fork_channel = fork.out
         }
-        normalize(fork_channel)
+        normalize(fork_channel, params.otu_processing.transform['normalize']['rm_sparse_obs'])
         group(normalize.out, params.otu_processing.transform['group']['tax_levels'])
         biom2tsv(group.out)
     emit:

@@ -13,7 +13,7 @@ process make_network_without_pvalue {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
-        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.tax_level}-${meta.network_inference}"
+        directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.otu_processing}-${meta.network_inference}"
         metadata_file = params.network_inference.network['make_network_without_pvalue']['metadata_file']
         interaction_threshold = params.network_inference.network['make_network_without_pvalue']['interaction_threshold']
         template 'network_inference/network/make_network_without_pvalue.py'
