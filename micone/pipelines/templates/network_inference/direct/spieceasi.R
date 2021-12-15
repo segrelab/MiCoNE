@@ -54,4 +54,9 @@ spieceasi.corr <- run_spieceasi(
   nlambda = nlambda,
   lambda.min.ratio = lambda.min.ratio
 )
+
+# In case of incorrect convergence
+spieceasi.corr[spieceasi.corr > 1] <- 1
+spieceasi.corr[spieceasi.corr < -1] <- -1
+
 write.table(spieceasi.corr, file = corr_file, sep = "\\t", quote = FALSE, col.names = NA)

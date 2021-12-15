@@ -31,4 +31,9 @@ inference.results <- HARMONIES(
 otuNetwork <- inference.results\$partial.corr
 rownames(otuNetwork) <- rownames(otu)
 colnames(otuNetwork) <- rownames(otu)
+
+# In case of incorrect convergence
+otuNetwork[otuNetwork > 1] <- 1
+otuNetwork[otuNetwork < -1] <- -1
+
 write.table(otuNetwork, file = corr_file, quote = FALSE, col.names = NA, sep = "\\t")

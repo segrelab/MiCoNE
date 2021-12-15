@@ -40,6 +40,9 @@ adj.K <- as.matrix(fit.spring\$fit\$est\$path[[opt.K]])
 # Estimated partial correlation coefficient, same as negative precision matrix.
 pcor.K <- as.matrix(SpiecEasi::symBeta(fit.spring\$output\$est\$beta[[opt.K]], mode = "maxabs"))
 
+# In case of incorrect convergence
+pcor.K[pcor.K > 1] = 1
+pcor.K[pcor.K < -1] = -1
 
 otuNetwork <- pcor.K
 rownames(otuNetwork) <- rownames(otu)

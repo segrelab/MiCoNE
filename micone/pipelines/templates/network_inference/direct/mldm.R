@@ -39,4 +39,9 @@ otuNetwork <- mldmNetwork\$optimal[[9]]
 
 rownames(otuNetwork) <- rownames(otu)
 colnames(otuNetwork) <- rownames(otu)
+
+# In case of incorrect convergence
+otuNetwork[otuNetwork > 1] <- 1
+otuNetwork[otuNetwork < -1] <- -1
+
 write.table(otuNetwork, file=corr_file, quote=FALSE, col.names=NA, sep="\\t")
