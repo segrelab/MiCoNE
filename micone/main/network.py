@@ -298,7 +298,7 @@ class Network:
                 children = children_map.get(node, [])
             else:
                 children = []
-            sup_lineage = lineage.get_superset(lineage.taxid[0])
+            sup_lineage = lineage.get_superset(lineage.name[0])
             graph.add_node(
                 node,
                 id=node,
