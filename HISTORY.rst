@@ -5,6 +5,14 @@ Changelog
 Unreleased
 ----------
 
+0.11.0 (2021-12-16)
+-------------------
+
+Fixed
++++++
+
+- ``Network`` class now uses ``name`` to build the lineage of the node object instead of the ``taxid`` field. This prevents inconsistency between OTU tables and Networks of the same level
+
 0.10.4 (2021-12-04)
 -------------------
 
