@@ -5,6 +5,15 @@ Changelog
 Unreleased
 ----------
 
+0.11.1 (2022-01-11)
+-------------------
+
+Added
++++++
+
+- ``slim`` parameter added to ``pvalue`` module to allow the user to forgo storage of correlation bootstrap files
+
+
 0.11.0 (2021-12-16)
 -------------------
 
