@@ -376,6 +376,54 @@ class NetworkGroup(Collection):
                     interaction_filter=interaction_filter,
                 )
 
+    def to_network(self, method: str = "mean") -> Network:
+        if method == "mean":
+            method_func = np.mean
+        else:
+            raise NotImplemented("Only mean is supported right now")
+        # Step1: Converge the metadata and cmetadata
+        if isinstance(self.graph, nx.MultiDiGraph):
+            GraphConstructor = nx.DiGraph
+            directionality = "directed"
+        elif isinstance(self.graph, nx.MultiGraph):
+            directionality = "undirected"
+            GraphConstructor = nx.Graph
+        else:
+            raise ValueError("Unknown graph type")
+        emetadata = dict()
+        cmetadata = dict()
+        metadata_all = dict()
+        for context in self.contexts:
+            emetadata.update(context["experimental_metadata"])
+            cmetadata.update(context["computational_metadata"])
+            metadata_all.update(context)
+        metadata = {
+            **metadata_all,
+            "experimental_metadata": emetadata,
+            "computational_metadata": cmetadata,
+            "interaction_type": "simple",
+            "directionality": directionality,
+        }
+        networkgroup_graph = self.graph
+        network_graph = GraphConstructor(**metadata)
+        # Step2: Converge the nodes and links
+        network_graph.add_nodes_from(networkgroup_graph.nodes(data=True))
+        network_graph.remove_nodes_from(list(nx.isolates(networkgroup_graph)))
+        for source, target, data in networkgroup_graph.edges(data=True, keys=False):
+            if network_graph.has_edge(source, target):
+                network_graph[source][target]["weight"].append(data.get("weight", 0.0))
+                network_graph[source][target]["pvalue"].append(data.get("pvalue", 1.0))
+            else:
+                weight = data.get("weight", 0.0)
+                pvalue = data.get("pvalue", 1.0)
+                network_graph.add_edge(source, target, weight=[weight], pvalue=[pvalue])
+        for source, target in network_graph.edges:
+            weight = method_func(network_graph[source][target]["weight"])
+            pvalue = method_func(network_graph[source][target]["pvalue"])
+            network_graph[source][target]["weight"] = weight
+            network_graph[source][target]["pvalue"] = pvalue
+        return Network.load_graph(network_graph)
+
     @classmethod
     def load_json(
         cls,
