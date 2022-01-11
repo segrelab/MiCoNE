@@ -15,19 +15,19 @@ CONFIG_FOLDER = pathlib.Path(__file__).parent / "configs"
 
 class Config:
     """
-        Class to extract, process and store pipeline settings
+    Class to extract, process and store pipeline settings
 
-        Parameters
-        ----------
-        config_folder : pathlib.Path
-            The path to the folder containing the configuration files
+    Parameters
+    ----------
+    config_folder : pathlib.Path
+        The path to the folder containing the configuration files
 
-        Attributes
-        ----------
-        datatypes : DataTypes
-            The set of supported datatypes
-        params_set : ParamsSet
-            The dictionary containing process configurations
+    Attributes
+    ----------
+    datatypes : DataTypes
+        The set of supported datatypes
+    params_set : ParamsSet
+        The dictionary containing process configurations
     """
 
     def __init__(self, config_folder: pathlib.Path = CONFIG_FOLDER) -> None:
@@ -54,12 +54,12 @@ class Config:
 
     def _check_io_integrity(self, params_set: ParamsSet) -> None:
         """
-            Verify whether all the datatypes in the params_set are valid
+        Verify whether all the datatypes in the params_set are valid
 
-            Parameters
-            ----------
-            params_set : ParamsSet
-                The params to be verified
+        Parameters
+        ----------
+        params_set : ParamsSet
+            The params to be verified
         """
         for param in params_set:
             for curr_input in param.input:

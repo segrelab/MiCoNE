@@ -13,33 +13,33 @@ from .otu_schema import BiomType, SamplemetaType, ObsmetaType
 
 class OtuValidator:
     """
-        Validates input `OTU` table file and returns the `Otu` instance of the file
+    Validates input `OTU` table file and returns the `Otu` instance of the file
 
-        Parameters
-        ----------
-        dtype : {'biom', 'tsv'}
-            The type of OtuValidator instance to be created
-        ext : str, optional
-            The extension of the file if other than supported extensions
-            Supported extensions:
-            'tsv' dtype: 'tsv', 'txt', 'counts'
-            'biom' dtype: 'biom', 'hdf5'
+    Parameters
+    ----------
+    dtype : {'biom', 'tsv'}
+        The type of OtuValidator instance to be created
+    ext : str, optional
+        The extension of the file if other than supported extensions
+        Supported extensions:
+        'tsv' dtype: 'tsv', 'txt', 'counts'
+        'biom' dtype: 'biom', 'hdf5'
 
-        Attributes
-        ----------
-        configuration : Dict[str, Any]
-            Dictionary showing the current configuration of the instance
-        validator : BiomType
-            The schmatics validator instance
+    Attributes
+    ----------
+    configuration : Dict[str, Any]
+        Dictionary showing the current configuration of the instance
+    validator : BiomType
+        The schmatics validator instance
 
-        Raises
-        ------
-        ValidationError
-            If any of the files do not conform to the schema outlines in `otu_schema`
+    Raises
+    ------
+    ValidationError
+        If any of the files do not conform to the schema outlines in `otu_schema`
 
-        Notes
-        -----
-        We assume that the extension dictates the filetype
+    Notes
+    -----
+    We assume that the extension dictates the filetype
     """
 
     _otu_exts = {"tsv": [".tsv", ".txt", ".counts"], "biom": [".biom", ".hdf5"]}
@@ -59,11 +59,11 @@ class OtuValidator:
     @property
     def configuration(self) -> Dict[str, Union[str, List[str]]]:
         """
-            Dictionary showing the current configuration of the instance
+        Dictionary showing the current configuration of the instance
 
-            Returns
-            -------
-            Dict[str, Union[str, List[str]]]
+        Returns
+        -------
+        Dict[str, Union[str, List[str]]]
         """
         return {
             "dtype": self._dtype,
@@ -74,32 +74,32 @@ class OtuValidator:
 
     def _validate_ext(self, fpath: pathlib.Path) -> bool:
         """
-            Determines whether the filetype is supported
+        Determines whether the filetype is supported
 
-            Parameters
-            ----------
-            fpath : pathlib.Path
+        Parameters
+        ----------
+        fpath : pathlib.Path
 
-            Returns
-            -------
-            bool
+        Returns
+        -------
+        bool
         """
         exts = self._otu_exts[self._dtype]
         return bool(fpath.suffix in exts)
 
     def _load_from_biom(self, otu_file: pathlib.Path) -> Table:
         """
-            Read biom table from file
+        Read biom table from file
 
-            Parameters
-            ----------
-            otu_file : pathlib.Path
-                The path to the OTU file in `biom` format
+        Parameters
+        ----------
+        otu_file : pathlib.Path
+            The path to the OTU file in `biom` format
 
-            Returns
-            -------
-            Table
-                A `biom.Table` instance containing the OTU, meta, tax data
+        Returns
+        -------
+        Table
+            A `biom.Table` instance containing the OTU, meta, tax data
         """
         otudata = load_table(otu_file)
         self.validator.validate(otudata)
@@ -108,19 +108,19 @@ class OtuValidator:
     @staticmethod
     def _extract_data(data_file: pathlib.Path, valid_exts: List[str]) -> pd.DataFrame:
         """
-            Extract data as a `pd.DataFrame` from file
+        Extract data as a `pd.DataFrame` from file
 
-            Parameters
-            ----------
-            data_file : pathlib.Path
-                The path to the data file
-            valid_exts : List[str]
-                A list of valid extensions
+        Parameters
+        ----------
+        data_file : pathlib.Path
+            The path to the data file
+        valid_exts : List[str]
+            A list of valid extensions
 
-            Returns
-            -------
-            pd.DataFrame
-                `pd.DataFrame` created from the data_file
+        Returns
+        -------
+        pd.DataFrame
+            `pd.DataFrame` created from the data_file
         """
         ext = data_file.suffix
         if ext in valid_exts:
@@ -143,21 +143,21 @@ class OtuValidator:
         self, otu_file: pathlib.Path, meta_file: pathlib.Path, tax_file: pathlib.Path
     ) -> Table:
         """
-            Read OTU counts file to biom table and add metadata and taxonomy data
+        Read OTU counts file to biom table and add metadata and taxonomy data
 
-            Parameters
-            ----------
-            otu_file : pathlib.Path
-                The path to the tsv file containing the OTU counts table
-            meta_file : pathlib.Path
-                The path to the csv file containing the metadata information
-            tax_file : pathlib.Path
-                The path to the csv file containing the taxonomy information
+        Parameters
+        ----------
+        otu_file : pathlib.Path
+            The path to the tsv file containing the OTU counts table
+        meta_file : pathlib.Path
+            The path to the csv file containing the metadata information
+        tax_file : pathlib.Path
+            The path to the csv file containing the taxonomy information
 
-            Returns
-            -------
-            Table
-                A `biom.Table` instance containing the OTU, meta, tax data
+        Returns
+        -------
+        Table
+            A `biom.Table` instance containing the OTU, meta, tax data
         """
         otudata = load_table(otu_file)
         metadata = self._extract_data(meta_file, self._meta_exts)
@@ -180,23 +180,23 @@ class OtuValidator:
         tax_file: Optional[pathlib.Path] = None,
     ) -> Table:
         """
-            Load the data and validate
+        Load the data and validate
 
-            Parameters
-            ----------
-            otu_file : pathlib.Path
-                The path to the `OTU` counts table
-            meta_file : pathlib.Path, optional
-                The path to the sample metadata file
-                This argument is required if `dtype` is 'tsv'
-            tax_file : pathlib.Path, optional
-                The path to the taxonomy file
-                This argument is required if `dtype` is 'tsv'
+        Parameters
+        ----------
+        otu_file : pathlib.Path
+            The path to the `OTU` counts table
+        meta_file : pathlib.Path, optional
+            The path to the sample metadata file
+            This argument is required if `dtype` is 'tsv'
+        tax_file : pathlib.Path, optional
+            The path to the taxonomy file
+            This argument is required if `dtype` is 'tsv'
 
-            Returns
-            -------
-            Table
-                `biom.Table` containing all the data
+        Returns
+        -------
+        Table
+            `biom.Table` containing all the data
         """
         err_msg = (
             "The input OTU file type is not supported. "

@@ -8,21 +8,21 @@ from typing import Dict, Iterator, List, Set, Tuple, Union
 
 class DataType(collections.Hashable):
     """
-        The class that stores a datatype of the pipeline constructor
+    The class that stores a datatype of the pipeline constructor
 
-        Parameters
-        ----------
-        data : Dict[str, Any]
-            The information about a particular datatype
+    Parameters
+    ----------
+    data : Dict[str, Any]
+        The information about a particular datatype
 
-        Attributes
-        ----------
-        name : str
-            DataType name
-        desc : str
-            DataType description
-        format : Set[str]
-            DataType allowed formats
+    Attributes
+    ----------
+    name : str
+        DataType name
+    desc : str
+        DataType description
+    format : Set[str]
+        DataType allowed formats
     """
 
     def __init__(self, data: Tuple[str, Dict[str, Union[str, List[str]]]]) -> None:
@@ -64,12 +64,12 @@ class DataType(collections.Hashable):
 
 class DataTypes(collections.Set):
     """
-        The set of all datatypes supported by the pipeline constructor
+    The set of all datatypes supported by the pipeline constructor
 
-        Parameters
-        ----------
-        data : Dict[str, Dict[str, Any]]
-            A dictionary containing information about the pipeline datatypes
+    Parameters
+    ----------
+    data : Dict[str, Dict[str, Any]]
+        A dictionary containing information about the pipeline datatypes
     """
 
     def __init__(self, data: Dict[str, Dict[str, Union[str, List[str]]]]) -> None:

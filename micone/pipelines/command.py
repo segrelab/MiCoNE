@@ -10,41 +10,41 @@ from ..logging import LOG
 
 class Command:
     """
-        Class that wraps functionality for running subprocesses and jobs on the cluster
+    Class that wraps functionality for running subprocesses and jobs on the cluster
 
-        Parameters
-        ----------
-        cmd : str
-            The command to be executed
-        profile : {'local', 'sge'}
-            The execution environment
-        timeout : int, optional
-            The time limit for the command
-            If a process exceeds this time then it will be terminated
-            Default is 1000
+    Parameters
+    ----------
+    cmd : str
+        The command to be executed
+    profile : {'local', 'sge'}
+        The execution environment
+    timeout : int, optional
+        The time limit for the command
+        If a process exceeds this time then it will be terminated
+        Default is 1000
 
-        Other Parameters
-        ----------------
-        project : str, optional
-            The project under which to run the pipeline on the 'sge'
-            Default value is None
+    Other Parameters
+    ----------------
+    project : str, optional
+        The project under which to run the pipeline on the 'sge'
+        Default value is None
 
-        Attributes
-        ----------
-        cmd : str
-            The command that will be executed.
-            This includes the profile and resource specifics
-        profile : {'local', 'sge'}
-            The execution environment
-        project : str
-            The project under which to run the pipeline on the 'sge'
-        output : str
-            The 'stdout' of the command
-        error : str
-            The 'stderr' of the command
-        status : str
-            The status the the command
-            One of {'success', 'failure', 'in progress', 'not started'}
+    Attributes
+    ----------
+    cmd : str
+        The command that will be executed.
+        This includes the profile and resource specifics
+    profile : {'local', 'sge'}
+        The execution environment
+    project : str
+        The project under which to run the pipeline on the 'sge'
+    output : str
+        The 'stdout' of the command
+    error : str
+        The 'stderr' of the command
+    status : str
+        The status the the command
+        One of {'success', 'failure', 'in progress', 'not started'}
     """
 
     _stdout: Optional[str] = None
@@ -63,17 +63,17 @@ class Command:
 
     def _build_cmd(self, cmd: str) -> List[str]:
         """
-            Builds the `cmd` for the current Command instance
+        Builds the `cmd` for the current Command instance
 
-            Parameters
-            ----------
-            cmd : str
-                The command to be executed
+        Parameters
+        ----------
+        cmd : str
+            The command to be executed
 
-            Returns
-            -------
-            str
-                The final command to be executed
+        Returns
+        -------
+        str
+            The final command to be executed
         """
         command: List[str] = []
         if self.profile == "local":
@@ -95,23 +95,23 @@ class Command:
 
     @property
     def cmd(self) -> str:
-        """ The command that will be executed """
+        """The command that will be executed"""
         return " ".join(self._cmd)
 
     def run(self, cwd: Optional[str] = None) -> subprocess.Popen:
         """
-            Executes the command with the correct profile and resources
+        Executes the command with the correct profile and resources
 
-            Parameters
-            ----------
-            cwd : str, optional
-                The directory in which the command is to be run
-                Default is None which uses the current working directory
+        Parameters
+        ----------
+        cwd : str, optional
+            The directory in which the command is to be run
+            Default is None which uses the current working directory
 
-            Returns
-            -------
-            int
-                The exit status of the command
+        Returns
+        -------
+        int
+            The exit status of the command
         """
         # QUESTION: Replace this with asyncio.subprocess.create_subprocess_shell
         self.process = subprocess.Popen(
@@ -124,14 +124,14 @@ class Command:
         return self.process
 
     def wait(self) -> None:
-        """ Wait for the process to complete or terminate """
+        """Wait for the process to complete or terminate"""
         if self.process:
             stdout, stderr = self.process.communicate(timeout=self._timeout)
             self._stderr = stderr.decode("utf-8")
             self._stdout = stdout.decode("utf-8")
 
     def log(self) -> None:
-        """ Logs the stdout and stderr of the command execution to the log_file """
+        """Logs the stdout and stderr of the command execution to the log_file"""
         LOG.logger.info(f"Running command: {self.cmd}")
         LOG.logger.info("-" * 4 + " [STDOUT] " + "-" * 4)
         LOG.logger.success(self.output)
@@ -140,12 +140,12 @@ class Command:
 
     def proc_cmd_sync(self) -> bool:
         """
-            Check whether the Command instance and subprocess.Popen process are in sync
+        Check whether the Command instance and subprocess.Popen process are in sync
 
-            Returns
-            -------
-            bool
-                True if both the `cmd` and `process` are the same
+        Returns
+        -------
+        bool
+            True if both the `cmd` and `process` are the same
         """
         if self._cmd == self.process.args:
             return True
@@ -154,7 +154,7 @@ class Command:
 
     @property
     def output(self) -> str:
-        """ Returns the output generated during execution of the command """
+        """Returns the output generated during execution of the command"""
         if self._stdout is not None:
             stdout = self._stdout
         else:
@@ -170,7 +170,7 @@ class Command:
 
     @property
     def error(self) -> str:
-        """ Returns the error generated during execution of the command """
+        """Returns the error generated during execution of the command"""
         if self._stderr is not None:
             stderr = self._stderr
         else:
@@ -186,12 +186,12 @@ class Command:
 
     def update(self, cmd: str) -> None:
         """
-            Update the `cmd` of the current Command instance
+        Update the `cmd` of the current Command instance
 
-            Parameters
-            ----------
-            cmd : str
-                The new command to be executed
+        Parameters
+        ----------
+        cmd : str
+            The new command to be executed
         """
         self._cmd = self._build_cmd(cmd)
         if self.process:
@@ -206,12 +206,12 @@ class Command:
     @property
     def status(self) -> str:
         """
-            Return the status of the command execution
+        Return the status of the command execution
 
-            Returns
-            -------
-            str
-                One of {'success', 'failure', 'in progress', 'not started'}
+        Returns
+        -------
+        str
+            One of {'success', 'failure', 'in progress', 'not started'}
         """
         if self.process:
             poll = self.process.poll()

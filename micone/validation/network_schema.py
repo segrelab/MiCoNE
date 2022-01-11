@@ -21,13 +21,13 @@ from schematics.types import (
 
 class InteractionmatrixType(BaseType):
     """
-        DataType that describes the expected structure of an interaction matrix
+    DataType that describes the expected structure of an interaction matrix
 
-        Parameters
-        ----------
-        symm : bool, optional
-            True if interaction matrix is expected to be symmetric
-            Default value is False
+    Parameters
+    ----------
+    symm : bool, optional
+        True if interaction matrix is expected to be symmetric
+        Default value is False
     """
 
     def __init__(self, symm=False, *args, **kwargs):
@@ -35,14 +35,14 @@ class InteractionmatrixType(BaseType):
         self.symm = symm
 
     def validate_isdataframe(self, value):
-        """ Check whether the object is a pandas DataFrame """
+        """Check whether the object is a pandas DataFrame"""
         if not isinstance(value, pd.DataFrame):
             raise ValidationError(
                 "Interaction matrix must be a `pd.DataFrame` instance"
             )
 
     def validate_headers(self, value):
-        """ Check whether the rows and columns are the same """
+        """Check whether the rows and columns are the same"""
         if len(value.index) != len(value.columns):
             raise ValidationError(
                 "Interaction matrix must have same number of rows and columns"
@@ -53,7 +53,7 @@ class InteractionmatrixType(BaseType):
             )
 
     def validate_symmetry(self, value):
-        """ Check whether the the interaction matrix is symmetric """
+        """Check whether the the interaction matrix is symmetric"""
         if self.symm:
             if value.shape[0] != value.shape[1]:
                 raise ValidationError("Interaction matrix is not symmetric")
@@ -66,7 +66,7 @@ class InteractionmatrixType(BaseType):
 
 
 class CorrelationmatrixType(InteractionmatrixType):
-    """ DataType that describes the expected structure of a correlation matrix """
+    """DataType that describes the expected structure of a correlation matrix"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(symm=True, *args, **kwargs)
@@ -77,7 +77,7 @@ class CorrelationmatrixType(InteractionmatrixType):
 
 
 class PvaluematrixType(InteractionmatrixType):
-    """ DataType that describes the expected structure of a pvalue matrix """
+    """DataType that describes the expected structure of a pvalue matrix"""
 
     def validate_data_range(self, value):
         if value.values.max() > 1 or value.values.min() < 0:
@@ -85,7 +85,7 @@ class PvaluematrixType(InteractionmatrixType):
 
 
 class PublicationModel(Model):
-    """ Model that describes the expected structure of the publication input """
+    """Model that describes the expected structure of the publication input"""
 
     date = DateType(required=True)
     authors = ListType(DictType(StringType), required=True)
@@ -93,7 +93,7 @@ class PublicationModel(Model):
 
 
 class MetadataModel(Model):
-    """ Model that describes the expected structure of the network metadata input """
+    """Model that describes the expected structure of the network metadata input"""
 
     host = StringType(required=True)
     condition = StringType(required=True)
@@ -104,7 +104,7 @@ class MetadataModel(Model):
 
 
 class ChildrenmapType(BaseType):
-    """ DataType that describes the expected structure of the children map dictionary """
+    """DataType that describes the expected structure of the children map dictionary"""
 
     def validate_keys(self, value):
         for k in value.keys():
@@ -125,7 +125,7 @@ class ChildrenmapType(BaseType):
 
 
 class NodeModel(Model):
-    """ Model that describes the structure of one node in the network """
+    """Model that describes the structure of one node in the network"""
 
     id = StringType(min_length=2, required=True)
     lineage = StringType(required=True)
@@ -139,13 +139,13 @@ class NodeModel(Model):
 
 
 class NodesModel(Model):
-    """ Model that describes the structure of the nodes in the network """
+    """Model that describes the structure of the nodes in the network"""
 
     nodes = ListType(ModelType(NodeModel), required=True)
 
 
 class LinkModel(Model):
-    """ Model that describes the structure of one link in the network """
+    """Model that describes the structure of one link in the network"""
 
     pvalue = FloatType()
     weight = FloatType(required=True)
@@ -154,13 +154,13 @@ class LinkModel(Model):
 
 
 class LinksModel(Model):
-    """ Model that describes the structure of one link in the network """
+    """Model that describes the structure of one link in the network"""
 
     links = ListType(ModelType(LinkModel), required=True)
 
 
 class NetworkmetadataModel(MetadataModel):
-    """ Model that describes the expected structure of the network metadata """
+    """Model that describes the expected structure of the network metadata"""
 
     computational_metadata = DictType(
         UnionType(types=(StringType, FloatType)), required=True
@@ -170,7 +170,7 @@ class NetworkmetadataModel(MetadataModel):
 
 
 class ElistType(BaseType):
-    """ DataType that describes the expected structure of an edge list """
+    """DataType that describes the expected structure of an edge list"""
 
     def validate_headers_index(self, value):
         if "source" not in value.columns:

@@ -14,17 +14,17 @@ CONFIG_DIR: pathlib.Path = pathlib.Path(__file__).parent.parent / "config/config
 
 class Template:
     """
-        Base class for manipulating and rendering Jinja2 templates
+    Base class for manipulating and rendering Jinja2 templates
 
-        Parameters
-        ----------
-        template_file : pathlib.Path
-            The path to the Jinja2 template file
+    Parameters
+    ----------
+    template_file : pathlib.Path
+        The path to the Jinja2 template file
 
-        Attributes
-        ----------
-        template_vars : Set[str]
-            The set of undeclared variables in the template
+    Attributes
+    ----------
+    template_vars : Set[str]
+        The set of undeclared variables in the template
     """
 
     def __init__(self, template_file: pathlib.Path) -> None:
@@ -36,50 +36,50 @@ class Template:
 
     def render(self, template_data: dict) -> str:
         """
-            Render the template using the data passed in as arguments
+        Render the template using the data passed in as arguments
 
-            Parameters
-            ----------
-            template_data : dict
-                Dictionary of data used to fill in the template
+        Parameters
+        ----------
+        template_data : dict
+            Dictionary of data used to fill in the template
 
-            Returns
-            -------
-            str
-                The rendered template
+        Returns
+        -------
+        str
+            The rendered template
 
-            Raises
-            ------
-            UndefinedError
-                If an undeclared variable is not provided a value in template_data
+        Raises
+        ------
+        UndefinedError
+            If an undeclared variable is not provided a value in template_data
         """
         return self._template.render(template_data)
 
     @property
     def template_vars(self) -> dict:
         """
-            The variables in the template
+        The variables in the template
         """
         return self._vars
 
 
 class ScriptTemplate(Template):
     """
-        The class for templating nextflow pipeline scripts
+    The class for templating nextflow pipeline scripts
 
-        Parameters
-        ----------
-        script_file : pathlib.Path
-            The path to the nextflow script template
-        process_dir : pathlib.Path
-            The path to the directory containing process scripts for the script_file
+    Parameters
+    ----------
+    script_file : pathlib.Path
+        The path to the nextflow script template
+    process_dir : pathlib.Path
+        The path to the directory containing process scripts for the script_file
 
-        Attributes
-        ----------
-        template_vars : Set[str]
-            The set of undeclared variables in the template
-        process_scripts : Dict[str, str]
-            The process scripts of the nextflow pipeline
+    Attributes
+    ----------
+    template_vars : Set[str]
+        The set of undeclared variables in the template
+    process_scripts : Dict[str, str]
+        The process scripts of the nextflow pipeline
     """
 
     def __init__(self, script_file: pathlib.Path, process_dir: pathlib.Path) -> None:
@@ -89,7 +89,7 @@ class ScriptTemplate(Template):
     @property
     def process_scripts(self) -> Dict[str, str]:
         """
-            The process scripts of the nextflow pipeline
+        The process scripts of the nextflow pipeline
         """
         wrapper = '"""\n'
         indent = " " * 4
@@ -104,49 +104,49 @@ class ScriptTemplate(Template):
 
     def render(self, template_data: dict = dict()) -> str:
         """
-            Render the nextflow script template
+        Render the nextflow script template
 
-            Parameters
-            ----------
-            template_data : dict, optional
-                Dictionary of data used to fill in the template
-                This data in addition to the process scripts that are handled automatically
-                Default is an empty dictionary
+        Parameters
+        ----------
+        template_data : dict, optional
+            Dictionary of data used to fill in the template
+            This data in addition to the process scripts that are handled automatically
+            Default is an empty dictionary
 
-            Returns
-            -------
-            str
-                The rendered template
+        Returns
+        -------
+        str
+            The rendered template
         """
         data = {**self.process_scripts, **template_data}
         return super().render(data)
 
 
 class ResourceTemplate(Template):
-    """ Class for templating nextflow resource files """
+    """Class for templating nextflow resource files"""
 
     pass
 
 
 class ProfileTemplate(Template):
-    """ Class for templating nextflow profile files """
+    """Class for templating nextflow profile files"""
 
     pass
 
 
 class ConfigTemplate(Template):
     """
-        Class for templating nextflow configuration files
+    Class for templating nextflow configuration files
 
-        Parameters
-        ----------
-        config_file : pathlib.Path
-            The path to the configuration file
+    Parameters
+    ----------
+    config_file : pathlib.Path
+        The path to the configuration file
 
-        Attributes
-        ----------
-        template_vars : Set[str]
-            The set of undeclared variables in the template
+    Attributes
+    ----------
+    template_vars : Set[str]
+        The set of undeclared variables in the template
     """
 
     _resource_config: pathlib.Path = CONFIG_DIR / "resources.config"
@@ -157,25 +157,25 @@ class ConfigTemplate(Template):
 
     def render(self, template_data: dict, resource_config: bool = False) -> str:
         """
-            Render the template using the data passed in as arguments
+        Render the template using the data passed in as arguments
 
-            Parameters
-            ----------
-            template_data : dict
-                Dictionary of data used to fill in the template
-            resource_config : bool, optional
-                Flag to determine whether to append profile and resouce configs
-                Default value is False
+        Parameters
+        ----------
+        template_data : dict
+            Dictionary of data used to fill in the template
+        resource_config : bool, optional
+            Flag to determine whether to append profile and resouce configs
+            Default value is False
 
-            Returns
-            -------
-            str
-                The rendered template
+        Returns
+        -------
+        str
+            The rendered template
 
-            Raises
-            ------
-            UndefinedError
-                If an undeclared variable is not provided a value in template_data
+        Raises
+        ------
+        UndefinedError
+            If an undeclared variable is not provided a value in template_data
         """
         rendered_config = self._template.render(template_data)
         if resource_config:

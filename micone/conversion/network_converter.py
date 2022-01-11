@@ -11,15 +11,15 @@ from ..main import Network
 
 def json_to_elist(in_file: pathlib.Path, out_file: pathlib.Path) -> None:
     """
-        Convert Network file from json to elist format
-        Note that only the edge attributes can be converted
+    Convert Network file from json to elist format
+    Note that only the edge attributes can be converted
 
-        Parameters
-        ----------
-        in_file : pathlib.Path
-            The path to the json formatted network file
-        out_file : pathlib.Path
-            The path to the elist formatted network file
+    Parameters
+    ----------
+    in_file : pathlib.Path
+        The path to the json formatted network file
+    out_file : pathlib.Path
+        The path to the elist formatted network file
     """
     network = Network.load_json(in_file)
     df = pd.DataFrame.from_dict(network.links)
