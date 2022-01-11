@@ -11,3 +11,9 @@ fastspar_pvalues --otu_table ${otu_file} \
     --permutations \$BOOTSTRAPS \
     --outfile ${meta.id}_pval.tsv \
     --threads ${ncpus}
+
+if [[ ${slim} = "true" ]]; then
+    for VAR in corr_boostraps/*; do
+        rm \$VAR \$(readlink -f \$VAR)
+    done
+fi

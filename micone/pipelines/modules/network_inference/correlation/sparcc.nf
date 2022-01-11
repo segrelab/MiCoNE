@@ -4,6 +4,7 @@ process sparcc {
     label 'sparcc'
     tag "${new_meta.id}"
     publishDir "${params.output_dir}/${f[0]}/${f[1]}/${f[2]}/${directory}/${new_meta.id}",
+        pattern: '*.{json,csv,tsv}',
         mode: 'copy',
         overwrite: true
     input:
