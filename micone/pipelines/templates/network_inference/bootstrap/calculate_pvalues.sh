@@ -13,7 +13,8 @@ fastspar_pvalues --otu_table ${otu_file} \
     --threads ${ncpus}
 
 if [[ ${slim} = "true" ]]; then
-    for VAR in corr_boostraps/*; do
-        rm \$VAR \$(readlink -f \$VAR)
+    for FILE in corr_bootstraps/*; do
+        rm \$(readlink -f \$FILE)
+        rm \$FILE
     done
 fi

@@ -15,5 +15,6 @@ process pvalues {
         f = getHierarchy(task_process)
         directory = "${meta.denoise_cluster}-${meta.chimera_checking}-${meta.tax_assignment}-${meta.otu_processing}"
         ncpus = params.network_inference.bootstrap['pvalue']['ncpus']
+        slim = params.network_inference.bootstrap['pvalue']['slim']
         template 'network_inference/bootstrap/calculate_pvalues.sh'
 }
