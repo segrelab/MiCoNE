@@ -531,7 +531,7 @@ class NetworkGroup(Collection):
             weights_scaled = weights.apply(lambda x: x / (np.abs(x).max()))
             parameter_scaled = (size - 1) * parameter
             indices_removal = weights.index[
-                weights_scaled.sum(axis=1) < parameter_scaled
+                np.abs(weights_scaled.sum(axis=1)) < parameter_scaled
             ]
             return list(indices_removal)
 
