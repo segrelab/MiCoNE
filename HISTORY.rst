@@ -5,6 +5,21 @@ Changelog
 Unreleased
 ----------
 
+0.11.2 (2022-01-12)
+-------------------
+
+Added
++++++
+
+- ``NetworkGroup.to_network`` method to convert from ``nx.MultiGraph`` to ``nx.Graph``
+
+Fixed
++++++
+
+- Make ``cids`` a default parameter in ``NetworkGroup.get_consensus_network``
+- Minor code refactoring
+
+
 0.11.1 (2022-01-11)
 -------------------
 
