@@ -5,6 +5,15 @@ Changelog
 Unreleased
 ----------
 
+0.11.3 (2022-01-12)
+-------------------
+
+Fixed
++++++
+
+- ``scaled_sum`` consensus method fixed to allow negative edges in the consensus
+
+
 0.11.2 (2022-01-12)
 -------------------
 
