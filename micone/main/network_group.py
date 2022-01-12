@@ -485,15 +485,19 @@ class NetworkGroup(Collection):
         return cls(networks, id_field=id_field)
 
     def get_consensus_network(
-        self, cids: List[int], method: str = "simple_voting", parameter: float = 0.0
+        self,
+        cids: Optional[List[int]] = None,
+        method: str = "simple_voting",
+        parameter: float = 0.0,
     ) -> "NetworkGroup":
         """
         Get consensus network for the network defined by the `cids`
 
         Parameters:
         -----------
-        cids : List[int]
+        cids : Optional[List[int]]
             The list of context ids that are to be used in the merger
+            Default is None
         method : str, {"simple_voting", "scaled_sum"}
             Default value is simple_voting
         parameter : float
@@ -533,6 +537,8 @@ class NetworkGroup(Collection):
 
         # Step1: Filter by "cids" and make copies of graphs
         graphs = []
+        if not cids:
+            cids = list(range(len(self.contexts)))
         for cid, network in enumerate(self._networks):
             if cid in cids:
                 graphs.append(network.graph.copy())
