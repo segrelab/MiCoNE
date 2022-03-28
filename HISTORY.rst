@@ -2,8 +2,20 @@
 Changelog
 =========
 
-Unreleased
-----------
+0.11.4 (2022-03-28)
+-------------------
+
+Added
++++++
+
+- Add ``obssum_thres`` parameter to ``Otu.rm_sparse_obs`` method to filter by sum of observation counts
+
+
+Fixed
++++++
+
+- The ``normalize_filter(off)`` module also does some filtering (with lax conditions) to ensure that the number of OTUs do not blow up.
+
 
 0.11.3 (2022-01-12)
 -------------------
