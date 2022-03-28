@@ -24,6 +24,7 @@ process normalize_filter {
         count_thres = params.otu_processing.transform['normalize_filter']['count_thres']
         prevalence_thres = params.otu_processing.transform['normalize_filter']['prevalence_thres']
         abundance_thres = params.otu_processing.transform['normalize_filter']['abundance_thres']
+        obssum_thres = params.otu_processing.transform['normalize_filter']['obssum_thres']
         rm_sparse_samples = params.otu_processing.transform['normalize_filter']['rm_sparse_samples']
         template 'otu_processing/transform/normalize_filter.py'
 }

@@ -133,7 +133,7 @@ class Otu:
 
     @property
     def obs_metadata(self) -> pd.DataFrame:
-        """ Lineage data for the observations (OTUs) """
+        """Lineage data for the observations (OTUs)"""
         obs_metadata = self.otu_data.metadata_to_dataframe("observation")
         lineage = list(Lineage._fields)
         n_tax_levels = len(set(obs_metadata.columns) & set(lineage))
@@ -264,7 +264,10 @@ class Otu:
         return Otu(new_otu)
 
     def rm_sparse_obs(
-        self, prevalence_thres: float = 0.05, abundance_thres: float = 0.01
+        self,
+        prevalence_thres: float = 0.05,
+        abundance_thres: float = 0.01,
+        obssum_thres: int = 0,
     ) -> "Otu":
         """
         Remove observations with prevalence < `prevalence_thres` and abundance < `abundance_thres`
@@ -275,19 +278,21 @@ class Otu:
             Minimum fraction of samples the observation must be present in in order to be accepted
         abundance_thres : float
             Minimum observation count fraction in a sample needed in order to be accepted
+        obssum_thres : int
+            The theshold applied to the sum of observations for each row
 
         Returns
         -------
         Otu
             Otu instance with bad observations removed
         """
-        filt_fun = (
-            lambda val, *_: (val.astype(int).astype(bool).mean()) >= prevalence_thres
+        prevalence_obssum_filter = lambda val, *_: (
+            (val.astype(int).astype(bool).mean()) >= prevalence_thres
+        ) and ((val.astype(int).sum()) >= obssum_thres)
+        otu_prevalence_obssum_filtered = self.otu_data.filter(
+            prevalence_obssum_filter, axis="observation", inplace=False
         )
-        otu_dense_obs = self.otu_data.filter(
-            filt_fun, axis="observation", inplace=False
-        )
-        otu_df = otu_dense_obs.to_dataframe()
+        otu_df = otu_prevalence_obssum_filtered.to_dataframe()
         if otu_df.apply(pd.api.types.is_sparse).any():
             otu_rel_abund = (otu_df / otu_df.sum(axis=0)).sparse.to_dense()
         else:

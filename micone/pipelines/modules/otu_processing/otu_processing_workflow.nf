@@ -3,8 +3,8 @@
 
 
 // Imports
-include { fork} from './transform/fork.nf'
-include { normalize_filter} from './transform/normalize_filter.nf'
+include { fork } from './transform/fork.nf'
+include { normalize_filter } from './transform/normalize_filter.nf'
 include { group } from './transform/group.nf'
 include { biom2tsv } from './export/biom2tsv.nf'
 
