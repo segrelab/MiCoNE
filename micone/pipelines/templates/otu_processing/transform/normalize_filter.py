@@ -11,19 +11,21 @@ def main(
     count_thres: int,
     prevalence_thres: float,
     abundance_thres: float,
-    obssum_thres: float
+    obssum_thres: float,
 ) -> Otu:
     otu = Otu.load_data(otu_file)
     if rm_sparse_samples == "true":
         otu = otu.rm_sparse_samples(count_thres=count_thres)
     if rm_sparse_obs == "true":
         otu = otu.rm_sparse_obs(
-            prevalence_thres=prevalence_thres, abundance_thres=abundance_thres, obssum_thres=obssum_thres
+            prevalence_thres=prevalence_thres,
+            abundance_thres=abundance_thres,
+            obssum_thres=obssum_thres,
         )
     else:
         n_samples = otu.otu_data.shape[1]
         otu = otu.rm_sparse_obs(
-            prevalence_thres=2/n_samples, abundance_thres=0.001, obssum_thres=10
+            prevalence_thres=2 / n_samples, abundance_thres=0.001, obssum_thres=10
         )
     if axis != "None":
         otu_norm = otu.normalize(axis=axis)

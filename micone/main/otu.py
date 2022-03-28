@@ -267,7 +267,7 @@ class Otu:
         self,
         prevalence_thres: float = 0.05,
         abundance_thres: float = 0.01,
-        obssum_thres: int = 0,
+        obssum_thres: int = 100,
     ) -> "Otu":
         """
         Remove observations with prevalence < `prevalence_thres` and abundance < `abundance_thres`
