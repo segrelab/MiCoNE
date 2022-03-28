@@ -42,6 +42,7 @@ if __name__ == "__main__":
     RM_SPARSE_OBS = "${rm_sparse_obs}"
     PREVALENCE_THRES = float("${prevalence_thres}")
     ABUNDANCE_THRES = float("${abundance_thres}")
+    OBSSUM_THRES = int("${obssum_thres}")
     norm_otu = main(
         OTU_FILE,
         RM_SPARSE_SAMPLES,
