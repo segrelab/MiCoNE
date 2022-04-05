@@ -10,7 +10,9 @@ function do_fastspar {
     fastspar --iterations ${iterations} --yes \
         --otu_table \$1 \
         --correlation \${1%_otu.boot}_corr.boot \
+        --covariance \${1%_otu.boot}_cov.boot \
         --threads 1
+    rm -f \${1%_otu.boot}_cov.boot
 }
 
 export -f do_fastspar
