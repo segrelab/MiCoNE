@@ -2,6 +2,15 @@
 Changelog
 =========
 
+0.11.6 (2022-04-05)
+-------------------
+
+Fixed
++++++
+
+- Calculation of correlations of bootstraps using ``fastspar`` (with temporary covariance parameter)
+
+
 0.11.5 (2022-03-28)
 -------------------
 
