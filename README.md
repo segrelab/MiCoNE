@@ -10,21 +10,17 @@
 `MiCoNE`, is a flexible and modular pipeline for 16S data analysis.
 It incorporates various popular, publicly available tools as well as custom Python modules and scripts to facilitate inference of co-occurrence networks from 16S data.
 
-<div align="center">
-⚠️ <p><strong>The package is under active development and breaking changes are possible</strong></p>
-</div>
-
--   Free software: MIT license
--   Documentation: <https://micone.readthedocs.io/>
+- Free software: MIT license
+- Documentation: <https://micone.readthedocs.io/>
 
 Manuscript can be found on [bioRxiv](https://www.biorxiv.org/content/10.1101/2020.09.23.309781v2)
 
 ## Features
 
--   Plug and play architecture: allows easy additions and removal of new tools
--   Flexible and portable: allows running the pipeline on local machine, compute cluster or the cloud with minimal configuration change. Uses the [nextflow](www.nextflow.io) under the hood
--   Parallelization: automatic parallelization both within and across samples (needs to be enabled in the `config` file)
--   Ease of use: available as a minimal `Python` library (without the pipeline) or the full `conda` package
+- Plug and play architecture: allows easy additions and removal of new tools
+- Flexible and portable: allows running the pipeline on local machine, compute cluster or the cloud with minimal configuration change. Uses the [nextflow](www.nextflow.io) under the hood
+- Parallelization: automatic parallelization both within and across samples (needs to be enabled in the `config` file)
+- Ease of use: available as a minimal `Python` library (without the pipeline) or the full `conda` package
 
 ## Installation
 
@@ -40,7 +36,6 @@ Installing the `conda` package:
 git clone https://github.com/segrelab/MiCoNE.git
 cd MiCoNE
 conda env create -n micone -f env.yml
-pip install .
 ```
 
 > NOTE:
@@ -52,9 +47,9 @@ pip install .
 
 It supports the conversion of raw 16S sequence data or counts matrices into co-occurrence networks through multiple methods. Each process in the pipeline supports alternate tools for performing the same task, users can use the configuration file to change these values.
 
-## Usage
+## Usage (needs to be updated)
 
-The `MiCoNE` pipelines comes with an easy to use CLI. To get a list of subcommands you can type:
+The `MiCoNE` pipelines comes with an easy-to-use CLI. To get a list of subcommands you can type:
 
 ```bash
 micone --help
