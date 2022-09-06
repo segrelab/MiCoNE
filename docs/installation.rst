@@ -5,16 +5,14 @@ Installation
 ============
 
 
-Stable release
---------------
+Stable release (only Python package)
+------------------------------------
 
-To install Microbial Interaction Database Pipeline, run this command in your terminal:
+To install the MiCoNE Python package, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install micone
-
-This is the preferred method to install Microbial Interaction Database Pipeline, as it will always install the most recent stable release.
+    $ pip install MiCoNE
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -22,9 +20,29 @@ you through the process.
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
+.. note:: This does not install the `nextflow`_ related pipeline elements. Those can be installed through anaconda (see below).
 
-From sources
-------------
+From anaconda (complete pipeline)
+---------------------------------
+
+This is the preferred way to install the complete MiCoNE pipeline.
+
+First clone the public repository:
+
+.. code-block:: console
+
+   $ git clone git://github.com/segrelab/MiCoNE
+
+Then create a conda environment and install the required packages:
+
+.. code-block:: console
+
+   $ cd MiCoNE
+   $ conda env create -n micone -f env.yml
+
+
+From sources (only Python package)
+----------------------------------
 
 The sources for Microbial Interaction Database Pipeline can be downloaded from the `Github repo`_.
 
@@ -32,20 +50,20 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/dileep-kishore/micone
+    $ git clone git://github.com/segrelab/MiCoNE
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/dileep-kishore/micone/tarball/master
+    $ curl  -OL https://github.com/segrelab/MiCoNE/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
 .. code-block:: console
 
-    $ python setup.py install
+    $ pip install .
 
 
-.. _Github repo: https://github.com/dileep-kishore/micone
-.. _tarball: https://github.com/dileep-kishore/micone/tarball/master
+.. _Github repo: https://github.com/segrelab/MiCoNE
+.. _tarball: https://github.com/segrelab/MiCoNE/tarball/master
