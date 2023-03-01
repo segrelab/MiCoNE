@@ -15,5 +15,6 @@ process export_sequences {
     script:
         String task_process = "${task.process}"
         f = getHierarchy(task_process)
+        sample_filter = params.sequence_processing.demultiplexing['export_sequences']['sample_filter']
         template 'sequence_processing/demultiplexing/export_sequences.sh'
 }
