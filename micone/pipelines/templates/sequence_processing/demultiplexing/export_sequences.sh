@@ -4,10 +4,10 @@ qiime tools export \
     --input-path "${demux_artifact}" \
     --output-path demux_seqs
 
-if [[ '${sample_filter}' ]]; then
+if [[ "${sample_filter}" ]]; then
     cd demux_seqs || exit
-    ls -1 | grep -v '${sample_filter}' | xargs rm -f
+    ls -1 | grep -Ev "(MANIFEST|metadata.yml|${sample_filter})" | xargs rm -f
     mv MANIFEST MANIFEST_OLD
-    sed '/sample-id\|${sample_filter}/!d' MANIFEST_OLD >MANIFEST
+    grep -E "(sample-id|${sample_filter})" MANIFEST_OLD >MANIFEST
     rm MANIFEST_OLD
 fi
