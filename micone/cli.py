@@ -9,7 +9,6 @@ from typing import List
 import click
 
 from .logging import LOG
-from .pipelines import Pipeline
 from .setup import Environments
 from .utils import Spinner
 from .validation import check_results
