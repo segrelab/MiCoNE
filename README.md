@@ -94,6 +94,7 @@ Other example `config` files can be found at `tests/data/pipelines`
 ## Know issues
 
 1. If you have a version of `julia` that is preinstalled, make sure that it does not conflict with the version downloaded by the `micone-flashweave` environment
+2. The data directory (`nf_micone/data`) needs to be manually downloaded (link here).
 
 ## Credits
 

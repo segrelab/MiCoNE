@@ -9,7 +9,7 @@ from typing import List
 import click
 
 from .logging import LOG
-from .setup import Environments
+from .setup import Environments, Initialize
 from .utils import Spinner
 from .validation import check_results
 
@@ -70,83 +70,43 @@ def install(ctx, env: str):
 
 @cli.command()
 @click.option(
-    "--profile",
-    "-p",
-    default="local",
+    "--workflow",
+    "-w",
+    default="full",
     type=str,
-    help="The execution profile. Either 'local' or 'sge'",
-)
-@click.option(
-    "--config",
-    "-c",
-    type=click.Path(exists=True),
-    help="The config file that defines the pipeline run",
+    help="The micone workflow initialize: 'full', 'ta_op_ni', 'op_ni', or 'ni'",
 )
 @click.option(
     "--output_location",
     "-o",
     type=click.Path(exists=True),
     default=None,
-    help="The base output location to store pipeline results",
-)
-@click.option(
-    "--base_dir",
-    "-b",
-    type=click.Path(exists=True),
-    default=None,
-    help="The location of base directory for input files",
-)
-@click.option(
-    "--max_procs",
-    "-m",
-    type=click.INT,
-    default=4,
-    help="Maximum number of processes allowed to run in parallel",
-)
-@click.option(
-    "--resume",
-    is_flag=True,
-    help="The flag to determine whether a previous execution is resumed",
+    help="The output path to initialize workflow",
 )
 @click.pass_context
 def init(
     ctx,
-    profile: str,
-    config: click.Path,
+    workflow: str,
     output_location: click.Path,
-    base_dir: click.Path,
-    max_procs: int,
-    resume: bool,
 ):
-    """Run the pipeline"""
+    """Initialize the nextflow templates for the micone workflow"""
     spinner = ctx.obj["SPINNER"]
-    pipeline = Pipeline(
-        str(config), profile, str(base_dir), resume, output_location=output_location
-    )
-    spinner.start()
-    spinner.text = "Starting pipeline execution"
-    try:
-        for process in pipeline.run(max_procs=max_procs):
-            if pipeline.process_queue is None:
-                raise ValueError("Pipeline process queue is empty")
-            process_list = " and ".join(
-                [proc.id_.split(".", 2)[-1] for proc in pipeline.process_queue]
-            )
-            if resume and process.io_exist:
-                spinner.start()
-                spinner.text = f"Executing {process_list}"
-                spinner.succeed(f"Resumed {process}")
-            spinner.start()
-            spinner.text = f"Executing {process_list}"
-            updated_processes = pipeline.wait()
-            for proc in updated_processes:
-                proc.log()
-                if proc.status == "success":
-                    spinner.succeed(f"Completed {proc}")
-                else:
-                    spinner.fail(f"Failed to execute {proc}")
-    finally:
-        LOG.cleanup()
+    initializer = Initialize()
+    if not output_location:
+        output_path = pathlib.Path()
+    else:
+        output_path = pathlib.Path(output_location)
+    for init_cmd in initializer.init(workflow, output_path):
+        spinner.start()
+        spinner.text = f"Initializing the {workflow} workflow"
+        init_cmd.wait()
+        init_cmd.log()
+        if init_cmd.status == "failure":
+            spinner.fail(f"{init_cmd} Failed")
+        elif init_cmd.status == "success":
+            spinner.succeed(f"{init_cmd} Passed")
+    click.secho(f"Log file is at {LOG.path}")
+    LOG.cleanup()
 
 
 @cli.command()

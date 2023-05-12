@@ -16,9 +16,6 @@ class Environments:
     """
     A class that creates, lists and loads conda environments
 
-    Parameters
-    ----------
-
     Attributes
     ----------
     configs : List[pathlib.Path]
