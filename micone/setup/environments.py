@@ -50,7 +50,7 @@ class Environments:
         if env is None:
             for config, env_name in zip(self.configs, self.env_names):
                 LOG.logger.info(f"Initializing {env_name} environment")
-                cmd_str = f"conda env create -f {config} -n {env_name}"
+                cmd_str = f"mamba env create -f {config} -n {env_name}"
                 init_cmd = Command(cmd_str, profile="local", timeout=10000)
                 init_cmd.run()
                 yield init_cmd
@@ -59,7 +59,7 @@ class Environments:
             config = self.configs[ind]
             env_name = self.env_names[ind]
             LOG.logger.info(f"Initializing {env_name} environment")
-            cmd_str = f"conda env create -f {config} -n {env_name}"
+            cmd_str = f"mamba env create -f {config} -n {env_name}"
             init_cmd = Command(cmd_str, profile="local", timeout=10000)
             init_cmd.run()
             yield init_cmd

@@ -42,7 +42,7 @@ def cli(ctx, log: bool, interactive: bool):
     help="The environment to initialize. By default will initialize all",
 )
 @click.pass_context
-def init(ctx, env: str):
+def install(ctx, env: str):
     """Initialize the package and environments"""
     spinner = ctx.obj["SPINNER"]
     environments = Environments()
@@ -55,15 +55,15 @@ def init(ctx, env: str):
             spinner.fail(f"{env_cmd} Failed")
         elif env_cmd.status == "success":
             spinner.succeed(f"{env_cmd} Passed")
-    for post_cmd in environments.post_install(env):
-        spinner.start()
-        spinner.text = f"Running post installation: {post_cmd}"
-        post_cmd.wait()
-        post_cmd.log()
-        if post_cmd.status == "failure":
-            spinner.fail(f"{post_cmd} Failed")
-        elif post_cmd.status == "success":
-            spinner.succeed(f"{post_cmd} Passed")
+            for post_cmd in environments.post_install(env):
+                spinner.start()
+                spinner.text = f"Running post installation: {post_cmd}"
+                post_cmd.wait()
+                post_cmd.log()
+                if post_cmd.status == "failure":
+                    spinner.fail(f"{post_cmd} Failed")
+                elif post_cmd.status == "success":
+                    spinner.succeed(f"{post_cmd} Passed")
     click.secho(f"Log file is at {LOG.path}")
     LOG.cleanup()
 
@@ -109,7 +109,7 @@ def init(ctx, env: str):
     help="The flag to determine whether a previous execution is resumed",
 )
 @click.pass_context
-def run(
+def init(
     ctx,
     profile: str,
     config: click.Path,

@@ -36,12 +36,12 @@ Installing the `conda` package:
 ```sh
 git clone https://github.com/segrelab/MiCoNE.git
 cd MiCoNE
-# Here we use mamba, you can also use conda
 mamba env create -n micone -f env.yml
 ```
 
 > NOTE:
-> Direct installation via anaconda cloud will be available soon.
+> 1. MiCoNE requires the `mamba` package manager, otherwise `micone init` will not work.
+> 2. Direct installation via anaconda cloud will be available soon.
 
 
 ## Workflow
@@ -84,11 +84,16 @@ Here is an example `config` file that performs:
 3. calculates p-values
 4. constructs the networks
 
+
 ```sh
 Coming soon
 ```
 
 Other example `config` files can be found at `tests/data/pipelines`
+
+## Know issues
+
+1. If you have a version of `julia` that is preinstalled, make sure that it does not conflict with the version downloaded by the `micone-flashweave` environment
 
 ## Credits
 
