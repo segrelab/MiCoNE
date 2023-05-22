@@ -67,10 +67,10 @@ class Initialize:
             cmd6 = Command(f"cp -r {self.data_dir} {nf_micone}", profile="local")
             cmd6.run()
             yield cmd6
-            # copy main.nf and nextflow.config
+            # copy main.nf, nextflow.config, samplesheet.csv, metadata.json, run.sh
             workflow_dir = self.workflows_dir / workflow
             cmd7 = Command(
-                f"cp {workflow_dir}/main.nf {workflow_dir}/nextflow.config {output_path}",
+                f"cp {workflow_dir}/main.nf {workflow_dir}/nextflow.config {workflow_dir}/samplesheet.csv {workflow_dir}/metadata.json {workflow_dir}/run.sh {output_path}",
                 profile="local",
             )
             cmd7.run()

@@ -1,0 +1,19 @@
+{
+    "publication": {
+        "authors": [
+            {
+                "email": "author@email.com",
+                "name": "Firstname Lastname"
+            }
+        ],
+        "date": "2022-11-28",
+        "pubmed_id": "36443458"
+    },
+    "description": "Title of study/experiment",
+    "host": "Human",
+    "condition": "Healthy",
+    "location": "Stool",
+    "experimental_metadata": {
+        "sequencing": "16S"
+    }
+}
