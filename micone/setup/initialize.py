@@ -21,7 +21,6 @@ class Initialize:
         self.modules_dir = PIPELINE_DIR / "modules"
         self.functions_dir = PIPELINE_DIR / "functions"
         self.configs_dir = PIPELINE_DIR / "configs"
-        # FIXME: This is does not exist right now
         self.data_dir = PIPELINE_DIR / "data"
         self.workflows = [w.stem for w in self.workflows_dir.iterdir()]
 
@@ -64,8 +63,8 @@ class Initialize:
             cmd5 = Command(f"cp -r {self.configs_dir} {nf_micone}", profile="local")
             cmd5.run()
             yield cmd5
-            # cp -r "${BASE_DIR}/data" nf_micone  # this folder doesn't exist
-            cmd6 = Command(f"mkdir -p {nf_micone}/data", profile="local")
+            # cp -r "${BASE_DIR}/data" nf_micone
+            cmd6 = Command(f"cp -r {self.data_dir} {nf_micone}", profile="local")
             cmd6.run()
             yield cmd6
             # copy main.nf and nextflow.config
