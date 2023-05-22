@@ -85,7 +85,9 @@ class Environments:
             post_scripts = list(ENV_DIR.glob(f"**/{env}/post_install.sh"))
         for script in post_scripts:
             cmd_str = f"bash {script}"
-            LOG.logger.info(f"Running post_install for {env} environment")
+            LOG.logger.info(
+                f"Running post_install for {script.parent.stem} environment"
+            )
             post_cmd = Command(cmd_str, profile="local", timeout=10000)
             post_cmd.run()
             yield post_cmd

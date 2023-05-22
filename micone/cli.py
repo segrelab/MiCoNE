@@ -55,15 +55,15 @@ def install(ctx, env: str):
             spinner.fail(f"{env_cmd} Failed")
         elif env_cmd.status == "success":
             spinner.succeed(f"{env_cmd} Passed")
-            for post_cmd in environments.post_install(env):
-                spinner.start()
-                spinner.text = f"Running post installation: {post_cmd}"
-                post_cmd.wait()
-                post_cmd.log()
-                if post_cmd.status == "failure":
-                    spinner.fail(f"{post_cmd} Failed")
-                elif post_cmd.status == "success":
-                    spinner.succeed(f"{post_cmd} Passed")
+    for post_cmd in environments.post_install(env):
+        spinner.start()
+        spinner.text = f"Running post installation: {post_cmd}"
+        post_cmd.wait()
+        post_cmd.log()
+        if post_cmd.status == "failure":
+            spinner.fail(f"{post_cmd} Failed")
+        elif post_cmd.status == "success":
+            spinner.succeed(f"{post_cmd} Passed")
     click.secho(f"Log file is at {LOG.path}")
     LOG.cleanup()
 
