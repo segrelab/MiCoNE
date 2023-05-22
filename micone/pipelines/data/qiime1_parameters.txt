@@ -1,0 +1,2 @@
+pick_otus:enable_rev_strand_match True
+pick_otus:suppress_de_novo_chimera_detection True

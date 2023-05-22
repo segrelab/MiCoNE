@@ -112,4 +112,4 @@ tags
 .nextflow.log.*
 
 # pipeline data directory
-micone/pipelines/data/
+micone/pipelines/full_data/
