@@ -25,24 +25,24 @@ Manuscript can be found on [bioRxiv](https://www.biorxiv.org/content/10.1101/202
 
 ## Installation
 
-Installing the minimal `Python` library:
-
-```sh
-pip install micone
-```
-
 Installing the `conda` package:
 
 ```sh
-git clone https://github.com/segrelab/MiCoNE.git
-cd MiCoNE
-mamba env create -n micone -f env.yml
+mamba env create -n micone -f https://raw.githubusercontent.com/segrelab/MiCoNE/master/env.yml
 ```
 
 > NOTE:
 > 1. MiCoNE requires the `mamba` package manager, otherwise `micone init` will not work.
 > 2. Direct installation via anaconda cloud will be available soon.
 
+Installing the minimal `Python` library:
+
+```sh
+pip install micone
+```
+
+> NOTE:
+> The `Python` library does not provide the functionality to execute pipelines
 
 ## Workflow
 
@@ -51,45 +51,104 @@ mamba env create -n micone -f env.yml
 It supports the conversion of raw 16S sequence data into co-occurrence networks.
 Each process in the pipeline supports alternate tools for performing the same task, users can use the configuration file to change these values.
 
-## Usage (needs to be updated)
+## Usage
 
 The `MiCoNE` pipelines comes with an easy-to-use CLI. To get a list of subcommands you can type:
 
-```bash
+```sh
 micone --help
 ```
 
 Supported subcommands:
 
-1. `init` - Creates `conda` environments for various pipeline processes
-2. `run` - The main subcommand that runs the pipeline
-3. `clean` - Cleans temporary data, log files and other extraneous files
+1. `install` - Initializes the package and environments (creates `conda` environments for various pipeline processes)
+2. `init` - Initialize the nextflow templates for the micone workflow
+3. `clean` - Cleans files from a pipeline run (cleans temporary data, log files and other extraneous files)
+4. `validate-results` - Check the results of the pipeline execution
 
-To run the pipeline:
+### Initializing the environments
 
-```bash
-micone run -p local -c run.toml -m 4
-```
-
-This runs the pipeline in the `local` machine using `run.toml` for the pipeline configuration and with a maximum of 4 processes in parallel at a time.
-
-## Configuration (needs to be updated)
-
-The configuration of the pipeline can be done using a `.toml` file.
-The details can be found in the relevant section in the docs.
-Here is an example `config` file that performs:
-
-1. grouping of OTUs by taxonomy level
-2. correlation of the taxa using `fastspar`
-3. calculates p-values
-4. constructs the networks
-
-
+In order to run the pipeline various `conda` environments must first be installed on the system.
+Use the following comand to initialize all the environments:
 ```sh
-Coming soon
+micone install
 ```
 
-Other example `config` files can be found at `tests/data/pipelines`
+Or to initialize a particular environment use:
+```sh
+micone install -e "micone-qiime2"
+```
+
+The list of supported environments are:
+- micone-cozine
+- micone-dada2
+- micone-flashweave
+- micone-harmonies
+- micone-mldm
+- micone-propr
+- micone-qiime2
+- micone-sparcc
+- micone-spieceasi
+- micone-spring
+
+### Initializing the pipeline template
+
+To initialize the full pipeline (from raw 16S sequencing reads to co-occurrence networks):
+```sh
+micone init -w <workflow> -o <path/to/folder>
+```
+
+Other supported pipeline templates are (work in progress):
+- full
+- ni
+- op_ni
+- ta_op_ni
+
+To run the pipeline, update the relevant config files (see next section), activate the `micone` environment and run the `run.sh` script that was copied to the directory:
+```sh
+bash run.sh
+```
+This runs the pipeline locally using the config options specified.
+
+To run the pipeline on an SGE enabled cluster, add the relevant project/resource allocation flags to the `run.sh` script and run as:
+```sh
+qsub run.sh
+```
+
+## Configuration and the pipeline template
+
+The pipeline template for the micone "workflow" (see previous section for list of supported options) is copied to the desired folder after running `micone init -w <workflow>`.
+The template folder contains the following folders and files:
+
+- nf_micone: Folder contatining the `micone` default configs, data, functions, and modules
+- templates: Folder containing the templates (scripts) that are executed during the pipeline run
+- main.nf: The pipeline "workflow" defined in the `nextflow` DSL 2 specification
+- nextflow.config: The configuration for the pipeline. This file needs to be modified in order to change any configuration options for the pipeline run
+- metadata.json: Contains the basic metadata that describes the dataset that is to be processed. Should be updated accordingly before pipeline execution
+- samplesheet.csv: The file that contains the locations of the input data necessary for the pipeline run. Should be updated accordingly before pipeline execution
+- run.sh: The `bash` script that contains commands used to execute the `nextflow` pipeline
+
+The folder `nf_micone/configs` contains the default configs for all the `micone` pipeline workflows.
+These options can also be viewed in tabular format in the [documentation](https://micone.readthedocs.io/en/latest/usage.html#configuring-the-pipeline).
+
+For example, to change the tool used for OTU assignment to `dada2` and `deblur`, you can add the following to `nextflow.config`:
+```groovy
+// ... config initialization
+params {
+       // ... other config options
+       denoise_cluster {
+        otu_assignment {
+            selection = ['dada2', 'deblur']
+        }
+    }
+}
+```
+
+Example configuration files used for the analyses in the manuscript can be found [here](https://github.com/segrelab/MiCoNE-pipeline-paper/tree/master/scripts/runs).
+
+## Visualization of results (coming soon)
+
+The results of the pipeline execution can be visualized using the scripts in the [manuscript repo](https://github.com/segrelab/MiCoNE-pipeline-paper/tree/master/scripts)
 
 ## Know issues
 
