@@ -5,7 +5,7 @@ Usage
 Workflow
 --------
 
-.. figure:: assets/pipeline.png
+.. figure:: images/pipeline.png
    :alt: pipeline
 
    pipeline
@@ -266,8 +266,7 @@ OTU Processing (OP)
 +++++++++++++++++++
 
 +-----+-----------+-----------+---------------------------------------+
-| T\   | Tool      | Parameter | Value                                 |
-| ask |           |           |                                       |
+| Task   | Tool      | Parameter | Value                                 |
 +=====+===========+===========+=======================================+
 | Tra\ | Fork      | axis      | “sample”                              |
 | nsf |           |           |                                       |
