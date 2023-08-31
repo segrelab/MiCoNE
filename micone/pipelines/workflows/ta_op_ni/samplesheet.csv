@@ -1,0 +1,2 @@
+id,otu_table,rep_seqs,sample_metadata
+id1,inputs/id1/otu_table.biom,inputs/id1/rep_seqs.fasta,inputs/id1/sample_metadata.tsv
