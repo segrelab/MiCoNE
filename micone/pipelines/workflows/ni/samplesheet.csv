@@ -1,0 +1,2 @@
+id,otu_table,obs_metadata,sample_metadata,children_map
+id1,inputs/id1/otu_table.tsv,inputs/id1/obs_metadata.tsv,inputs/id1/sample_metadata.tsv,inputs/id1/children_map.json
