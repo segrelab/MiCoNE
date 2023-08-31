@@ -14,7 +14,11 @@ It incorporates various popular, publicly available tools as well as custom Pyth
 - Free software: MIT license
 - Documentation: <https://micone.readthedocs.io/>
 
-Manuscript can be found on [bioRxiv](https://www.biorxiv.org/content/10.1101/2020.09.23.309781v2) (to be updated with link to publication).
+The MiCoNE framework is introduced in:
+
+Kishore, D., Birzu, G., Hu, Z., DeLisi, C., Korolev, K., &amp; Segrè, D. (2023). Inferring microbial co-occurrence networks from AMPLICON DATA: A systematic evaluation. mSystems. doi:10.1128/msystems.00961-22.
+
+Data related to the publication can be found on Zenodo: https://doi.org/10.5281/zenodo.7051556.
 
 ## Features
 
