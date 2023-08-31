@@ -151,7 +151,7 @@ The parameters for the pipeline execution are in the `micone/pipelines/configs/*
 The following tables contain the list of default parameters for each step of the pipeline:
 
 Sequence Processing (SP)
-++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^
 
 +---------------------+----------------+--------------------------------+---------------------------+------------------+
 | Step                | Task           | Tool                           | Parameter                 | Value            |
@@ -187,7 +187,7 @@ Sequence Processing (SP)
 
 
 Denoising and Clustering (DC)
-+++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 +------------------+------------------+---------------------+-------------+
 | Task             | Tool             | Parameter           | Value       |
@@ -229,7 +229,7 @@ Denoising and Clustering (DC)
 
 
 Taxonomy Assignment (TA)
-++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 +--------+-------------+---------------+----------------------+
 | Task   | Tool        | Parameter     | Value                |
@@ -253,7 +253,7 @@ Taxonomy Assignment (TA)
 
 
 OTU Processing (OP)
-+++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^
 
 +-----------+--------------------+-------------------+--------------------------------------------------------------+
 | Task      | Tool               | Parameter         | Value                                                        |
@@ -281,7 +281,7 @@ OTU Processing (OP)
 
 
 Network Inference (NI)
-++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^
 
 +-------------+------------------------------+-----------------------+--------------+
 | Task        | Tool                         | Parameter             | Value        |
