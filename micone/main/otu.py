@@ -6,14 +6,13 @@ import json
 import pathlib
 from typing import Callable, Dict, Hashable, Iterable, List, Optional, Tuple
 
-from biom import Table
-from biom.util import biom_open
 import numpy as np
 import pandas as pd
+from biom import Table
+from biom.util import biom_open
 
-from ..validation import OtuValidator, BiomType, SamplemetaType, ObsmetaType
+from ..validation import BiomType, ObsmetaType, OtuValidator, SamplemetaType
 from .lineage import Lineage
-
 
 Filterfun = Callable[[np.ndarray, str, dict], bool]
 Hashfun = Callable[[str, dict], Hashable]
@@ -113,8 +112,8 @@ class Otu:
         otu_validator = OtuValidator(dtype=dtype, ext=ext)
         otu_path = pathlib.Path(otu_file)
         if otu_path.exists():
-            meta_path = pathlib.Path(meta_file) if meta_file else meta_file
-            tax_path = pathlib.Path(tax_file) if tax_file else tax_file
+            meta_path = pathlib.Path(meta_file) if meta_file is not None else meta_file
+            tax_path = pathlib.Path(tax_file) if tax_file is not None else tax_file
             otu_data = otu_validator.load_validate(otu_path, meta_path, tax_path)
         else:
             raise FileNotFoundError("Missing input files")
@@ -138,8 +137,7 @@ class Otu:
         lineage = list(Lineage._fields)
         n_tax_levels = len(set(obs_metadata.columns) & set(lineage))
         lineage_columns = lineage[:n_tax_levels]
-        extra_columns = list(set(obs_metadata.columns) - set(lineage_columns))
-        if extra_columns:
+        if extra_columns := list(set(obs_metadata.columns) - set(lineage_columns)):
             columns: List[str] = lineage_columns + extra_columns
         else:
             columns = lineage_columns
@@ -175,7 +173,7 @@ class Otu:
             An iterable of ids to keep.
             If ids are not supplied then func must be supplied
         func : Callable[[np.ndarray, str, dict], bool], optional
-            A function that takes in (values, id_, md) and returns a bool
+            A function that takes in (values, id_ind, md) and returns a bool
             If func is not supplied then ids must be supplied
             If both ids and func are supplied then ids are used
         axis : {'sample', 'observation'}, optional
@@ -214,9 +212,7 @@ class Otu:
         """
         if method == "norm":
             norm_otu = self.otu_data.norm(axis=axis, inplace=False)
-        elif method == "rarefy":
-            raise NotImplementedError("This method is not implemented yet")
-        elif method == "css":
+        elif method in {"rarefy", "css"}:
             raise NotImplementedError("This method is not implemented yet")
         else:
             raise ValueError(
@@ -313,7 +309,7 @@ class Otu:
             self.otu_data.ids(axis="sample"),
         )
         tax_level = self.tax_level
-        random_row_metadata = dict(self.otu_data.metadata(axis="observation")[0])
+        random_row_metadata = dict(self.otu_data.metadata(axis="observation")[0])  # type: ignore
         new_row.add_metadata(
             {
                 "otu_merged": {
@@ -345,7 +341,7 @@ class Otu:
         Notes
         -----
         1. To group by lineage "level" use:
-            func = lambda id_, md: Lineage(**md).get_superset(level)
+            func = lambda id_ind, md: Lineage(**md).get_superset(level)
         """
         if axis == "observation" and self.is_norm(axis="sample"):
             raise ValueError(
@@ -382,14 +378,15 @@ class Otu:
         obs_metadata_copy = self.obs_metadata.drop(unwanted_obs_metadata_cols, axis=1)
         if level not in Lineage._fields:
             raise ValueError(f"level must be one of {Lineage._fields}")
-        cfunc = lambda id_, md: str(Lineage(**md).get_superset(level))
+        cfunc = lambda id_ind, md: str(Lineage(**md).get_superset(level))
         otu_collapse = otu_data_copy.collapse(
             cfunc, axis="observation", norm=False, include_collapsed_metadata=True
         )
         curr_ids = otu_collapse.ids(axis="observation")
-        children_group_list = [
-            i["collapsed_ids"] for i in otu_collapse.metadata(axis="observation")
-        ]
+        if otu_collapse_md := otu_collapse.metadata(axis="observation"):
+            children_group_list = [i["collapsed_ids"] for i in otu_collapse_md]  # type: ignore
+        else:
+            raise ValueError("No metadata found in collapsed table")
         children_groups = dict(zip(curr_ids, children_group_list))
         otu_collapse.del_metadata(axis="observation")
         afunc = lambda x: pd.Series(
@@ -397,7 +394,7 @@ class Otu:
         )
         obs_collapse = obs_metadata_copy.apply(afunc, axis=1)
         gfunc = lambda x: str(Lineage(**x.to_dict()))
-        obs_collapse.index = obs_collapse.apply(gfunc, axis=1)
+        obs_collapse.index = obs_collapse.apply(gfunc, axis=1)  # type: ignore
         obs_collapse.drop_duplicates(inplace=True)
         otu_collapse.add_metadata(
             obs_collapse.to_dict(orient="index"), axis="observation"
@@ -405,9 +402,11 @@ class Otu:
         obs_dict = json.loads(
             otu_collapse.metadata_to_dataframe("observation").to_json(orient="split")
         )
-        unq_id_map = {k: f"{level}_{i}" for i, k in enumerate(curr_ids)}
-        obs_ids = [unq_id_map[i] for i in obs_dict["index"]]  # get ordered unique ids
-        children_dict = {unq_id_map[k]: v for k, v in children_groups.items()}
+        unq_id_indmap = {k: f"{level}_{i}" for i, k in enumerate(curr_ids)}
+        obs_ids = [
+            unq_id_indmap[i] for i in obs_dict["index"]
+        ]  # get ordered unique ids
+        children_dict = {unq_id_indmap[k]: v for k, v in children_groups.items()}
         sample_ids = otu_collapse.ids(axis="sample")
         observation_metadata = otu_collapse.metadata_to_dataframe(
             axis="observation"

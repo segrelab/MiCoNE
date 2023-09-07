@@ -146,7 +146,7 @@ repo <https://github.com/segrelab/MiCoNE-pipeline-paper/tree/master/scripts>`__
 Configuring the pipeline
 ------------------------
 
-The parameters for the pipeline execution are in the `micone/pipelines/configs/*.config`_ in the MiCoNE GitHub repository. These can be configured using the `nextflow.config`_ file.
+The parameters for the pipeline execution are in the ``micone/pipelines/configs/*.config`` in the MiCoNE GitHub repository. These can be configured using the ``nextflow.config`` file.
 
 The following tables contain the list of default parameters for each step of the pipeline:
 

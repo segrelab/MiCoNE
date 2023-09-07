@@ -50,7 +50,7 @@ you through the process.
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
-.. note:: This does not install the `nextflow`_ related pipeline elements, and does not provide the functionality to execute pipelines. Those can be installed through anaconda (see above).
+.. note:: This does not install the ``nextflow`` related pipeline elements, and does not provide the functionality to execute pipelines. Those can be installed through anaconda (see above).
 
 
 From sources (only Python package)
