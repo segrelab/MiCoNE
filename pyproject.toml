@@ -17,7 +17,6 @@ h5py = "^3.1.0"
 ete3 = "^3.1.2"
 statsmodels = "0.13.2"
 networkx = "^2.5"
-toml = "^0.10.2"
 schematics = "^2.1.0"
 halo = "^0.0.31"
 loguru = "^0.5.3"
@@ -29,7 +28,6 @@ markupsafe = "2.0.1"
 Sphinx = "^5.1.1"
 sphinx-rtd-theme = "^1.0.0"
 click = "^8.1.3"
-black = "^23.3.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
@@ -40,9 +38,13 @@ pylint = "^2.6.0"
 mypy = "^0.790"
 pre-commit = "^2.9.3"
 pytest-cov = "^2.11.0"
+black = "^23.3.0"
 
 [tool.poetry.extras]
 docs = ["Sphinx", "sphinx-rtd-theme"]
+
+[tool.poetry.group.dev.dependencies]
+sourcery = "^1.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
