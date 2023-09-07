@@ -54,9 +54,9 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"Microbial Co-occurrence Network Explorer"
-copyright = u"2018-2021, Dileep Kishore"
-author = u"Dileep Kishore"
+project = "Microbial Co-occurrence Network Explorer"
+copyright = "2018-2023, Dileep Kishore"
+author = "Dileep Kishore"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -135,8 +135,8 @@ latex_documents = [
     (
         master_doc,
         "micone.tex",
-        u"Microbial Co-occurrence Network Explorer Documentation",
-        u"Dileep Kishore",
+        "Microbial Co-occurrence Network Explorer Documentation",
+        "Dileep Kishore",
         "manual",
     ),
 ]
@@ -150,7 +150,7 @@ man_pages = [
     (
         master_doc,
         "micone",
-        u"Microbial Co-occurrence Network Explorer Documentation",
+        "Microbial Co-occurrence Network Explorer Documentation",
         [author],
         1,
     )
@@ -166,7 +166,7 @@ texinfo_documents = [
     (
         master_doc,
         "micone",
-        u"Microbial Co-occurrence Network Explorer Documentation",
+        "Microbial Co-occurrence Network Explorer Documentation",
         author,
         "micone",
         "One line description of project.",
