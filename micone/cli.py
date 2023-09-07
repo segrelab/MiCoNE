@@ -4,6 +4,7 @@
 
 import pathlib
 import pprint
+import shutil
 from typing import List
 
 import click
@@ -95,7 +96,7 @@ def init(
     if not output_location:
         output_path = pathlib.Path()
     else:
-        output_path = pathlib.Path(output_location)
+        output_path = pathlib.Path(str(output_location))
     for init_cmd in initializer.init(workflow, output_path):
         spinner.start()
         spinner.text = f"Initializing the {workflow} workflow"
@@ -111,27 +112,60 @@ def init(
 
 @cli.command()
 @click.option(
-    "--config",
-    "-c",
+    "--workflow_dir",
+    "-d",
     type=click.Path(exists=True),
-    help="The config file that defines the pipeline run",
+    default=None,
+    help="The workflow directory to be cleaned",
 )
 @click.option(
-    "--files", "-f", multiple=True, help="Files can be logs, configs, work, results"
+    "--clean_level",
+    "-c",
+    type=str,
+    default="logs",
+    help="Clean level can be logs, logs+work, logs+work+outputs, etc.",
 )
 @click.pass_context
-def clean(ctx, config: click.Path, files: List[str]):
+def clean(ctx, workflow_dir: click.Path, clean_level: str):
     """Clean files from a pipeline run in the current directory.
     This command irrevesibly deletes content, use with caution
     """
+    del_contents = clean_level.split("+")
     click.confirm(
-        f"Are you sure you want to delete {files} in current directory?", abort=True
+        f"Are you sure you want to delete {del_contents} in current directory?",
+        abort=True,
     )
+    if workflow_dir is None:
+        workflow_path = pathlib.Path()
+    else:
+        workflow_path = pathlib.Path(str(workflow_dir))
     spinner = ctx.obj["SPINNER"]
     spinner.start()
     spinner.text = "Cleaning up pipeline files"
-    pipeline = Pipeline(str(config), "local")
-    pipeline.clean(files)
+    if "logs" in del_contents:
+        spinner.text = "Deleting logs"
+        # Delete nextflow log file
+        for log_file in workflow_path.glob(".nextflow.*"):
+            log_file.unlink()
+        # Delete nextflow log folder
+        shutil.rmtree(workflow_path / ".nextflow", ignore_errors=True)
+        # Delete dag files
+        for dag_file in workflow_path.glob("*.html.*"):
+            dag_file.unlink()
+        # Delete trace files
+        for trace_file in workflow_path.glob("*.txt.*"):
+            trace_file.unlink()
+        spinner.succeed("Completed deletion of logs, old traces and dags")
+    if "work" in del_contents:
+        spinner.text = "Deleting work"
+        # Delete work directory
+        shutil.rmtree(workflow_path / "work", ignore_errors=True)
+        spinner.succeed("Completed deletion of work")
+    if "outputs" in del_contents:
+        spinner.text = "Deleting outputs"
+        # Delete outputs directory
+        shutil.rmtree(workflow_path / "outputs", ignore_errors=True)
+        spinner.succeed("Completed deletion of outputs")
     spinner.succeed("Completed cleanup")
 
 
