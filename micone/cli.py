@@ -171,7 +171,10 @@ def clean(ctx, workflow_dir: click.Path, clean_level: str):
 
 @cli.command()
 @click.option(
-    "--dir", "-d", type=click.Path(exists=True), help="The pipeline execution directory"
+    "--workflow_dir",
+    "-d",
+    type=click.Path(exists=True),
+    help="The pipeline execution directory",
 )
 @click.option(
     "--procs",
@@ -181,9 +184,9 @@ def clean(ctx, workflow_dir: click.Path, clean_level: str):
     help="Number of processors to use",
 )
 @click.pass_context
-def validate_results(ctx, dir: click.Path, procs: int):
+def validate_results(ctx, workflow_dir: click.Path, procs: int):
     """Check results of the pipeline execution"""
-    pipeline_dir = pathlib.Path(str(dir))
+    pipeline_dir = pathlib.Path(str(workflow_dir))
     spinner = ctx.obj["SPINNER"]
     spinner.start()
     spinner.text = "Checking pipeline execution"

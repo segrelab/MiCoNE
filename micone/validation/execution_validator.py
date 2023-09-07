@@ -3,19 +3,19 @@
 """
 
 import ast
-from itertools import chain, groupby
 import multiprocessing as mp
-from operator import itemgetter
 import pathlib
 import re
 import subprocess
+from itertools import chain, groupby
+from operator import itemgetter
 from typing import Dict, List, Tuple
 
 import pandas as pd
 import simplejson
 
+from .network_schema import LinksModel, NetworkmetadataModel, NodesModel
 from .otu_validator import OtuValidator
-from .network_schema import NodesModel, LinksModel, NetworkmetadataModel
 
 
 def validate_pipeline(history_file: pathlib.Path) -> str:
@@ -60,9 +60,9 @@ def process_trace(trace_file: pathlib.Path) -> Dict[str, List[str]]:
     trace_summary = {"success": [], "fail": []}
     for group_label, ids in trace_grouped.groups.items():
         if group_label in {"CACHED", "COMPLETED"}:
-            trace_summary["success"].extend([trace.loc[id_, "name"] for id_ in ids])
+            trace_summary["success"].extend([trace.loc[id_, "name"] for id_ in ids])  # type: ignore
         elif group_label in {"FAILED"}:
-            trace_summary["fail"].extend([trace.loc[id_, "name"] for id_ in ids])
+            trace_summary["fail"].extend([trace.loc[id_, "name"] for id_ in ids])  # type: ignore
         else:
             raise ValueError(f"Unknown group label {group_label}")
     return trace_summary
@@ -85,7 +85,7 @@ def validate_biom_file(biom_file: pathlib.Path) -> Tuple[str, pathlib.Path]:
     try:
         otu_validator.load_validate(biom_file)
         result = "success"
-    except:
+    except Exception:
         result = "fail"
     return result, biom_file
 
@@ -112,11 +112,10 @@ def validate_biom_results(
     args = biom_files
     with mp.Pool(processes=ncpus) as pool:
         results = pool.map(validate_biom_file, args)
-    results_dict = {
+    return {
         k: [v[-1] for v in g]
         for k, g in groupby(sorted(results, key=itemgetter(0)), key=itemgetter(0))
     }
-    return results_dict
 
 
 def validate_network_file(network_file: pathlib.Path) -> Tuple[str, pathlib.Path]:
@@ -145,7 +144,7 @@ def validate_network_file(network_file: pathlib.Path) -> Tuple[str, pathlib.Path
         links_model.validate()
         networkmetadata_model.validate()
         result = "success"
-    except:
+    except Exception:
         result = "fail"
     return result, network_file
 
@@ -172,11 +171,10 @@ def validate_network_results(
     args = network_files
     with mp.Pool(processes=ncpus) as pool:
         results = pool.map(validate_network_file, args)
-    results_dict = {
+    return {
         k: [v[-1] for v in g]
         for k, g in groupby(sorted(results, key=itemgetter(0)), key=itemgetter(0))
     }
-    return results_dict
 
 
 def validate_expected_results(
@@ -205,7 +203,7 @@ def validate_expected_results(
     modules = list(
         chain(
             *[
-                ast.literal_eval(re.search(r"(\['.*?'\])", s).group(1))
+                ast.literal_eval(re.search(r"(\['.*?'\])", s)[1])  # type: ignore
                 for s in stdout.decode("utf-8").split("\n")
                 if "selection =" in s
             ]
