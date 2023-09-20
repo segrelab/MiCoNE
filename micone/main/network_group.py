@@ -2,17 +2,17 @@
     Module that defines the `NetworkGroup` object and methods to read, write and manipulate it
 """
 
-from collections import defaultdict, Counter
-from collections.abc import Collection
 import pathlib
+from collections import Counter, defaultdict
+from collections.abc import Collection
 from itertools import product
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
 import networkx as nx
 import numpy as np
 import pandas as pd
-from scipy.stats import pearsonr, chi2
 import simplejson
+from scipy.stats import chi2, pearsonr
 
 from .network import Network
 
@@ -390,13 +390,13 @@ class NetworkGroup(Collection):
             GraphConstructor = nx.Graph
         else:
             raise ValueError("Unknown graph type")
-        emetadata = dict()
-        cmetadata = dict()
-        metadata_all = dict()
+        emetadata = {}
+        cmetadata = {}
+        metadata_all = {}
         for context in self.contexts:
-            emetadata.update(context["experimental_metadata"])
-            cmetadata.update(context["computational_metadata"])
-            metadata_all.update(context)
+            emetadata |= context["experimental_metadata"]
+            cmetadata |= context["computational_metadata"]
+            metadata_all |= context  # type: ignore
         metadata = {
             **metadata_all,
             "experimental_metadata": emetadata,
@@ -588,7 +588,7 @@ class NetworkGroup(Collection):
         # Filling with dummy values
         weight_df.fillna(0.0, inplace=True)  # dummy weights = 0
         pvalue_df.fillna(1.0, inplace=True)  # dummy pvalues = 1
-        eps = np.finfo(np.float).eps
+        eps = np.finfo(float).eps
         pvalue_df.replace(0.0, eps, inplace=True)  # to prevent log(0)
 
         # Step 2: Calculate the combined pvalues using Browns method
@@ -598,16 +598,16 @@ class NetworkGroup(Collection):
         # Var[psi] = 4*k + 2 * sum{i<j} (3.263 * corr_ij + 0.710 * corr_ij^2 + 0.027 * corr_ij^3)
         variance = 4 * k
         for i in range(1, k):
-            for j in range(0, i - 1):
+            for j in range(i - 1):
                 x_i = weight_df.iloc[:, i].values
                 x_j = weight_df.iloc[:, j].values
                 corr_ij, _ = pearsonr(x_i, x_j)
                 cov_ij_approx = (
-                    3.263 * corr_ij + 0.710 * (corr_ij ** 2) + 0.027 * (corr_ij ** 3)
+                    3.263 * corr_ij + 0.710 * (corr_ij**2) + 0.027 * (corr_ij**3)
                 )
                 variance += 2 * cov_ij_approx
         # df = 2 * E[psi]^2 / var[psi]
-        degrees_of_freedom = 2 * (expected_value ** 2) / variance
+        degrees_of_freedom = 2 * (expected_value**2) / variance
         # c = var[psi] / (2 * E[psi])
         correction_factor = variance / (2 * expected_value)
         link_ids = pvalue_df.index
@@ -619,10 +619,7 @@ class NetworkGroup(Collection):
         )
 
         # Step 3: Create new networks
-        graphs = []
-        for cid, network in enumerate(self._networks):
-            if cid in cids:
-                graphs.append(network.graph.copy())
+        graphs = [network.graph.copy() for network in self._networks]
         graph_dict = dict(enumerate(graphs))
         for ind in pvalues_combined.index:
             for cid, ind_old in self.linkid_revmap[ind]:
