@@ -2,8 +2,11 @@
 Example pipeline setup and execution
 =====================================
 
-Preliminary setup
------------------
+Preliminary setup and common instructions
+-----------------------------------------
+
+1. Setting up the MiCoNE environments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before execution of the ``MiCoNE`` pipeline we need to install the environments:
 
@@ -19,32 +22,53 @@ If you wish to install only a subset of the environments, you can specify the en
 
     micone install -e <env1>
 
-The list of supported environments can be found in the :ref:`supported_environments` section.
+The list of supported environments can be found in the :ref:`supported-environments` section.
 
-- micone-cozine
-- micone-dada2
-- micone-flashweave
-- micone-harmonies
-- micone-mldm
-- micone-propr
-- micone-qiime2
-- micone-sparcc
-- micone-spieceasi
-- micone-spring
 
+2. Initializing the pipeline template
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To set up the ``nextflow`` workflow template for the desired workflow, you can use the ``micone init`` command:
+
+.. code:: sh
+
+    micone init -w <workflow> -o <pipeline_dir>
+
+This initializes the ``workflow`` in the ``pipeline_dir`` folder. For a list of supported workflow see the :ref:`supported-workflows` section.
+
+Detailed information about the various files in the pipeline folder can be found in the :ref:`pipeline-configuration` section.
+
+
+3. Downloading data and setting up the pipeline template
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Download the data directory from `here <https://zenodo.org/record/7051556/files/data.zip?download=1>`__ and put it under ``<pipeline_dir>/nf_micone/data``.
+2. Update the ``sample_sheet.csv`` and ``metadata.json`` files in the base ``<pipeline_dir>`` directory to reflect the samples and metadata of the data you wish to analyze.
+3. Update the ``nextflow.config`` file if you wish to make any changes to the default configuration. The default configuration files can be found `here <https://github.com/segrelab/MiCoNE/tree/master/micone/pipelines/configs>`__ and the supported configuration options can be found in the tables in the :ref:`pipeline-configuration` section.
+
+.. note:: Example configurations used for the manuscript can be found in the ``scripts/runs`` folder of the `MiCoNE-pipeline-paper <https://github.com/segrelab/MiCoNE-pipeline-paper/tree/master/scripts/runs>`__ repository.
+
+
+4. Run the pipeline
+~~~~~~~~~~~~~~~~~~~~
+
+To run the pipeline, you can use the ``run.sh`` script in the ``<pipeline_dir>``:
+
+.. code:: sh
+
+    conda activate micone
+
+    # To run the code locally
+    bash run.sh
+
+    # To run the code on the cluster using the scheduler
+    qsub run.sh
+
+Full pipeline workflow
+----------------------
 
 Network inference workflow
 ---------------------------
 
-Install the micone conda environment.
-Run micone install -e <env> to install all the sub-environments that you need
-Run micone init -w full -o <pipeline_dir> to set up the pipeline template. This creates a nextflow workflow template for the full pipeline.
-Replace the existing main.nf,nextflow.config and samplesheet.csv files with the ones that I have attached to this email. You will also need to modify some of the files in the pipeline_dir according to these instructions: https://github.com/segrelab/MiCoNE/tree/master#configuration-and-the-pipeline-template
-Finally, you can run the pipeline using bash run.sh or qsub run.sh (if running on the cluster)
-Note that this workflow is only valid if your biom files already have taxonomy labels assigned. You must run the workflow from the TA step if they do not. Let me know if this is the case.
-
-Other useful references:
-All the supported configuration options in table format: https://github.com/segrelab/MiCoNE-pipeline-paper/tree/master/tables/csv
-Actual default configuration files used during program execution (copied over when you use the micone init -w full -o <pipeline_dir> command: https://github.com/segrelab/MiCoNE/tree/master/micone/pipelines/configs
-Here are example configuration files that were used in the analysis performed for the paper: https://github.com/segrelab/MiCoNE-pipeline-paper/tree/master/scripts/runs
+Note that this workflow is only valid if your biom files already have taxonomy labels assigned. You must run the workflow from the TA step if they do not.
 

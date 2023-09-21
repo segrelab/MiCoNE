@@ -34,7 +34,7 @@ Supported subcommands:
    log files and other extraneous files)
 4. ``validate-results`` - Check the results of the pipeline execution
 
-.. _supported_envs:
+.. _supported-environments:
 
 Installing the environments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,6 +65,8 @@ The list of supported environments:
 - micone-sparcc
 - micone-spieceasi
 - micone-spring
+
+.. _supported-workflows:
 
 Initializing the pipeline template
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,6 +101,8 @@ project/resource allocation flags to the ``run.sh`` script and run as:
 .. code:: sh
 
    qsub run.sh
+
+.. _pipeline-configuration:
 
 Configuration and the pipeline template
 ---------------------------------------

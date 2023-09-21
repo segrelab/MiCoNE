@@ -45,7 +45,8 @@ Know issues
    that it does not conflict with the version downloaded by the
    ``micone-flashweave`` environment
 2. The data directory (``nf_micone/data``) needs to be manually
-   downloaded (link here).
+   downloaded using this
+   `link <https://zenodo.org/record/7051556/files/data.zip?download=1>`__.
 
 
 Table of Contents
