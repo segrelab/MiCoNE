@@ -13,7 +13,7 @@ def spearman(otu_file, output_file):
     data = otu_table.values
     n = otu_table.shape[0]
     index = otu_table.index
-    corr_data = np.zeros((n, n), dtype=np.float)
+    corr_data = np.zeros((n, n), dtype=float)
     for i in range(n):
         for j in range(i, n):
             if i == j:
