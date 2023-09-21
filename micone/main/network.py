@@ -11,20 +11,19 @@ import pandas as pd
 import simplejson
 from statsmodels.stats.multitest import multipletests
 
-from . import Lineage
 from ..validation import (
-    InteractionmatrixType,
-    CorrelationmatrixType,
-    PvaluematrixType,
-    ObsmetaType,
-    MetadataModel,
     ChildrenmapType,
-    NodesModel,
-    LinksModel,
-    NetworkmetadataModel,
+    CorrelationmatrixType,
     ElistType,
+    InteractionmatrixType,
+    LinksModel,
+    MetadataModel,
+    NetworkmetadataModel,
+    NodesModel,
+    ObsmetaType,
+    PvaluematrixType,
 )
-
+from . import Lineage
 
 DType = List[Dict[str, Any]]
 LinkDType = Tuple[str, str, Dict[str, float]]
@@ -76,12 +75,6 @@ class Network:
     ----------
     graph : Union[nx.Graph, nx.DiGraph]
         The networkx graph representation of the network
-    nodes : DType
-        The list of nodes in the network and their corresponding properties
-    links : DType
-        The list of links in the network and their corresponding properties
-    metadata : Dict[str, Any]
-        The metadata for the network
 
     Examples
     --------

@@ -34,7 +34,9 @@ Supported subcommands:
    log files and other extraneous files)
 4. ``validate-results`` - Check the results of the pipeline execution
 
-Initializing the environments
+.. _supported_envs:
+
+Installing the environments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In order to run the pipeline various ``conda`` environments must first
@@ -52,6 +54,7 @@ Or to initialize a particular environment use:
    micone install -e "micone-qiime2"
 
 The list of supported environments:
+
 - micone-cozine
 - micone-dada2
 - micone-flashweave
@@ -73,8 +76,12 @@ co-occurrence networks):
 
    micone init -w <workflow> -o <path/to/folder>
 
-Other supported pipeline templates are (work in progress): - full - ni -
-op_ni - ta_op_ni
+Other supported pipeline templates are (work in progress):
+
+- full
+- ni
+- op_ni
+- ta_op_ni
 
 To run the pipeline, update the relevant config files (see next
 section), activate the ``micone`` environment and run the ``run.sh``
@@ -159,7 +166,7 @@ The parameters for the pipeline execution are in the ``micone/pipelines/configs/
 The following tables contain the list of default parameters for each step of the pipeline:
 
 Sequence Processing (SP)
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +---------------------+----------------+--------------------------------+---------------------------+------------------+
 | Step                | Task           | Tool                           | Parameter                 | Value            |
@@ -195,7 +202,7 @@ Sequence Processing (SP)
 
 
 Denoising and Clustering (DC)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +------------------+------------------+---------------------+-------------+
 | Task             | Tool             | Parameter           | Value       |
@@ -237,7 +244,7 @@ Denoising and Clustering (DC)
 
 
 Taxonomy Assignment (TA)
-^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 +--------+-------------+---------------+----------------------+
 | Task   | Tool        | Parameter     | Value                |
@@ -261,7 +268,7 @@ Taxonomy Assignment (TA)
 
 
 OTU Processing (OP)
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 +-----------+--------------------+-------------------+--------------------------------------------------------------+
 | Task      | Tool               | Parameter         | Value                                                        |
@@ -289,7 +296,7 @@ OTU Processing (OP)
 
 
 Network Inference (NI)
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+------------------------------+-----------------------+--------------+
 | Task        | Tool                         | Parameter             | Value        |

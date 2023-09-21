@@ -6,9 +6,9 @@ import pathlib
 from typing import Dict, List, Optional, Union
 
 import pandas as pd
-from biom import load_table, Table
+from biom import Table, load_table
 
-from .otu_schema import BiomType, SamplemetaType, ObsmetaType
+from .otu_schema import BiomType, ObsmetaType, SamplemetaType
 
 
 class OtuValidator:
@@ -27,8 +27,6 @@ class OtuValidator:
 
     Attributes
     ----------
-    configuration : Dict[str, Any]
-        Dictionary showing the current configuration of the instance
     validator : BiomType
         The schmatics validator instance
 

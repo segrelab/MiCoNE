@@ -35,12 +35,6 @@ class Otu:
     ----------
     otu_data : biom.Table
         OTU counts table in the `biom.Table` format
-    sample_metadata : pd.DataFrame
-        Metadata for the samples
-    obs_metadata :  pd.DataFrame
-        Lineage data for the observations (OTUs)
-    tax_level : str
-        The taxonomy level of the current Otu instance
 
     Notes
     -----

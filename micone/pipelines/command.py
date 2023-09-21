@@ -31,20 +31,10 @@ class Command:
 
     Attributes
     ----------
-    cmd : str
-        The command that will be executed.
-        This includes the profile and resource specifics
     profile : {'local', 'sge'}
         The execution environment
     project : str
         The project under which to run the pipeline on the 'sge'
-    output : str
-        The 'stdout' of the command
-    error : str
-        The 'stderr' of the command
-    status : str
-        The status the the command
-        One of {'success', 'failure', 'in progress', 'not started'}
     """
 
     _stdout: Optional[str] = None
@@ -54,10 +44,9 @@ class Command:
     def __init__(self, cmd: str, profile: str, timeout: int = 1000, **kwargs) -> None:
         self.profile = profile
         project = kwargs.get("project")
-        if profile == "sge":
-            if project is None:
-                raise ValueError("Project must be supplied if profile is sge")
-        self.project = project if project else "None"
+        if profile == "sge" and project is None:
+            raise ValueError("Project must be supplied if profile is sge")
+        self.project = project or "None"
         self._cmd = self._build_cmd(cmd)
         self._timeout = timeout
 
@@ -79,9 +68,7 @@ class Command:
         if self.profile == "local":
             pass
         elif self.profile == "sge":
-            command.append("qsub")
-            command.append("-P")
-            command.append(self.project)
+            command.extend(("qsub", "-P", self.project))
         else:
             raise ValueError("Unsupported profile! Choose either 'local' or 'sge'")
         command.extend(cmd.split(" "))
@@ -147,25 +134,21 @@ class Command:
         bool
             True if both the `cmd` and `process` are the same
         """
-        if self._cmd == self.process.args:
-            return True
-        else:
-            return False
+        return self._cmd == self.process.args  # type: ignore
 
     @property
     def output(self) -> str:
         """Returns the output generated during execution of the command"""
         if self._stdout is not None:
             stdout = self._stdout
+        elif self.process:
+            stdout, stderr = self.process.communicate(timeout=self._timeout)
+            self._stdout = stdout.decode("utf-8")
+            self._stderr = stderr.decode("utf-8")
         else:
-            if self.process:
-                stdout, stderr = self.process.communicate(timeout=self._timeout)
-                self._stdout = stdout.decode("utf-8")
-                self._stderr = stderr.decode("utf-8")
-            else:
-                raise NotImplementedError(
-                    "Please run the command before requesting output!"
-                )
+            raise NotImplementedError(
+                "Please run the command before requesting output!"
+            )
         return self._stdout
 
     @property
@@ -173,15 +156,14 @@ class Command:
         """Returns the error generated during execution of the command"""
         if self._stderr is not None:
             stderr = self._stderr
+        elif self.process:
+            stdout, stderr = self.process.communicate(timeout=self._timeout)
+            self._stdout = stdout.decode("utf-8")
+            self._stderr = stderr.decode("utf-8")
         else:
-            if self.process:
-                stdout, stderr = self.process.communicate(timeout=self._timeout)
-                self._stdout = stdout.decode("utf-8")
-                self._stderr = stderr.decode("utf-8")
-            else:
-                raise NotImplementedError(
-                    "Please run the command before requesting errors!"
-                )
+            raise NotImplementedError(
+                "Please run the command before requesting errors!"
+            )
         return self._stderr
 
     def update(self, cmd: str) -> None:
@@ -194,14 +176,13 @@ class Command:
             The new command to be executed
         """
         self._cmd = self._build_cmd(cmd)
-        if self.process:
-            if not self.proc_cmd_sync():
-                LOG.logger.warning(
-                    "New command differs from executed command. Clearing previous run"
-                )
-                self._stdout = None
-                self._stderr = None
-                self.process = None
+        if self.process and not self.proc_cmd_sync():
+            LOG.logger.warning(
+                "New command differs from executed command. Clearing previous run"
+            )
+            self._stdout = None
+            self._stderr = None
+            self.process = None
 
     @property
     def status(self) -> str:
@@ -213,14 +194,13 @@ class Command:
         str
             One of {'success', 'failure', 'in progress', 'not started'}
         """
-        if self.process:
-            poll = self.process.poll()
-            if poll is None:
-                return "in progress"
-            if poll == 0:
-                return "success"
-            if poll > 0:
-                return "failure"
-            raise RuntimeError("Proces status is undefined")
-        else:
+        if not self.process:
             return "not started"
+        poll = self.process.poll()
+        if poll is None:
+            return "in progress"
+        if poll == 0:
+            return "success"
+        if poll > 0:
+            return "failure"
+        raise RuntimeError("Proces status is undefined")

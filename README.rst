@@ -19,7 +19,7 @@ scripts to facilitate inference of co-occurrence networks from 16S data.
 The MiCoNE framework is introduced in:
 
 Kishore, D., Birzu, G., Hu, Z., DeLisi, C., Korolev, K., & Segrè, D.
-(2023). Inferring microbial co-occurrence networks from AMPLICON DATA: A
+(2023). Inferring microbial co-occurrence networks from amplicon data: A
 systematic evaluation. mSystems. doi:10.1128/msystems.00961-22.
 
 Data related to the publication can be found on Zenodo:

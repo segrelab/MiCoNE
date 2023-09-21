@@ -4,8 +4,8 @@
 
 from typing import Optional
 
-from halo import Halo
 from click import echo
+from halo import Halo
 
 
 class Spinner:
@@ -21,8 +21,6 @@ class Spinner:
     ----------
     interactive : bool
         True if the `Spinner` instance is interactive
-    text : str
-        The text currently in the spinner
     """
 
     def __init__(self, text: str, spinner: str, interactive: bool = True) -> None:
@@ -35,7 +33,7 @@ class Spinner:
 
     @property
     def text(self) -> str:
-        """ The text in the spinner """
+        """The text in the spinner"""
         return self._text
 
     @text.setter
@@ -47,12 +45,12 @@ class Spinner:
             echo(self._text)
 
     def start(self) -> None:
-        """ Start the spinner """
+        """Start the spinner"""
         if self.interactive:
             self._spinner.start()
 
     def succeed(self, text: Optional[str] = None) -> None:
-        """ Display text on success """
+        """Display text on success"""
         if text:
             self._text = text
         if self.interactive:
@@ -61,7 +59,7 @@ class Spinner:
             echo(self.text)
 
     def fail(self, text: Optional[str] = None) -> None:
-        """ Display text on failure """
+        """Display text on failure"""
         if text:
             self._text = text
         if self.interactive:
@@ -70,7 +68,7 @@ class Spinner:
             echo(self.text)
 
     def stop(self) -> None:
-        """ Stop the spinner """
+        """Stop the spinner"""
         if self.interactive:
             self._spinner.stop()
         self._text = ""

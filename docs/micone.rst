@@ -7,7 +7,6 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   micone.config
    micone.conversion
    micone.logging
    micone.main

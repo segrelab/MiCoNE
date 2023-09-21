@@ -37,12 +37,6 @@ class NetworkGroup(Collection):
     ----------
     graph : Union[nx.MultiGraph, nx.MultiDiGraph]
         The networkx multi-graph representation of the network
-    nodes: DType
-        The list of nodes in the network group
-    links: DType
-        The list of links in the network group
-    contexts: DType
-        The list of all contexts in the network group
     """
 
     def __init__(self, networks: List[Network], id_field: str = "taxid") -> None:
