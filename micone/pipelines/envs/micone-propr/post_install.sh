@@ -2,6 +2,6 @@
 
 set -e
 
-source activate micone-propr
+conda activate micone-propr
 
 R -e 'library(devtools); install_github("tpq/propr")'

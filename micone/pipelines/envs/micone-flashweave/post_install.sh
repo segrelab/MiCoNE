@@ -13,10 +13,10 @@ mkdir "$FOLDER"
 wget -O "$FOLDER/julia.tar.gz" --quiet "$URL"
 tar xzf "$FOLDER/julia.tar.gz" -C "$FOLDER"
 
-source activate micone-flashweave
+conda activate micone-flashweave
 
 cp -r "$FOLDER/$VERSION" "$CONDA_PREFIX/"
 ln -s "$CONDA_PREFIX/$VERSION/bin/julia" "$CONDA_PREFIX/bin/julia"
 
-source activate micone-flashweave
+conda activate micone-flashweave
 julia -e 'import Pkg; Pkg.add("FlashWeave"); Pkg.add("CSV"); Pkg.add("DataFrames"); using FlashWeave;'
