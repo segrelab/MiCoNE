@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "micone"
-version = "0.14.2"
+version = "0.14.3"
 description = "The Microbial Co-occurrence Network Explorer"
 authors = ["Dileep Kishore <dkishore@bu.edu>"]
 license = "MIT"
