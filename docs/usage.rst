@@ -51,9 +51,17 @@ Or to initialize a particular environment use:
 
    micone install -e "micone-qiime2"
 
-The list of supported environments are: - micone-cozine - micone-dada2 -
-micone-flashweave - micone-harmonies - micone-mldm - micone-propr -
-micone-qiime2 - micone-sparcc - micone-spieceasi - micone-spring
+The list of supported environments:
+- micone-cozine
+- micone-dada2
+- micone-flashweave
+- micone-harmonies
+- micone-mldm
+- micone-propr
+- micone-qiime2
+- micone-sparcc
+- micone-spieceasi
+- micone-spring
 
 Initializing the pipeline template
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

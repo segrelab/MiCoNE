@@ -157,7 +157,7 @@ The results of the pipeline execution can be visualized using the scripts in the
 ## Know issues
 
 1. If you have a version of `julia` that is preinstalled, make sure that it does not conflict with the version downloaded by the `micone-flashweave` environment
-2. The data directory (`nf_micone/data`) needs to be manually downloaded (link here).
+2. The data directory (`nf_micone/data`) needs to be manually downloaded using this [link](https://zenodo.org/record/7051556/files/data.zip?download=1).
 
 ## Credits
 
