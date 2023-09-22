@@ -1,0 +1,741 @@
+{
+  "computational_metadata": {
+    "chimera_checking": "remove_bimera",
+    "denoise_cluster": "dada2",
+    "interaction_threshold": 0.3,
+    "network_inference": "spieceasi",
+    "pvalue_correction": null,
+    "pvalue_threshold": 0.05,
+    "taxonomy_assignment": "null",
+    "taxonomy_database": "null"
+  },
+  "condition": "Radiation-exposed",
+  "description": "Standardized multi-omics of Earth's microbiomes reveals microbial and metabolite diversity",
+  "directionality": "undirected",
+  "experimental_metadata": {
+    "sequencing": "16S"
+  },
+  "host": "Vole",
+  "interaction_type": "correlation",
+  "links": [
+    {
+      "pvalue": null,
+      "source": "Genus_0",
+      "target": "Genus_1",
+      "weight": 0.185221752074469
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_2",
+      "target": "Genus_6",
+      "weight": 0.0330260434246788
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_3",
+      "target": "Genus_4",
+      "weight": 0.0062572511874558
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_3",
+      "target": "Genus_9",
+      "weight": 0.142793808358428
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_4",
+      "target": "Genus_5",
+      "weight": 0.0727558735003181
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_4",
+      "target": "Genus_33",
+      "weight": 0.09115446044043
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_7",
+      "target": "Genus_15",
+      "weight": 0.0885555313114323
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_8",
+      "target": "Genus_10",
+      "weight": 0.137315795201412
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_11",
+      "target": "Genus_33",
+      "weight": 0.125960718316254
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_14",
+      "target": "Genus_25",
+      "weight": 0.60556783429018
+    },
+    {
+      "pvalue": null,
+      "source": "Genus_14",
+      "target": "Genus_33",
+      "weight": -0.070936924224532
+    }
+  ],
+  "location": "Stool",
+  "nodes": [
+    {
+      "abundance": null,
+      "children": [
+        "b2863ffa7ee35489e9d195e8a6d4730f",
+        "87b00a63a09f0c08a45a15c55d41e89c",
+        "2f87079c384a1b9c02a10991160618ff",
+        "e99f74ff78aa002c13232202ed80ba76",
+        "0a37f4acaf62672996b92f0ff16cd87e",
+        "aa5b70a51f4242f8a8a9bd0ecf405bc6",
+        "62841fcd10143e0ffc7f71d0b737afc3",
+        "825e40130a55fa26bccf49bdd58b4dff",
+        "5ab5ea16be75b00ec24bd9a173f6b03d",
+        "681b5e757f9ca0ad9fa517a27535335b",
+        "7d0750ce8ec38a0fee5e3944e27cb41d",
+        "66150a35563b06e91a3a6d3d06efd23c",
+        "75a52b36c4044f880c89b757bf90815d",
+        "4ba77cdb9f04f79901601b6722c4cbe1",
+        "78848b3e42f58e173139a358859a50d2",
+        "2343f0d6b053dba25896cdecf0a3389a",
+        "100aca0b82eb020c1b5d4485ab4aa573",
+        "2192f0b8a18c98e8eba2f8352032a23e",
+        "25e1f44ff6cb51584dcf73aee62847da",
+        "24ea40a19b9a90864ff367464a9ac31d",
+        "e1e26e3a29c8f91a1c716a672cf644b4",
+        "7d5262c2a575c937069e02747ed6ba98",
+        "62ecc0420812f765b5696ba43e105627",
+        "d0fee933133f971f7a8471892dd8d515",
+        "eeca79dca04f90f091b5d112219bcc9a",
+        "f310b89a63ccee200b26b8d32451d7ed",
+        "9ab5ee131369731d6bbaccaf0e684064",
+        "5e5ba57b736444e88fa2a3f89de9967c",
+        "9ab6e0f36fc4dedb01cc5b26d0a6651e",
+        "5422784eb9d96b584da69adb92a3095b",
+        "5e431becd04c9dc2a90070c079c1b820",
+        "c8a5fbd47b97ddee64a524bcbd808d89",
+        "2f70c920df6e22689ca06f5433127dd4",
+        "f23d63c7a57e538fd36a5c42a405761e",
+        "eaeab8e45b7ab7006f856e3675510cd3",
+        "8c36602cb45fd80a9b12ca2170af205c",
+        "0ebc0c01440e55e7ab23b0cc3ddc2499",
+        "ef5b94adc7c74bc563a3c45f145ecdca",
+        "59828408f3a2920225bbeba967779c6c",
+        "f7f9626532c215ca3ca2062d80b914d7",
+        "a21b417d2d3e6b4b88ae3bdcc560b4e7",
+        "8d91bfb36e42ecb95c94e4ea93a0e047",
+        "75a770feeeca6de9adf7befe1c6f2582",
+        "e0ecc801459db9c002b944a22ec41e49",
+        "28c10fe3c57dd172b524d7260afd4554",
+        "44bf71ad1b0e0006c3a11604ea6d4e8d",
+        "02793b3b7068dee26efe2bc53daef7d4",
+        "a80597159ebdb1c65af36556f9097343",
+        "4f524e106d34d63670849c9d08b838cc",
+        "802c6d215ccfdb4e37ab6efd8d2fdc54",
+        "1e6b095dd00ce40f06f8c3fbdf72db6f",
+        "33efcce1bd9e9b1d1a533919242bb831",
+        "3f579a7057420fdc54e3c61328fbd80c",
+        "256e0eb2f5e5c9c8f0777db4a7c8a81a",
+        "9067e474052a1d13c604ae3d3195223e",
+        "4db78c8399847cb835093f25a1ffbdad",
+        "fcb99ba38b4b11d190abc2bfea3f11f4",
+        "8206aa4faa665fbd35cf98b24f5a6ad4",
+        "5a292c80b9069d962edb098e55ebf2d0",
+        "1be1ce357a7f123bb83dc19a1c8ef9b3",
+        "2b59ffa173ac84dc4b762359615b071e",
+        "4b7fbe2ecfc2c3845e1254661df74677",
+        "a8db87493193aab5fd84196fc49cc867",
+        "4b29a7b016e3e1b4a31d3701dafa2a09",
+        "85dd0488ea9b53a24e247b6e97bb9eea",
+        "02e4ecec2d9bfc2e1509e72702eaf3da",
+        "f56d7fdba884af77e512ba930711b23e",
+        "46d2422368d5f00332d94ad9e30c61a8",
+        "6811996f64e2ac959289ef53b747eeca",
+        "71598f01615f6ea99d7c28775a716df1",
+        "2c69c122b0726ffae79b7cb1cc6e4e9b",
+        "aeda9e65b212aa7a24698ae2e8a183c3",
+        "b37acbf9623310a311342bd1c8021d3a",
+        "8189a65abea314ff3d8187e18119fe88",
+        "22d676943337fe84303e949f85ae73cb",
+        "b8a15f2365540529a33287d90194d768",
+        "66c0cd72a50a1131e736008dacb819ee",
+        "18aec8e34719de83597850464b8b944e",
+        "a2700a80176c284629830ce9dea29782",
+        "2b149b4e4d5deee68329dad91acb7350",
+        "19d8187411dc6f68cd6d033f584d6180",
+        "7a65f5dcf993224151295570ae63eb25",
+        "2f3bbd023d68f7b58627897215a6f1b8",
+        "5f5b1612107e83093bca652cafd56259",
+        "60714ae8e1bdd7dfbd340718aed32352",
+        "7bcc9e94ef9b78dda3c98231d02581c9",
+        "40159c5daab533ef920114e816d2d63d",
+        "33f0622b2119518e971816aeba5a1398",
+        "018473c67edc05a642b6dfbca81d952f",
+        "94c900dd08a2b508dee75cd296a4219a",
+        "58e879caac0e2874880994d7d7577cf8",
+        "2569a69dba39e1bd688e03227d4688bb",
+        "ea5cd59c0df05aadb5caa053ce40f4b9",
+        "b5a5a1fca2e5d4d53d37809e33881fa1",
+        "9bceeebf11c2a990c7c27084d431191f",
+        "3f3e07c55698e89dd36d84d0053fc7b3",
+        "43eb37e7f04471030cf451cb78c3ab9b",
+        "38f49fe2da2cf996bdc6b5a2422a027b",
+        "f7b15849f27650762977bd279b7f61f5",
+        "4f166cca6194b76bfe9eb5b20025fcdc",
+        "e76d1a559fe5d2030c142e2d3a0f5723",
+        "59ab7501f536a1b7a6f0a561eec2f63b"
+      ],
+      "id": "Genus_0",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__S24-7",
+      "name": "S24-7",
+      "taxid": 171549,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "ba62ac0ad22f1f6f9c639fe0703b9abe",
+        "b2408c4da295e4db2e0f1286324c5c2b",
+        "86f2118a87b7d6ba1c465c3473b79fe1",
+        "95fdd816723ca482a5caba10bea171c8",
+        "fc2b05e6ebfe1567e78a5d9f7f5340bc",
+        "2ef1e51ab1cf99a3c6417b05a060830e",
+        "177df39b5f6d36844b728ffca436c689",
+        "7e356d61804097cd4a6cef02e8524219"
+      ],
+      "id": "Genus_1",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Bacilli;o__Lactobacillales;f__Lactobacillaceae;g__Lactobacillus",
+      "name": "Lactobacillus",
+      "taxid": 1578,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "339e3ca336440cbbae2cbd40c8d7e0a0",
+        "ae08eef61b4b71eebed00a1d2aff05e7"
+      ],
+      "id": "Genus_2",
+      "lineage": "k__Bacteria;p__Spirochaetes;c__Spirochaetes;o__Spirochaetales;f__Spirochaetaceae;g__Treponema",
+      "name": "Treponema",
+      "taxid": 157,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "f0ce6b0f2dee8c72ee800ee1b97c58b2",
+        "c87ba7c5e544aad8546bf1d7176d1535",
+        "ae52f4e345eaf65518b99fc32617f447",
+        "70d9b060e6c0b37c28dd6b1b6073baaa",
+        "fa372802d0680e03d37d8c3183aa3d12",
+        "17e3b0c68a0c50a547dd9db57d609a89",
+        "4d7ea6ad044848af6ab165b5910bb9e3",
+        "6dbb86b4c7cc32d260d3a27c1e71cacc",
+        "6ca758feb67b81728939923cd6489e84",
+        "ff01c2a86bdec3346eb1198a91195515",
+        "f6c8f19dddb56f4a100bc477d04b3a35",
+        "7100b71b3026fa47f2cd0559c50a5cd3",
+        "a867eb274351d36e0c3adfa2fbaeab7c",
+        "0bb8b3b2b30563ed49f69e2afe9ce975",
+        "3ea40346759ee8aa08e459c79cbb80d9",
+        "ed3760f3d4f565cc799cd67fe00d6e24",
+        "a2be5373248023198a1741d5f269e1f7",
+        "235af09e0250184e3c14db54dceffacf",
+        "7de8a8eee26ef34a9e87c57fd4eaf293",
+        "bff595e58fe3211e680b9fb81e98f983",
+        "9d07a01471bc30ed4eda054146443382",
+        "ad66c193b8dc5ee3c89fde7b6f519205",
+        "66d95b5fd7ecdc5b39dd9bdf4424ca3b",
+        "4a6cd13c4c85f44f70dc56bdf29283d9",
+        "fd658fb7d5cef176ef6d7a6fe5e547ae",
+        "179beb90602a37152b5bd7e022db905b",
+        "2bc9052ea452b2370e72ccbb98889502",
+        "6f8f736fdb529266f573fe717dd8573e",
+        "aa9d1583ca61d8a04dbf753d5753c89c",
+        "7a4de82f69f7d004deec412d719a17ef",
+        "7e01cfa1735b99a443c946369fde2019",
+        "e9571b8c27bc9dc42cb5e56bd0632dd0",
+        "5f31ec85c7d4a05556ac28a02738fa2a",
+        "951f425f01341662dde5d3392e01f2ae",
+        "396ffa76286336a3eeb1ea420e60f86b",
+        "945c23cc4f77c561a3e6b0ea6caab36e",
+        "574489b3d938c7f50deb0ffb1154259e",
+        "5e065e7e467127b15c398a05382e8962",
+        "1e259cb6da18efd7494845d96746e0cf",
+        "7d5f5379ff0dad433167ab5673ac1a71",
+        "9755d516523cc640abe1d35d3824c729",
+        "93ef341e73b75b3c5bc0cd9194d37e22",
+        "b460e7fae383dda524c68c9ab1f4da0c",
+        "adc42e3fb6fac96c29e15e0588e2d619"
+      ],
+      "id": "Genus_3",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae",
+      "name": "Lachnospiraceae",
+      "taxid": 186803,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "ecb3759e804e8c86d9fb0de817207fe9",
+        "cbc6ec0ad878294861f06ed9fff333c0",
+        "958d78a02bef69a795806f97adb117ea",
+        "4ee851e1075c5c37f07e38ba89ee48fb",
+        "f9f60c2b7142924f5bf6369037234212",
+        "c5aad5ebe154556c8422b669638c0745",
+        "325b5aa0007e50c0deac6b01d8599fe5",
+        "7d518e827d9d6a525a3c1d4b64bdc73c",
+        "269402afa5edc7ead2902c2ac3ee748c",
+        "805c0959b90cd47bb52d9f6571c5fb6a",
+        "55036e104bebad2cc182d8e77a4f49e5",
+        "6d3104baee4faa60276a5687b58f024a",
+        "7376eb30d4a59d2e35c4a558fa824a08"
+      ],
+      "id": "Genus_4",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Oscillospira",
+      "name": "Oscillospira",
+      "taxid": 119852,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "a5c2005002090f65bb949dc055edf5f9",
+        "d761edfd587efa1ed84efab5242ae1f6",
+        "237eaef92bd84226636b53807d399130",
+        "fa9417e51ca128f6ae2fa43a6c2a9938",
+        "8f4c2bf94f4afa327b2e1de8ac2d2673",
+        "7c2f333fbbfef4926fadf9bb9f01108b",
+        "d96c4feba1e009bc52d82093784757cf",
+        "adb8b7322b23849478ca3fd70ba129c2",
+        "fe9a3e2c5c45bec637506a2ae1eb243c",
+        "f3fe71b47a72b0f3f444e2e4f1c834cf",
+        "7a003f17479a3627ff87b892f1a6a1cc",
+        "0c94adbeada2d339d1b5bd62790b7769",
+        "950524da5744abc0ef286d09c7f75bc3",
+        "9b58318ec95e6ed03eda81ec90a82007",
+        "c0c1d51dbbe4604e475ac4e3977ed333",
+        "d62bbe4bf4ce44fe1d8d28c7e9c4040f",
+        "4519aa8556c5a910e70b3165010a677c",
+        "1d4315df704c2d4b82b87a22b65432ce",
+        "baf4ccc70138c5df1850b3e3355e53fa",
+        "f5e65944985d39991cba3fab949a0150",
+        "2eba553333514e38549b88ce54c4310d",
+        "715290946e74a5d07017535bad9cffd7",
+        "8b859b41d090bc7734d55b84852901b8",
+        "3a4b962e754e7e75bddd94a8cc6a788e",
+        "dd1dba4cd267eb387d0f6bd0f157f716",
+        "6d76f29b2751bae8b23b66bb89cf3b60",
+        "45f8bcad861d1cf298753c21daddb037",
+        "d5b89aac4f1b5b2ad7b5bbc1c184525d",
+        "910b117724a7c0607fc9ff5d0bdacdbe",
+        "bbcf5c3513cfc9c65cee456033109b29",
+        "741e6c3a2144337c6e6f17e23c25226c",
+        "1a6e505e9e44b2eba5e9a1a09edbee9c",
+        "ead2748ec7d6055edde4467e6ed8e85f",
+        "aa47f97eda87d644573886511f2ab067"
+      ],
+      "id": "Genus_5",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales",
+      "name": "Clostridiales",
+      "taxid": 186802,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "2cc95d07ee1f12bb5ce50a25b1cc6b59",
+        "6499f775759ee97ec90a0572cd043472",
+        "04f11566c760a465cbfa03687a11b21b",
+        "26d8d61645da5e1d73d90acb374b7312",
+        "339c1eb3045a4404d379256d64ddb65f"
+      ],
+      "id": "Genus_6",
+      "lineage": "k__Bacteria",
+      "name": "Bacteria",
+      "taxid": 2,
+      "taxlevel": "Kingdom"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "9fd9bebb4f483ce0de60ca06f84dfe7d",
+        "7e0ad9d4f5126838df7bf9be155bf2e7",
+        "90b73c136e55a6de21219428c850db54",
+        "59cc54580d2eac1da9bd231aa92f34e1",
+        "9baf810265c936764a891c18478501ee",
+        "3a3b4a75600d8243631bd235af8c10c0"
+      ],
+      "id": "Genus_7",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales",
+      "name": "Bacteroidales",
+      "taxid": 171549,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "7703eee1316926335a2c397ce9456290"
+      ],
+      "id": "Genus_8",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Epsilonproteobacteria;o__Campylobacterales;f__Helicobacteraceae;g__Flexispira",
+      "name": "Flexispira",
+      "taxid": 2353,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "bf08ab198c9fa4a87e01c8bdc801e381",
+        "04ccfe049122389841f00f41d645f0c0",
+        "405600e715167b5f59ca7a6438a970e2",
+        "0c30b9f06bec5e17acab70acb52b971c",
+        "68c0cd3ec73a3f9f125e859977a61dae",
+        "7ed769a578f745ae6a1bf8390747308b",
+        "58cfad788cea7c5fb2e0780537535ba2",
+        "e0e858ec0e46bac78b40fe53ce1ce0c9",
+        "c20ed1f91df3883f869c71bdbd0c015c",
+        "f3299d7d5aae920db46f3127e0e57950",
+        "aa663a6d0f1e19bea9b742dac0571018",
+        "0c033d18ef26d02e6411a964d6016c1a",
+        "ba905138ee12f042db7f21c96fc1b51d",
+        "0a3f1c8562ac67419775d4815b78e865"
+      ],
+      "id": "Genus_9",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Ruminococcus",
+      "name": "Ruminococcus",
+      "taxid": 1263,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "68e9c43e8d92322eaf79ea28e769bc8a"
+      ],
+      "id": "Genus_10",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Epsilonproteobacteria;o__Campylobacterales;f__Helicobacteraceae;g__Helicobacter",
+      "name": "Helicobacter",
+      "taxid": 209,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "b626f138b38869370e731ee3adb7cb20",
+        "c4bdf61b4d89f31645b150f81a4f2a9c",
+        "833d6031965c471fed005fae3dfec55d",
+        "60f93fed83d17d00026301844c347826",
+        "a1f22b2b9813bb1f451ef6eae6bb213c",
+        "731f05b0a2cd5a295eed1bf67823ec44",
+        "6a340edfe3bdd1958dad953dba156f1b",
+        "e38a4d04b1e23fe28de2b9a3d884f22f",
+        "9c841191d291a01484b499a423fb6b87",
+        "2068cb35e1e3f471bbebd5ec24b41026",
+        "96f240b82a5e1e8fe5a6145eb0220af0",
+        "e02c188aeae5fdde838f8821de04cadd",
+        "6ef7c64dcce524bca34f22afe4811b5e"
+      ],
+      "id": "Genus_11",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae",
+      "name": "Ruminococcaceae",
+      "taxid": 216572,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "dc77477666019f17911bce6457e7463b",
+        "c97b978c39701691676d1adc4482b1a1",
+        "c11159b35e150b470e100b23b76880fe",
+        "95f5fb5293b14245cd1ad6b65666167c",
+        "baff25731f6eeead5fcfb9bccaca93ba",
+        "48457b15738d8485810bc1a639b9fefa",
+        "7d55d9c1abc184d6f2177296c6b7ed1a",
+        "3e89b621b0925a4cafc0c3aea23ce177",
+        "ede4b09367a823610760633f1a1f1d24",
+        "9d21098a0e0ce3d9c9a3b7f5c563ac07",
+        "ab1b124a73d03b68668caf8a41dcf3ea",
+        "1f24b8df909bb5194b74f5697ead4146",
+        "061e0e8a323be85915197945621ac06c",
+        "f3206e4620acaed9bef7e2a85f9101b6",
+        "7fdb41351087f4f6a2e71224285f25aa",
+        "815371e2405645f9b11ea6f874da172e",
+        "689bf46fe30b4fc8bbc8e9121bcdd6ae"
+      ],
+      "id": "Genus_12",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Deltaproteobacteria;o__Desulfovibrionales;f__Desulfovibrionaceae;g__Desulfovibrio",
+      "name": "Desulfovibrio",
+      "taxid": 872,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "3cec387e3e89982bf989b857f7c296d1",
+        "8f20cb5ab77fdeb71e120044d3c8b9ff",
+        "041913e00327576a5b7da442f46162ea",
+        "a5186eda8e98540e8cdc7998a47dd8e5",
+        "d21881ea4c4f7883f8fb8b9c7ec8d1aa"
+      ],
+      "id": "Genus_13",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Clostridium",
+      "name": "Clostridium",
+      "taxid": 1485,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "637b9b3f4d1cbb1a10c07817619cdf69"
+      ],
+      "id": "Genus_14",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas",
+      "name": "Pseudomonas",
+      "taxid": 286,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "fdc506bbcfa8d4d436dbbb4e82c8186f",
+        "85e1ff5ce040182a4a279ffd56eafcff",
+        "bc3d51ac0a5c53dd174c15c623ec19d6",
+        "21fa37a22dff673ceefe749c56228051"
+      ],
+      "id": "Genus_15",
+      "lineage": "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Rikenellaceae",
+      "name": "Rikenellaceae",
+      "taxid": 171550,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "caaf48f2e9cb8bb05373de98aba8fbe5"
+      ],
+      "id": "Genus_16",
+      "lineage": "k__Bacteria;p__Spirochaetes;c__Spirochaetes",
+      "name": "Spirochaetes",
+      "taxid": 203691,
+      "taxlevel": "Class"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "601101d33cdf43a40bd674a50711af52"
+      ],
+      "id": "Genus_17",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Roseburia",
+      "name": "Roseburia",
+      "taxid": 841,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "4f1d745d12cd44b55aa70ab8d6cca01c"
+      ],
+      "id": "Genus_18",
+      "lineage": "k__Bacteria;p__Actinobacteria;c__Coriobacteriia;o__Coriobacteriales;f__Coriobacteriaceae",
+      "name": "Coriobacteriaceae",
+      "taxid": 84107,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "dee8ccb1261b46d223b47c56a71e670a",
+        "99cc9d058be3d479974b60ee56d237ef",
+        "28dc157bf607b1588972ed9443b5b21b",
+        "1d02d81c8d36236338528644d6189c96",
+        "9dda77a5f05f5929c5ced416dd88bb5f",
+        "798aecbb564873866a8cd40dc9f2a68e"
+      ],
+      "id": "Genus_19",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Coprococcus",
+      "name": "Coprococcus",
+      "taxid": 33042,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "4aa6bd75062f16d5a08fe0380c753c6d",
+        "3f326a8912545e8ca5ab45ceb03474b0"
+      ],
+      "id": "Genus_20",
+      "lineage": "k__Bacteria;p__Proteobacteria",
+      "name": "Proteobacteria",
+      "taxid": 1224,
+      "taxlevel": "Phylum"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "f276076449f5ce8cf910b15478545040"
+      ],
+      "id": "Genus_21",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Clostridiaceae;g__Candidatus Arthromitus",
+      "name": "Candidatus Arthromitus",
+      "taxid": 49082,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "d46e2205f0c6ecf67b51f83d111c509c",
+        "945184b6386c192c0066e0a98a154780"
+      ],
+      "id": "Genus_22",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacteriales;f__Enterobacteriaceae",
+      "name": "Enterobacteriaceae",
+      "taxid": 543,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "dbfc104eebdc4d9efd5976f6f6bd267e",
+        "b03c6b1b9605b21f1ccef79b4aaaff0c",
+        "272b51c5b1f9f19f0623c2a53fe10be7"
+      ],
+      "id": "Genus_23",
+      "lineage": "k__Bacteria;p__Tenericutes;c__Mollicutes;o__RF39",
+      "name": "RF39",
+      "taxid": 31969,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "8e0e3a7e472667eec78ba2f923dc258a"
+      ],
+      "id": "Genus_24",
+      "lineage": "k__Bacteria;p__Tenericutes;c__Mollicutes;o__Mycoplasmatales;f__Mycoplasmataceae;g__Mycoplasma",
+      "name": "Mycoplasma",
+      "taxid": 2093,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "5fe8a79baa0e9601bc73ff3938dbf497",
+        "4856e07a21f6a60b639fa9c694687d95"
+      ],
+      "id": "Genus_25",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Sphingomonadales;f__Sphingomonadaceae;g__Sphingobium",
+      "name": "Sphingobium",
+      "taxid": 165695,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "81fabfa334849c41207e63b73c184429",
+        "f3028e6e91b09bef83702f3ed00265b1"
+      ],
+      "id": "Genus_26",
+      "lineage": "k__Bacteria;p__Cyanobacteria;c__4C0d-2;o__YS2",
+      "name": "YS2",
+      "taxid": 1117,
+      "taxlevel": "Order"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "ff6e64cc0ca8769d389597fc055f45bd"
+      ],
+      "id": "Genus_27",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Erysipelotrichi;o__Erysipelotrichales;f__Erysipelotrichaceae",
+      "name": "Erysipelotrichaceae",
+      "taxid": 128827,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "0d4e97fc11a2142a47a55eced624e484"
+      ],
+      "id": "Genus_28",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Alphaproteobacteria",
+      "name": "Alphaproteobacteria",
+      "taxid": 28211,
+      "taxlevel": "Class"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "23a781cbe2fa96c854450be22111eab1"
+      ],
+      "id": "Genus_29",
+      "lineage": "k__Bacteria;p__Firmicutes;c__Erysipelotrichi;o__Erysipelotrichales;f__Erysipelotrichaceae;g__Allobaculum",
+      "name": "Allobaculum",
+      "taxid": 174708,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "bf3ec4cfc401706f47921a60212f2f03"
+      ],
+      "id": "Genus_30",
+      "lineage": "k__Bacteria;p__Proteobacteria;c__Deltaproteobacteria",
+      "name": "Deltaproteobacteria",
+      "taxid": 28221,
+      "taxlevel": "Class"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "8f55311fec423704e62008badb247c3f",
+        "b64d7c4b8bbb303cf0cc6fd6a015a6e6"
+      ],
+      "id": "Genus_31",
+      "lineage": "k__Bacteria;p__Tenericutes;c__Mollicutes;o__Anaeroplasmatales;f__Anaeroplasmataceae;g__Anaeroplasma",
+      "name": "Anaeroplasma",
+      "taxid": 2086,
+      "taxlevel": "Genus"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "3e1d2f4934bcd67e81e7b897b0104d04"
+      ],
+      "id": "Genus_32",
+      "lineage": "k__Bacteria;p__Tenericutes;c__Mollicutes;o__Mycoplasmatales;f__Mycoplasmataceae",
+      "name": "Mycoplasmataceae",
+      "taxid": 2092,
+      "taxlevel": "Family"
+    },
+    {
+      "abundance": null,
+      "children": [
+        "otu_merged"
+      ],
+      "id": "Genus_33",
+      "lineage": "k__Unclassified",
+      "name": "Unclassified",
+      "taxid": 12908,
+      "taxlevel": "Kingdom"
+    }
+  ],
+  "publication": {
+    "authors": [
+      {
+        "email": "robknight@ucsd.edu",
+        "name": "Rob Knight"
+      }
+    ],
+    "date": "2022-11-28",
+    "pubmed_id": "36443458"
+  }
+}
